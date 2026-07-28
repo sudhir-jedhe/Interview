@@ -1,3 +1,4 @@
+```js
 Home
 JavaScript
 Algorithms

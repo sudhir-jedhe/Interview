@@ -1,3 +1,4 @@
+```js
 let arr = [
     'geeks', 2, 'geeks', 2, 'Javascript', 4,
     'Javascript', 5, 'for', 6, 'Javascript', 1,

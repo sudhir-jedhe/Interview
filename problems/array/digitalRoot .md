@@ -1,3 +1,4 @@
+```js
 let digitalRoot = (n) => {
   //calculate the sum of all the digits
   let sum = 0;

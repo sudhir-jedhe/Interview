@@ -1,3 +1,4 @@
+```js
 function mostUsedWord(text, bannedWords) {
     const wordCounts = {};
     const words = text.toLowerCase().match(/\w+/g);

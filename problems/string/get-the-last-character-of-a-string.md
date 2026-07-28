@@ -1,3 +1,4 @@
+```js
 // Input String
 let str = "GeeksforGeeks";
 

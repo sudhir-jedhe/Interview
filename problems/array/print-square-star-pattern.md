@@ -1,3 +1,4 @@
+```js
 // Function for printing
 // star square pattern
 // in console

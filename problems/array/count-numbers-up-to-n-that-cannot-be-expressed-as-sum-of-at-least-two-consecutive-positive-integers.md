@@ -1,3 +1,4 @@
+```js
 // Input: N = 10
 // Output: 4
 // Explanation: The integers that cannot be expressed as sum of two or more consecutive

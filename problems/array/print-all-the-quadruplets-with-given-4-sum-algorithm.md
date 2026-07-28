@@ -1,3 +1,4 @@
+```js
 Given an array of integers and sum we have to print all the unique quadruplets which are equal to the given target, This problem is extension of 4 sum algorithm.
 
 Input:

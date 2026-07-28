@@ -1,3 +1,4 @@
+```js
 // Javascript script to convert negative number
 // to positive number
 

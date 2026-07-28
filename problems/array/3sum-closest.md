@@ -1,3 +1,4 @@
+```js
 Input:
 arr = [1, -1, 2, -4]
 target = 1

@@ -1,3 +1,4 @@
+```js
 Input:
 D -> E -> N -> N -> E -> D
 P -> R -> A -> S -> H -> A -> N-> T

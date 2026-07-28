@@ -1,3 +1,4 @@
+```js
 let zigzagMatrix = (arr) => {
   //loop through the array
   for (let i = 0; i < arr.length; i++) {

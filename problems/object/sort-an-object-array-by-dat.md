@@ -1,3 +1,4 @@
+```js
 let Arr = [
   { id: "1", date: "Mar 11 2012 10:00:00 AM" },
   { id: "2", date: "Mar 8 2012 08:00:00 AM" },

@@ -1,3 +1,4 @@
+```js
 // Input: s = 'geeksforgeeks' , K = 2
 // Output: o
 // Explanation: In the given string, the 2nd non-repeating character is 'o' because 'f' is the first

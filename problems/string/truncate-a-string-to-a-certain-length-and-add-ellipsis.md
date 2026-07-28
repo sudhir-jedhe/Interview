@@ -1,3 +1,4 @@
+```js
 // To truncate a string to a specific length and add an ellipsis (…)
 // shortening the string to a predefined character count, indicating that the content continues beyond the truncated portion.
 

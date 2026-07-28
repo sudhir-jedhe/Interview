@@ -1,3 +1,4 @@
+```js
 Get elements from the start or end of a JavaScript array by condition
 
 We've previously covered how to get the first or last n elements of a JavaScript array. This time, we'll be looking at how to get elements from the start or end of an array based on a given condition.

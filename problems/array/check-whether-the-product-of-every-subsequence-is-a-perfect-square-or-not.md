@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {1, 4, 100}
 // Output: Yes
 // Explanation:

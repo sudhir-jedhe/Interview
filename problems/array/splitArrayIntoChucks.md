@@ -1,3 +1,4 @@
+```js
 // Size of chunk
 let chunk = 4;
 

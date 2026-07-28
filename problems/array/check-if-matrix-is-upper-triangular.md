@@ -1,3 +1,4 @@
+```js
 // Given a square matrix and the task is to check the matrix is in upper triangular form or not.
 // A square matrix is called upper triangular if all the entries below the main diagonal are zero.
 /*

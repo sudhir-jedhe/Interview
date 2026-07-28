@@ -1,3 +1,4 @@
+```js
 Check if two JavaScript arrays have same contents
 
 Have you ever wanted to compare the contents of two arrays to see if they contain the same elements regardless of order? While this sounds like a fairly easy task, implementing it efficiently can be a little tricky.

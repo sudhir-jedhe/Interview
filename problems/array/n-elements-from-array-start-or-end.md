@@ -1,3 +1,4 @@
+```js
 Get N elements from the start or end of a JavaScript array
 
 A very common scenario when working with arrays is to get a subset of elements from the start or end of the array. Depending on the use-case and the desired result, there are a few variants of this operation that might fit your needs.

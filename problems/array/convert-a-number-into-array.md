@@ -1,3 +1,4 @@
+```js
 let myInt = 235345;
 
 // Getting the string as a parameter

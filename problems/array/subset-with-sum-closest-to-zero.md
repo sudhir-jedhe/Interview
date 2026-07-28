@@ -1,3 +1,4 @@
+```js
 // Input : arr[] = {2, 2, 2, -4}
 // Output : 0
 // arr[0] + arr[1] + arr[3] = 0

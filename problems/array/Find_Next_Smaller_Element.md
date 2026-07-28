@@ -1,3 +1,4 @@
+```js
 /*
 Input: inputArray=[ 11, 13, 21, 3 ]
 Output: 3 3 3 -1

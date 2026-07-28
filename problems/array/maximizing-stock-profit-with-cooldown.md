@@ -1,3 +1,4 @@
+```js
 // Given the prices of stock for n number of days. Every ith day tell the price of the stock on that day.
 // Find the maximum profit that you can make by buying and selling stock with the restriction of
 // after you sell your stock, you cannot buy stock on the next day (i.e., cooldown one day).

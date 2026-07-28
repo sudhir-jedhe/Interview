@@ -1,3 +1,4 @@
+```js
 var GFG_Object = {
   CSS: "1",
   JavaScript: "2",

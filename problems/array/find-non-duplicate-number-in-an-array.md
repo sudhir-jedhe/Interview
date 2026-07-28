@@ -1,3 +1,4 @@
+```js
 const singleNumber = (nums) => {
     //Hashmap
     const track = {};

@@ -1,3 +1,4 @@
+```js
 export const capitaliseAllWords = (input) => {
   if (!input) return "";
   return input

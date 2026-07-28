@@ -1,3 +1,4 @@
+```js
 // Input : A[] = {3, 4}
 // Output : 3
 

@@ -1,3 +1,4 @@
+```js
 /*
 Input:  A = "ABAC",  B = "CAB"
 Output: CABAC 

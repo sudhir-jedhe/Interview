@@ -1,3 +1,4 @@
+```js
 function getCharacter(str, n) {
   let newString = str.slice(-n);
   return newString;

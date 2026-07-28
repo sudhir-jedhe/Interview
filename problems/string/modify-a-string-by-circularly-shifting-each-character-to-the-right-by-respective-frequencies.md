@@ -1,3 +1,4 @@
+```js
 // Input: S = “geeksforgeeks”
 // Output: iiimugpsiiimu
 // Explanation:

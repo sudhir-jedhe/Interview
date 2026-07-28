@@ -1,3 +1,4 @@
+```js
 /*
 
     Input: words= ["sss", "mmm", "tyu", "abc"];

@@ -2,7 +2,7 @@ If you'd like to preserve the original object and not modify it directly while r
 
 Here's an updated version of your `removeKeys` function that makes a deep copy of the object before performing the key removal. This ensures that the original object remains unchanged:
 
-### Updated `removeKeys` Function (with Deep Copy):
+### Updated `removeKeys` Function (with Deep Copy)
 
 ```javascript
 function deepCopy(obj) {
@@ -72,18 +72,18 @@ console.log(obj);
 // { name: "John Doe", age: 30, address: { street: "123 Main Street", city: "San Francisco", state: "CA" }, hobbies: ["coding", "reading", "hiking"] }
 ```
 
-### Key Points:
+### Key Points
 
-1. **Deep Copy:** 
+1. **Deep Copy:**
    The `deepCopy` function creates a deep copy of the input object. This way, the original object remains unchanged, and all modifications (like deleting keys) are done on the copy.
 
-2. **Recursive Removal:** 
+2. **Recursive Removal:**
    The `removeKeys` function recursively traverses the object, checking each key and removing it if it matches any of the keys specified in the `keys` array. It handles nested objects and arrays.
 
 3. **Preserving Original Object:**
    The original `obj` is preserved as it is. All modifications are done to the deep copy (`newObj`), which is returned after the specified keys are removed.
 
-### Example with Nested Objects:
+### Example with Nested Objects
 
 ```javascript
 const obj = {
@@ -121,7 +121,7 @@ console.log(obj);
 // }
 ```
 
-### Explanation:
+### Explanation
 
 - **Deep Copy Function:**  
    The `deepCopy` function ensures that nested objects and arrays are also copied recursively. This prevents any reference to the original object from being shared with the copy.
@@ -132,6 +132,6 @@ console.log(obj);
 - **Removing Keys from Nested Objects/Arrays:**  
    The recursion ensures that if a nested object or array contains the specified keys, those are removed as well.
 
-### Conclusion:
+### Conclusion
 
 This version of the `removeKeys` function ensures that the original object remains intact while performing the removal of specified keys on a new deep copy. This approach is useful when you want to maintain immutability or preserve the original data structure.

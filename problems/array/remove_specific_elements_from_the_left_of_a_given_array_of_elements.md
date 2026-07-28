@@ -1,3 +1,4 @@
+```js
 function fun(n) { 
     // Array 
     var arr = [2, 4, 5, 3, 6]; 

@@ -1,3 +1,4 @@
+```js
 // This is our array of Objects
 let data = [
   { id: 1, name: "a" },

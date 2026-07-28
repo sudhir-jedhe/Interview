@@ -1,3 +1,4 @@
+```js
 let arr = ["apple", "mango", "apple", "orange", "mango", "mango"];
 
 function removeDuplicates(arr) {

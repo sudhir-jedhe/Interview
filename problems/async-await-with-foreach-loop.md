@@ -1,3 +1,4 @@
+```js
 /* 
 Asynchronous is popular nowadays because it gives functionality of allowing multiple tasks 
 to be executed at the same time (simultaneously) which helps to increase the productivity and efficiency of code.

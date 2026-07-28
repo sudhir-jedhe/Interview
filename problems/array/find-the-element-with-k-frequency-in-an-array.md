@@ -1,3 +1,4 @@
+```js
 Learn how to find the element with k frequency in an array.
 
 Given an array of elements find an element which has occurred K times. If there are no such element then return -1.

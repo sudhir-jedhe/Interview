@@ -1,3 +1,4 @@
+```js
 // Zip creates an array of elements, grouped based on their position in the original arrays
 
 const zip = (...arrays) => {

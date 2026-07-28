@@ -1,3 +1,4 @@
+```js
 // Insertion index in sorted array
 // To find the lowest insertion index of an element in a sorted array, you can use Array.prototype.findIndex() to find the appropriate index where the element should be inserted.
 

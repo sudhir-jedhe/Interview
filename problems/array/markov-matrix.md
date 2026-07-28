@@ -1,3 +1,4 @@
+```js
 // The matrix in which the sum of each row is equal to 1.
 
 /*

@@ -1,3 +1,4 @@
+```js
 // Using concat() and slice() method
 function mergeSortedArrayUsingConcat(array1, array2) {
   let sortedArray = [],

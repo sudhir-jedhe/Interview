@@ -1,3 +1,4 @@
+```js
 // 1. The matrix direct(kronecker) product of the 2×2 matrix A
 //    and the 2×2 matrix B is given by the 4×4 matrix :
 

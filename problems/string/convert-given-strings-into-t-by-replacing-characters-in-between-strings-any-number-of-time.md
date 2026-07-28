@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {“abc”, “abb”, “acc”}, T = “abc”
 // Output: Yes
 // Explanation:

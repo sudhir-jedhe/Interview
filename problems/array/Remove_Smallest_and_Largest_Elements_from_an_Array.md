@@ -1,3 +1,4 @@
+```js
 // Using reduce() method  
 let inputArray = [3, 1, 7, 9, 2, 8, 4, 6, 5]; 
 let smallestElement = Math.min(...inputArray); 

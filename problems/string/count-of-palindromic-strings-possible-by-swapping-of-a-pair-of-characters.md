@@ -1,3 +1,4 @@
+```js
 // Input: s = “abba”
 // Output: 2
 // Explanation:

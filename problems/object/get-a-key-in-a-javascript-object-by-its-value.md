@@ -1,3 +1,4 @@
+```js
 function getKeyByValue(object, value) {
   for (let prop in object) {
     if (object.hasOwnProperty(prop)) {

@@ -1,10 +1,13 @@
 This is a great demonstration of how to create an enum-like structure in JavaScript using a class and various ES6 features! Let's break down the approach you're suggesting and understand how everything fits together.
 
 ### The Problem: Creating an Enum in JavaScript
+
 JavaScript does not have a native `enum` keyword like some other languages (such as TypeScript, Java, or C#), so creating an enum-like structure requires using objects, classes, or other constructs. The primary issue with using a plain object, like your initial `daysEnum` object, is that it is mutable and may be modified unintentionally. Freezing the object using `Object.freeze()` is a good solution, but it doesn't give us the features we might expect from an enum, such as iteration and methods to get keys or values easily.
 
 ### The Class-Based Enum Approach
+
 Your approach is to create an `Enum` class that:
+
 - Takes a variable number of string arguments as the keys for the enum.
 - Assigns each key a unique integer value, starting from `0` and incrementing.
 - Freezes the instance to prevent mutation.
@@ -33,11 +36,12 @@ class Enum {
 }
 ```
 
-### How It Works:
+### How It Works
+
 1. **Constructor**: The `Enum` class constructor accepts a variable number of keys using the rest parameter (`...keys`).
    - Each key is assigned an integer value, starting from `0` and increasing by 1 for each successive key.
    - After assigning the keys and values, `Object.freeze(this)` is called to prevent any changes to the object.
-   
+
 2. **Iterator**: The `[Symbol.iterator]` method makes the enum iterable. This is important because it allows the `Enum` instance to be used in constructs like `for...of` or be spread into an array. It iterates over the keys of the enum, yielding each key.
 
 ### Using the `Enum` Class
@@ -67,7 +71,8 @@ for (let day of daysEnum) {
 }
 ```
 
-### Output:
+### Output
+
 ```js
 0
 6
@@ -81,15 +86,17 @@ saturday
 sunday
 ```
 
-### Benefits of This Approach:
+### Benefits of This Approach
+
 1. **Immutability**: The enum is frozen using `Object.freeze()`, ensuring that no one can accidentally modify the enum values.
 2. **Iterable**: The class provides an iterator (`Symbol.iterator`), which makes it iterable. This allows easy iteration with `for...of` or array spreading (`[...]`).
 3. **Cleaner Syntax**: Instead of manually assigning numeric values to each key, the class automates that process for you.
 4. **Symbol-Based Iteration**: By using `Symbol.iterator`, you avoid conflicts with potential keys or methods on the enum object, keeping it clean and preventing naming collisions.
 
-### Possible Improvements:
+### Possible Improvements
+
 1. **Adding Access to Values**: You might want to access the values (the numbers) of the enum in a more explicit way. Currently, the only way to get a value is by accessing it directly like `daysEnum.monday`. If you want to provide more flexibility (e.g., get a value by key), you could add a method to the `Enum` class to retrieve the value by key or reverse the key-value lookup.
-   
+
 ```js
 class Enum {
   constructor(...keys) {
@@ -117,7 +124,8 @@ class Enum {
 }
 ```
 
-2. **Add Validation for Duplicate Keys**: Currently, the class does not check if there are any duplicate keys passed to it. Adding validation for that might improve robustness.
+1. **Add Validation for Duplicate Keys**: Currently, the class does not check if there are any duplicate keys passed to it. Adding validation for that might improve robustness.
 
-### Conclusion:
+### Conclusion
+
 Your approach is a clean, effective, and highly extensible way to implement enums in JavaScript. By using ES6 features like `Symbol.iterator` and `Object.freeze()`, it provides immutability and makes the enum iterable, which adds significant usability. It's a clever use of classes and symbols to avoid polluting the enum object with methods that could conflict with the keys or values, making this solution more flexible and safer to use in complex JavaScript applications.

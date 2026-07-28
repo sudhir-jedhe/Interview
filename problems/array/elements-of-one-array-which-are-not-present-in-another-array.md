@@ -1,3 +1,4 @@
+```js
 function gfg_Run() {
   var elmts = ar1.filter(function (i) {
     return this.indexOf(i) < 0;

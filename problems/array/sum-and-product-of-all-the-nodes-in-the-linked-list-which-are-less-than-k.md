@@ -1,3 +1,4 @@
+```js
 An algorithm to find the sum and product of all the nodes in the linked list which are less than k in javascript.
 
 Input:

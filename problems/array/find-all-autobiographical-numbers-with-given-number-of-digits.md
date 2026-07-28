@@ -1,3 +1,4 @@
+```js
 // Given N as the number of digits, the task is to find all the Autobiographical Numbers whose length is equal to N.
 
 // An autobiographical number is a number such that the first digit of it counts how many zeroes are there in it,

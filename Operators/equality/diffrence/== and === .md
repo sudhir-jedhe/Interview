@@ -23,4 +23,3 @@
    NaN == NaN or NaN === NaN // false
 //    []==[] or []===[] //false, refer different objects in memory
 //    {}=={} or {}==={} //false, refer different objects in memory
-

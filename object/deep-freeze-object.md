@@ -22,6 +22,7 @@ function deepFreeze(object) {
 ```
 
 **Explanation:**
+
 - `Object.getOwnPropertyNames(object)` gets the own properties (keys) of the object.
 - It checks if a property is an object itself (`typeof value === "object"`), and if it is, it recursively calls `deepFreeze()` on that property.
 - Finally, `Object.freeze()` is applied to the object itself.
@@ -61,6 +62,7 @@ const deepEqual = (object1, object2) => {
 ```
 
 **Explanation:**
+
 - The function first compares the number of keys in both objects. If they don't match, they can't be deeply equal.
 - Then, for each key, it checks whether both values are objects. If they are, it calls `deepEqual` recursively to compare the nested objects. If the values are not objects, it compares them directly.
 
@@ -91,6 +93,7 @@ function produce(base, recipe) {
 ```
 
 **Explanation:**
+
 - The `produce()` function starts by creating a **deep copy** of the original object (`base`) using `JSON.parse(JSON.stringify(base))`. This creates a new object so that we don't mutate the original.
 - The `recipe` function is passed the clone, and any changes made inside `recipe` will affect the clone.
 - After the changes are applied, we use `deepEqual()` to compare the `base` and `clone`. If they are the same, it means no changes were made, so we leave the `clone` as the `base`. If changes were made, we continue.
@@ -147,12 +150,14 @@ console.log(newState);
 ```
 
 **Explanation:**
+
 - `obj` is initially deeply frozen using `deepFreeze()`. This prevents any modifications to it.
 - `produce()` is used to create a new object (`newState`) based on the `obj`. The `recipe` function modifies the `draft` (which is the clone), allowing us to safely update the object’s properties.
 - After the changes are made, `newState` is also frozen, ensuring it remains immutable.
 - Any attempts to modify `newState` directly (like using `delete`) will result in an error in strict mode, as `Object.freeze()` prevents such modifications.
 
-### Summary of How the System Works:
+### Summary of How the System Works
+
 - **Deep immutability:** Using `deepFreeze`, all properties and nested objects are made immutable.
 - **Produce function:** Allows updates to an immutable object by cloning it, applying changes, and then returning a new, frozen version of the object.
 - **Safety and Control:** The `produce` function ensures that immutability is maintained and that the original object cannot be modified directly.

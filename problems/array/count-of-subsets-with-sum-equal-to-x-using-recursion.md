@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {2, 3, 5, 6, 8, 10}, X = 10
 // Output: 3
 // Explanation:

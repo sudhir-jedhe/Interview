@@ -1,3 +1,4 @@
+```js
 // Given an array arr[] consisting of N integers and an integer K, the task is to find the
 // maximum number of disjoint subsets that the given array can be split into such that the
 // product of the minimum element of each subset with the size of the subset is at least K.

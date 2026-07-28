@@ -1,3 +1,4 @@
+```js
 //Using Reverse Iteration
 function rearrangeArrayUsingReverseIteration(arrayInput) {
   const n = arrayInput.length;

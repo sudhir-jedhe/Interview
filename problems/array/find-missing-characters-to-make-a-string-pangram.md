@@ -1,3 +1,4 @@
+```js
 // Input : welcome to geeksforgeeks
 // Output : abdhijnpquvxyz
 // Input : The quick brown fox jumps

@@ -211,7 +211,7 @@ _.unset(user, "profile.address.city");
 
 This is often the cleanest solution for deeply nested objects.
 
-### Interview Tip
+# Interview Tip
 
 For a **Senior React interview**, mention:
 

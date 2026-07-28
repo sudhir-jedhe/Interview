@@ -1,3 +1,4 @@
+```js
 const map = new Map([
   ["India", 1],
   ["USA", 2],

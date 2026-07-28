@@ -1,3 +1,4 @@
+```js
 const reverseQueue = (queue, k) => {
   let n = queue.size();
   //   Shift the elements to the front which are not be reversed.

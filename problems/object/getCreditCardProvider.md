@@ -1,3 +1,4 @@
+```js
 const providers = {
   amex: 3,
   visa: 4,

@@ -1,3 +1,4 @@
+```js
 const startNum = 1;
 const endNum = 8;
 const numbers = Array.from(

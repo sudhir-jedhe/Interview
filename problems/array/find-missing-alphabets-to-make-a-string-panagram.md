@@ -1,3 +1,4 @@
+```js
 An algorithm to find the missing alphabets to make a string Panagram.
 
 We will find all the missing alphabets that will make the string panagram and return the missing characters in alphabetical order.

@@ -1,3 +1,4 @@
+```js
 // Input : N = 21
 // Output : X = 15
 // Explanation : X + its digit sum

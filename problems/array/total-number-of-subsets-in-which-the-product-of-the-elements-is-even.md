@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {2, 2, 3}
 // Output: 6
 // All possible sub-sets are {2}, {2}, {2, 2}, {2, 3}, {2, 3} and {2, 2, 3}

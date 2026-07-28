@@ -1,3 +1,4 @@
+```js
 function countSubArrays(arr, k) {
   //get the size the of the array
   let length = arr.length;

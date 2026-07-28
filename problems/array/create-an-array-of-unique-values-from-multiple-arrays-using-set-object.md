@@ -1,3 +1,4 @@
+```js
 /*
 Input: 
          inputarray1: [1,2,3,4,5]  

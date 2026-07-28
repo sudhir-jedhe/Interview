@@ -1,3 +1,4 @@
+```js
 Get all unique values in a JavaScript array & remove duplicates
 
 Removing duplicates from an array in JavaScript can be done in a variety of ways, such as using Array.prototype.reduce(), Array.prototype.filter() or even a simple for loop. But there's a much simpler way to do it, using the built-in Set object.

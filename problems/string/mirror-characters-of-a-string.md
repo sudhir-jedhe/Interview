@@ -1,3 +1,4 @@
+```js
 // Input : N = 3
 //         paradox
 // Output : paizwlc

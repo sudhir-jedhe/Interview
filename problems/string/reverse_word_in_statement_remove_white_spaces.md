@@ -1,3 +1,4 @@
+```js
 /*********************Reverse Word in String remove white spaces *******************/
 
 // Example 1:

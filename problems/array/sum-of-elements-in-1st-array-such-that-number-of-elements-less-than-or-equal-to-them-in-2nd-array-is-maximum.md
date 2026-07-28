@@ -1,3 +1,4 @@
+```js
 /*
 Given two unsorted arrays arr1[] and arr2[], the task is to find the sum of elements of arr1[] 
 such that the number of elements less than or equal to them in arr2[] is maximum.

@@ -1,3 +1,4 @@
+```js
 // Input: str = "geeks"
 // Output: 5
 // Explanation:

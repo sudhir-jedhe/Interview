@@ -1,3 +1,4 @@
+```js
 function productExceptSelf(nums) {
     const length = nums.length;
     const output = new Array(length).fill(1);

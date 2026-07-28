@@ -1,3 +1,4 @@
+```js
 function countSeq(str, seq) {
   const memoTable = new Map();
   function helperFunction(strIdx, seqIdx) {

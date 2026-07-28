@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {1, 2, 3, 3}, X = 6
 // Output: 3
 // Explanation: All the possible subsets are {1, 2, 3}, {1, 2, 3} and {3, 3}.

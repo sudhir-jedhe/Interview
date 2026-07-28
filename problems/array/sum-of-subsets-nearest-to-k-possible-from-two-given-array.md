@@ -1,3 +1,4 @@
+```js
 // Given two arrays A[] and B[] consisting of N and M integers respectively, and an integer K,
 // the task is to find the sum nearest to K possible by selecting
 // exactly one element from the array A[] and an element from the array B[], at most twice.

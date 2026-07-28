@@ -1,3 +1,4 @@
+```js
 let check_duplicate_in_array = (input_array) => {
   let duplicate_elements = [];
   for (num in input_array) {

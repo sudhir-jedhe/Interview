@@ -1,3 +1,4 @@
+```js
 // Input: X = 8, Y = 12
 // Output: 2
 // Explanation:

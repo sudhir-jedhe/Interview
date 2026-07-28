@@ -1,3 +1,4 @@
+```js
 function findSingle(arr: number[]): number {
     let single = arr[0];
     for (let a = 1; a < arr.length; a++) {

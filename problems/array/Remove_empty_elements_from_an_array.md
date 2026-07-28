@@ -1,3 +1,4 @@
+```js
 let array = ["GFG_1", "GFG_2", null, "GFG_3",
     "", "GFG_4", undefined, "GFG_5", , , , , ,
     "GFG_6", , 4, , 5, , 6, , , ,];

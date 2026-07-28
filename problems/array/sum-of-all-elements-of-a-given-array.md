@@ -1,3 +1,4 @@
+```js
 // Creating array
 let arr = [4, 8, 7, 13, 12];
 

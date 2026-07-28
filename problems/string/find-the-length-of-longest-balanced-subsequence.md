@@ -1,3 +1,4 @@
+```js
 /*
 Input : S = "()())"
 Output : 4

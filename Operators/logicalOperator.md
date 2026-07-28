@@ -1,6 +1,7 @@
 The **nullish coalescing operator** (`??`) is a more precise alternative to the logical OR operator (`||`) in JavaScript, especially when dealing with values that might be valid falsy values (like `0`, `false`, `NaN`, etc.). It only checks for `null` and `undefined`, and if the value is either of these, it returns the second operand; otherwise, it returns the first operand.
 
 ### **Comparison between `??` and `||`:**
+
 - The **`??`** operator returns the right-hand operand only if the left-hand operand is **`null` or `undefined`**.
 - The **`||`** operator returns the right-hand operand if the left-hand operand is **any falsy value** (i.e., `false`, `0`, `NaN`, `""`, `null`, or `undefined`).
 
@@ -71,6 +72,7 @@ console.log(result); // [1, 2, 3] (array is not nullish, so it returns the array
 ```
 
 ### **Summary of Differences:**
+
 - **`??`** only considers `null` and `undefined` as nullish values. It's safer when you want to allow values like `0`, `false`, or `""` to be considered valid.
 - **`||`** returns the first truthy value, so it will consider `0`, `false`, `NaN`, and `""` as falsy and provide the fallback value.
 

@@ -1,3 +1,4 @@
+```js
 Finding the most frequent element in an array can be useful in many scenarios. The good news is that it's fairly easy to implement both for primitive and object values using JavaScript's array methods.
 
 💬  Note

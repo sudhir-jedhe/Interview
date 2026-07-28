@@ -1,3 +1,4 @@
+```js
 export const removeDuplicates = (str) => {
   if (str.length === 0) {
     return "";

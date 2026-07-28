@@ -1,3 +1,4 @@
+```js
 let reverseString = (str) => {
     //Create a new stack
     let stack = new Stack();

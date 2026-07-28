@@ -1,3 +1,4 @@
+```js
 // Input array
 let str = "GeeksforGeeks: A computer science portal";
 

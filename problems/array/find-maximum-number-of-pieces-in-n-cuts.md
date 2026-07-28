@@ -1,3 +1,4 @@
+```js
 /*
 Input : n = 7
 Output : 20

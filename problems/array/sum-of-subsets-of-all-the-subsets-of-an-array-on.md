@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {1, 1}
 // Output: 6
 // All possible subsets:

@@ -1,3 +1,4 @@
+```js
 function getNestedProperty(obj, path) {
   if (typeof obj !== 'object' || obj === null) {
     return undefined;

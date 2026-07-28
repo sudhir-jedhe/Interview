@@ -147,7 +147,6 @@
    function User() {}
    ```
 
-
 # Hoisting in JavaScript
 
 **Hoisting** is JavaScript's behaviour of moving declarations to the top of their scope during the compilation phase.
@@ -453,8 +452,6 @@ has been initialised.
 # Senior JavaScript Interview Answer
 
 > Hoisting is JavaScript's behaviour where declarations are processed before code execution. `var` declarations are hoisted and initialised with `undefined`, whereas `let` and `const` are hoisted but remain in the Temporal Dead Zone until their declaration is reached. Function declarations are fully hoisted, making them callable before their definition, while function expressions and arrow functions follow the hoisting rules of the variables they are assigned to.
-
-
 
 # Hoisting with Async Functions
 
@@ -825,7 +822,6 @@ ReferenceError
 
 > Hoisting occurs during JavaScript's compilation phase. Function declarations (including async function declarations) are fully hoisted and can be invoked before their definition. Variables declared with `var` are hoisted and initialised with `undefined`, whereas `let`, `const`, and class declarations are hoisted but remain in the Temporal Dead Zone until execution reaches their declaration. In strict mode, additional restrictions apply, such as preventing accidental global variables and enforcing proper block scoping.
 
-
 # Hoisting with Async Arrow Functions
 
 Async arrow functions follow the same hoisting rules as `let` and `const`.
@@ -1192,7 +1188,6 @@ ReferenceError
 ## Senior Interview Answer
 
 > Async arrow functions are not fully hoisted because they are typically assigned to `const` or `let`, which remain in the Temporal Dead Zone until initialisation. Class declarations are hoisted but also live in the TDZ, so instances cannot be created before the class definition. Strict mode does not change hoisting itself, but it makes JavaScript more predictable by preventing accidental global variables and enforcing stricter scoping rules.
-
 
 # 1. Hoisting with Async Function Expressions
 
@@ -1597,8 +1592,6 @@ ReferenceError
 
 > Async function expressions follow the hoisting behaviour of the variable (`var`, `let`, or `const`) to which they are assigned. Class declarations are hoisted but remain in the Temporal Dead Zone, making them unavailable before their declaration. Strict mode does not change hoisting itself, but it prevents accidental globals and enforces safer variable handling, which makes hoisting-related bugs easier to catch.
 
-
-
 # Temporal Dead Zone (TDZ) Impact on Class Expressions
 
 A **class expression** follows the hoisting behaviour of the variable it's assigned to (`let` or `const`).
@@ -1943,7 +1936,6 @@ Output:
 ## Senior Interview Answer
 
 > Class expressions are affected by the Temporal Dead Zone because they are usually assigned to `let` or `const`. Although the variable name is hoisted during compilation, it is not initialised until execution reaches the assignment. Any attempt to access or instantiate the class before that point results in a `ReferenceError`. This differs from function declarations, which are fully initialised during hoisting and can be invoked before their definition.
-
 
 # 1. Hoisting with Async Arrow Functions and TDZ
 

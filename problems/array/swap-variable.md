@@ -1,3 +1,4 @@
+```js
 // Swapping array using temporary variable
 let array = [10, 2, 5, 12, 7];
 temp = array[1];

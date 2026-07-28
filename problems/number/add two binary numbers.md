@@ -1,3 +1,4 @@
+```js
 let addBinary = (a, b) => {
  
     let str = '';  //To store the final result

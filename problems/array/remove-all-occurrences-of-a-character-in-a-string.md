@@ -1,3 +1,4 @@
+```js
 let inputStr = "Geeks-for-Geeks";
 let charToRemove = "-";
 let regex = new RegExp(charToRemove, "g");

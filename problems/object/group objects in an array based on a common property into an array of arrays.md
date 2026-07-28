@@ -1,3 +1,4 @@
+```js
 let fruits = [
   {
     fruit_name: "Apple",

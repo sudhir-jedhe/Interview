@@ -1,3 +1,4 @@
+```js
 const isLeapYear = (year) => {
   //Is divisible by 400
   if (year % 400 === 0) {

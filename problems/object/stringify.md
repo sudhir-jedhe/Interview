@@ -1,3 +1,4 @@
+```js
 export const stringify = (value) => {
   if (value === null) {
     return "null";

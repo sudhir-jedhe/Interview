@@ -1,3 +1,4 @@
+```js
 // Create input array of objects
 let arr = [
   { first: 3, second: 4 },

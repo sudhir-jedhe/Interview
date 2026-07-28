@@ -86,6 +86,7 @@ console.log(obj === copy); // false
 ```
 
 In this case:
+
 - When `obj.b` is encountered, it references `obj` itself, so the `seen` map ensures that the circular reference is handled correctly, and `copy` is returned instead of entering an infinite loop.
 
 ### **Improvements and Notes:**
@@ -116,7 +117,7 @@ function copy(obj) {
 }
 ```
 
-2. **Performance:** This deep copy function uses recursion, which can cause a stack overflow error for deeply nested objects (very large objects with many levels of nesting). For these cases, an iterative approach or tail-call optimization could be explored.
+1. **Performance:** This deep copy function uses recursion, which can cause a stack overflow error for deeply nested objects (very large objects with many levels of nesting). For these cases, an iterative approach or tail-call optimization could be explored.
 
 ### **Conclusion:**
 

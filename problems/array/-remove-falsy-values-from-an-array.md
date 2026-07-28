@@ -1,3 +1,4 @@
+```js
 // Input: [23, 0, “gfg”, false, true, NaN, 12, “hi”, undefined, [], “”]
 // Output: [23, “gfg”, true, 12, “hi”, []]
 // Input: [“”, 0, false, undefined, NaN, null]

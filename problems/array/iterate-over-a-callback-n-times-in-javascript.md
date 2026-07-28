@@ -1,3 +1,4 @@
+```js
 // callback function that print pattern
 function factor(n) {
   // base case for recursion

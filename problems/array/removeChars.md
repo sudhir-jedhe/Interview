@@ -1,3 +1,4 @@
+```js
 removeChars('ab') // 'a'
 removeChars('abc') // ''
 removeChars('cabbaabcca') // 'caa'

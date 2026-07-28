@@ -1,3 +1,4 @@
+```js
 let str = "Geeks For Geeks"; 
 let res = str.split(' ')[0]; 
 console.log(res); 

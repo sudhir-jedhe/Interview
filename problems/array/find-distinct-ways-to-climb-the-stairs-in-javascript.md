@@ -1,3 +1,4 @@
+```js
 There are n stairs and you can climb either 1 or 2 steps at a time.
 
 Input:

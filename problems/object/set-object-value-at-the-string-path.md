@@ -1,3 +1,4 @@
+```js
 const object = { a: [{ b: { c: 3 } }] };
 
 set(object, "a[0].b.c", 4);

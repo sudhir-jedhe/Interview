@@ -13,7 +13,8 @@ console.log(isEmpty(obj)); // true
 ```
 
 **Explanation**:
-- `Object.entries(obj)` creates an array of `[key, value]` pairs from the object. 
+
+- `Object.entries(obj)` creates an array of `[key, value]` pairs from the object.
 - If the object is empty, this array will have a length of 0.
 - The `obj.constructor === Object` check ensures that `obj` is a plain object, and not an instance of other object types like `Date`, `Array`, etc.
 
@@ -30,6 +31,7 @@ console.log(isEmpty(obj)); // true
 ```
 
 **Explanation**:
+
 - `Object.keys(obj)` returns an array of the object's own property names.
 - If the object is empty, this array will have a length of 0.
 - The `obj.constructor === Object` check ensures that the object is not something like an array or a date object.
@@ -54,6 +56,7 @@ console.log(isEmpty(obj)); // true
 ```
 
 **Explanation**:
+
 - A `for-in` loop iterates over all enumerable properties (both own and inherited) of the object.
 - `obj.hasOwnProperty(prop)` ensures that you only check the object's own properties, not inherited ones.
 - If the loop doesn't find any properties, it returns `true`, meaning the object is empty.
@@ -71,6 +74,7 @@ console.log(isEmpty(obj)); // true
 ```
 
 **Explanation**:
+
 - `JSON.stringify(obj)` converts the object to a JSON string. An empty object `{}` becomes `"{}"`.
 - If the object is empty, the result will be `true` when comparing it to `"{}"`.
 - This method is simple, but not the most performant and may not handle non-enumerable or special properties (like `undefined` or functions) as expected.
@@ -79,11 +83,11 @@ console.log(isEmpty(obj)); // true
 
 ### Summary of Approaches
 
-| **Method**                       | **Support**      | **Description**                                                                                                                                                         | **Considerations**                                                                                                                                                           |
-|----------------------------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **`Object.entries(obj)`**        | ECMAScript 7+    | Converts object properties to an array of `[key, value]` pairs and checks if the array length is 0.                                                                  | Requires ES7 and newer, but it works well for plain objects.                                                                                                                  |
-| **`Object.keys(obj)`**           | ECMAScript 5+    | Returns an array of object keys and checks if the array length is 0.                                                                                                   | Reliable for most cases but requires ES5+ and still performs well for plain objects.                                                                                          |
-| **`for-in` with `hasOwnProperty()`** | Pre-ES5          | Iterates over the object's properties and uses `hasOwnProperty()` to ensure it checks only the object's own properties.                                                  | This works in all environments, but it's verbose and not as concise as newer methods.                                                                                         |
-| **`JSON.stringify(obj)`**        | ECMAScript 5+    | Converts the object to a JSON string and compares it to an empty object string `JSON.stringify({})`.                                                                  | Simple but not the most efficient method, and can have unexpected behavior with non-enumerable properties or functions.                                                      |
+| **Method**                           | **Support**   | **Description**                                                                                                         | **Considerations**                                                                                                      |
+| ------------------------------------ | ------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **`Object.entries(obj)`**            | ECMAScript 7+ | Converts object properties to an array of `[key, value]` pairs and checks if the array length is 0.                     | Requires ES7 and newer, but it works well for plain objects.                                                            |
+| **`Object.keys(obj)`**               | ECMAScript 5+ | Returns an array of object keys and checks if the array length is 0.                                                    | Reliable for most cases but requires ES5+ and still performs well for plain objects.                                    |
+| **`for-in` with `hasOwnProperty()`** | Pre-ES5       | Iterates over the object's properties and uses `hasOwnProperty()` to ensure it checks only the object's own properties. | This works in all environments, but it's verbose and not as concise as newer methods.                                   |
+| **`JSON.stringify(obj)`**            | ECMAScript 5+ | Converts the object to a JSON string and compares it to an empty object string `JSON.stringify({})`.                    | Simple but not the most efficient method, and can have unexpected behavior with non-enumerable properties or functions. |
 
 Each of these methods is valid and can be chosen based on your requirements (ECMAScript version, performance needs, etc.). The most modern approaches are `Object.entries()` or `Object.keys()`, with the `for-in` loop and `hasOwnProperty()` being a fallback for compatibility with older environments.

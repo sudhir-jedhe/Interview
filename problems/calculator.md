@@ -1,3 +1,4 @@
+```js
 const calculator = {
     // Method to read two values and save them as properties 'a' and 'b'
     read(a, b) {

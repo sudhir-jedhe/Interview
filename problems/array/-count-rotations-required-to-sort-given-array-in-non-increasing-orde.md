@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {2, 1, 5, 4, 3}
 // Output: 2
 // Explanation: Two anti-clockwise rotations are required to sort the array in decreasing order, i.e. {5, 4, 3, 2, 1}

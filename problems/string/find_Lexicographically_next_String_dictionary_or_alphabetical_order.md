@@ -1,3 +1,4 @@
+```js
 /*
 Input : test
 Output : tesu

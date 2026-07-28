@@ -1,3 +1,4 @@
+```js
 let filterObjects = (key, value) => {
   //Filter array based on the key and value
   return arr.filter((e) => {

@@ -1,3 +1,4 @@
+```js
 const lookup = [
     { symbol: 'M', value: 1000 },
     { symbol: 'CM', value: 900 },

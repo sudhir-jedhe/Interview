@@ -1,3 +1,4 @@
+```js
 // Input string
 let origString = "string / with some // slashes /";
 

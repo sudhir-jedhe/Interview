@@ -1,3 +1,4 @@
+```js
 // Input: S1 = “abcd”, S2 = “dddd”, X = 3
 // Output: Yes
 // Explanation:

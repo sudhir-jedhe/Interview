@@ -1,3 +1,4 @@
+```js
 let Arr = ["Geeks", "GFG", "Geek", "GeeksForGeeks"];
 
 console.log("Array: [" + Arr + "]");

@@ -1,3 +1,4 @@
+```js
 // Array of object
 let arr = [
   {

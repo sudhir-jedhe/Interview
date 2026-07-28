@@ -1,3 +1,4 @@
+```js
 // Function to generate OTP
 //one-time password (OTP) Only Numeric
 function generateOTP() {

@@ -25,7 +25,8 @@ console.log(hasValueDeep(obj, 400));  // true (nested value)
 console.log(hasValueDeep(obj, 999));  // false
 ```
 
-### Explanation:
+### Explanation
+
 - **`Object.values(obj)`**: This retrieves all values of the object.
 - **`.some()`**: This method checks if any of the values is the target value.
 - **Recursive Check**: If the value is an object, we call `hasValueDeep` recursively to check if the value exists within that object.
@@ -53,7 +54,8 @@ console.log(hasKeyDeep(obj, 'e'));  // true (nested key)
 console.log(hasKeyDeep(obj, 'z'));  // false
 ```
 
-### Explanation:
+### Explanation
+
 - **`Object.keys(obj)`**: This retrieves all keys of the object.
 - **`.some()`**: This checks if any of the keys match the target key.
 - **Recursive Check**: If a key points to an object, we recursively call `hasKeyDeep` to search within that object.
@@ -84,7 +86,7 @@ console.log(hasKeyDeep(obj, 'g'));   // true (nested key)
 console.log(hasKeyDeep(obj, 'z'));   // false (key doesn't exist)
 ```
 
-### Summary:
+### Summary
 
 - **`hasValueDeep`**: Recursively checks if a value exists anywhere in the object, including within nested objects.
 - **`hasKeyDeep`**: Recursively checks if a key exists anywhere in the object, including within nested objects.

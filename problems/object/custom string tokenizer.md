@@ -1,3 +1,4 @@
+```js
 class CustomTokenizer {
   constructor(string, delimiters) {
     this.string = string;

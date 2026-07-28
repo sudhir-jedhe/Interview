@@ -1,3 +1,4 @@
+```js
 Given two strings S and N in a text editor, check if they are equal. Each string contains # which represents backspace characters.
 
 All the characters before backspace character will be deleted.

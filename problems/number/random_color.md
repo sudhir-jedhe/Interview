@@ -1,3 +1,4 @@
+```js
 // JavaScript code to pick
 // a random color from array
 function pickColor() {

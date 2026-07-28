@@ -1,3 +1,4 @@
+```js
 // Sort the array and then pick the
 // first three largest elements
 function findLargestThreeElementsUsingSort(arr) {

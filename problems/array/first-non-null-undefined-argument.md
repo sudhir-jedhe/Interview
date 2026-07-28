@@ -1,3 +1,4 @@
+```js
 function coalesce() {
   for (let i = 0; i < arguments.length; i++) {
     if (arguments[i] != null) {

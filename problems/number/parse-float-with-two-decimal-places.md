@@ -1,3 +1,4 @@
+```js
 let num1 = parseFloat("10.547892");
 let num2 = parseFloat("10.547892").toFixed(2);
 console.log("Without using toFixed() method");

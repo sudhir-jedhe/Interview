@@ -1,3 +1,4 @@
+```js
 // Input : arr[] = {2, 1, 4, 7, 3, 6}
 // Output : 12
 // Contiguous Increasing subarray {1, 4, 7} = 12

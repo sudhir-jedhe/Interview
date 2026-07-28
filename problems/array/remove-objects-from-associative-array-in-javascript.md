@@ -1,3 +1,4 @@
+```js
 function deleteObjects() {
 	// Declaring an associative
 	// array of objects

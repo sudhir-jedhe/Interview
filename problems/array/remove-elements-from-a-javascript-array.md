@@ -1,3 +1,4 @@
+```js
 // JavaScript code to illustrate pop() function
 // to remove array elements
 

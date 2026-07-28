@@ -1,3 +1,4 @@
+```js
 // Input: A[] = {12, 23, 4, 21, 22, 76}, Q = 1, K = 2
 // Output: 117
 // Explanation:

@@ -1,3 +1,4 @@
+```js
 function removeCharacter(str) {
   let n = str.length;
   let newString = "";

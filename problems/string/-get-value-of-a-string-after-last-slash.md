@@ -1,3 +1,4 @@
+```js
 let str = "folder_1/folder_2/file.html";
 
 function GFG_FUN() {

@@ -1,3 +1,4 @@
+```js
 function gfg() {
   // 5digit
   var minm = 10000;

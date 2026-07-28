@@ -1,3 +1,4 @@
+```js
 let arr = [1, 2, 3];
 arr.forEach((element, index) => {
   arr[index] = element + 10;

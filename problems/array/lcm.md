@@ -1,3 +1,4 @@
+```js
 let lcm = (n1, n2) => {
   //Find the gcd first
   let gcd = gcd(n1, n2);

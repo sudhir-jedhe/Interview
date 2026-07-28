@@ -1,3 +1,4 @@
+```js
 Input:
 String:- 'aaa'
 Sub-string:- 'aa'

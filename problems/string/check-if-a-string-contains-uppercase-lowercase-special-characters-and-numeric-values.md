@@ -1,3 +1,4 @@
+```js
 // Input : str = "GeeksforGeeks@123"
 // Output : trueput: Yes
 // Explanation: The given string contains uppercase, lowercase,

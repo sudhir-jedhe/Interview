@@ -1,3 +1,4 @@
+```js
 /*
 
 Input: obj1: { name: "John", age: 23; degree: "CS" }

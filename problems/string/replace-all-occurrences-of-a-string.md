@@ -1,3 +1,4 @@
+```js
 // Origin String
 const str = "Welcome GeeksforGeeks, Welcome geeks";
 

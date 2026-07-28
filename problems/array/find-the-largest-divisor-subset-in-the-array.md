@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {1, 2, 3, 4, 5}
 // Output: 4 2 1
 // All possible pairs of the subsequence are:

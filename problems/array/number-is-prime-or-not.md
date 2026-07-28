@@ -1,3 +1,4 @@
+```js
 // Function to check prime number
 function p() {
   let n,

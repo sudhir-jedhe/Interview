@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {5, 2, 7, 12}
 // Output: 4 2 8 16
 // Explanation:

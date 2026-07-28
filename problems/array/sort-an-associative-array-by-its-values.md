@@ -1,3 +1,4 @@
+```js
 let a = []; // Array
 
 // Add elemets to it

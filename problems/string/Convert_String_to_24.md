@@ -1,3 +1,4 @@
+```js
 function convertTo24HourFormat(timeString) { 
     const [time, period] = timeString.split(' '); 
     const [hour, minute] = time.split(':'); 

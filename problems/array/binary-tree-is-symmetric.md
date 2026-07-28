@@ -1,3 +1,4 @@
+```js
 Given a binary tree it is symmetric if its one half is mirror of other half. If we cut the tree from middle then its left should be equal to its right.
 
 Input:

@@ -1,3 +1,4 @@
+```js
 /*
 Counting the distinct occurrences is the most common problem in string manipulation. Subsequences are the 
 subsets of the characters in the string which appear in the same order but not necessarily in a consecutive 

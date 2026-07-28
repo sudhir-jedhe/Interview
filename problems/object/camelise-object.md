@@ -1,3 +1,4 @@
+```js
 export const camelise = (obj) => {
   if (typeof obj !== "object" || obj === null) {
     return obj;

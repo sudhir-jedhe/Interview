@@ -1,3 +1,4 @@
+```js
 export const validatePasswords = (first, second) => {
   if (first !== second) {
     return false;

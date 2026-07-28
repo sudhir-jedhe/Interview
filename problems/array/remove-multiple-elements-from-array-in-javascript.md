@@ -1,3 +1,4 @@
+```js
 const arr = ['Geeks', 'GFG', 'Geek', 'GeeksForGeeks'];
 function GFG_Fun() {
 	const remove = [0, 2];

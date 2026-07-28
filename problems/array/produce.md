@@ -1,3 +1,4 @@
+```js
 function deepCopy(obj) {
     if (Array.isArray(obj)) {
       const output = Array.isArray ? [] : {};

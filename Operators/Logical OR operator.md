@@ -1,6 +1,7 @@
 The `||` (Logical OR) operator in JavaScript is used to find the first **truthy** value in its operands. If the first operand is truthy, it returns that operand. If it's falsy, it checks the next operand, and so on, until it finds a truthy value. If all operands are falsy, it returns the last operand.
 
-### Key Features of the `||` Operator:
+### Key Features of the `||` Operator
+
 1. **Short-circuiting**: As soon as the operator finds the first truthy value, it stops evaluating the rest of the operands, which helps in optimizing performance.
 2. **Falsy values**: The following are considered **falsy values** in JavaScript:
    - `false`
@@ -50,6 +51,7 @@ console.log(result);  // Output: "Fetching data..." and "Data loaded"
 ```
 
 In this case:
+
 - The first operand (`null`) is falsy, so it proceeds to evaluate the second operand, which is a function call to `getData()`.
 - Since the function call returns a truthy value (`"Data loaded"`), the evaluation stops there, and `getData()` is executed. The value `"Data loaded"` is returned.
 
@@ -63,12 +65,14 @@ console.log(value);  // Output: "Default Value"
 
 - Since `obj` is `null` (a falsy value), the OR operator checks the second operand, which is `"Default Value"`, and returns that.
 
-### Use cases for `||`:
+### Use cases for `||`
+
 1. **Providing default values**: Like in the function parameter example above, you can use `||` to provide default values when a variable is falsy.
 2. **Early exits or fallback values**: You can use `||` to quickly assign fallback values when the initial value is undefined, null, or any other falsy value.
 3. **Simplified conditionals**: The `||` operator can simplify complex conditional logic where you need to check for truthy values across multiple expressions.
 
-### Caveat:
+### Caveat
+
 Be cautious when using `||` for default values, especially if you expect values like `0` or `""` (empty strings) to be valid inputs. In these cases, you might want to use a more explicit check like `typeof` or the nullish coalescing operator (`??`), which checks for `null` or `undefined` specifically, and not other falsy values like `0` or `""`.
 
 ```js

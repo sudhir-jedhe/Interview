@@ -1,3 +1,4 @@
+```js
 n this question, you need to implement a function read that takes two parameters:
 
 read(collection, property)

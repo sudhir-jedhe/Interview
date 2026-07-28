@@ -1,3 +1,4 @@
+```js
 // Splitting a JavaScript array into two groups is relatively easy. Depending on your needs, you might know which group each value belongs to in advance or you might need to use a function to determine that.
 
 // Conceptually, both solutions are very similar. Array.prototype.reduce() is used with a callback function that will determine which group each element belongs to. A truthy value will place the element in the first group, while a falsy value will place it in the second group.

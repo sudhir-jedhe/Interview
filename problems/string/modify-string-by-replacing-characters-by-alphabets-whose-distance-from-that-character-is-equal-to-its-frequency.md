@@ -1,3 +1,4 @@
+```js
 /*
 Input: S = “geeks”
 Output: hgglt

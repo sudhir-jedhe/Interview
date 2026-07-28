@@ -164,12 +164,12 @@ console.log(Object.isFrozen(obj.nested)); // true
 
 ### Summary of Behavior
 
-| Operation               | `Object.seal()`                | `Object.freeze()`                |
-|-------------------------|--------------------------------|----------------------------------|
-| Add properties           | Not allowed                    | Not allowed                      |
-| Remove properties        | Not allowed                    | Not allowed                      |
-| Modify existing properties | Allowed (if writable)           | Not allowed                      |
-| Nested objects           | Not sealed unless deep-sealed  | Not frozen unless deeply frozen  |
+| Operation                  | `Object.seal()`               | `Object.freeze()`               |
+| -------------------------- | ----------------------------- | ------------------------------- |
+| Add properties             | Not allowed                   | Not allowed                     |
+| Remove properties          | Not allowed                   | Not allowed                     |
+| Modify existing properties | Allowed (if writable)         | Not allowed                     |
+| Nested objects             | Not sealed unless deep-sealed | Not frozen unless deeply frozen |
 
 - `Object.seal()` prevents property addition and deletion but allows modifications to values if the properties are writable.
 - `Object.freeze()` prevents property modification, addition, and deletion.

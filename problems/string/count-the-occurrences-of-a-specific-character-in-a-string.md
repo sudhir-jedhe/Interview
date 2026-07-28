@@ -1,3 +1,4 @@
+```js
 /*
 Input : S = “geeksforgeeks” and c = ‘e’
 Output : 4

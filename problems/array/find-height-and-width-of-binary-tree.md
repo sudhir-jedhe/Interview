@@ -1,3 +1,4 @@
+```js
 Height of a binary tree
 Height of a binary tree is the maximum depth of the tree. As you can see in the above diagram the height of it is 4 because it contains 4 levels of depth.
 

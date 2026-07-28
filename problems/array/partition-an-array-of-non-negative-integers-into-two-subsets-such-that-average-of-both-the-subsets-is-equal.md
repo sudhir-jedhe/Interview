@@ -1,3 +1,4 @@
+```js
 // Input : vec[] = {1, 7, 15, 29, 11, 9}
 // Output : [9, 15] [1, 7, 11, 29]
 // Explanation : Average of the both the subsets is 12

@@ -3,6 +3,7 @@ Let's go through the concepts you're working on and refine the functions to hand
 ### Issue with JSON.stringify-based equality
 
 The `JSON.stringify` method has limitations when comparing complex objects:
+
 1. **Order of keys**: It depends on the order of keys in the objects. For example, `{ a: 1, b: 2 }` is considered different from `{ b: 2, a: 1 }`, even though they contain the same keys and values.
 2. **Undefined values**: `undefined` values are ignored in objects when stringified. This causes issues when comparing objects with `undefined` values. For example:
    - `{ name: 'John' }` is considered equal to `{ name: 'John', age: undefined }`, which isn't correct.
@@ -67,7 +68,7 @@ console.log(equals(obj1, obj2)); // true
 console.log(equals([1, 2, 3], { 0: 1, 1: 2, 2: 3 })); // true
 ```
 
-### Explanation:
+### Explanation
 
 1. **Primitive Comparison**: If `a` and `b` are the exact same value (or both `null`), return `true`.
 2. **Date Comparison**: Special case for `Date` objects. If both `a` and `b` are instances of `Date`, compare their timestamps.
@@ -76,11 +77,11 @@ console.log(equals([1, 2, 3], { 0: 1, 1: 2, 2: 3 })); // true
 5. **Key Length Comparison**: If they don't have the same number of properties, they can't be equal, so return `false`.
 6. **Recursive Comparison**: For each key in `a`, check if `b` has the same key with an equal value. This is where the recursion happens for nested objects.
 
-### Additional Considerations:
+### Additional Considerations
 
 1. **Order of Properties**:
    - The function checks for keys' length and the recursive comparison for each key, so it handles different key orderings correctly (unlike `JSON.stringify`, which is sensitive to order).
-   
+
 2. **Handling Undefined**:
    - Unlike `JSON.stringify`, which ignores `undefined`, your function will correctly identify when `undefined` is part of an object (since `undefined` is falsy, but the comparison for `undefined` itself will return `false`).
 
@@ -88,7 +89,7 @@ console.log(equals([1, 2, 3], { 0: 1, 1: 2, 2: 3 })); // true
 
 Deep equality is useful when you need to compare objects that might have nested structures or when objects have complex data types like arrays or dates. A shallow comparison (using `===` or `JSON.stringify`) will fail when objects have nested properties or when comparing arrays and objects with the same values but different reference types.
 
-### Examples:
+### Examples
 
 #### Example 1: Handling Undefined
 
@@ -118,8 +119,8 @@ console.log(equals(obj1, obj2)); // true
 console.log(equals([1, 2, 3], { 0: 1, 1: 2, 2: 3 })); // true
 ```
 
-- This example shows that arrays and objects with the same values (but different structures) are considered equal because `equals` compares the values and key names properly. 
+- This example shows that arrays and objects with the same values (but different structures) are considered equal because `equals` compares the values and key names properly.
 
-### Conclusion:
+### Conclusion
 
 Your deep equality function works well for a variety of use cases, from basic primitive types to deeply nested objects. It handles different edge cases like `undefined`, `null`, and `Date` objects while ensuring correct comparison even with differing key orders.

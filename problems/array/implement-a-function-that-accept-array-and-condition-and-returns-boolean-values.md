@@ -1,3 +1,4 @@
+```js
 function customEveryFunction(arrayElements, conditionFunction) {
   for (let i = 0; i < arrayElements.length; i++) {
     if (!conditionFunction(arrayElements[i])) {

@@ -1,3 +1,4 @@
+```js
 // Input: N = 9
 // Output:
 //                 *

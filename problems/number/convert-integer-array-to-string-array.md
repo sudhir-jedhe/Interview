@@ -1,3 +1,4 @@
+```js
 let Arr = [1, 4, 56, 43, 67, 98];
 
 function gfg_Run() {

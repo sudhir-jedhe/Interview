@@ -17,7 +17,8 @@ const ages = {
 console.log(findKeys(ages, x => x === 20));  // Output: [ 'Leo', 'Jane' ]
 ```
 
-### Explanation:
+### Explanation
+
 - **`Object.keys(obj)`**: This method returns an array of keys from the given object `obj`.
 - **`.filter()`**: We filter the keys by applying the provided condition in the callback function (`fn`). The callback receives the value (`obj[key]`), the key (`key`), and the full object (`obj`).
 - The result is an array of keys whose values match the condition (in this case, `x === 20`).
@@ -54,7 +55,8 @@ const data = {
 console.log(findKey(data, x => x['active']));  // Output: 'barney'
 ```
 
-### Explanation:
+### Explanation
+
 - **`Object.keys(obj)`**: Retrieves all keys from the object `obj`.
 - **`.find()`**: It returns the **first key** where the condition is true. The condition is tested with the callback `fn`, which takes the value (`obj[key]`), the key, and the full object.
 
@@ -66,7 +68,7 @@ In the example above, it returns `'barney'` because `barney` is the first person
 
 JavaScript versions that support `Array.prototype.findLast()` allow us to easily find the **last matching key**. However, for older versions of JavaScript (ES2019 and earlier), we can reverse the keys and use `find()` to simulate this functionality.
 
-#### With `findLast()` (ES2022 and newer):
+#### With `findLast()` (ES2022 and newer)
 
 ```js
 const findLastKey = (obj, fn) =>
@@ -75,12 +77,13 @@ const findLastKey = (obj, fn) =>
 console.log(findLastKey(data, x => x['active']));  // Output: 'pebbles'
 ```
 
-### Explanation:
-- **`findLast()`**: This method returns the last element in the array that satisfies the condition (as opposed to `find()`, which returns the first match). 
+### Explanation
+
+- **`findLast()`**: This method returns the last element in the array that satisfies the condition (as opposed to `find()`, which returns the first match).
 
 In the example above, it returns `'pebbles'` because `pebbles` is the last object with `active: true`.
 
-#### For older versions of JavaScript (before ES2022), we can simulate `findLast()`:
+#### For older versions of JavaScript (before ES2022), we can simulate `findLast()`
 
 ```js
 const findLastKey = (obj, fn) =>
@@ -89,7 +92,8 @@ const findLastKey = (obj, fn) =>
 console.log(findLastKey(data, x => x['active']));  // Output: 'pebbles'
 ```
 
-### Explanation:
+### Explanation
+
 - **Reversing the keys**: `Object.keys(obj).reverse()` reverses the array of keys so that we can search for the **last** match instead of the first.
 - **`.find()`**: Once the keys are reversed, we can apply `find()` to return the first match from the reversed array, which will be the last matching key in the original object.
 
@@ -97,15 +101,15 @@ console.log(findLastKey(data, x => x['active']));  // Output: 'pebbles'
 
 ### Summary of the Three Functions
 
-| Function       | Description                                            | Example Input | Example Output       |
-|----------------|--------------------------------------------------------|---------------|----------------------|
-| `findKeys`     | Find all keys that match a condition.                  | `{ Leo: 20, Zoey: 21, Jane: 20 }`, `20` | `[ 'Leo', 'Jane' ]`   |
-| `findKey`      | Find the first key that matches a condition.           | `{ barney: { age: 36, active: true }, fred: { age: 40, active: false } }`, `x => x.active` | `'barney'` |
-| `findLastKey`  | Find the last key that matches a condition.            | `{ barney: { active: true }, fred: { active: false }, pebbles: { active: true } }`, `x => x.active` | `'pebbles'` |
+| Function      | Description                                  | Example Input                                                                                       | Example Output      |
+| ------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------- |
+| `findKeys`    | Find all keys that match a condition.        | `{ Leo: 20, Zoey: 21, Jane: 20 }`, `20`                                                             | `[ 'Leo', 'Jane' ]` |
+| `findKey`     | Find the first key that matches a condition. | `{ barney: { age: 36, active: true }, fred: { age: 40, active: false } }`, `x => x.active`          | `'barney'`          |
+| `findLastKey` | Find the last key that matches a condition.  | `{ barney: { active: true }, fred: { active: false }, pebbles: { active: true } }`, `x => x.active` | `'pebbles'`         |
 
 ---
 
-### Performance Considerations:
+### Performance Considerations
 
 - **`findKeys`**: Since this uses `filter()`, it will always iterate over all keys in the object. This is fine for small objects but can become inefficient for large objects or complex nested structures.
 - **`findKey`**: Uses `find()`, so it will stop as soon as a match is found, making it more efficient when you're only interested in the **first match**.
@@ -113,5 +117,6 @@ console.log(findLastKey(data, x => x['active']));  // Output: 'pebbles'
 
 ---
 
-### Conclusion:
+### Conclusion
+
 These utilities provide an elegant way to find keys in JavaScript objects based on specific conditions, whether you need all matching keys, the first match, or the last match. By leveraging `Object.keys()` and array methods like `filter()`, `find()`, and `findLast()`, you can efficiently perform searches on your objects.

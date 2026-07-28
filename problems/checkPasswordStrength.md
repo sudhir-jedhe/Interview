@@ -1,3 +1,4 @@
+```js
 export const checkPasswordStrength = (password) => {
   let strength = 0;
 

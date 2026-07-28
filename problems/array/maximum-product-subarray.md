@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {6, -3, -10, 0, 2}
 // Output:  180
 // Explanation: The subarray is {6, -3, -10}

@@ -1,3 +1,4 @@
+```js
 // 1234 to 1.2k
 // Input number
 let n = 123287342;

@@ -1,3 +1,4 @@
+```js
 export const sortedIndex = (arr, value) => {
   let low = 0;
   let high = arr.length;

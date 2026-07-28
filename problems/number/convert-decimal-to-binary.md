@@ -1,3 +1,4 @@
+```js
 /* 
 Input : 7
 Output : 111

@@ -1,3 +1,4 @@
+```js
 const superset = (a, b) => {
     const sA = new Set(a), sB = new Set(b);
     return [...sB].every(v => sA.has(v));

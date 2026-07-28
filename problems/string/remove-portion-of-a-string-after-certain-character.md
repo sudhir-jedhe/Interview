@@ -1,3 +1,4 @@
+```js
 function GFG_click(s) {
   return s.substring(0, s.indexOf("?"));
   // s.split('?')[0]

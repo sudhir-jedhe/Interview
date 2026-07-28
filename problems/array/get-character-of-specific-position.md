@@ -1,3 +1,4 @@
+```js
 let str = "Welcome to GeeksforGeeks";
 
 let index = 11;

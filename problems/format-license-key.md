@@ -1,3 +1,4 @@
+```js
 // Input: str = "dsf354g4dsg1";
 // k = 4;
 // Output: "DSF3-54G4-DSG1";

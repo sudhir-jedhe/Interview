@@ -1,3 +1,4 @@
+```js
 // JavaScript Program to remoove first
 // and last character of a string
 function removeFirstLast(str) {

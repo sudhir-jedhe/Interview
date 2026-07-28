@@ -1,3 +1,4 @@
+```js
 // Input  : n = 10
 // Output : true
 // It can be expressed as sum of two consecutive

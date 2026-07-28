@@ -1,3 +1,4 @@
+```js
 // Function for number checking
 function NumberSignChecker(n) {
   if (n > 0) {

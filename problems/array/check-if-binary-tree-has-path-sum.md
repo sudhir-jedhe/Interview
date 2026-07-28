@@ -1,3 +1,4 @@
+```js
 const hasPathSum = (root, sum) => {
   //Tracker
   const tracker = { b: false };

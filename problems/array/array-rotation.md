@@ -1,3 +1,4 @@
+```js
 // array left rotation by d positions.
 /*
 Input: 

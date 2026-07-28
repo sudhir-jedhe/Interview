@@ -1,3 +1,4 @@
+```js
 let containsDuplicates = (str) => {
   let set = new Set();
 

@@ -9,15 +9,18 @@ In JavaScript, **falsy values** are values that, when coerced to a boolean, eval
 
 All other values are considered **truthy**, which means they coerce to `true`.
 
-### Example of falsy values:
+### Example of falsy values
+
 ```js
 const falsyValues = ['', 0, null, undefined, NaN, false];
 ```
 
-### Checking if a value is falsy using `!!` (Double NOT operator):
+### Checking if a value is falsy using `!!` (Double NOT operator)
+
 The `!!` operator is a quick way to coerce any value into its boolean representation. The first `!` converts the value to its boolean negation (true becomes false, and false becomes true), and the second `!` negates it again, giving you the original boolean value.
 
-#### Example:
+#### Example
+
 ```js
 console.log(!!null);       // logs false
 console.log(!!undefined);  // logs false
@@ -31,7 +34,8 @@ console.log(!![]);         // logs true (array)
 console.log(!!1);          // logs true (non-zero number)
 ```
 
-### How to check if a value is falsy using the `Boolean` function:
+### How to check if a value is falsy using the `Boolean` function
+
 The `Boolean` function is another way to convert any value to a boolean (`true` or `false`). It returns `false` for all falsy values and `true` for all truthy values.
 
 ```js
@@ -48,7 +52,8 @@ console.log(Boolean({}));      // true
 console.log(Boolean([]));      // true
 ```
 
-### Example of Checking for Falsy Values:
+### Example of Checking for Falsy Values
+
 If you want to check if a variable is falsy, you can use `!!` or `Boolean()`:
 
 ```js
@@ -63,7 +68,8 @@ if (value) {
 }
 ```
 
-### Summary:
+### Summary
+
 - **Falsy values** in JavaScript are `''`, `0`, `null`, `undefined`, `NaN`, and `false`.
 - You can check if a value is falsy by using the `!!` operator or the `Boolean()` function.
 - **Truthy values** include anything else that is not falsy (e.g., non-empty strings, objects, arrays, numbers other than `0`, etc.).

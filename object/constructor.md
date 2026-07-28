@@ -4,7 +4,7 @@ The **constructor** in JavaScript is a special method used for creating and init
 
 ### Default Behavior of Constructor
 
-When you create an instance of a class using the `new` keyword, the constructor is called to initialize the object. By default, **the constructor returns the `this` object**, which is the newly created instance. 
+When you create an instance of a class using the `new` keyword, the constructor is called to initialize the object. By default, **the constructor returns the `this` object**, which is the newly created instance.
 
 ```javascript
 class SimpleClass {
@@ -23,7 +23,7 @@ In the example above, the constructor simply initializes the `val` property of t
 
 A constructor can explicitly return a value. However, **if the return value is not an object**, the constructor will return the `this` object instead. If the constructor explicitly returns an object, that object will be returned instead of `this`.
 
-#### Returning an Object:
+#### Returning an Object
 
 ```javascript
 class MyClass {
@@ -39,7 +39,7 @@ console.log(obj); // Output: { a: 1, b: 2 }
 
 Here, the constructor explicitly returns `{ a: 1, b: 2 }`. As a result, this object is returned, not the `this` object. This is a valid use case when you want the constructor to return a different object, such as when implementing **singletons** or managing instance creation.
 
-#### Returning a Primitive:
+#### Returning a Primitive
 
 ```javascript
 class PrimClass {
@@ -92,6 +92,7 @@ In this case, the constructor returns a primitive value (`20`), but since constr
 ### More Examples
 
 #### Case 1: Default Constructor Behavior
+
 ```javascript
 class DefaultClass {
   constructor() {
@@ -102,9 +103,11 @@ class DefaultClass {
 const obj = new DefaultClass();
 console.log(obj); // Output: { name: 'John' }
 ```
+
 Here, the constructor simply initializes the `name` property and implicitly returns `this`, which is the newly created object.
 
 #### Case 2: Explicitly Returning an Object
+
 ```javascript
 class CustomClass {
   constructor() {
@@ -116,9 +119,11 @@ class CustomClass {
 const obj = new CustomClass();
 console.log(obj); // Output: { name: 'Jane' }
 ```
+
 In this case, the constructor explicitly returns a different object (`{ name: "Jane" }`), so that object is returned instead of the `this` object.
 
 #### Case 3: Returning a Primitive Value (Not Recommended)
+
 ```javascript
 class PrimitiveReturnClass {
   constructor() {
@@ -130,6 +135,7 @@ class PrimitiveReturnClass {
 const obj = new PrimitiveReturnClass();
 console.log(obj); // Output: { name: 'John' }
 ```
+
 Here, returning a primitive (`42`) doesn't change the outcome. The `this` object (`{ name: 'John' }`) is returned instead.
 
 ### Summary

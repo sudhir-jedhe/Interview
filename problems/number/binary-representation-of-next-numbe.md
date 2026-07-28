@@ -1,3 +1,4 @@
+```js
 function nextGreater(num) {
   let i = num.length - 1;
 

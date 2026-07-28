@@ -1,4 +1,4 @@
-### Explanation of Code and Key Concepts:
+### Explanation of Code and Key Concepts
 
 #### 1. **Using `delete` to Remove Properties from an Object**
 
@@ -18,10 +18,12 @@ console.log(employee);
 ```
 
 **How it works:**
+
 - `delete employee.salary;` removes the `salary` property from the `employee` object. After the operation, the `salary` property no longer exists on the object.
 - When you print `employee`, it shows only the remaining properties (`id` and `name`).
 
-### Key points about `delete`:
+### Key points about `delete`
+
 - The `delete` operator will remove the property from the object and it will no longer be available on the object.
 - This operation **does not** reassign or change the object, it simply removes the property.
 - The `delete` operator does not throw an error even if the property doesn't exist, it will simply return `true` or `false` depending on whether it was successfully removed or not.
@@ -40,10 +42,12 @@ console.log(newEmployee);
 ```
 
 **How it works:**
+
 - `{ salary, ...newEmployee }` destructures the `employee` object and extracts the `salary` property.
 - The `salary` is not included in the `newEmployee` object, so the `newEmployee` object is a shallow copy of the original object without the `salary` property.
 
 **Key points about the rest operator:**
+
 - The rest operator `...` allows you to extract specific properties from an object and place the remaining ones into a new object.
 - Unlike `delete`, this approach doesn't modify the original object, but instead creates a **new object** without the unwanted property.
 - This method is more functional in nature and is preferred when immutability is required, as it avoids mutation of the original object.
@@ -63,7 +67,7 @@ console.log(user);
 - In this example, the `age` property is removed from the `user` object using the `delete` operator. After calling `delete user.age;`, the `user` object no longer contains the `age` property.
 - The result is `{ firstName: "John", lastName: "Doe" }` in the console.
 
-### Key Concepts:
+### Key Concepts
 
 - **`delete` operator**: Removes a property from an object. The object itself is not re-assigned, but the specified property is completely removed. It can be used to clean up properties, but it's important to note that the removal is permanent and can affect the object's integrity in certain cases, especially when dealing with inherited properties.
   
@@ -71,7 +75,7 @@ console.log(user);
 
 ---
 
-### Conclusion:
+### Conclusion
 
 - **`delete`** can be useful when you need to remove properties from an object, but it is destructive because it mutates the original object.
 - Using the **rest operator** (`...`) is a cleaner and non-mutating approach to exclude properties, which is beneficial when working with immutable patterns or when you want to retain the original object without modification.

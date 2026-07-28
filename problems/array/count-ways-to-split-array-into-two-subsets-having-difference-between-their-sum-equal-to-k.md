@@ -1,3 +1,4 @@
+```js
 // Input: A[] = {1, 1, 2, 3}, diff = 1
 // Output: 3
 // Explanation: All possible combinations are as follows:

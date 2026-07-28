@@ -1,3 +1,4 @@
+```js
 // Brute force: Time: O(N^2) | Space: O(1)
 const nonRepeatingFirstCharacter = (str) => {
     for (let i = 0; i < str.length; i++) {

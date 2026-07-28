@@ -1,3 +1,4 @@
+```js
 const phoneNo = "4445556678";
 
 function formatNumber() {

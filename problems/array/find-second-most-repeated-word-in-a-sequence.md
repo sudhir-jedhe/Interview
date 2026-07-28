@@ -1,3 +1,4 @@
+```js
 function findSecondMostFrequentElement(arr) {
   let frequencyMap = new Map();
 

@@ -1,3 +1,4 @@
+```js
 // Input: arr[] = {“your”, “you”, “or”, “yo”}
 // Output: ruyo
 // Explanation: The string “ruyo” is the string which contains all the characters present in all the strings in arr[].

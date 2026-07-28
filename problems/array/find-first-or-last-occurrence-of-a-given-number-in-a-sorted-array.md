@@ -1,3 +1,4 @@
+```js
 Learn how to find the first or last occurrence of a given number in a sorted array.
 
 Given a sorted array with duplicate values we have to create two different algorithms which will find the first and last occurrence of the given element.

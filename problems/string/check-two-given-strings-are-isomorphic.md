@@ -1,3 +1,4 @@
+```js
 // str1 = 'ABCA'
 // str2 = 'XYZX'
 // 'A' maps to 'X'

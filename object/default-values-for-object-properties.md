@@ -40,7 +40,7 @@ console.log(result);
 1. **`defaults({ a: 1 }, { b: 2 }, { b: 6 }, { a: 3 })`**:
    - `obj = { a: 1 }`
    - `defs = [{ b: 2 }, { b: 6 }, { a: 3 }]`
-   
+
 2. **`defs.reverse()`** gives `[{ a: 3 }, { b: 6 }, { b: 2 }]`.
 
 3. **`Object.assign({}, obj, { a: 3 }, { b: 6 }, { b: 2 }, obj)`**:

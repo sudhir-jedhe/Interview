@@ -1,3 +1,4 @@
+```js
 // Given two arrays A[] and B[] having N integers, the task is to find the minimum operations
 // required to make all the elements of both the array equal where at each operation, the following can be done:
 

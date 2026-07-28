@@ -1,3 +1,4 @@
+```js
 export const sortAscendingByDate = (array) => {
   return array.sort((a, b) => {
     return new Date(a.date) - new Date(b.date);

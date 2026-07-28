@@ -1,3 +1,4 @@
+```js
 let perfectSquare = (e) => {
   //sort the array
   e.sort((a, b) => b - a);

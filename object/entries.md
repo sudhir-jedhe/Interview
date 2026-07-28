@@ -1,6 +1,7 @@
 The code you shared demonstrates how to work with key-value pairs and objects in JavaScript. Let's break it down and clarify what each part of the code does:
 
-### 1. `iterateObject()` function:
+### 1. `iterateObject()` function
+
 This function iterates over the properties of an object and logs each key-value pair.
 
 ```js
@@ -21,18 +22,21 @@ iterateObject();
 ```
 
 **Explanation**:
+
 - `Object.entries(exampleObj)` converts the object into an array of key-value pairs.
 - `.map()` is used to iterate over each pair. However, `.map()` is not necessary here unless you want to transform the data; a simple `.forEach()` would suffice.
 - In each iteration, the `key` and `value` are logged.
 
 The output of this code will be:
+
 ```
 book Sherlock Holmes
 author Arthur Conan Doyle
 genre Mystery
 ```
 
-### 2. `createObjectFromKeyValuePairs(keyValuePairArray)` function:
+### 2. `createObjectFromKeyValuePairs(keyValuePairArray)` function
+
 This function takes an array of key-value pairs and returns an object constructed from those pairs.
 
 ```js
@@ -54,16 +58,19 @@ console.log(object); // { name: 'John Doe', age: 30 }
 ```
 
 **Explanation**:
+
 - The function uses a `for...of` loop to iterate over the `keyValuePairArray` (which contains arrays of key-value pairs).
 - It then adds each key-value pair to the `object`.
 - Finally, the object is returned.
 
 The output will be:
+
 ```
 { name: 'John Doe', age: 30 }
 ```
 
-### 3. Using `Object.entries()` with the `employee` object:
+### 3. Using `Object.entries()` with the `employee` object
+
 This part iterates over the `employee` object and logs each key-value pair.
 
 ```js
@@ -79,17 +86,20 @@ Object.entries(employee).forEach(([key, value]) => {
 ```
 
 **Explanation**:
+
 - `Object.entries(employee)` converts the object into an array of key-value pairs.
 - `.forEach()` iterates over each pair and logs it in a formatted string.
 
 The output will be:
+
 ```
 id: 204
 name: sudhir
 city: badlapur
 ```
 
-### 4. `Object.fromEntries()` to create an object from an array of key-value pairs:
+### 4. `Object.fromEntries()` to create an object from an array of key-value pairs
+
 Here, `Object.fromEntries()` is used to construct an object from an array of key-value pairs, which is the reverse of `Object.entries()`.
 
 ```js
@@ -106,10 +116,12 @@ console.log(Object.entries(video));
 ```
 
 **Explanation**:
+
 - `Object.fromEntries(videoEntries)` creates an object from the `videoEntries` array.
 - The result is logged to the console.
 
 The output will be:
+
 ```
 {
   id: 24365,
@@ -118,7 +130,9 @@ The output will be:
   status: 'active'
 }
 ```
+
 And `Object.entries(video)` will return the array of key-value pairs:
+
 ```
 [
   ['id', 24365],
@@ -128,7 +142,8 @@ And `Object.entries(video)` will return the array of key-value pairs:
 ]
 ```
 
-### Summary of Key Methods:
+### Summary of Key Methods
+
 - **`Object.entries(obj)`**: Converts an object into an array of key-value pairs.
 - **`Object.fromEntries(array)`**: Converts an array of key-value pairs into an object.
 - **`Object.keys(obj)`**: Returns an array of the object's keys.

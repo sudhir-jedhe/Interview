@@ -1,3 +1,4 @@
+```js
 // Input: str = “569431”, K = 3
 // Output: 999931
 // Replace first, second and fourth digits with 9.

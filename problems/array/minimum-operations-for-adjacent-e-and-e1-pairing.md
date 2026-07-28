@@ -1,3 +1,4 @@
+```js
 // Input: N = 2, arr[] = {3, 0, 2, 1}
 // Output: 1
 // Explanation: Swap values 0 and 2, after that new array will be {3, 2, 0, 1} where 0 is adjacent to 1 and 2 is adjacent to 3.

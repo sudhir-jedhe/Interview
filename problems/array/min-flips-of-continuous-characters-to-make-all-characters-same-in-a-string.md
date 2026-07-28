@@ -1,3 +1,4 @@
+```js
 // Input : 00011110001110
 // Output : 2
 // We need to convert 1's sequence

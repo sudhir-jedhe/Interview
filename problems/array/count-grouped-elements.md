@@ -1,3 +1,4 @@
+```js
 // Count the occurrences of each value in an array
 // You can use Array.prototype.reduce() to create an object with the unique values of an array as keys and their frequencies as the values. Use the nullish coalescing operator (??) to initialize the value of each key to 0 if it doesn't exist and increment it by 1 every time the same value is encountered.
 

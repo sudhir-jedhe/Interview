@@ -1,3 +1,4 @@
+```js
 const p = {
   name: "person1",
   age: 50,

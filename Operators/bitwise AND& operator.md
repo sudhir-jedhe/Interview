@@ -1,5 +1,6 @@
 **How to check if a number is even without using the % or modulo operator?**
 ↑ We can use the bitwise AND& operator for this problem. The & operates on its operand and treats them as binary values and performs the AND operation.
+
 ```js
 function isEven(num) {
   if (num & 1) {
@@ -10,6 +11,7 @@ function isEven(num) {
 };
 
 ```
+
 0 in binary is 000.
 1 in binary is 001.
 2 in binary is 010.
@@ -20,22 +22,22 @@ function isEven(num) {
 7 in binary is 111.
 and so on...
 
-| a | b | a & b |
-|---|---|-------|
-| 0 | 0 | 0     |
-| 0 | 1 | 0     |
-| 1 | 0 | 0     |
-| 1 | 1 | 1     |
+| a   | b   | a & b |
+| --- | --- | ----- |
+| 0   | 0   | 0     |
+| 0   | 1   | 0     |
+| 1   | 0   | 0     |
+| 1   | 1   | 1     |
 
 So when we console.log this expression 5 & 1 it returns 1. Ok, first the & operator converts both numbers to binary so 5 turns to 101 and 1 turns to 001.
 Then it compares every bit (0's and 1's) using the bitwise AND operator. 101 & 001. As we can see from the table the result can be only 1 if a AND b are 1.
 
 
 | 101 & 001 |
-|-------|
-| 101     |
-| 001     |
-| 001    |
+| --------- |
+| 101       |
+| 001       |
+| 001       |
 
 
 To check if a number is even without using the modulo (`%`) operator, you can leverage bitwise operations, particularly the **bitwise AND** (`&`) operator, which works on binary representations of numbers.
@@ -49,6 +51,7 @@ To check if a number is even without using the modulo (`%`) operator, you can le
 Here's how the bitwise approach works:
 
 ### Bitwise Example:
+
 ```js
 function isEven(num) {
   if (num & 1) {
@@ -79,6 +82,7 @@ console.log(isEven(5));  // false (odd)
 You can also solve this problem using a recursive approach, where you reduce the number by `2` each time, and check for the base case.
 
 #### Recursive Solution:
+
 ```js
 function isEven(num) {
   if (num < 0 || num === 1) return false;  // If number is negative or odd
@@ -95,6 +99,7 @@ function isEven(num) {
 This recursive solution works by reducing the number by `2` until it reaches `0` (even) or `1` (odd).
 
 ### Examples:
+
 ```js
 console.log(isEven(4));  // true (even)
 console.log(isEven(5));  // false (odd)

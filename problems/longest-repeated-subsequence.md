@@ -1,3 +1,4 @@
+```js
 const LRS = (str, m, n) => {
     // If there are no more characters in the string to evaluate
     if (m == 0 || n == 0) {

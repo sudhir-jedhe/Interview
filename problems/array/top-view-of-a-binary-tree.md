@@ -1,3 +1,4 @@
+```js
 Given a binary tree, print the top view of it.
 
 The top views of the binary tree are the list of visible nodes when the tree is viewed from the top.

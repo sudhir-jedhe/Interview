@@ -1,3 +1,4 @@
+```js
 /* Function to generate combination of password */
 function generatePass() {
   let pass = "";

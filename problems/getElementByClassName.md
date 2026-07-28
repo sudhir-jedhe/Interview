@@ -1,3 +1,4 @@
+```js
 function findByClass(class) {
     // get the root element,
     // you can start from the body

@@ -1,3 +1,4 @@
+```js
 // an associative array does not have a length property
 // Function to calculate the
 // length of an array

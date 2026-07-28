@@ -1,3 +1,4 @@
+```js
 getDomain("https://www.google.com/"); // Output: 'google.com'
 getDomain("https://www.facebook.com/reacterry/"); // Output: 'facebook.com'
 getDomain("http://www.reddit.com/user/reacterry/"); // Output: 'reddit.com'

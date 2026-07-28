@@ -1,3 +1,4 @@
+```js
 firstCharacter("hello"); // "h"
 firstCharacter("dad"); // "a"
 firstCharacter("racecar"); // null

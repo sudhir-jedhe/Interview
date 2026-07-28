@@ -1,3 +1,4 @@
+```js
 /*
     Input: arr[] = {12, 35, 1, 10, 34, 1}
     Output: The second largest element is 34.

@@ -1,3 +1,4 @@
+```js
 // Input  : arr[] = {1, 2, 3}
 // Output : 0 1 2 3 4 5 6
 // Distinct subsets of given set are

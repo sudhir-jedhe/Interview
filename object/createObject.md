@@ -18,6 +18,7 @@ console.log(person.info());
 ```
 
 **Explanation:**
+
 - `person` is an object created using object literal syntax.
 - It has properties (`firstName`, `lastName`, `email`) and a method (`info`).
 - The `info` method uses the `this` keyword to refer to the object's properties.
@@ -45,6 +46,7 @@ console.log(person.info());
 ```
 
 **Explanation:**
+
 - `new Object()` creates an empty object.
 - We manually assign properties (`firstName`, `lastName`, `email`) and methods (`info`) to the object.
 - This method is more verbose compared to the object literal approach but is functionally equivalent.
@@ -70,9 +72,10 @@ console.log(person.info());
 ```
 
 **Explanation:**
+
 - `Person` is a function constructor.
 - We create new objects using `new Person()` and initialize properties (`firstName`, `lastName`, `email`) for each instance.
-- Each instance will have its own `info` method. 
+- Each instance will have its own `info` method.
 
 This is useful when you want to create multiple objects with similar structure but different values.
 
@@ -100,6 +103,7 @@ console.log(person.info());
 ```
 
 **Explanation:**
+
 - `class Person` defines a blueprint for creating person objects.
 - `constructor()` is used to initialize the object's properties when an instance is created using `new Person()`.
 - Methods like `info` are defined within the class, and all instances share the same method.
@@ -154,6 +158,7 @@ console.log(person.info());
 ```
 
 **Explanation:**
+
 - The `PersonBuilder` pattern allows chaining method calls to set properties.
 - Once all properties are set, you can use `.build()` to construct a `Person` object with the specified values.
 - This pattern is useful when constructing objects with many properties, especially if some are optional.
@@ -182,6 +187,7 @@ console.log(person.info());
 ```
 
 **Explanation:**
+
 - `personFactory` is a function that returns an object with specified properties.
 - You don't need to use `new` or any constructor function.
 - This is a great alternative for creating objects with default structures.
@@ -205,13 +211,15 @@ console.log(o.greeting()); // logs "Hi, I'm Mark"
 ```
 
 **Explanation:**
+
 - `Object.create(n)` creates a new object `o` that inherits from `n`.
 - This allows `o` to access the properties and methods of `n` without explicitly defining them.
 - `o` has its own `name` property, and when calling `greeting()`, it looks up the prototype chain to find the method in `n`.
 
 ---
 
-### Summary of Approaches:
+### Summary of Approaches
+
 - **Object Literal**: The simplest and most common way to create objects. Ideal for static, single-use objects.
 - **Object Constructor**: A more verbose approach to create objects, equivalent to the literal approach.
 - **Function Constructor**: Suitable for creating multiple instances with shared methods.

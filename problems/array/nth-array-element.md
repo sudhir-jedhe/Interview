@@ -1,3 +1,4 @@
+```js
 Get the nth element of a JavaScript array
 
 Retrieving an element from a JavaScript array is most often done using its index. But what if we want to get the nth element from the end of the array? Or, perhaps, get all elements at an index that is a multiple of n? Let's see how we can do that.

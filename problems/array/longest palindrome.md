@@ -1,3 +1,4 @@
+```js
 const longestPalindrome = (s) => {
   let max = Number.MIN_SAFE_INTEGER;
   let palindromeStr = "";

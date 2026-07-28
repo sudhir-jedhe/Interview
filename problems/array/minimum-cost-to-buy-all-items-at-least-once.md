@@ -1,3 +1,4 @@
+```js
 // Given an array A[] of length N. Consider that purchasing ith item will cost Ai and then
 // next i number of item(s) will be free to collect. Then your task is to output the minimum
 // cost to collect all items at least once.

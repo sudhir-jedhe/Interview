@@ -1,3 +1,4 @@
+```js
 // are matrix of order n*n, we need to print elements of the matrix in Z form
 
 //     Input: [[4, 5, 6, 8],
