@@ -1,3 +1,4 @@
+```js
 const str = "Hello Geeks!";
 
 console.log(str.startsWith("Hello")); // true
@@ -15,3 +16,4 @@ function myfunc() {
   console.log(result);
 }
 myfunc();
+```

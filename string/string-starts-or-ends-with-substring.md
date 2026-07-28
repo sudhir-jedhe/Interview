@@ -5,6 +5,7 @@ String.prototype.startsWith() allows us to easily check if a string starts with 
 
 If we go from longest to shortest substring of the target string, we are guaranteed to come across the longest substring that the text starts with first. We can then return this substring, if it is found. Otherwise, we can return undefined.
 
+```js
 const startsWithSubstring = (text, word) => {
   for (i = word.length; i > 0; i--) {
     const substr = word.slice(-i);
@@ -26,3 +27,4 @@ const endsWithSubstring = (text, word) => {
 };
 
 endsWithSubstring('Lorem ipsum dolor sit amet<br /', '<br />'); // '<br /'
+```

@@ -1,3 +1,4 @@
+```js
 import "./CalendarViewer.css";
 import React, { useState } from "react";
 
@@ -132,3 +133,4 @@ export default CalendarViewer;
 .day:hover {
     background: #f0f0f0;
 }
+```

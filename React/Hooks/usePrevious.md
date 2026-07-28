@@ -1,3 +1,4 @@
+```js
 import { useEffect, useRef } from "react";
 import { useEffect, useRef, useState } from "react";
 
@@ -94,3 +95,4 @@ const Example = () => {
 };
 
 export default Example;
+```

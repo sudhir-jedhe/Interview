@@ -100,7 +100,7 @@ function func(a, b, c) {
     console.log("Number of arguments passed match the expected arguments");
   } else {
     throw new Error(
-      "Number of arguments passed do not match the expected arguments"
+      "Number of arguments passed do not match the expected arguments",
     );
   }
 }
@@ -362,7 +362,7 @@ function defaultValueFunc(
   num2 = 20,
   bool = false,
   sum = num + num2,
-  string = "Hello"
+  string = "Hello",
 ) {
   console.log(num, string, bool, sum);
 }
@@ -662,11 +662,11 @@ const proxy = new Proxy(
         "Proxy apply is invoked on target with context: " +
           context +
           ", arguments: " +
-          args
+          args,
       );
       return target.apply(context, args);
     },
-  }
+  },
 );
 
 // driver code

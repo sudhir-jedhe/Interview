@@ -4,6 +4,7 @@ As software engineers, we are often tasked with transforming data into presentab
 
 In order to accomplish this task, we can use array destructuring in combination with String.prototype.toUpperCase() to capitalize the first letter of the string. We can then use Array.prototype.join() to combine the capitalized first with the ...rest of the characters. Additionally, we might want to transform the rest of the string into lowercase, using String.prototype.toLowerCase() and a boolean argument.
 
+```js
 const capitalize = ([first, ...rest], lowerRest = false) =>
   first.toUpperCase() +
   (lowerRest ? rest.join('').toLowerCase() : rest.join(''));
@@ -26,7 +27,7 @@ let capitalized = (str) => {
   if (typeof str !== 'string') {
      return '';
   }
-  
+
   //Return the capitalized string
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -38,9 +39,10 @@ let capitalized = (str) => {
   if (typeof str !== 'string') {
      return '';
   }
-  
+
   //Return the capitalized string
   let arr = str.split('');
   arr[0] = arr[0].toUpperCase();
   return arr.join('');
 }
+```

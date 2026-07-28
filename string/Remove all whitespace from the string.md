@@ -1,3 +1,4 @@
+```js
 let text = "   Learnersbucket    ";
 text = text.replace(/^\s+|\s+$/g, "");
 
@@ -9,3 +10,4 @@ text = text.replace(/^\s+|\s+$/g, "");
 
 console.log(text);
 // "Learnersbucket"
+```

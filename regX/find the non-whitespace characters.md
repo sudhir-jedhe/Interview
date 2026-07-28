@@ -5,8 +5,8 @@ In these two JavaScript code snippets, you're using the `\S` (non-whitespace) re
 ```javascript
 function geek() {
   let str1 = "GeeksforGeeks @ _123_ $";
-  let regex4 = /\S/g;  // Regular expression to match non-whitespace characters
-  let match4 = str1.match(regex4);  // Finding all non-whitespace characters
+  let regex4 = /\S/g; // Regular expression to match non-whitespace characters
+  let match4 = str1.match(regex4); // Finding all non-whitespace characters
 
   console.log("Found " + match4.length + " matches: " + match4);
 }
@@ -40,8 +40,8 @@ geek();
 ```javascript
 function geek() {
   let str1 = "Geeky@128";
-  let regex4 = new RegExp("\\S", "g");  // Regular expression to match non-whitespace characters
-  let match4 = str1.match(regex4);  // Finding all non-whitespace characters
+  let regex4 = new RegExp("\\S", "g"); // Regular expression to match non-whitespace characters
+  let match4 = str1.match(regex4); // Finding all non-whitespace characters
 
   console.log("Found " + match4.length + " matches: " + match4);
 }
@@ -86,6 +86,7 @@ geek();
 ### Outputs:
 
 - For `"GeeksforGeeks @ _123_ $"`:
+
   ```
   Found 20 matches: G,e,e,k,s,f,o,r,G,e,e,k,s,@,_,1,2,3,_,$
   ```

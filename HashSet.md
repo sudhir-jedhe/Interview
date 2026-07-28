@@ -13,6 +13,7 @@ Let's go through them one by one and break down each solution:
 This is an implementation of a hash set where elements are added using an array (`this.buckets`). When the set exceeds the load factor (`0.75`), the hash set is rehashed to double its capacity.
 
 #### Key Methods:
+
 - **`add(key)`**: Adds a key to the set if it does not already exist. If the set exceeds the load factor, it is rehashed to double the capacity.
 - **`remove(key)`**: Removes a key from the set.
 - **`contains(key)`**: Checks if a key is present in the set.
@@ -20,6 +21,7 @@ This is an implementation of a hash set where elements are added using an array 
 - **`hash(key)`**: A basic hash function to determine the index for a given key.
 
 #### Example:
+
 ```js
 class HashSet {
   constructor() {
@@ -103,77 +105,79 @@ console.log(myHashSet.contains(2)); // false
 This implementation uses a linked list to handle collisions in the hash set, making it suitable for cases where multiple keys hash to the same index.
 
 #### Key Methods:
+
 - **`add(key)`**: Adds a key to the hash set, creating a new node if necessary.
 - **`remove(key)`**: Removes a key from the hash set by manipulating the linked list.
 - **`contains(key)`**: Checks if a key is present by traversing the linked list at the appropriate bucket.
 - **`_hash(key)`**: Hash function to determine the index.
 
 #### Example:
+
 ```js
 class ListNode {
   constructor(val, next = null) {
-      this.val = val;
-      this.next = next;
+    this.val = val;
+    this.next = next;
   }
 }
 
 class MyHashSet {
   constructor() {
-      this.size = 1000;
-      this.buckets = new Array(this.size).fill(null);
+    this.size = 1000;
+    this.buckets = new Array(this.size).fill(null);
   }
 
   _hash(key) {
-      return key % this.size;
+    return key % this.size;
   }
 
   add(key) {
-      const hashKey = this._hash(key);
-      if (!this.buckets[hashKey]) {
-          this.buckets[hashKey] = new ListNode(key);
-          return;
+    const hashKey = this._hash(key);
+    if (!this.buckets[hashKey]) {
+      this.buckets[hashKey] = new ListNode(key);
+      return;
+    }
+    let curr = this.buckets[hashKey];
+    while (curr.next) {
+      if (curr.val === key) {
+        return;
       }
-      let curr = this.buckets[hashKey];
-      while (curr.next) {
-          if (curr.val === key) {
-              return;
-          }
-          curr = curr.next;
-      }
-      curr.next = new ListNode(key);
+      curr = curr.next;
+    }
+    curr.next = new ListNode(key);
   }
 
   remove(key) {
-      const hashKey = this._hash(key);
-      if (!this.buckets[hashKey]) {
-          return;
+    const hashKey = this._hash(key);
+    if (!this.buckets[hashKey]) {
+      return;
+    }
+    if (this.buckets[hashKey].val === key) {
+      this.buckets[hashKey] = this.buckets[hashKey].next;
+      return;
+    }
+    let prev = null;
+    let curr = this.buckets[hashKey];
+    while (curr) {
+      if (curr.val === key) {
+        prev.next = curr.next;
+        return;
       }
-      if (this.buckets[hashKey].val === key) {
-          this.buckets[hashKey] = this.buckets[hashKey].next;
-          return;
-      }
-      let prev = null;
-      let curr = this.buckets[hashKey];
-      while (curr) {
-          if (curr.val === key) {
-              prev.next = curr.next;
-              return;
-          }
-          prev = curr;
-          curr = curr.next;
-      }
+      prev = curr;
+      curr = curr.next;
+    }
   }
 
   contains(key) {
-      const hashKey = this._hash(key);
-      let curr = this.buckets[hashKey];
-      while (curr) {
-          if (curr.val === key) {
-              return true;
-          }
-          curr = curr.next;
+    const hashKey = this._hash(key);
+    let curr = this.buckets[hashKey];
+    while (curr) {
+      if (curr.val === key) {
+        return true;
       }
-      return false;
+      curr = curr.next;
+    }
+    return false;
   }
 }
 
@@ -194,41 +198,43 @@ console.log(myHashSet.contains(2)); // Output: false
 This is a basic implementation of a key-value store with `set`, `get`, and `has` methods for storing and retrieving values.
 
 #### Key Methods:
+
 - **`set(key, value)`**: Adds a key-value pair to the store.
 - **`get(key)`**: Retrieves the value for a given key.
 - **`has(key)`**: Checks if a key exists in the store.
 
 #### Example:
+
 ```js
-const Store = function() {
+const Store = function () {
   // store the data
   this.list = {};
 
   // set the key-value in list
-  this.set = function(key, value) {
+  this.set = function (key, value) {
     this.list[key] = value;
-  }
+  };
 
   // get the value of the given key
-  this.get = function(key) {
+  this.get = function (key) {
     return this.list[key];
-  }
+  };
 
   // check if key exists
-  this.has = function(key) {
+  this.has = function (key) {
     return !!this.list[key];
-  }
+  };
 };
 
 // Usage example:
 const store = new Store();
-store.set('a', 10);
-store.set('b', 20);
-store.set('c', 30);
-console.log(store.get('b'));  // Output: 20
-console.log(store.has('c'));  // Output: true
-console.log(store.get('d'));  // Output: undefined
-console.log(store.has('e'));  // Output: false
+store.set("a", 10);
+store.set("b", 20);
+store.set("c", 30);
+console.log(store.get("b")); // Output: 20
+console.log(store.has("c")); // Output: true
+console.log(store.get("d")); // Output: undefined
+console.log(store.has("e")); // Output: false
 ```
 
 ---

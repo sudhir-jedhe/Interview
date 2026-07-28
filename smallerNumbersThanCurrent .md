@@ -1,3 +1,4 @@
+```js
 import { smallerNumbersThanCurrent } from "./smallerNumbersThanCurrent.js";
 
 const nums = [8, 1, 2, 2, 3];
@@ -18,6 +19,7 @@ export function smallerNumbersThanCurrent(nums) {
 
   return counts;
 }
+```
 
 // creating a function that, given an array nums, determines how many numbers in
 // the array are smaller than each element. For each element nums[i], the
@@ -25,13 +27,12 @@ export function smallerNumbersThanCurrent(nums) {
 // nums[i]. The final output should be an array of the same length, containing
 // the counts of smaller numbers for each element.
 
-
-
 Your solution works fine, but it has a time complexity of **O(n²)** because for each element `nums[i]`, you're iterating through the entire array to count how many numbers are smaller. This results in nested loops. While this is acceptable for small arrays, it can be inefficient for large arrays.
 
 We can improve the performance to **O(n log n)** using sorting and a hashmap.
 
 ### **Optimized Approach (O(n log n)):**
+
 1. **Sort the array** to determine the order of the elements.
 2. **Use a hashmap** to record how many numbers are smaller than each number. Since the sorted array will have the numbers in ascending order, we can assign the index of the first occurrence of each number as the number of elements smaller than it.
 3. After sorting, we can efficiently create the result by using the hashmap to look up the number of smaller elements for each number in the original array.
@@ -57,7 +58,7 @@ export function smallerNumbersThanCurrent(nums) {
   }
 
   // For each number in the original array, look up the smaller count from the hashmap
-  return nums.map(num => smallerCount[num]);
+  return nums.map((num) => smallerCount[num]);
 }
 
 // main.js
@@ -80,9 +81,10 @@ console.log(smallerNumbersThanCurrent(nums)); // Output: [4, 0, 1, 1, 3]
    - Finally, we use `nums.map()` to generate the result array by looking up the smaller number count for each element in the original array using the `smallerCount` hashmap.
 
 ### **Time Complexity**:
+
 - Sorting the array takes **O(n log n)** time.
 - Building the `smallerCount` hashmap and generating the result both take **O(n)** time.
-So, the overall time complexity is **O(n log n)**.
+  So, the overall time complexity is **O(n log n)**.
 
 ### **Test Case**:
 
@@ -95,7 +97,7 @@ const nums = [8, 1, 2, 2, 3];
 **Expected Output**:
 
 ```javascript
-[4, 0, 1, 1, 3]
+[4, 0, 1, 1, 3];
 ```
 
 This optimized solution should work efficiently even for larger arrays.

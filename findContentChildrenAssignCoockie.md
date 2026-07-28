@@ -1,7 +1,9 @@
 The problem you're tackling is a classic example of **greedy algorithm** where the goal is to maximize the number of children that can be content by giving them cookies that satisfy their greed factor. Let's walk through the approach and logic used in your code, and I'll provide a more detailed explanation and solution.
 
 ### Problem Breakdown:
+
 You have two arrays:
+
 - `g[]`: the greed factor of each child (minimum size of a cookie they require to be content).
 - `s[]`: the sizes of available cookies.
 
@@ -9,7 +11,7 @@ The goal is to assign cookies to children such that each child gets at most one 
 
 ### Approach:
 
-1. **Sorting**: 
+1. **Sorting**:
    - **Sort the greed array `g[]`** in ascending order so that you handle the children with the smallest greed factor first. This ensures you maximize the number of children who are satisfied with a given cookie.
    - **Sort the cookie size array `s[]`** in ascending order so that you can start by trying to satisfy children with the smallest available cookies.
 
@@ -34,7 +36,7 @@ function findContentChildren(g, s) {
   s.sort((a, b) => a - b);
 
   let contentChildren = 0; // Counter for content children
-  let cookieIndex = 0;     // Pointer for the cookies array
+  let cookieIndex = 0; // Pointer for the cookies array
 
   // Iterate over the sorted greed factors (children)
   for (let i = 0; i < g.length; i++) {
@@ -42,11 +44,11 @@ function findContentChildren(g, s) {
     while (cookieIndex < s.length && s[cookieIndex] < g[i]) {
       cookieIndex++; // Move to the next cookie if the current one is too small
     }
-    
+
     // If we found a cookie that satisfies this child's greed factor
     if (cookieIndex < s.length) {
       contentChildren++; // Assign this cookie to the child
-      cookieIndex++;     // Move to the next cookie
+      cookieIndex++; // Move to the next cookie
     } else {
       // No more cookies left to satisfy any remaining children
       break;
@@ -75,6 +77,7 @@ console.log(findContentChildren([10, 9, 8], [5, 6, 7])); // Output: 0
    - If no cookies can satisfy a child's greed, we stop.
 
 ### Time Complexity:
+
 - Sorting the arrays `g[]` and `s[]` takes \(O(n \log n)\) and \(O(m \log m)\) respectively, where \(n\) is the number of children and \(m\) is the number of cookies.
 - The loop through the children takes \(O(n)\) and the inner while loop over the cookies takes \(O(m)\).
 - Overall, the time complexity is dominated by the sorting steps, so it is:
@@ -84,14 +87,17 @@ console.log(findContentChildren([10, 9, 8], [5, 6, 7])); // Output: 0
   where \(n\) is the length of `g[]` and \(m\) is the length of `s[]`.
 
 ### Space Complexity:
+
 - The space complexity is \(O(1)\) if you don't count the input arrays, as the sorting is done in-place, and we use only a few variables for counting and indexing.
 
 ### Example Walkthrough:
 
 #### Example 1:
+
 ```javascript
 findContentChildren([1, 2, 3], [1, 1]);
 ```
+
 - `g = [1, 2, 3]`, `s = [1, 1]`
 - Sort `g`: `[1, 2, 3]`, sort `s`: `[1, 1]`
 - First child with greed factor 1: The smallest available cookie is of size 1, so the child gets it.
@@ -99,9 +105,11 @@ findContentChildren([1, 2, 3], [1, 1]);
 - Output: `1`
 
 #### Example 2:
+
 ```javascript
 findContentChildren([1, 2], [1, 2, 3]);
 ```
+
 - `g = [1, 2]`, `s = [1, 2, 3]`
 - Sort `g`: `[1, 2]`, sort `s`: `[1, 2, 3]`
 - First child with greed factor 1: The smallest available cookie is of size 1, so the child gets it.
@@ -109,13 +117,16 @@ findContentChildren([1, 2], [1, 2, 3]);
 - Output: `2`
 
 #### Example 3:
+
 ```javascript
 findContentChildren([10, 9, 8], [5, 6, 7]);
 ```
+
 - `g = [10, 9, 8]`, `s = [5, 6, 7]`
 - Sort `g`: `[8, 9, 10]`, sort `s`: `[5, 6, 7]`
 - None of the cookies can satisfy any child's greed factor.
 - Output: `0`
 
 ### Conclusion:
+
 This solution efficiently matches children with cookies based on their greed factor and the available cookie sizes, using a greedy algorithm with sorting and a two-pointer technique. It provides the optimal number of content children that can be achieved with the given cookies.

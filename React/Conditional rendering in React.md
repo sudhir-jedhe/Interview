@@ -14,8 +14,9 @@ In React, conditional rendering can be achieved using different techniques, such
 You can use regular JavaScript `if` or `if-else` statements to conditionally render elements in React. However, since React JSX does not allow direct `if` statements inside the return, you can place the `if` statement before the `return` statement in the component function.
 
 #### Example:
+
 ```jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,7 +30,7 @@ function App() {
 
   return (
     <div>
-      <h1>{isLoggedIn ? 'Welcome User' : 'Please Log In'}</h1>
+      <h1>{isLoggedIn ? "Welcome User" : "Please Log In"}</h1>
       {button}
     </div>
   );
@@ -39,6 +40,7 @@ export default App;
 ```
 
 In the above example:
+
 - We are using an `if-else` block to decide which button to render depending on the `isLoggedIn` state.
 
 ### 2. **Using the Ternary Operator**
@@ -46,17 +48,18 @@ In the above example:
 The **ternary operator** (`condition ? expr1 : expr2`) is a shorthand for `if-else` and is often used for conditional rendering in JSX. It's very compact and fits perfectly within JSX expressions.
 
 #### Example:
+
 ```jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div>
-      <h1>{isLoggedIn ? 'Welcome User' : 'Please Log In'}</h1>
+      <h1>{isLoggedIn ? "Welcome User" : "Please Log In"}</h1>
       <button onClick={() => setIsLoggedIn(!isLoggedIn)}>
-        {isLoggedIn ? 'Log Out' : 'Log In'}
+        {isLoggedIn ? "Log Out" : "Log In"}
       </button>
     </div>
   );
@@ -66,6 +69,7 @@ export default App;
 ```
 
 In this case:
+
 - We use a ternary operator to conditionally display a message and button text based on whether the user is logged in or not.
 
 ### 3. **Using Logical AND (`&&`) Operator**
@@ -73,8 +77,9 @@ In this case:
 You can use the logical AND (`&&`) operator for rendering elements conditionally when the condition is true. This is useful when you want to render something only when a condition is met, and don’t need an "else" case.
 
 #### Example:
+
 ```jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -94,6 +99,7 @@ export default App;
 ```
 
 Here:
+
 - If `isLoggedIn` is `true`, the paragraph (`<p>You are logged in!</p>`) will be rendered.
 - If `isLoggedIn` is `false`, nothing will be rendered, because the `&&` operator only evaluates the second operand if the first is `true`.
 
@@ -102,22 +108,23 @@ Here:
 For more complex conditions, you can use a `switch` statement within the render method or function component. This is especially useful when you have multiple distinct conditions to handle.
 
 #### Example:
+
 ```jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function App() {
-  const [status, setStatus] = useState('guest');
+  const [status, setStatus] = useState("guest");
 
   let content;
 
   switch (status) {
-    case 'admin':
+    case "admin":
       content = <h1>Welcome Admin</h1>;
       break;
-    case 'user':
+    case "user":
       content = <h1>Welcome User</h1>;
       break;
-    case 'guest':
+    case "guest":
       content = <h1>Please Log In</h1>;
       break;
     default:
@@ -127,9 +134,9 @@ function App() {
   return (
     <div>
       {content}
-      <button onClick={() => setStatus('user')}>Set as User</button>
-      <button onClick={() => setStatus('admin')}>Set as Admin</button>
-      <button onClick={() => setStatus('guest')}>Set as Guest</button>
+      <button onClick={() => setStatus("user")}>Set as User</button>
+      <button onClick={() => setStatus("admin")}>Set as Admin</button>
+      <button onClick={() => setStatus("guest")}>Set as Guest</button>
     </div>
   );
 }
@@ -138,6 +145,7 @@ export default App;
 ```
 
 In this case:
+
 - Based on the value of `status`, different messages are displayed.
 - A `switch` statement is used to handle multiple conditions more cleanly than nested `if-else` statements.
 
@@ -146,8 +154,9 @@ In this case:
 You can also render whole components conditionally, just like rendering regular elements. You may want to conditionally render entire child components based on certain conditions.
 
 #### Example:
+
 ```jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function AdminPanel() {
   return <h1>Admin Panel</h1>;
@@ -158,13 +167,13 @@ function UserDashboard() {
 }
 
 function App() {
-  const [role, setRole] = useState('user');
+  const [role, setRole] = useState("user");
 
   return (
     <div>
-      {role === 'admin' ? <AdminPanel /> : <UserDashboard />}
-      <button onClick={() => setRole('admin')}>Set as Admin</button>
-      <button onClick={() => setRole('user')}>Set as User</button>
+      {role === "admin" ? <AdminPanel /> : <UserDashboard />}
+      <button onClick={() => setRole("admin")}>Set as Admin</button>
+      <button onClick={() => setRole("user")}>Set as User</button>
     </div>
   );
 }
@@ -173,6 +182,7 @@ export default App;
 ```
 
 In this example:
+
 - The entire `AdminPanel` or `UserDashboard` component is conditionally rendered based on the `role` state.
 
 ### 6. **Returning `null` to Prevent Rendering**
@@ -180,22 +190,17 @@ In this example:
 If you don't want to render anything in some conditions, you can simply return `null` from the render function or return statement of the component.
 
 #### Example:
+
 ```jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div>
-      {isLoggedIn ? (
-        <h1>Welcome Back!</h1>
-      ) : (
-        null
-      )}
-      <button onClick={() => setIsLoggedIn(!isLoggedIn)}>
-        Toggle Login
-      </button>
+      {isLoggedIn ? <h1>Welcome Back!</h1> : null}
+      <button onClick={() => setIsLoggedIn(!isLoggedIn)}>Toggle Login</button>
     </div>
   );
 }
@@ -204,6 +209,7 @@ export default App;
 ```
 
 In this case:
+
 - If `isLoggedIn` is `false`, it doesn't render anything because we return `null` in that case.
 
 ### Best Practices for Conditional Rendering in React

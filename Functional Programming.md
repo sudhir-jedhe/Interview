@@ -5,7 +5,7 @@ Memoization is a technique that stores the result of expensive function calls an
 ```javascript
 function memoize(fn) {
   const cache = new Map();
-  return function(arg) {
+  return function (arg) {
     if (cache.has(arg)) {
       return cache.get(arg);
     } else {
@@ -27,7 +27,7 @@ A `pipe` function takes multiple functions as arguments and returns a new functi
 
 ```javascript
 function pipe(...functions) {
-  return function(initialValue) {
+  return function (initialValue) {
     return functions.reduce((value, fn) => fn(value), initialValue);
   };
 }
@@ -36,9 +36,10 @@ function pipe(...functions) {
 - `pipe`: Chains a sequence of functions, passing the result of each to the next.
 
 Example usage:
+
 ```javascript
-const addOne = x => x + 1;
-const double = x => x * 2;
+const addOne = (x) => x + 1;
+const double = (x) => x * 2;
 const pipeResult = pipe(addOne, double);
 console.log(pipeResult(3)); // Output: 8 ((3 + 1) * 2)
 ```
@@ -51,15 +52,17 @@ Currying transforms a function that takes multiple arguments into a sequence of 
 
 ```javascript
 function curry(fn) {
-  const placeholder = Symbol('placeholder');
-  
+  const placeholder = Symbol("placeholder");
+
   function curried(...args) {
     if (args.length >= fn.length) {
       return fn(...args);
     }
 
-    return function(...nextArgs) {
-      const allArgs = args.map(arg => arg === placeholder ? nextArgs.shift() : arg);
+    return function (...nextArgs) {
+      const allArgs = args.map((arg) =>
+        arg === placeholder ? nextArgs.shift() : arg,
+      );
       return curried(...allArgs, ...nextArgs);
     };
   }
@@ -72,6 +75,7 @@ function curry(fn) {
 - `curry`: Curries a function and supports placeholders (represented by `Symbol('placeholder')`).
 
 Example usage:
+
 ```javascript
 const add = (a, b, c) => a + b + c;
 const curriedAdd = curry(add);
@@ -88,16 +92,17 @@ console.log(curriedAdd(1, curry.placeholder, 3)(2)); // Output: 6 (supports plac
 
 ```javascript
 if (!Object.assign) {
-  Object.assign = function(target, ...sources) {
+  Object.assign = function (target, ...sources) {
     if (target == null) {
-      throw new TypeError('Cannot convert undefined or null to object');
+      throw new TypeError("Cannot convert undefined or null to object");
     }
 
     target = Object(target); // Ensure the target is an object
 
-    sources.forEach(source => {
-      if (source != null) { // Skip null or undefined
-        Object.keys(source).forEach(key => {
+    sources.forEach((source) => {
+      if (source != null) {
+        // Skip null or undefined
+        Object.keys(source).forEach((key) => {
           target[key] = source[key];
         });
       }
@@ -119,7 +124,7 @@ Lodash's `memoize` function caches results based on arguments. Here’s how you 
 ```javascript
 function memoize(fn, resolver) {
   const cache = new Map();
-  return function(...args) {
+  return function (...args) {
     const key = resolver ? resolver(...args) : args[0];
     if (cache.has(key)) {
       return cache.get(key);
@@ -150,6 +155,7 @@ function factorial(n) {
 - `factorial`: Computes the factorial of `n` using recursion.
 
 Example usage:
+
 ```javascript
 console.log(factorial(5)); // Output: 120 (5 * 4 * 3 * 2 * 1)
 ```
@@ -173,6 +179,7 @@ function fibonacci(n) {
 - `fibonacci`: Generates an array of Fibonacci numbers up to `N`.
 
 Example usage:
+
 ```javascript
 console.log(fibonacci(5)); // Output: [0, 1, 1, 2, 3]
 ```
@@ -196,6 +203,7 @@ function chunk(array, size) {
 - `chunk`: Splits an array into subarrays of size `size`.
 
 Example usage:
+
 ```javascript
 console.log(chunk([1, 2, 3, 4, 5], 2)); // Output: [[1, 2], [3, 4], [5]]
 ```
@@ -208,7 +216,7 @@ console.log(chunk([1, 2, 3, 4, 5], 2)); // Output: [[1, 2], [3, 4], [5]]
 
 ```javascript
 function compose(...fns) {
-  return function(value) {
+  return function (value) {
     return fns.reverse().reduce((acc, fn) => fn(acc), value);
   };
 }
@@ -217,9 +225,10 @@ function compose(...fns) {
 - `compose`: Composes a series of functions, executing from right to left.
 
 Example usage:
+
 ```javascript
-const addOne = x => x + 1;
-const double = x => x * 2;
+const addOne = (x) => x + 1;
+const double = (x) => x * 2;
 const composed = compose(double, addOne);
 console.log(composed(3)); // Output: 8 ((3 + 1) * 2)
 ```
@@ -253,10 +262,11 @@ function lazy(fn) {
 - `lazy`: Allows you to chain functions lazily.
 
 Example usage:
+
 ```javascript
 const lazyValue = lazy(() => 5)
-  .map(x => x * 2)
-  .map(x => x + 1);
+  .map((x) => x * 2)
+  .map((x) => x + 1);
 console.log(lazyValue.run()); // Output: 11
 ```
 
@@ -268,13 +278,17 @@ You can flatten a nested array using `reduce` by iterating through each subarray
 
 ```javascript
 function flatten(array) {
-  return array.reduce((acc, item) => acc.concat(Array.isArray(item) ? flatten(item) : item), []);
+  return array.reduce(
+    (acc, item) => acc.concat(Array.isArray(item) ? flatten(item) : item),
+    [],
+  );
 }
 ```
 
 - `flatten`: Flattens a nested array using recursion and `reduce`.
 
 Example usage:
+
 ```javascript
 console.log(flatten([1, [2, [3, 4]], 5])); // Output: [1, 2, 3, 4, 5]
 ```

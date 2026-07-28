@@ -5,8 +5,6 @@ Create a web worker script to count the frequency of letters in each chunk.
 Spawn multiple web workers to process each chunk in parallel.
 Aggregate the results from all workers to get the final frequency count.
 
-
-
 To count the frequency of letters in a text using parallel computation in JavaScript, you can split the text into chunks and process each chunk concurrently using Web Workers. Here’s a step-by-step breakdown of how to implement this approach:
 
 ### 1. **Split the Text into Chunks**
@@ -63,7 +61,11 @@ function countLetterFrequency(text, numWorkers) {
   return new Promise((resolve, reject) => {
     // Create a worker for each chunk
     chunks.forEach((chunk, index) => {
-      const worker = new Worker(URL.createObjectURL(new Blob([`
+      const worker = new Worker(
+        URL.createObjectURL(
+          new Blob(
+            [
+              `
         onmessage = function(e) {
           const text = e.data;
           const frequency = {};
@@ -74,12 +76,17 @@ function countLetterFrequency(text, numWorkers) {
           }
           postMessage(frequency);
         }
-      `], { type: "application/javascript" })));
+      `,
+            ],
+            { type: "application/javascript" },
+          ),
+        ),
+      );
 
       // Send the chunk to the worker
       worker.postMessage(chunk);
 
-      worker.onmessage = function(event) {
+      worker.onmessage = function (event) {
         // Collect the result from the worker
         results[index] = event.data;
         completedWorkers++;
@@ -87,9 +94,10 @@ function countLetterFrequency(text, numWorkers) {
         // If all workers have finished, aggregate the results
         if (completedWorkers === numWorkers) {
           let finalFrequency = {};
-          results.forEach(result => {
+          results.forEach((result) => {
             for (let letter in result) {
-              finalFrequency[letter] = (finalFrequency[letter] || 0) + result[letter];
+              finalFrequency[letter] =
+                (finalFrequency[letter] || 0) + result[letter];
             }
           });
           resolve(finalFrequency);
@@ -98,7 +106,7 @@ function countLetterFrequency(text, numWorkers) {
         worker.terminate();
       };
 
-      worker.onerror = function(error) {
+      worker.onerror = function (error) {
         reject(error);
         worker.terminate();
       };
@@ -109,14 +117,17 @@ function countLetterFrequency(text, numWorkers) {
 }
 
 // Example Usage
-const text = "This is a sample text to count the frequency of letters in a large body of text!";
+const text =
+  "This is a sample text to count the frequency of letters in a large body of text!";
 const numWorkers = 4; // Number of Web Workers
 
-countLetterFrequency(text, numWorkers).then(frequency => {
-  console.log("Letter Frequency Count: ", frequency);
-}).catch(error => {
-  console.error("Error: ", error);
-});
+countLetterFrequency(text, numWorkers)
+  .then((frequency) => {
+    console.log("Letter Frequency Count: ", frequency);
+  })
+  .catch((error) => {
+    console.error("Error: ", error);
+  });
 ```
 
 ### Explanation of the Code:
@@ -146,6 +157,7 @@ countLetterFrequency(text, numWorkers).then(frequency => {
 - **Limitation**: While Web Workers allow for concurrency, they cannot access the DOM directly, so all work must be done in memory and then returned to the main thread for aggregation.
 
 ### Example Output:
+
 Assuming the input text is `"This is a sample text to count the frequency of letters in a large body of text!"`, the output might look something like this:
 
 ```javascript

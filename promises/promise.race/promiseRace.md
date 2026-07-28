@@ -1,4 +1,5 @@
 /*************************User Implement custom promise.race ************************ */
+```js
 function myPromiseRace(promises) {
     return new Promise((resolve, reject) => {
       // Iterate through the promises

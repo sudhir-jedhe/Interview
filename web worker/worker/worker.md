@@ -1,3 +1,4 @@
+```js
 // Function to count the frequency of letters in a chunk of text
 function countFrequency(text) {
   const frequency = {};
@@ -17,3 +18,4 @@ self.onmessage = function (event) {
   // Send the frequency count back to the main thread
   self.postMessage(frequency);
 };
+```

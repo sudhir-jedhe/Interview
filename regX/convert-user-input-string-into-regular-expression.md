@@ -25,13 +25,14 @@ else console.log("Not Found");
 ```
 
 #### How This Works:
+
 - **User Input**: The user is asked to input a regular expression pattern (e.g., `^Ge`, `[A-z]+`).
 - **Conversion to `RegExp`**: The user input (a string) is converted into a regular expression object using `new RegExp(regex, "g")`.
-    - `regex`: The pattern string from user input.
-    - `"g"`: This flag ensures the pattern is matched globally (i.e., throughout the entire string).
+  - `regex`: The pattern string from user input.
+  - `"g"`: This flag ensures the pattern is matched globally (i.e., throughout the entire string).
 - **Using `.match()`**: The `.match()` method is called on the string `str`. This will search for substrings that match the given regular expression (`reg`).
-    - If matches are found, the result is an array of matched substrings.
-    - If no matches are found, it returns `null`.
+  - If matches are found, the result is an array of matched substrings.
+  - If no matches are found, it returns `null`.
 
 #### Example Inputs and Outputs:
 
@@ -48,6 +49,7 @@ else console.log("Not Found");
    - **Output**: `"Not Found"`
 
 #### Important Note:
+
 - The `[A-z]` pattern in the example is **incorrect** for matching only letters. It includes a range of characters between `Z` and `a` in the ASCII table, which can match unwanted characters like `[` or `\` (non-letter characters). To match only letters, you should use `[A-Za-z]` instead of `[A-z]`.
 
 ### 2. Example with User Input for RegExp Conversion:
@@ -59,10 +61,12 @@ console.log(regex);
 ```
 
 #### How This Works:
+
 - This takes a user input string (`userInput`), converts it to a `RegExp` object, and logs the resulting regular expression object to the console.
 - You could use this for testing, debugging, or building dynamic regular expressions.
 
 For example:
+
 - **Input**: `\\d+` (matches one or more digits)
 - **Output**: `/\\d+/`
 
@@ -75,6 +79,7 @@ This would show you the regular expression that was constructed from the string.
 1. **Error Handling**: It's important to consider that users might input an invalid regular expression pattern, which could throw an error when constructing the `RegExp`. You can handle this by wrapping the creation of the `RegExp` in a `try-catch` block.
 
    Example:
+
    ```js
    try {
      const reg = new RegExp(regex, "g");

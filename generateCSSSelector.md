@@ -4,7 +4,6 @@ The `generateSelector` function generates a unique CSS selector path from the ta
 
 1. **Starting from the Target**:
    - The function begins by initializing an empty array, `selectors`, which will store the selector strings for each element in the path.
-   
 2. **Iterating Through Parent Nodes**:
    - A `while` loop is used to traverse upwards from the `target` element to its `root` parent node.
    - For each element in the path, it calculates the `nth-child` position of the target element relative to its sibling elements.
@@ -31,7 +30,7 @@ Given the HTML structure:
     on
     <p>
       <span>
-        Learnersbucket 
+        Learnersbucket
         <button>click me!</button>
         <button id="target">click me!</button>
       </span>
@@ -77,22 +76,22 @@ The full CSS selector path from the target to the root is:
 ```javascript
 function generateSelector(root, target) {
   const selectors = [];
-  
+
   // iterate till root parent is found
   while (target !== root) {
     const nthChild = Array.from(target.parentNode.children).indexOf(target) + 1;
     const selector = `${target.tagName.toLowerCase()}:nth-child(${nthChild})`;
-    
+
     selectors.unshift(selector);
-    
+
     target = target.parentNode;
   }
-  
+
   // add the root's tag name at the beginning with the id selector
   selectors.unshift(`${target.tagName.toLowerCase()}[id="${target.id}"]`);
-  
+
   // join the path and return the complete selector
-  return selectors.join(' > ');
+  return selectors.join(" > ");
 }
 
 const root = document.getElementById("root");

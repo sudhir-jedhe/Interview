@@ -5,6 +5,7 @@ Both **redux-thunk** and **redux-saga** are middleware used to handle asynchrono
 ---
 
 ### **1. Redux-Thunk**
+
 **Redux-Thunk** is a simpler, lightweight middleware for handling **asynchronous actions** in Redux. It allows action creators to return a **function (thunk)** instead of an action object, which can later dispatch actions or perform async operations like AJAX calls.
 
 #### **Key Features of Redux-Thunk:**
@@ -17,14 +18,14 @@ Both **redux-thunk** and **redux-saga** are middleware used to handle asynchrono
    // A simple example of an action using redux-thunk
    const fetchData = () => {
      return (dispatch, getState) => {
-       dispatch({ type: 'FETCH_DATA_REQUEST' });
-       fetch('/api/data')
-         .then(response => response.json())
-         .then(data => {
-           dispatch({ type: 'FETCH_DATA_SUCCESS', payload: data });
+       dispatch({ type: "FETCH_DATA_REQUEST" });
+       fetch("/api/data")
+         .then((response) => response.json())
+         .then((data) => {
+           dispatch({ type: "FETCH_DATA_SUCCESS", payload: data });
          })
-         .catch(error => {
-           dispatch({ type: 'FETCH_DATA_FAILURE', error });
+         .catch((error) => {
+           dispatch({ type: "FETCH_DATA_FAILURE", error });
          });
      };
    };
@@ -35,7 +36,7 @@ Both **redux-thunk** and **redux-saga** are middleware used to handle asynchrono
    - It's very lightweight and doesn't require too many additional dependencies.
 
 3. **Works Well for Simple Asynchronous Logic:**
-   - **Ideal for simple asynchronous operations** like **fetching data** or performing an async action on the server. 
+   - **Ideal for simple asynchronous operations** like **fetching data** or performing an async action on the server.
    - If you need to handle complex side effects, like parallel asynchronous operations, or need better control over async tasks, redux-thunk can become less flexible.
 
 4. **No Side-Effect Management:**
@@ -44,6 +45,7 @@ Both **redux-thunk** and **redux-saga** are middleware used to handle asynchrono
 ---
 
 ### **2. Redux-Saga**
+
 **Redux-Saga** is a more powerful and feature-rich middleware designed for handling complex side effects in Redux, such as asynchronous calls, concurrency management, error handling, and more.
 
 It uses **generators** (a feature of JavaScript ES6) to make async flow easier to manage and more declarative.
@@ -55,19 +57,19 @@ It uses **generators** (a feature of JavaScript ES6) to make async flow easier t
    - **Saga Effects** like `take`, `put`, `call`, and `fork` are used to describe the flow of actions and side effects.
 
    ```js
-   import { call, put, takeEvery } from 'redux-saga/effects';
+   import { call, put, takeEvery } from "redux-saga/effects";
 
    function* fetchDataSaga() {
      try {
-       const data = yield call(fetch, '/api/data');
-       yield put({ type: 'FETCH_DATA_SUCCESS', data });
+       const data = yield call(fetch, "/api/data");
+       yield put({ type: "FETCH_DATA_SUCCESS", data });
      } catch (error) {
-       yield put({ type: 'FETCH_DATA_FAILURE', error });
+       yield put({ type: "FETCH_DATA_FAILURE", error });
      }
    }
 
    function* watchFetchData() {
-     yield takeEvery('FETCH_DATA_REQUEST', fetchDataSaga);
+     yield takeEvery("FETCH_DATA_REQUEST", fetchDataSaga);
    }
 
    export default watchFetchData;
@@ -93,16 +95,16 @@ It uses **generators** (a feature of JavaScript ES6) to make async flow easier t
 
 ### **Key Differences Between Redux-Thunk and Redux-Saga**
 
-| **Feature**                  | **Redux-Thunk**                                      | **Redux-Saga**                                     |
-|------------------------------|------------------------------------------------------|---------------------------------------------------|
-| **Asynchronous Logic**       | Uses simple functions to handle async logic.         | Uses **generator functions** for async flows.      |
-| **Complexity**                | Simple to integrate and use.                        | More complex, requires understanding of generators. |
-| **Concurrency Management**    | Doesn’t offer advanced concurrency management.       | Offers **advanced concurrency**, parallel, and forked tasks. |
-| **Error Handling**            | Simple error handling through try/catch inside thunk. | **Built-in error handling** with explicit retry strategies. |
-| **Side-Effect Control**       | Basic control over side effects.                    | Advanced control, including **canceling** or **retrying** tasks. |
-| **Testing**                   | Easier to test for simple cases.                    | Easier to test complex async flows with generator-based sagas. |
-| **Use Case**                  | Great for simple async operations.                  | Best for handling complex async operations. |
-| **Learning Curve**            | Low, easy to learn and implement.                   | Higher due to **generators** and advanced concepts. |
+| **Feature**                | **Redux-Thunk**                                       | **Redux-Saga**                                                   |
+| -------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------- |
+| **Asynchronous Logic**     | Uses simple functions to handle async logic.          | Uses **generator functions** for async flows.                    |
+| **Complexity**             | Simple to integrate and use.                          | More complex, requires understanding of generators.              |
+| **Concurrency Management** | Doesn’t offer advanced concurrency management.        | Offers **advanced concurrency**, parallel, and forked tasks.     |
+| **Error Handling**         | Simple error handling through try/catch inside thunk. | **Built-in error handling** with explicit retry strategies.      |
+| **Side-Effect Control**    | Basic control over side effects.                      | Advanced control, including **canceling** or **retrying** tasks. |
+| **Testing**                | Easier to test for simple cases.                      | Easier to test complex async flows with generator-based sagas.   |
+| **Use Case**               | Great for simple async operations.                    | Best for handling complex async operations.                      |
+| **Learning Curve**         | Low, easy to learn and implement.                     | Higher due to **generators** and advanced concepts.              |
 
 ---
 

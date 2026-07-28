@@ -9,7 +9,6 @@ Write code that is compatible with all major browsers. Follow best practices and
 - **CSS**: Use vendor prefixes when necessary to ensure compatibility for certain CSS properties.
   - Example: `-webkit-`, `-moz-`, `-ms-`
   - Tools like [Autoprefixer](https://autoprefixer.github.io/) can automatically add these prefixes to your CSS.
-  
 - **JavaScript**: Avoid using features that are not supported by older browsers (e.g., Internet Explorer) or polyfill unsupported features.
   - Use [Babel](https://babeljs.io/) to transpile modern JavaScript (ES6+) to a version that works in older browsers.
   - Use feature detection libraries like [Modernizr](https://modernizr.com/) to test if a browser supports a certain feature, and fall back to alternatives if not.
@@ -42,7 +41,6 @@ Refer to compatibility lists to see which browsers support certain features, and
 
 - **Can I Use**: A website that provides a detailed compatibility table for HTML, CSS, and JavaScript features across all major browsers. Check compatibility for individual features before using them.
   - Website: [https://caniuse.com](https://caniuse.com)
-  
 - **MDN Web Docs**: Mozilla's documentation provides information about web standards, browser compatibility, and usage examples.
   - Website: [https://developer.mozilla.org/en-US/](https://developer.mozilla.org/en-US/)
 
@@ -57,7 +55,7 @@ Ensure that your website works on different screen sizes and orientations, as br
 Example of viewport meta tag:
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 ```
 
 ### 6. **Polyfills and Transpilers**
@@ -79,7 +77,10 @@ Browsers apply different default styles to HTML elements. To ensure consistent s
 You can include Normalize.css like this:
 
 ```html
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+/>
 ```
 
 ### 8. **Cross-Browser JavaScript Debugging**
@@ -94,7 +95,6 @@ Use developer tools available in each browser to debug JavaScript and inspect CS
 ### 9. **Graceful Degradation and Progressive Enhancement**
 
 - **Graceful Degradation**: Focus on building a fully-featured website for modern browsers and then ensure that the site still functions reasonably well in older browsers, even if with limited features.
-  
 - **Progressive Enhancement**: Start with a basic, functional version of the website that works in all browsers, then enhance the experience for browsers that support modern features.
 
 ### 10. **Monitor Performance in Different Browsers**

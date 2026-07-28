@@ -1,3 +1,4 @@
+```js
 import React, { useEffect, useState, useRef } from "react";
 
 //setTimeout
@@ -180,8 +181,6 @@ const countAnimate = (obj, initVal, lastVal, duration) => {
 
 export { countAnimate, CountSetInterval, CountSetTimeout };
 
-
-
 import React, { useState, useRef } from "react";
 import {
   countAnimate,
@@ -218,7 +217,7 @@ const App = () => {
       countRef.current,
       0,
       parseInt(inputValue),
-      parseInt(duration) * 1000
+      parseInt(duration) * 1000,
     );
   };
 
@@ -286,3 +285,4 @@ const App = () => {
 };
 
 export default App;
+```

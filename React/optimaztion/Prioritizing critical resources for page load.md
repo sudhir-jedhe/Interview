@@ -29,11 +29,10 @@ Critical CSS refers to the minimum CSS required to render the above-the-fold con
   ```
 
 - **Use Tools to Extract Critical CSS**: Use tools like **Critical** (a Node.js module) or **PurgeCSS** to extract the critical CSS and inline it. There are also online tools and build tools that can automate this process.
-  
 - **Load Non-Critical CSS Asynchronously**: For non-essential styles, use `rel="preload"` or load them after the initial page render using `media="print"` (to defer loading), and then swap it to `media="all"`.
 
   ```html
-  <link rel="preload" href="styles.css" as="style">
+  <link rel="preload" href="styles.css" as="style" />
   ```
 
 ---
@@ -45,7 +44,6 @@ JavaScript should be loaded in such a way that it doesn't block the rendering of
 #### How to Implement:
 
 - **Use `async` and `defer` for Script Tags**: These attributes control the loading behavior of JavaScript files.
-
   - **`async`**: This attribute allows the script to download in parallel with the rest of the page without blocking it. Once it’s downloaded, it’s executed immediately.
 
     ```html
@@ -77,14 +75,14 @@ Images are often a significant resource on a page, and loading all of them immed
 - **Native Lazy Loading**: HTML supports native lazy loading for images using the `loading="lazy"` attribute.
 
   ```html
-  <img src="image.jpg" loading="lazy" alt="Lazy-loaded image">
+  <img src="image.jpg" loading="lazy" alt="Lazy-loaded image" />
   ```
 
 - **Intersection Observer API**: For more control, you can use the Intersection Observer API to load images only when they are near the viewport.
 
   ```js
   const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const img = entry.target;
         img.src = img.dataset.src;
@@ -93,8 +91,8 @@ Images are often a significant resource on a page, and loading all of them immed
     });
   });
 
-  const images = document.querySelectorAll('img.lazy');
-  images.forEach(image => observer.observe(image));
+  const images = document.querySelectorAll("img.lazy");
+  images.forEach((image) => observer.observe(image));
   ```
 
 ---
@@ -109,8 +107,8 @@ Fonts can significantly impact the performance of the page, as they need to be d
 
   ```css
   @font-face {
-    font-family: 'CustomFont';
-    src: url('custom-font.woff2') format('woff2');
+    font-family: "CustomFont";
+    src: url("custom-font.woff2") format("woff2");
     font-display: swap;
   }
   ```
@@ -118,7 +116,13 @@ Fonts can significantly impact the performance of the page, as they need to be d
 - **Preload Fonts**: Preloading fonts can speed up their download and reduce the blocking time. You can use the `rel="preload"` attribute to preload the font.
 
   ```html
-  <link rel="preload" href="custom-font.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link
+    rel="preload"
+    href="custom-font.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
   ```
 
 ---
@@ -130,14 +134,14 @@ Prefetching and preloading allow you to inform the browser about resources that 
 - **Prefetching**: Prefetching downloads resources in advance for a potential future navigation.
 
   ```html
-  <link rel="prefetch" href="next-page.js">
+  <link rel="prefetch" href="next-page.js" />
   ```
 
 - **Preloading**: Preloading is used for critical resources that are required for the current page but are not yet loaded.
 
   ```html
-  <link rel="preload" href="critical-styles.css" as="style">
-  <link rel="preload" href="critical-image.jpg" as="image">
+  <link rel="preload" href="critical-styles.css" as="style" />
+  <link rel="preload" href="critical-image.jpg" as="image" />
   ```
 
   This tells the browser to fetch the resource immediately, but it doesn’t block rendering.

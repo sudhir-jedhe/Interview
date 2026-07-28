@@ -2,7 +2,6 @@ To build a React component for a restaurant reservation widget with the given us
 
 1. **Initial Button:**
    - Initially, show a button labeled "Book a table".
-   
 2. **Dialog for Selecting Date, Time, and Number of Persons:**
    - On button click, a dialog should appear where the user can choose the number of persons, the date, and time.
 
@@ -18,6 +17,7 @@ To build a React component for a restaurant reservation widget with the given us
 ### Step-by-Step Implementation:
 
 #### 1. Set Up React Project
+
 First, make sure you're in a React environment. You can use `create-react-app` or any other React boilerplate.
 
 ```bash
@@ -38,11 +38,11 @@ npm install --save react-phone-number-input
 #### 3. Implement the Component
 
 ```javascript
-import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import PhoneInput from 'react-phone-number-input'
-import 'react-phone-number-input/style.css';
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 const ReservationWidget = () => {
   // State for controlling different parts of the flow
@@ -67,11 +67,11 @@ const ReservationWidget = () => {
       phone,
       numberOfPersons,
       selectedDate,
-      selectedTime
+      selectedTime,
     };
 
     // For now, log the reservation details
-    console.log('Reservation details:', reservationDetails);
+    console.log("Reservation details:", reservationDetails);
 
     // Example of calling a backend API (mocked)
     // fetch('/api/reservation', {
@@ -124,7 +124,10 @@ const ReservationWidget = () => {
             <div>
               <label>
                 Select Time:
-                <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
+                <select
+                  value={selectedTime}
+                  onChange={(e) => setSelectedTime(e.target.value)}
+                >
                   <option value="18:00">18:00</option>
                   <option value="19:00">19:00</option>
                   <option value="20:00">20:00</option>
@@ -201,7 +204,7 @@ To make the modal dialog look better, here are some basic styles:
 button {
   margin-top: 10px;
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   cursor: pointer;
@@ -212,7 +215,8 @@ button:hover {
   background-color: #45a049;
 }
 
-h2, h3 {
+h2,
+h3 {
   text-align: center;
 }
 ```
@@ -225,25 +229,25 @@ h2, h3 {
   - `name` and `phone`: Store the user's personal details.
   - `isSubmitted`: Indicates whether the reservation has been confirmed.
 
-- **DatePicker Component**: 
+- **DatePicker Component**:
   - We use `react-datepicker` to select the date and ensure the user cannot select past dates (`minDate={new Date()}`).
 
-- **Phone Input**: 
+- **Phone Input**:
   - We use `react-phone-number-input` to handle phone number input.
 
-- **Handle Reservation**: 
+- **Handle Reservation**:
   - When the user clicks the "Book" button, it logs the reservation details to the console. You can replace it with a `fetch` call to hit the backend API.
 
-- **Modal Dialog**: 
+- **Modal Dialog**:
   - A modal appears when the "Book a table" button is clicked, allowing the user to choose their reservation details. It also has a "Cancel" button to close the dialog.
 
 ---
 
 ### Next Steps:
-1. **Backend Integration**: 
+
+1. **Backend Integration**:
    - Replace the `console.log` with a `POST` request to your backend server for saving the reservation.
-   
-2. **User Confirmation**: 
+2. **User Confirmation**:
    - Once the reservation is confirmed, show a confirmation message to the user.
 
 This is a basic implementation, and you can further enhance it by adding more features like form validation, error handling, and UI improvements.

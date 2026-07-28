@@ -10,12 +10,13 @@ const kebabCase = (str) =>
     .toLowerCase();
 
 console.log(kebabCase("Geeks For Geeks")); // "geeks-for-geeks"
-console.log(kebabCase("GeeksForGeeks"));  // "geeks-for-geeks"
-console.log(kebabCase("Geeks_For_Geeks"));// "geeks-for-geeks"
+console.log(kebabCase("GeeksForGeeks")); // "geeks-for-geeks"
+console.log(kebabCase("Geeks_For_Geeks")); // "geeks-for-geeks"
 ```
 
 #### Explanation:
-- **Regex used**: 
+
+- **Regex used**:
   - The regex `([A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+)` is designed to capture words or sequences of letters and digits in a way that can handle camel case, Pascal case, and words separated by spaces.
     - `([A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)`: Matches sequences of uppercase letters, especially those in Pascal or camel case (e.g., `GeeksForGeeks` -> `Geeks`, `For`, `Geeks`).
     - `[A-Z]?[a-z]+[0-9]*`: Matches lowercase words with optional numbers (e.g., `geeks123` -> `geeks123`).
@@ -35,11 +36,12 @@ const kebabCase = (string) =>
     .toLowerCase();
 
 console.log(kebabCase("Geeks For Geeks")); // "geeks-for-geeks"
-console.log(kebabCase("GeeksForGeeks"));  // "geeks-for-geeks"
-console.log(kebabCase("Geeks_For_Geeks"));// "geeks-for-geeks"
+console.log(kebabCase("GeeksForGeeks")); // "geeks-for-geeks"
+console.log(kebabCase("Geeks_For_Geeks")); // "geeks-for-geeks"
 ```
 
 #### Explanation:
+
 - **Step 1** (`replace(/([a-z])([A-Z])/g, "$1-$2")`):
   - This regular expression is looking for occurrences where a lowercase letter is followed by an uppercase letter (e.g., `aB` -> `a-B`). The `g` flag ensures all such occurrences are replaced in the string.
 - **Step 2** (`replace(/[\s_]+/g, "-")`):
@@ -66,9 +68,9 @@ Both functions do a similar job but with different methods:
 ### Output for All Examples:
 
 ```js
-console.log(kebabCase("Geeks For Geeks"));    // "geeks-for-geeks"
-console.log(kebabCase("GeeksForGeeks"));     // "geeks-for-geeks"
-console.log(kebabCase("Geeks_For_Geeks"));  // "geeks-for-geeks"
+console.log(kebabCase("Geeks For Geeks")); // "geeks-for-geeks"
+console.log(kebabCase("GeeksForGeeks")); // "geeks-for-geeks"
+console.log(kebabCase("Geeks_For_Geeks")); // "geeks-for-geeks"
 ```
 
 Both functions will correctly convert the strings to **kebab case**, and in all the cases you've mentioned, the result is:
@@ -78,4 +80,5 @@ Both functions will correctly convert the strings to **kebab case**, and in all 
 ```
 
 ### Conclusion:
+
 Both solutions are effective for converting strings into kebab case. The second solution is simpler and more straightforward, while the first solution uses a more complex regular expression that can handle multiple cases (such as camel case, Pascal case, and more). You can choose either one based on your needs, though the second solution might be easier to understand and maintain for simpler cases.

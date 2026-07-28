@@ -1,3 +1,4 @@
+```js
 const chop = (str, size = str.length) => {
   const arr = [];
   let i = 0;
@@ -24,3 +25,4 @@ str.match(/(.|[\r\n]){1,n}/g); // Replace n with the size of the substring
 const chop = (str, size = str.length) => {
   return str.match(new RegExp(".{1," + size + "}", "g"));
 };
+```

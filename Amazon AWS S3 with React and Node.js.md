@@ -30,12 +30,12 @@ Amazon S3 is a versatile storage service that can store a wide range of data typ
 
 Amazon S3’s flexibility and scalability make it suitable for various use cases, offering reliable storage for almost any type of digital content.
 
-
 Here’s an example of how you can use Amazon S3 to upload and retrieve files in a **React** frontend application and a **Node.js** backend.
 
 ---
 
 #### **Step 1: Set Up Your AWS S3 Bucket**
+
 1. **Sign in to your AWS Management Console.**
 2. **Create an S3 bucket**:
    - Go to the S3 service and create a bucket.
@@ -80,12 +80,12 @@ Here’s an example of how you can use Amazon S3 to upload and retrieve files in
 ```javascript
 // server.js (Node.js backend)
 
-const express = require('express');
-const multer = require('multer');
-const AWS = require('aws-sdk');
-const dotenv = require('dotenv');
+const express = require("express");
+const multer = require("multer");
+const AWS = require("aws-sdk");
+const dotenv = require("dotenv");
 
-dotenv.config();  // Load environment variables from .env file
+dotenv.config(); // Load environment variables from .env file
 
 const app = express();
 const port = 5000;
@@ -94,7 +94,7 @@ const port = 5000;
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: 'us-east-1'  // Example region
+  region: "us-east-1", // Example region
 });
 
 // Initialize S3
@@ -105,20 +105,20 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Upload file endpoint
-app.post('/upload', upload.single('file'), (req, res) => {
+app.post("/upload", upload.single("file"), (req, res) => {
   const params = {
-    Bucket: process.env.AWS_S3_BUCKET_NAME,  // Your bucket name
-    Key: Date.now() + '-' + req.file.originalname,  // File name in the bucket
-    Body: req.file.buffer,  // File buffer
-    ACL: 'public-read'  // Set permissions for the file
+    Bucket: process.env.AWS_S3_BUCKET_NAME, // Your bucket name
+    Key: Date.now() + "-" + req.file.originalname, // File name in the bucket
+    Body: req.file.buffer, // File buffer
+    ACL: "public-read", // Set permissions for the file
   };
 
   // Upload to S3
   s3.upload(params, (err, data) => {
     if (err) {
-      return res.status(500).json({ error: 'Error uploading file' });
+      return res.status(500).json({ error: "Error uploading file" });
     }
-    res.json({ message: 'File uploaded successfully', url: data.Location });
+    res.json({ message: "File uploaded successfully", url: data.Location });
   });
 });
 
@@ -144,12 +144,12 @@ AWS_S3_BUCKET_NAME=your-bucket-name
 ```javascript
 // FileUpload.js (React component)
 
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
-  const [uploadStatus, setUploadStatus] = useState('');
+  const [uploadStatus, setUploadStatus] = useState("");
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -161,20 +161,24 @@ const FileUpload = () => {
     if (!file) return;
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
 
     try {
-      const response = await axios.post('http://localhost:5000/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      const response = await axios.post(
+        "http://localhost:5000/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         },
-      });
+      );
 
-      setUploadStatus('File uploaded successfully');
-      console.log('File URL:', response.data.url);
+      setUploadStatus("File uploaded successfully");
+      console.log("File URL:", response.data.url);
     } catch (error) {
-      setUploadStatus('Error uploading file');
-      console.error('Error uploading file:', error);
+      setUploadStatus("Error uploading file");
+      console.error("Error uploading file:", error);
     }
   };
 
@@ -196,8 +200,8 @@ export default FileUpload;
 ```javascript
 // App.js (React)
 
-import React from 'react';
-import FileUpload from './FileUpload';
+import React from "react";
+import FileUpload from "./FileUpload";
 
 function App() {
   return (
@@ -245,6 +249,7 @@ Example of how to display the uploaded image:
 ### Conclusion
 
 In this example:
+
 - **React** is used to handle the file selection and sending the file to the backend.
 - **Node.js** handles the file processing and uploading to Amazon S3.
 - **AWS S3** provides scalable and reliable storage for uploaded files.

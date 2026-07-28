@@ -39,13 +39,13 @@ Suppose you have a Redux state that holds a list of users, and you want to creat
 const state = {
   users: {
     list: [
-      { id: 1, name: 'Alice', active: true },
-      { id: 2, name: 'Bob', active: false },
-      { id: 3, name: 'Charlie', active: true }
+      { id: 1, name: "Alice", active: true },
+      { id: 2, name: "Bob", active: false },
+      { id: 3, name: "Charlie", active: true },
     ],
     loading: false,
-    error: null
-  }
+    error: null,
+  },
 };
 ```
 
@@ -66,16 +66,16 @@ Now, you can use the `useSelector` hook (from `react-redux`) in your component t
 
 ```javascript
 // UserList.js
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectUsers } from './selector';
+import React from "react";
+import { useSelector } from "react-redux";
+import { selectUsers } from "./selector";
 
 const UserList = () => {
   const users = useSelector(selectUsers);
 
   return (
     <ul>
-      {users.map(user => (
+      {users.map((user) => (
         <li key={user.id}>{user.name}</li>
       ))}
     </ul>
@@ -86,6 +86,7 @@ export default UserList;
 ```
 
 In this example:
+
 - `useSelector(selectUsers)` calls the selector `selectUsers` to retrieve the `users.list` from the Redux state.
 - The component will automatically re-render if the `users.list` part of the state changes.
 
@@ -105,7 +106,7 @@ npm install reselect
 
 ```javascript
 // selector.js
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
 // Input selector
 const selectUsers = (state) => state.users.list;
@@ -115,8 +116,8 @@ const selectActiveFilter = (state) => state.users.activeFilter;
 export const selectActiveUsers = createSelector(
   [selectUsers, selectActiveFilter],
   (users, filter) => {
-    return users.filter(user => user.active === filter);
-  }
+    return users.filter((user) => user.active === filter);
+  },
 );
 ```
 
@@ -127,16 +128,16 @@ export const selectActiveUsers = createSelector(
 
 ```javascript
 // UserList.js
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectActiveUsers } from './selector';
+import React from "react";
+import { useSelector } from "react-redux";
+import { selectActiveUsers } from "./selector";
 
 const UserList = () => {
   const activeUsers = useSelector(selectActiveUsers);
 
   return (
     <ul>
-      {activeUsers.map(user => (
+      {activeUsers.map((user) => (
         <li key={user.id}>{user.name}</li>
       ))}
     </ul>
@@ -147,6 +148,7 @@ export default UserList;
 ```
 
 In this case:
+
 - `selectActiveUsers` only re-computes the active users list when the `users.list` or `users.activeFilter` changes.
 - This improves performance by avoiding unnecessary recalculations and re-renders.
 
@@ -155,9 +157,9 @@ In this case:
 ### **When to Use Selectors**
 
 1. **Simple Access to State**: If you need to extract simple parts of state (like a list of users or a specific item), you can create basic selectors that just return those parts.
-  
+
 2. **Derived Data**: When you need to compute derived data from the store, such as filtering or sorting, selectors can be used to keep this logic out of your components.
-  
+
 3. **Performance Optimization**: When you're working with large data sets or complex computations, selectors help prevent unnecessary re-renders and recalculations by memoizing the results.
 
 4. **Decoupling State and UI**: If you need to decouple the shape of the Redux state from how it's used in components, selectors provide an abstraction layer, so components don’t need to know about the structure of the state.
@@ -167,6 +169,7 @@ In this case:
 ### **Conclusion**
 
 Selectors in Redux serve multiple important purposes:
+
 - **Encapsulating state access** and providing a centralized way to get data from the store.
 - **Memoizing results** to optimize performance and avoid unnecessary re-renders.
 - **Creating derived data** to avoid duplicating logic in multiple components.

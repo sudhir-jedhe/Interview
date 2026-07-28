@@ -9,6 +9,7 @@ JavaScript primitives are simple values (e.g., numbers, strings, booleans), whil
 When you try to access a method or property on a primitive value, JavaScript "wraps" the primitive value inside the corresponding object (i.e., **autoboxing**), allows you to access the method, and then **unwraps** the result back to the primitive value.
 
 For example:
+
 1. **Primitive types** like `string`, `number`, and `boolean` do not have methods.
 2. But **wrapper objects** like `String`, `Number`, and `Boolean` **do** have methods (e.g., `toUpperCase()`, `toString()`, etc.).
 
@@ -17,7 +18,7 @@ For example:
 #### 1. **String Autoboxing**
 
 ```javascript
-let str = 'hello';
+let str = "hello";
 
 // Even though 'str' is a primitive string, we can call methods on it.
 console.log(str.toUpperCase()); // 'HELLO'
@@ -53,7 +54,7 @@ For `flag`, a primitive boolean value, JavaScript internally converts it to a `B
 - **Number**: A wrapper object for primitive numbers.
 - **Boolean**: A wrapper object for primitive boolean values.
 - **Symbol**: Symbols are not autoboxed because they are not objects.
-  
+
 These objects provide additional methods and properties that primitives lack, which is why JavaScript automatically boxes a primitive into its corresponding object when needed.
 
 ### Underlying Behavior
@@ -75,13 +76,14 @@ console.log(num.toString()); // "42"
 ```
 
 In this example:
+
 - `str.valueOf()` returns the primitive value of the string (`"hello"`).
 - `num.toString()` converts the primitive number (`42`) into a string.
 
 ### Limitations of Autoboxing
 
 1. **Not all methods or operations are available**: Autoboxing happens for certain methods, but not all operations can be performed directly on primitives. For example, attempting to modify a primitive string directly won't work, because strings are immutable.
-   
+
    ```javascript
    let str = "hello";
    str.toUpperCase();

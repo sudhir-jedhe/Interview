@@ -8,7 +8,6 @@ Here’s how you might adapt and frame these questions for a **React JS Develope
 
 1. **What do you expect from me in this React JS Developer Team Lead role?**
    - Can you tell me more about the key responsibilities, technical expectations, and the strategic objectives of this role?
-   
 2. **What are the most important goals and milestones for the team in the first couple of years, and how can I contribute to achieving them?**
    - Are there upcoming major React JS or front-end development projects that I would lead or be involved in?
 
@@ -50,18 +49,18 @@ Here’s how you might adapt and frame these questions for a **React JS Develope
 ### **Additional Role-Specific Considerations for Team Leads/Managers:**
 
 - **Leadership and Mentorship:**
-   - How much of my time will be spent on technical hands-on work versus team management and leadership responsibilities?
-   - How will I be evaluated as a team lead? Are there specific performance metrics for managing teams, such as delivery timelines, team satisfaction, or technical quality?
+  - How much of my time will be spent on technical hands-on work versus team management and leadership responsibilities?
+  - How will I be evaluated as a team lead? Are there specific performance metrics for managing teams, such as delivery timelines, team satisfaction, or technical quality?
 
 - **Code Quality and Development Process:**
-   - What is the team’s approach to ensuring high-quality React code? Do you follow best practices such as code reviews, testing (unit, integration, etc.), and CI/CD pipelines?
-   - How are technical decisions made for React-based projects? Is there a clear architectural vision for the team to follow, or is it more decentralized?
+  - What is the team’s approach to ensuring high-quality React code? Do you follow best practices such as code reviews, testing (unit, integration, etc.), and CI/CD pipelines?
+  - How are technical decisions made for React-based projects? Is there a clear architectural vision for the team to follow, or is it more decentralized?
 
 - **Work-Life Balance:**
-   - What’s the approach to balancing tight deadlines and maintaining a healthy work-life balance, especially in a leadership position?
+  - What’s the approach to balancing tight deadlines and maintaining a healthy work-life balance, especially in a leadership position?
 
 ---
 
-By tailoring these questions to the role you're applying for, you’ll be able to gather essential insights into your potential new workplace and ensure it’s the right fit for both your professional growth and personal aspirations. 
+By tailoring these questions to the role you're applying for, you’ll be able to gather essential insights into your potential new workplace and ensure it’s the right fit for both your professional growth and personal aspirations.
 
 Good luck in your interview!

@@ -1,4 +1,4 @@
-The problem is asking for the final position of a snake that starts at the top-left corner of a 2D grid and moves based on a sequence of commands. The grid is of size `n x n`, and each cell in the grid can be represented by a unique position derived from its row and column, with the formula: 
+The problem is asking for the final position of a snake that starts at the top-left corner of a 2D grid and moves based on a sequence of commands. The grid is of size `n x n`, and each cell in the grid can be represented by a unique position derived from its row and column, with the formula:
 
 \[
 \text{position} = i \times n + j
@@ -13,6 +13,7 @@ Where \( i \) is the row index and \( j \) is the column index of the cell.
 - The movement commands adjust the snake's coordinates and the final position needs to be calculated after all the commands are processed.
 
 ### Key Points:
+
 1. **Up (U)**: Decrease the row index by 1.
 2. **Down (D)**: Increase the row index by 1.
 3. **Left (L)**: Decrease the column index by 1.
@@ -21,12 +22,14 @@ Where \( i \) is the row index and \( j \) is the column index of the cell.
 ### Approach:
 
 We start by defining two variables `x` and `y` to track the current position of the snake in the grid, where:
+
 - `x` represents the row number.
 - `y` represents the column number.
 
 Then, for each command:
+
 - We adjust `x` and `y` according to the direction specified.
-- Finally, the position in the grid can be computed using the formula: 
+- Finally, the position in the grid can be computed using the formula:
 
 \[
 \text{position} = x \times n + y
@@ -42,23 +45,24 @@ Then, for each command:
 
 ```typescript
 function finalPositionOfSnake(n: number, commands: string[]): number {
-    let x = 0, y = 0; // Starting position at top-left corner
+  let x = 0,
+    y = 0; // Starting position at top-left corner
 
-    // Loop through each command and update the position
-    for (const command of commands) {
-        if (command === "UP") {
-            x--; // Move up (decrease row)
-        } else if (command === "DOWN") {
-            x++; // Move down (increase row)
-        } else if (command === "LEFT") {
-            y--; // Move left (decrease column)
-        } else if (command === "RIGHT") {
-            y++; // Move right (increase column)
-        }
+  // Loop through each command and update the position
+  for (const command of commands) {
+    if (command === "UP") {
+      x--; // Move up (decrease row)
+    } else if (command === "DOWN") {
+      x++; // Move down (increase row)
+    } else if (command === "LEFT") {
+      y--; // Move left (decrease column)
+    } else if (command === "RIGHT") {
+      y++; // Move right (increase column)
     }
+  }
 
-    // Return the final position as (x * n + y)
-    return x * n + y;
+  // Return the final position as (x * n + y)
+  return x * n + y;
 }
 ```
 
@@ -75,6 +79,7 @@ function finalPositionOfSnake(n: number, commands: string[]): number {
 ### Example Walkthrough:
 
 #### Example 1:
+
 ```typescript
 let n = 2;
 let commands = ["RIGHT", "DOWN"];
@@ -82,6 +87,7 @@ console.log(finalPositionOfSnake(n, commands)); // Output: 3
 ```
 
 - The grid looks like this:
+
 ```
 0 1
 2 3
@@ -90,10 +96,11 @@ console.log(finalPositionOfSnake(n, commands)); // Output: 3
 - Starting at position 0 (coordinates `(0, 0)`):
   1. "RIGHT" moves the snake to `(0, 1)` (position 1).
   2. "DOWN" moves the snake to `(1, 1)` (position 3).
-  
+
 The final position is 3.
 
 #### Example 2:
+
 ```typescript
 let n = 3;
 let commands = ["DOWN", "RIGHT", "UP"];
@@ -101,6 +108,7 @@ console.log(finalPositionOfSnake(n, commands)); // Output: 1
 ```
 
 - The grid looks like this:
+
 ```
 0 1 2
 3 4 5
@@ -115,10 +123,13 @@ console.log(finalPositionOfSnake(n, commands)); // Output: 1
 The final position is 1.
 
 ### Time Complexity:
+
 - **O(m)**: Where `m` is the length of the `commands` array, since we process each command once.
 
 ### Space Complexity:
+
 - **O(1)**: We use only a constant amount of space regardless of the input size.
 
 ### Final Thoughts:
+
 This solution efficiently processes the snake's movement in the grid based on the given commands and computes the final position using simple coordinate manipulation and arithmetic.

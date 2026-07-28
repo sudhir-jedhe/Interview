@@ -1,3 +1,4 @@
+```js
 import React from "react";
 import React, { useEffect, useRef, useState } from "react";
 import React, { useEffect, useRef, useState } from "react";
@@ -24,7 +25,7 @@ export function PhoneNumberInput() {
     if(curr.length > 6) curr = `${curr.slice(0,6)}-${curr.slice(6)}`
     if(curr.length > 3) curr = `(${curr.slice(0,3)})${curr.slice(3)}`
     setValue(curr);
-  } 
+  }
   return <input data-testid="phone-number-input" value={value} onChange={formatNumber}/>
 }
 
@@ -79,9 +80,9 @@ export function PhoneNumberInput({ maxLength = 10 }) {
     }
   }, [input])
 
-  return <input 
-    value={input} 
-    onChange={inputChange} 
+  return <input
+    value={input}
+    onChange={inputChange}
     ref={inputRef}
     data-testid="phone-number-input"
    />
@@ -134,3 +135,4 @@ export function PhoneNumberInput() {
     return <input data-testid="phone-number-input" onChange={onChange} value={value} ref={inputRef}/>
 }
 export default PhoneNumberInput;
+```

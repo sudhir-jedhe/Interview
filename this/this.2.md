@@ -10,8 +10,8 @@ const a = {
   },
 };
 
-a.update("bigfrontend.dev");  // Calling the arrow function
-console.log(a.dev);  // Checking the value of a.dev
+a.update("bigfrontend.dev"); // Calling the arrow function
+console.log(a.dev); // Checking the value of a.dev
 ```
 
 ### Key Concepts:
@@ -41,17 +41,18 @@ const a = {
 };
 
 a.update("bigfrontend.dev");
-console.log(a.dev);  // Output will be "bigfrontend.dev"
+console.log(a.dev); // Output will be "bigfrontend.dev"
 ```
 
 ### Explanation of the Fix:
+
 - In this case, `update` is now a regular method (non-arrow function) of object `a`.
 - Inside the method, `this` correctly refers to the object `a`, so calling `this.dev = name` updates `a.dev` as expected.
 
 ### Output:
 
 ```javascript
-bigfrontend.dev  // The 'dev' property of 'a' is updated successfully.
+bigfrontend.dev; // The 'dev' property of 'a' is updated successfully.
 ```
 
 ### Summary:

@@ -1,3 +1,4 @@
+```js
 /**
  * @param {Array<any>} promises - notice input might have non-Promises
  * @return {Promise<any[]>}

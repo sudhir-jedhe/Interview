@@ -10,15 +10,15 @@ You can use the `RegExp` constructor to create a regular expression with the `'i
 
 ```javascript
 const includesCaseInsensitive = (str, searchString) =>
-  new RegExp(searchString, 'i').test(str);
+  new RegExp(searchString, "i").test(str);
 
 // Usage examples:
-console.log(includesCaseInsensitive('Blue Whale', 'blue'));   // true
-console.log(includesCaseInsensitive('Blue Whale', 'WhALE')); // true
-console.log(includesCaseInsensitive('Hello World', 'hello')); // true
-console.log(includesCaseInsensitive('Hello World', 'WORLD')); // true
-console.log(includesCaseInsensitive('JavaScript', 'java'));   // true
-console.log(includesCaseInsensitive('JavaScript', 'python')); // false
+console.log(includesCaseInsensitive("Blue Whale", "blue")); // true
+console.log(includesCaseInsensitive("Blue Whale", "WhALE")); // true
+console.log(includesCaseInsensitive("Hello World", "hello")); // true
+console.log(includesCaseInsensitive("Hello World", "WORLD")); // true
+console.log(includesCaseInsensitive("JavaScript", "java")); // true
+console.log(includesCaseInsensitive("JavaScript", "python")); // false
 ```
 
 ### Explanation:
@@ -45,8 +45,8 @@ console.log(includesCaseInsensitive('JavaScript', 'python')); // false
    ```javascript
    const includesCaseInsensitive = (str, searchString) => {
      // Escape special characters in searchString
-     searchString = searchString.replace(/[.*+?^=!:${}()|\[\]\/\\]/g, '\\$&');
-     return new RegExp(searchString, 'i').test(str);
+     searchString = searchString.replace(/[.*+?^=!:${}()|\[\]\/\\]/g, "\\$&");
+     return new RegExp(searchString, "i").test(str);
    };
    ```
 

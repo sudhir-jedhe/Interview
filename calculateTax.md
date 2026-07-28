@@ -3,6 +3,7 @@
 The function `calculateTax` is designed to calculate the total tax based on income and a set of progressive tax brackets. In a progressive tax system, the tax rate increases as the income increases, and different portions of income are taxed at different rates.
 
 #### **Steps Involved in Tax Calculation:**
+
 1. **Input Parameters:**
    - `brackets`: An array of tax brackets where each element is an array `[upperBound, taxRate]`. `upperBound` represents the upper limit for that tax bracket, and `taxRate` represents the percentage rate applied to the portion of income that falls within the bracket.
    - `income`: The total income that needs to be taxed.
@@ -23,7 +24,8 @@ The function `calculateTax` is designed to calculate the total tax based on inco
    - **Total Tax:** The total tax is the sum of taxes from each bracket: `1,000 + 2,000 + 1,500 = 4,500`.
 
 ### **Corrected Code (Fixed Example Explanation):**
-In the initial code, there's a small issue with how tax is calculated in each bracket. You need to apply the tax only to the portion of the income that falls into the current bracket, which is why we subtract the already taxed income. 
+
+In the initial code, there's a small issue with how tax is calculated in each bracket. You need to apply the tax only to the portion of the income that falls into the current bracket, which is why we subtract the already taxed income.
 
 Here is the correct code:
 
@@ -37,7 +39,10 @@ function calculateTax(brackets, income) {
     if (remainingIncome <= 0) break;
 
     // Calculate the taxable income for this bracket
-    const taxableIncome = Math.min(remainingIncome, upperBound - (i > 0 ? brackets[i - 1][0] : 0));
+    const taxableIncome = Math.min(
+      remainingIncome,
+      upperBound - (i > 0 ? brackets[i - 1][0] : 0),
+    );
     const taxForBracket = (taxableIncome * taxRate) / 100;
     totalTax += taxForBracket;
 
@@ -63,8 +68,8 @@ console.log(calculateTax(brackets, income)); // Output: 4500
 
 For `income = 25,000` and `brackets = [[10,000, 10%], [20,000, 20%], [30,000, 30%]]`, the tax calculation works as follows:
 
-- **First Bracket (up to $10,000 at 10%)**: 
-  - Taxable income is `$10,000`. 
+- **First Bracket (up to $10,000 at 10%)**:
+  - Taxable income is `$10,000`.
   - Tax = `10,000 * 10% = 1,000`.
 
 - **Second Bracket (from $10,001 to $20,000 at 20%)**:

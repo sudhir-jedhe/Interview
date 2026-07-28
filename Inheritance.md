@@ -4,24 +4,24 @@ Let's break down the provided code and understand the inheritance behavior in Ja
 
 ```javascript
 class A {
-  a = "a";  // Property 'a' is directly on the instance of A
+  a = "a"; // Property 'a' is directly on the instance of A
 }
 
-A.prototype.c = "c";  // Property 'c' is added to the prototype of A
+A.prototype.c = "c"; // Property 'c' is added to the prototype of A
 
 class B extends A {
-  b = "b";  // Property 'b' is directly on the instance of B
+  b = "b"; // Property 'b' is directly on the instance of B
 }
 
-const a = new A();  // Create an instance of class A
-const b = new B();  // Create an instance of class B
+const a = new A(); // Create an instance of class A
+const b = new B(); // Create an instance of class B
 
-console.log(a.a);  // Access 'a' from instance of A
-console.log(a.b);  // Access 'b' from instance of A (it doesn't exist)
-console.log(a.c);  // Access 'c' from instance of A (from the prototype)
-console.log(b.a);  // Access 'a' from instance of B (inherited from A)
-console.log(b.b);  // Access 'b' from instance of B
-console.log(b.c);  // Access 'c' from instance of B (inherited from A prototype)
+console.log(a.a); // Access 'a' from instance of A
+console.log(a.b); // Access 'b' from instance of A (it doesn't exist)
+console.log(a.c); // Access 'c' from instance of A (from the prototype)
+console.log(b.a); // Access 'a' from instance of B (inherited from A)
+console.log(b.b); // Access 'b' from instance of B
+console.log(b.c); // Access 'c' from instance of B (inherited from A prototype)
 ```
 
 ### **Explanation:**
@@ -46,12 +46,12 @@ console.log(b.c);  // Access 'c' from instance of B (inherited from A prototype)
 ### **Final Output:**
 
 ```javascript
-a.a  // "a"
-a.b  // undefined
-a.c  // "c"
-b.a  // "a"
-b.b  // "b"
-b.c  // "c"
+a.a; // "a"
+a.b; // undefined
+a.c; // "c"
+b.a; // "a"
+b.b; // "b"
+b.c; // "c"
 ```
 
 ### **Key Points:**
@@ -60,6 +60,6 @@ b.c  // "c"
 - **Prototype properties (`c`)** are inherited from the prototype chain, and any subclass will inherit them as long as the property exists in the prototype of a superclass.
 
 ### Inheritance Flow:
+
 - `A.prototype.c` is inherited by `B` because `B` extends `A`.
 - `a` and `b` both have access to properties defined in their own class and the prototype chain, with `b` inheriting everything from `A` through `B`.
-

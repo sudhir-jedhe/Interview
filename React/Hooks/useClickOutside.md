@@ -1,9 +1,10 @@
+```js
 import React, { useEffect, useRef } from "react";
 import React, { RefObject, useEffect, useRef } from "react";
 
 export function useClickOutside<T extends HTMLElement>(callback: () => void): React.RefObject<T> {
   const ref = useRef<T>(null)
-  
+
   useEffect(() => {
     const click = ({ target }: Event): void => {
       if (target && ref.current && !ref.current.contains(target as Node)) {
@@ -11,7 +12,7 @@ export function useClickOutside<T extends HTMLElement>(callback: () => void): Re
       }
     }
     document.addEventListener('mousedown', click)
-    
+
     return () => {
       document.removeEventListener('mousedown', click)
     }
@@ -60,7 +61,7 @@ function useOnClickOutside(ref, callback) {
         if (!ref.current || ref.current.contains(event.target)) {
           return;
         }
-        
+
         // invoke the callback
         callback(event);
       };
@@ -73,7 +74,7 @@ function useOnClickOutside(ref, callback) {
         document.removeEventListener("touchstart", listener);
       };
     },
-    
+
     // add ref and callback to effect dependencies
     [ref, callback]
   );
@@ -97,3 +98,4 @@ function Example() {
 
 Output:
 "Clicked" // when clicked on Outside Click me!
+```

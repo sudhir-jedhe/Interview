@@ -1,6 +1,6 @@
 Your function `diamondPattern` generates a diamond shape with a given number of rows in the first half (the top pyramid). It works well, but there's a little unnecessary duplication of logic. You can simplify the code a bit by removing some redundant operations. Specifically:
 
-- You don't need to add spaces to the right in each row for both the top and bottom half, because the spaces on the right are already implied by the pattern when you add spaces on the left. 
+- You don't need to add spaces to the right in each row for both the top and bottom half, because the spaces on the right are already implied by the pattern when you add spaces on the left.
 - You can reduce the space calculation logic to make it cleaner.
 
 Here’s the updated version of the function:
@@ -59,7 +59,7 @@ diamondPattern(5);
 2. **Bottom Half**: The second `for` loop prints the bottom half of the diamond. For each row:
    - **Leading spaces**: `(rows - i)` spaces to shift the stars inwards.
    - **Stars**: `2 * i - 1` stars for each row.
-   
+
    It iterates from `rows - 1` to `1` to print the bottom half in reverse.
 
 ### Example Output:
@@ -67,15 +67,15 @@ diamondPattern(5);
 For `diamondPattern(5)`, the output would look like this:
 
 ```
-    *    
-   ***   
-  *****  
- ******* 
+    *
+   ***
+  *****
+ *******
 *********
- ******* 
-  *****  
-   ***   
-    *    
+ *******
+  *****
+   ***
+    *
 ```
 
 ### Further Optimization:

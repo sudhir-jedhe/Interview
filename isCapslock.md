@@ -30,9 +30,9 @@ Here is an improved version of the code using `keydown` (more reliable) and mode
     let capsLock = false;
 
     // Check if it's a letter key (both uppercase and lowercase)
-    if (key >= 'a' && key <= 'z') {
+    if (key >= "a" && key <= "z") {
       capsLock = shiftKey; // Caps lock is on if Shift key is pressed
-    } else if (key >= 'A' && key <= 'Z') {
+    } else if (key >= "A" && key <= "Z") {
       capsLock = !shiftKey; // Caps lock is on if Shift key is not pressed
     }
 
@@ -41,7 +41,7 @@ Here is an improved version of the code using `keydown` (more reliable) and mode
 
   const emailInput = document.querySelector("#email");
 
-  emailInput.addEventListener("keydown", function(event) {
+  emailInput.addEventListener("keydown", function (event) {
     if (isCapslock(event)) {
       console.log("Caps Lock is ON");
     } else {
@@ -52,6 +52,7 @@ Here is an improved version of the code using `keydown` (more reliable) and mode
 ```
 
 ### Key Changes and Improvements:
+
 1. **Using `key` instead of `charCode`:**
    - `key` provides a string representing the key pressed (e.g., 'A', 'a', '1', etc.). It's more reliable and works across modern browsers.
    - `key` will give you both upper and lowercase letters (e.g., 'A' and 'a'), which is important to determine Caps Lock state.
@@ -66,6 +67,7 @@ Here is an improved version of the code using `keydown` (more reliable) and mode
    - If the key is uppercase (A-Z), Caps Lock is on if the Shift key is not pressed.
 
 ### Explanation:
+
 - The `keydown` event listener listens for key presses, and the `isCapslock` function determines whether Caps Lock is on or off by comparing the `key` value and the state of the `shiftKey` modifier.
 - It checks if the key pressed is a letter and compares the shift key to determine if the Caps Lock is likely on.
 
@@ -80,10 +82,8 @@ Here is an improved version of the code using `keydown` (more reliable) and mode
 
 1. **Typing "abc" with Caps Lock OFF:**
    - Console Output: "Caps Lock is OFF"
-   
 2. **Typing "ABC" with Caps Lock ON:**
    - Console Output: "Caps Lock is ON"
-   
 3. **Typing "abc" while holding Shift (Caps Lock is ON):**
    - Console Output: "Caps Lock is ON"
 

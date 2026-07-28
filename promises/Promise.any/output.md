@@ -1,3 +1,4 @@
+```js
 Input:
 const test1 = new Promise(function (resolve, reject) {
   setTimeout(reject, 500, 'one');

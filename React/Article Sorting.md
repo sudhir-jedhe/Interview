@@ -12,7 +12,7 @@ Common machine-coding question:
 
 ✅ `useMemo` optimisation
 
-***
+---
 
 ## Sample Data
 
@@ -39,130 +39,70 @@ const articles = [
 ];
 ```
 
-***
+---
 
 ## Complete Code
 
 ```jsx
-import {
-  useMemo,
-  useState,
-} from "react";
+import { useMemo, useState } from "react";
 
 export default function Articles() {
-  const [sortBy, setSortBy] =
-    useState("upvotes");
+  const [sortBy, setSortBy] = useState("upvotes");
 
-  const sortedArticles =
-    useMemo(() => {
-      const copy = [...articles];
+  const sortedArticles = useMemo(() => {
+    const copy = [...articles];
 
-      switch (sortBy) {
-        case "upvotes":
-          return copy.sort(
-            (a, b) =>
-              b.upvotes -
-              a.upvotes
-          );
+    switch (sortBy) {
+      case "upvotes":
+        return copy.sort((a, b) => b.upvotes - a.upvotes);
 
-        case "newest":
-          return copy.sort(
-            (a, b) =>
-              new Date(
-                b.date
-              ) -
-              new Date(
-                a.date
-              )
-          );
+      case "newest":
+        return copy.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        case "oldest":
-          return copy.sort(
-            (a, b) =>
-              new Date(
-                a.date
-              ) -
-              new Date(
-                b.date
-              )
-          );
+      case "oldest":
+        return copy.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-        default:
-          return copy;
-      }
-    }, [sortBy]);
+      default:
+        return copy;
+    }
+  }, [sortBy]);
 
   return (
     <div>
-      <h1>
-        Articles
-      </h1>
+      <h1>Articles</h1>
 
-      <select
-        value={sortBy}
-        onChange={(e) =>
-          setSortBy(
-            e.target.value
-          )
-        }
-      >
-        <option value="upvotes">
-          Most Upvoted
-        </option>
+      <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+        <option value="upvotes">Most Upvoted</option>
 
-        <option value="newest">
-          Most Recent
-        </option>
+        <option value="newest">Most Recent</option>
 
-        <option value="oldest">
-          Oldest
-        </option>
+        <option value="oldest">Oldest</option>
       </select>
 
       <ul>
-        {sortedArticles.map(
-          (article) => (
-            <li
-              key={
-                article.id
-              }
-            >
-              <h3>
-                {
-                  article.title
-                }
-              </h3>
+        {sortedArticles.map((article) => (
+          <li key={article.id}>
+            <h3>{article.title}</h3>
 
-              <p>
-                Upvotes:{" "}
-                {
-                  article.upvotes
-                }
-              </p>
+            <p>Upvotes: {article.upvotes}</p>
 
-              <p>
-                Date:{" "}
-                {
-                  article.date
-                }
-              </p>
-            </li>
-          )
-        )}
+            <p>Date: {article.date}</p>
+          </li>
+        ))}
       </ul>
     </div>
   );
 }
 ```
 
-***
+---
 
 ## Sorting Logic
 
 ### Most Upvoted
 
 ```js
-b.upvotes - a.upvotes
+b.upvotes - a.upvotes;
 ```
 
 Result:
@@ -173,13 +113,12 @@ Result:
 100
 ```
 
-***
+---
 
 ### Most Recent
 
 ```js
-new Date(b.date) -
-new Date(a.date)
+new Date(b.date) - new Date(a.date);
 ```
 
 Result:
@@ -190,13 +129,12 @@ Result:
 2025-12-15
 ```
 
-***
+---
 
 ### Oldest
 
 ```js
-new Date(a.date) -
-new Date(b.date)
+new Date(a.date) - new Date(b.date);
 ```
 
 Result:
@@ -207,7 +145,7 @@ Result:
 2026-07-01
 ```
 
-***
+---
 
 ## Interview Version (HackerRank Style)
 
@@ -218,41 +156,18 @@ const SORT_OPTIONS = {
   OLDEST: "oldest",
 };
 
-function sortArticles(
-  articles,
-  sortBy
-) {
+function sortArticles(articles, sortBy) {
   const copy = [...articles];
 
   switch (sortBy) {
     case SORT_OPTIONS.UPVOTES:
-      return copy.sort(
-        (a, b) =>
-          b.upvotes -
-          a.upvotes
-      );
+      return copy.sort((a, b) => b.upvotes - a.upvotes);
 
     case SORT_OPTIONS.NEWEST:
-      return copy.sort(
-        (a, b) =>
-          new Date(
-            b.date
-          ) -
-          new Date(
-            a.date
-          )
-      );
+      return copy.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     case SORT_OPTIONS.OLDEST:
-      return copy.sort(
-        (a, b) =>
-          new Date(
-            a.date
-          ) -
-          new Date(
-            b.date
-          )
-      );
+      return copy.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     default:
       return copy;

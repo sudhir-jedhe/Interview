@@ -21,8 +21,8 @@ Here is an example of creating a Redux store with a simple counter app:
 
 ```javascript
 // src/redux/actions/types.js
-export const INCREMENT = 'INCREMENT';
-export const DECREMENT = 'DECREMENT';
+export const INCREMENT = "INCREMENT";
+export const DECREMENT = "DECREMENT";
 
 // Action creators
 export const increment = () => ({
@@ -38,7 +38,7 @@ export const decrement = () => ({
 
 ```javascript
 // src/redux/reducers/counterReducer.js
-import { INCREMENT, DECREMENT } from '../actions/types';
+import { INCREMENT, DECREMENT } from "../actions/types";
 
 const initialState = {
   count: 0,
@@ -64,8 +64,8 @@ In your `store.js` file, you can create the store like this:
 
 ```javascript
 // src/redux/store.js
-import { createStore } from 'redux';
-import counterReducer from './reducers/counterReducer';
+import { createStore } from "redux";
+import counterReducer from "./reducers/counterReducer";
 
 // Create the Redux store using the root reducer (counterReducer in this case)
 const store = createStore(counterReducer);
@@ -74,6 +74,7 @@ export default store;
 ```
 
 Here:
+
 - `createStore(counterReducer)` initializes the store with the `counterReducer`.
 - The store will hold the state of the app and use this reducer to manage state transitions.
 
@@ -97,7 +98,7 @@ Example:
 
 ```javascript
 // Accessing the store directly
-import store from './redux/store';
+import store from "./redux/store";
 
 // Get the current state of the store
 const currentState = store.getState();
@@ -112,9 +113,9 @@ Example using `useSelector`:
 
 ```javascript
 // src/components/Counter.js
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement } from '../redux/actions/types';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement } from "../redux/actions/types";
 
 function Counter() {
   // Access the count from the Redux store
@@ -134,6 +135,7 @@ export default Counter;
 ```
 
 In this example:
+
 - `useSelector((state) => state.count)` accesses the `count` value from the Redux store’s state.
 - The `useDispatch()` hook gives access to the `dispatch` function, which is used to dispatch actions (like `increment()` and `decrement()`).
 
@@ -145,9 +147,9 @@ Example:
 
 ```javascript
 // src/components/Counter.js
-import React from 'react';
-import { connect } from 'react-redux';
-import { increment, decrement } from '../redux/actions/types';
+import React from "react";
+import { connect } from "react-redux";
+import { increment, decrement } from "../redux/actions/types";
 
 class Counter extends React.Component {
   render() {
@@ -177,6 +179,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Counter);
 ```
 
 In this example:
+
 - `mapStateToProps` is used to map the Redux store’s state (like `state.count`) to the component's props (`this.props.count`).
 - `mapDispatchToProps` maps the action creators (`increment` and `decrement`) to props as well.
 
@@ -190,10 +193,10 @@ Example:
 
 ```javascript
 // Subscribing to the store for changes
-import store from './redux/store';
+import store from "./redux/store";
 
 store.subscribe(() => {
-  console.log('State changed:', store.getState());
+  console.log("State changed:", store.getState());
 });
 ```
 
@@ -206,7 +209,6 @@ This method will run the provided callback whenever the state changes. You typic
 1. **Creating the Store**:
    - Use `createStore(reducer)` to create the store with a root reducer that manages the app's state.
    - You can combine multiple reducers using `combineReducers()` if needed.
-   
 2. **Accessing State**:
    - **Directly** via `store.getState()` in non-React contexts.
    - **In React Components**:

@@ -3,6 +3,7 @@ Your implementation looks great overall, but there's a slight issue that could a
 Let's go through your solution step-by-step and correct the merging process to make sure it's more efficient:
 
 ### **Key points to address:**
+
 1. The sorting part is fine, where you sort odd and even indexed values.
 2. The merging process uses `.shift()`, but a better approach could be to maintain pointers to track the current position in the odd/even arrays and update the result directly.
 
@@ -23,8 +24,9 @@ export function sortOddEven(arr) {
 
   // Merge odd and even sorted arrays
   const result = [];
-  let oddIndex = 0, evenIndex = 0;
-  
+  let oddIndex = 0,
+    evenIndex = 0;
+
   for (let i = 0; i < arr.length; i++) {
     // If the index is odd, pick from oddIndices
     if (i % 2 !== 0) {
@@ -46,6 +48,7 @@ console.log(sortOddEven(arr)); // Output: [2, 9, 4, 7, 6, 5, 8, 3, 1]
 ```
 
 ### **Explanation of Changes**:
+
 1. **Separate odd and even indices**: This part is the same. You correctly filter odd and even indices.
 2. **Sorting**: You sort `oddIndices` in descending order and `evenIndices` in ascending order, which is also correct.
 3. **Merging**:
@@ -63,7 +66,7 @@ const arr = [9, 2, 7, 4, 5, 6, 3, 8, 1];
 **Expected Output**:
 
 ```javascript
-[2, 9, 4, 7, 6, 5, 8, 3, 1]
+[2, 9, 4, 7, 6, 5, 8, 3, 1];
 ```
 
 This should work as expected and is more efficient for larger arrays since it avoids using `.shift()`, which has O(n) complexity, and instead uses O(1) array indexing.

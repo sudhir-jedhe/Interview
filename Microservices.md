@@ -56,35 +56,42 @@ Logs from different microservices are typically collected centrally for easier a
 A **Service Registry** is a central place where all the services in a microservice architecture register themselves, and clients (other services or applications) can discover available services. It stores information like the service’s name, location (IP, port), and health status. A service registry enables dynamic service discovery.
 
 **In Node (with `Consul` as an example):**
+
 1. **Service Registration**: Microservices register themselves with a service registry (like Consul or Eureka).
 2. **Service Discovery**: Clients or other services query the registry to find the locations of other services they need to communicate with.
 
 **Node Example (using `consul` package):**
+
 ```javascript
-const consul = require('consul')();
+const consul = require("consul")();
 
 // Register the service
-consul.agent.service.register('my-microservice', {
-  id: 'my-microservice-1',
-  service: {
-    name: 'my-microservice',
-    port: 3000
-  }
-}, function(err) {
-  if (err) throw err;
-  console.log('Service registered!');
-});
+consul.agent.service.register(
+  "my-microservice",
+  {
+    id: "my-microservice-1",
+    service: {
+      name: "my-microservice",
+      port: 3000,
+    },
+  },
+  function (err) {
+    if (err) throw err;
+    console.log("Service registered!");
+  },
+);
 
 // Deregister the service
-consul.agent.service.deregister('my-microservice-1', function(err) {
+consul.agent.service.deregister("my-microservice-1", function (err) {
   if (err) throw err;
-  console.log('Service deregistered!');
+  console.log("Service deregistered!");
 });
 ```
 
 **In React (using API Gateway and Service Registry)**:
+
 - In React, typically, you don’t directly interact with a service registry, but you interact with an API Gateway that internally uses the service registry to route requests to the appropriate microservices.
-  
+
 For instance, an API Gateway might receive a request and, based on the endpoint, query the service registry to find the correct service instance, then forward the request.
 
 React doesn’t interact directly with the service registry but instead interacts with the API Gateway.
@@ -93,18 +100,22 @@ React doesn’t interact directly with the service registry but instead interact
 
 ```javascript
 const fetchData = async () => {
-  const response = await fetch('https://api-gateway-url.com/my-microservice-endpoint');
+  const response = await fetch(
+    "https://api-gateway-url.com/my-microservice-endpoint",
+  );
   const data = await response.json();
   console.log(data);
 };
 ```
 
 In this example:
+
 - The **API Gateway** handles the communication with the service registry, determines which instance of the microservice to route the request to, and then forwards the request to the correct service.
 
 ### Summary:
+
 - **Microservices** break down an application into smaller, independently deployable services.
 - They solve problems like scalability and development speed but introduce challenges like complexity and service communication.
-- **Service Registry** allows services to register and discover each other dynamically, simplifying communication in distributed systems. 
+- **Service Registry** allows services to register and discover each other dynamically, simplifying communication in distributed systems.
 
 In a real-world scenario, Node can interact with a service registry to handle microservice registrations, while React typically interacts with the services via an API Gateway that uses the registry behind the scenes.

@@ -1,3 +1,4 @@
+```js
 function findTheDifference(s: string, t: string): string {
     const cnt: number[] = Array(26).fill(0);
     for (const c of s) {
@@ -22,3 +23,4 @@ Example 2:
 
 Input: s = "", t = "y"
 Output: "y"
+```

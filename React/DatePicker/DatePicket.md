@@ -47,6 +47,7 @@ components/
 │
 │ └── styles.css
 
+```js
 Core State
 const [
 selectedDate,
@@ -289,6 +290,8 @@ return null;
 
 }
 
+```
+
 Common validations:
 
 Required
@@ -304,96 +307,69 @@ Range Validation
 Custom date validation is a common feature highlighted in date picker implementations and validation systems.
 
 React Hook Form Integration
+
+```js
 <Controller
-
-name="joiningDate"
-
-control={control}
-
-rules={{
-
-required:
-"Joining Date Required"
-
-}}
-
-render={({
-field
-}) => (
-
-<CustomDatePicker
-
-     value={field.value}
-
-     onChange={
-       field.onChange
-     }
-
+  name="joiningDate"
+  control={control}
+  rules={{
+    required: "Joining Date Required",
+  }}
+  render={({ field }) => (
+    <CustomDatePicker value={field.value} onChange={field.onChange} />
+  )}
 />
-
-)}
-
-/>
+```
 
 Keyboard Navigation
-function handleKeyDown(
-event
-){
 
-switch(event.key){
+```js
+function handleKeyDown(event) {
+  switch (event.key) {
+    case "ArrowLeft":
+      movePreviousDay();
 
-case "ArrowLeft":
+      break;
 
-    movePreviousDay();
+    case "ArrowRight":
+      moveNextDay();
 
-    break;
+      break;
 
-case "ArrowRight":
+    case "ArrowUp":
+      movePreviousWeek();
 
-    moveNextDay();
+      break;
 
-    break;
+    case "ArrowDown":
+      moveNextWeek();
 
-case "ArrowUp":
+      break;
 
-    movePreviousWeek();
+    case "PageUp":
+      movePreviousMonth();
 
-    break;
+      break;
 
-case "ArrowDown":
+    case "PageDown":
+      moveNextMonth();
 
-    moveNextWeek();
+      break;
 
-    break;
+    case "Enter":
+      selectFocusedDate();
 
-case "PageUp":
+      break;
 
-    movePreviousMonth();
-
-    break;
-
-case "PageDown":
-
-    moveNextMonth();
-
-    break;
-
-case "Enter":
-
-    selectFocusedDate();
-
-    break;
-
-case "Escape":
-
-    closeCalendar();
-
+    case "Escape":
+      closeCalendar();
+  }
 }
+```
 
-}
+// Accessibility
 
-Accessibility
-
+```js
 <div
  role="grid"
  aria-label="Date Calendar"
@@ -411,9 +387,11 @@ formattedDate
 }
 
 >
+```
 
-ARIA labels and keyboard navigation are commonly recommended accessibility practices.
+// ARIA labels and keyboard navigation are commonly recommended accessibility practices.
 
+```js
 Localization
 new Intl.DateTimeFormat(
 "en-IN"
@@ -446,6 +424,7 @@ timezone
 );
 
 }
+```
 
 Advanced Enterprise Features
 ✅ Single Date
@@ -520,34 +499,34 @@ Enterprise-grade picker implementations typically support validation, keyboard i
 
 1. Custom TimePicker Component
    State
+   ```js
    const [time, setTime] = useState({
-   hour: 10,
-   minute: 30,
-   meridiem: "AM"
+     hour: 10,
+     minute: 30,
+     meridiem: "AM",
    });
+   ```
 
-const [isOpen, setIsOpen] =
-useState(false);
+```js
+const [isOpen, setIsOpen] = useState(false);
 
-TimeField
-function TimeField({
-value,
-onClick
-}) {
-return (
-<input
-readOnly
-value={`${value.hour}:${String(
-        value.minute
-      ).padStart(2, "0")} ${
+// TimeField
+function TimeField({ value, onClick }) {
+  return (
+    <input
+      readOnly
+      value={`${value.hour}:${String(value.minute).padStart(2, "0")} ${
         value.meridiem
       }`}
-onClick={onClick}
-/>
-);
+      onClick={onClick}
+    />
+  );
 }
+```
 
-Hour List
+// Hour List
+
+```js
 const hours =
 Array.from(
 { length: 12 },
@@ -573,8 +552,11 @@ Array.from(
 ))}
 
 </div>
+```
 
-Minute List
+// Minute List
+
+```js
 const minutes =
 Array.from(
 { length: 60 },
@@ -602,23 +584,24 @@ Array.from(
 ))}
 
 </div>
+```
 
-AM / PM Selector
+// AM / PM Selector
+
+```js
 <select
-value={time.meridiem}
-onChange={e =>
-setTime(prev => ({
-...prev,
-meridiem:
-e.target.value
-}))
-}
-
+  value={time.meridiem}
+  onChange={(e) =>
+    setTime((prev) => ({
+      ...prev,
+      meridiem: e.target.value,
+    }))
+  }
 >
-
   <option>AM</option>
   <option>PM</option>
 </select>
+```
 
 2. Holiday Support in DatePicker
 
@@ -632,30 +615,23 @@ Restricted Holidays
 Validation and disabled-date support are common date-picker capabilities.
 
 Holiday Store
-const holidays = [
-"2026-01-26",
-"2026-08-15",
-"2026-10-02",
-"2026-12-25"
-];
+
+```js
+const holidays = ["2026-01-26", "2026-08-15", "2026-10-02", "2026-12-25"];
+```
 
 Holiday Utility
-function isHoliday(
-date
-){
 
-const formatted =
-date
-.toISOString()
-.split("T")[0];
+```js
+function isHoliday(date) {
+  const formatted = date.toISOString().split("T")[0];
 
-return holidays.includes(
-formatted
-);
-
+  return holidays.includes(formatted);
 }
+```
 
-Disable Holiday
+```js
+// Disable Holiday
 function isDisabledDate(
 date
 ){
@@ -677,7 +653,7 @@ day
 > {day.getDate()}
 > </button>
 
-Highlight Holiday
+// Highlight Holiday
 <button
 className={
 isHoliday(day)
@@ -705,6 +681,7 @@ holidayMap[
 formattedDate
 ]
 }
+```
 
 3. Virtualised Year List Rendering
 
@@ -717,6 +694,8 @@ to
 Rendering all years is wasteful.
 
 Generate Years
+
+```js
 const years =
 Array.from(
 {
@@ -725,8 +704,11 @@ length: 201
 (\_, index) =>
 1900 + index
 );
+```
 
 Virtualisation Hook
+
+```js
 function useVirtualYears(
 years,
 rowHeight,
@@ -768,121 +750,81 @@ years.length \*
 rowHeight
 };
 }
+```
 
-Year Picker
+```js
+//Year Picker
 function YearPicker() {
+  const [scrollTop, setScrollTop] = useState(0);
 
-const [
-scrollTop,
-setScrollTop
-] = useState(0);
+  const { startIndex, visibleYears, totalHeight } = useVirtualYears(
+    years,
+    40,
+    400,
+    scrollTop,
+  );
 
-const {
-startIndex,
-visibleYears,
-totalHeight
-} =
-useVirtualYears(
-years,
-40,
-400,
-scrollTop
-);
-
-return (
-
-  <div
-
-    style={{
-      height:400,
-      overflow:"auto"
-    }}
-
-    onScroll={e =>
-      setScrollTop(
-        e.currentTarget
-          .scrollTop
-      )
-    }
-
->
-
+  return (
     <div
       style={{
-        height:totalHeight,
-        position:"relative"
+        height: 400,
+        overflow: "auto",
       }}
+      onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
     >
-
-      {
-        visibleYears.map(
-          (
-            year,
-            index
-          ) => (
-
+      <div
+        style={{
+          height: totalHeight,
+          position: "relative",
+        }}
+      >
+        {visibleYears.map((year, index) => (
           <button
-
             key={year}
-
             style={{
+              position: "absolute",
 
-              position:
-                "absolute",
+              top: (startIndex + index) * 40,
 
-              top:
-                (
-                 startIndex +
-                 index
-                ) * 40,
-
-              width:"100%"
+              width: "100%",
             }}
-
           >
             {year}
           </button>
-
-        ))
-      }
-
+        ))}
+      </div>
     </div>
-
-  </div>
-
-);
-
+  );
 }
+```
 
 Keyboard Navigation for Year Picker
-function handleYearKeyDown(
-event
-){
 
-switch(event.key){
+```js
+function handleYearKeyDown(event) {
+  switch (event.key) {
+    case "ArrowUp":
+      previousYear();
+      break;
 
-case "ArrowUp":
-previousYear();
-break;
+    case "ArrowDown":
+      nextYear();
+      break;
 
-case "ArrowDown":
-nextYear();
-break;
+    case "PageUp":
+      move10YearsBack();
+      break;
 
-case "PageUp":
-move10YearsBack();
-break;
+    case "PageDown":
+      move10YearsForward();
+      break;
 
-case "PageDown":
-move10YearsForward();
-break;
-
-case "Enter":
-selectYear();
-break;
+    case "Enter":
+      selectYear();
+      break;
+  }
 }
-
-}
+```
 
 Complete Enterprise Date-Time Picker Architecture
 CustomDateTimePicker
@@ -916,91 +858,70 @@ I build a DateTimePicker as a composition of DatePicker and TimePicker modules. 
    ✅ Keyboard Navigation
 
 Hook
+
+```js
 import { useState } from "react";
 
-export function useTimePicker({
-minTime = "09:00",
-maxTime = "18:00"
-}) {
-const [value, setValue] = useState({
-hour: 9,
-minute: 0,
-meridiem: "AM"
-});
+export function useTimePicker({ minTime = "09:00", maxTime = "18:00" }) {
+  const [value, setValue] = useState({
+    hour: 9,
+    minute: 0,
+    meridiem: "AM",
+  });
 
-const [error, setError] =
-useState("");
+  const [error, setError] = useState("");
 
-function convertTo24Hour(time) {
-let hour = time.hour;
+  function convertTo24Hour(time) {
+    let hour = time.hour;
 
-    if (
-      time.meridiem === "PM" &&
-      hour !== 12
-    ) {
+    if (time.meridiem === "PM" && hour !== 12) {
       hour += 12;
     }
 
-    if (
-      time.meridiem === "AM" &&
-      hour === 12
-    ) {
+    if (time.meridiem === "AM" && hour === 12) {
       hour = 0;
     }
 
-    return (
-      hour * 60 +
-      time.minute
-    );
+    return hour * 60 + time.minute;
+  }
 
-}
+  function validate() {
+    const current = convertTo24Hour(value);
 
-function validate() {
-const current =
-convertTo24Hour(value);
+    const [minH, minM] = minTime.split(":").map(Number);
 
-    const [minH, minM] =
-      minTime.split(":")
-        .map(Number);
+    const [maxH, maxM] = maxTime.split(":").map(Number);
 
-    const [maxH, maxM] =
-      maxTime.split(":")
-        .map(Number);
+    const min = minH * 60 + minM;
 
-    const min =
-      minH * 60 + minM;
-
-    const max =
-      maxH * 60 + maxM;
+    const max = maxH * 60 + maxM;
 
     if (current < min) {
-      setError(
-        "Time is before minimum"
-      );
+      setError("Time is before minimum");
       return false;
     }
 
     if (current > max) {
-      setError(
-        "Time exceeds maximum"
-      );
+      setError("Time exceeds maximum");
       return false;
     }
 
     setError("");
     return true;
+  }
 
+  return {
+    value,
+    setValue,
+    error,
+    validate,
+  };
 }
-
-return {
-value,
-setValue,
-error,
-validate
-};
-}
+```
 
 Component
+
+```js
 function CustomTimePicker() {
 const {
 value,
@@ -1093,43 +1014,40 @@ e.target.value
 
 );
 }
+```
 
 Custom date/time pickers commonly support validation constraints such as min/max values and invalid-state feedback.
 
 2. Holiday Tooltip Support in DatePicker
    Holiday Configuration
-   const holidays = {
-   "2026-01-26":
-   "Republic Day",
 
-"2026-08-15":
-"Independence Day",
+```js
+const holidays = {
+  "2026-01-26": "Republic Day",
 
-"2026-10-02":
-"Gandhi Jayanti",
+  "2026-08-15": "Independence Day",
 
-"2026-12-25":
-"Christmas"
+  "2026-10-02": "Gandhi Jayanti",
+
+  "2026-12-25": "Christmas",
 };
+```
 
-Utilities
-function formatDate(
-date
-) {
-return date
-.toISOString()
-.split("T")[0];
+// Utilities
+
+```js
+function formatDate(date) {
+  return date.toISOString().split("T")[0];
 }
 
-function getHoliday(
-date
-) {
-return holidays[
-formatDate(date)
-];
+function getHoliday(date) {
+  return holidays[formatDate(date)];
 }
+```
 
-Calendar Cell
+// Calendar Cell
+
+```js
 function DayCell({
 date
 }) {
@@ -1159,7 +1077,7 @@ holiday || ""
 );
 }
 
-Tooltip Version
+// Tooltip Version
 {holiday && (
 
   <div
@@ -1170,7 +1088,7 @@ Tooltip Version
 
 )}
 
-Styles
+// Styles
 .holiday {
 background: #fee2e2;
 position: relative;
@@ -1193,6 +1111,7 @@ background: black;
 color: white;
 padding: 4px 8px;
 }
+```
 
 Holiday disabling and validation are common capabilities expected in modern DatePicker implementations.
 
@@ -1206,23 +1125,27 @@ December
 
 all at once, render only visible months.
 
-Month Data
+```js
+// Month Data
 const months = [
-"January",
-"February",
-"March",
-"April",
-"May",
-"June",
-"July",
-"August",
-"September",
-"October",
-"November",
-"December"
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
+```
 
-Virtual Hook
+// Virtual Hook
+
+```js
 function useVirtualMonths(
 items,
 rowHeight,
@@ -1264,90 +1187,56 @@ items.length \*
 rowHeight
 };
 }
+```
 
-Month Picker
+// Month Picker
+
+```js
 function MonthPicker() {
+  const [scrollTop, setScrollTop] = useState(0);
 
-const [
-scrollTop,
-setScrollTop
-] = useState(0);
+  const { startIndex, visibleItems, totalHeight } = useVirtualMonths(
+    months,
+    40,
+    300,
+    scrollTop,
+  );
 
-const {
-startIndex,
-visibleItems,
-totalHeight
-} =
-useVirtualMonths(
-months,
-40,
-300,
-scrollTop
-);
+  return (
+    <div
+      style={{
+        height: 300,
+        overflow: "auto",
+      }}
+      onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
+    >
+      <div
+        style={{
+          height: totalHeight,
+          position: "relative",
+        }}
+      >
+        {visibleItems.map((month, index) => (
+          <button
+            key={month}
+            style={{
+              position: "absolute",
 
-return (
+              top: (startIndex + index) * 40,
 
-   <div
+              width: "100%",
 
-     style={{
-       height: 300,
-       overflow: "auto"
-     }}
-
-     onScroll={e =>
-       setScrollTop(
-         e.currentTarget
-           .scrollTop
-       )
-     }
-
->
-
-     <div
-       style={{
-         height:
-           totalHeight,
-         position:
-           "relative"
-       }}
-     >
-
-       {visibleItems.map(
-         (
-           month,
-           index
-         ) => (
-
-           <button
-             key={month}
-             style={{
-               position:
-                 "absolute",
-
-               top:
-                 (
-                   startIndex +
-                   index
-                 ) * 40,
-
-               width:
-                 "100%",
-
-               height: 40
-             }}
-           >
-             {month}
-           </button>
-
-         )
-       )}
-
-     </div>
-
-   </div>
-
-);
+              height: 40,
+            }}
+          >
+            {month}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 }
+```
 
 Senior Engineer Version (Production)
 CustomDatePicker
@@ -1384,7 +1273,9 @@ Validation Rules
 ✅ Future Time Validation
 ✅ Time Range Validation
 
-Validation Utility
+// Validation Utility
+
+```js
 function validateTime(
 time
 ) {
@@ -1440,7 +1331,7 @@ return (
 return "";
 }
 
-Real-Time Validation
+// Real-Time Validation
 useEffect(() => {
 
 const validationError =
@@ -1453,8 +1344,10 @@ validationError
 );
 
 }, [value]);
+```
+```js
 
-Visual Error State
+// Visual Error State
 <input
 className={
 error
@@ -1462,52 +1355,38 @@ error
 : ""
 }
 />
-
+```
+```css
 .invalid {
 border: 1px solid red;
 }
 
 Disabled Time Slots
+```
 
 Example:
 
 Lunch Break
 1:00 PM–2:00 PM
 
-const blockedTimeRanges =
-[
-{
-start: "13:00",
-end: "14:00"
-}
+```js
+const blockedTimeRanges = [
+  {
+    start: "13:00",
+    end: "14:00",
+  },
 ];
 
-function isBlocked(
-totalMinutes
-){
+function isBlocked(totalMinutes) {
+  return blockedTimeRanges.some((range) => {
+    const start = convertTimeString(range.start);
 
-return blockedTimeRanges.some(
-range => {
+    const end = convertTimeString(range.end);
 
-     const start =
-       convertTimeString(
-         range.start
-       );
-
-     const end =
-       convertTimeString(
-         range.end
-       );
-
-     return (
-       totalMinutes >= start &&
-       totalMinutes <= end
-     );
-
+    return totalMinutes >= start && totalMinutes <= end;
+  });
 }
-);
-
-}
+```
 
 2. Advanced Holiday Tooltip Styling
 
@@ -1519,166 +1398,121 @@ Optional Holiday
 Festival
 Tooltip
 
-Holiday Data
+//Holiday Data
+
+```js
 const holidays = {
+  "2026-01-26": {
+    title: "Republic Day",
 
-"2026-01-26": {
+    type: "National Holiday",
+  },
 
-    title:
-      "Republic Day",
+  "2026-08-15": {
+    title: "Independence Day",
 
-    type:
-      "National Holiday"
-
-},
-
-"2026-08-15": {
-
-    title:
-      "Independence Day",
-
-    type:
-      "National Holiday"
-
-}
-
+    type: "National Holiday",
+  },
 };
+```
 
-Cell Component
-function HolidayCell({
-date
-}) {
+// Cell Component
 
-const holiday =
-holidays[
-formatDate(date)
-];
+```js
+function HolidayCell({ date }) {
+  const holiday = holidays[formatDate(date)];
 
-return (
+  return (
+    <div className="day-cell">
+      {date.getDate()}
 
-   <div
-     className="day-cell"
-   >
+      {holiday && (
+        <div className="holiday-tooltip">
+          <h4>{holiday.title}</h4>
 
-     {date.getDate()}
-
-     {holiday && (
-
-       <div
-         className="holiday-tooltip"
-       >
-
-         <h4>
-           {holiday.title}
-         </h4>
-
-         <span>
-           {holiday.type}
-         </span>
-
-       </div>
-
-     )}
-
-   </div>
-
-);
-
+          <span>{holiday.type}</span>
+        </div>
+      )}
+    </div>
+  );
 }
+```
 
-Professional Tooltip Positioning
+```css
+// Professional Tooltip Positioning
 .day-cell {
+  position: relative;
 
-position: relative;
-
-cursor: pointer;
-
+  cursor: pointer;
 }
 
 .holiday-tooltip {
+  position: absolute;
 
-position: absolute;
+  bottom: 120%;
 
-bottom: 120%;
+  left: 50%;
 
-left: 50%;
+  transform: translateX(-50%);
 
-transform:
-translateX(-50%);
+  min-width: 180px;
 
-min-width: 180px;
+  background: #111827;
 
-background: #111827;
+  color: white;
 
-color: white;
+  padding: 10px;
 
-padding: 10px;
+  border-radius: 8px;
 
-border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 
-box-shadow:
-0 8px 24px
-rgba(0,0,0,.2);
+  opacity: 0;
 
-opacity: 0;
+  visibility: hidden;
 
-visibility: hidden;
+  transition: all 0.2s;
 
-transition: all .2s;
-
-z-index: 1000;
-
+  z-index: 1000;
 }
 
-Show Tooltip
+// Show Tooltip
 .day-cell:hover
 .holiday-tooltip {
+  opacity: 1;
 
-opacity: 1;
-
-visibility: visible;
-
+  visibility: visible;
 }
 
-Tooltip Arrow
+// Tooltip Arrow
 .holiday-tooltip::after {
+  content: "";
 
-content: "";
+  position: absolute;
 
-position: absolute;
+  top: 100%;
 
-top: 100%;
+  left: 50%;
 
-left: 50%;
+  transform: translateX(-50%);
 
-transform:
-translateX(-50%);
+  border-width: 8px;
 
-border-width: 8px;
+  border-style: solid;
 
-border-style: solid;
-
-border-color:
-#111827
-transparent
-transparent
-transparent;
-
+  border-color: #111827 transparent transparent transparent;
 }
 
-Mobile Friendly
+// Mobile Friendly
 @media
 (max-width:768px) {
+  .holiday-tooltip {
+    left: 0;
 
-.holiday-tooltip {
-
-left:0;
-
-transform:none;
-
+    transform: none;
+  }
 }
-
-}
+```
 
 3. Optimizing Virtualized Month Picker
 
@@ -1689,80 +1523,55 @@ Render all years
 Re-render on each scroll
 
 Bad
-months.map(month => (
-<Month
-   key={month}
- />
-))
+
+```js
+months.map((month) => <Month key={month} />);
+```
 
 Every month re-renders.
 
 Optimized Version
 Memoized Month
-const MonthItem =
-React.memo(
-function MonthItem({
-month
-}) {
 
-return (
-<button>
-{month}
-</button>
-);
-
-}
-);
+```js
+const MonthItem = React.memo(function MonthItem({ month }) {
+  return <button>{month}</button>;
+});
+```
 
 The enterprise React material also highlights memoization and avoiding unnecessary re-renders as key optimisation techniques. Sweeti Sawlikar_00002218_AI_Inteview_Evaluation.pdf mentions using react.memo, useMemo, and useCallback to reduce re-rendering.
 
 Memoized List
-const visibleMonths =
-useMemo(() => {
 
-return months.slice(
-startIndex,
-endIndex
-);
-
-},[
-startIndex,
-endIndex
-]);
+```js
+const visibleMonths = useMemo(() => {
+  return months.slice(startIndex, endIndex);
+}, [startIndex, endIndex]);
+```
 
 Using useMemo for expensive computations is described as a common React optimisation pattern.
 
 Stable Callbacks
-const selectMonth =
-useCallback(
-month => {
 
-setMonth(
-month
-);
-
-},[]
-);
+```js
+const selectMonth = useCallback((month) => {
+  setMonth(month);
+}, []);
+```
 
 Throttled Scroll
-const handleScroll =
-useMemo(() => {
 
-return throttle(
-event => {
+```js
+const handleScroll = useMemo(() => {
+  return throttle(
+    (event) => {
+      setScrollTop(event.target.scrollTop);
+    },
 
-       setScrollTop(
-         event.target
-           .scrollTop
-       );
-
-     },
-
-     16
-
-);
-
-},[]);
+    16,
+  );
+}, []);
+```
 
 Overscan Buffer
 
@@ -1777,20 +1586,19 @@ render:
 - 3 above
 - 3 below
 
+```js
 const overscan = 3;
 
-const startIndex =
-Math.max(
-0,
-visibleStart -
-overscan
-);
+const startIndex = Math.max(0, visibleStart - overscan);
+```
 
 This prevents flickering.
 
 Keep Row Height Fixed
-const MONTH_HEIGHT =
-40;
+
+```js
+const MONTH_HEIGHT = 40;
+```
 
 Avoid:
 
@@ -1799,15 +1607,10 @@ Dynamic height
 because virtualization calculations become expensive.
 
 Mount Only Visible Months
-visibleMonths.map(
-month => (
 
-<MonthItem
-      key={month}
-      month={month}
-   />
-
-))
+```js
+visibleMonths.map((month) => <MonthItem key={month} month={month} />);
+```
 
 Production Virtualized Month Picker
 MonthPicker

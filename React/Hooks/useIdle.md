@@ -16,8 +16,7 @@
 
 // Using useRef we will track a setTimeout that will change status if the user has not performed any action for the duration received as input, else clear the timer and start a fresh timeout.
 
-
-
+```js
 import { useState, useEffect, useRef } from "react";
 
 const useIdle = (delay) => {
@@ -200,7 +199,7 @@ const useIdle = (delay) => {
   // return previous value (happens before update in useEffect above)
   return isIdle;
 };
-
+```
 
 To implement automatic logout after a period of inactivity (i.e., when the user has been idle for a specific amount of time) in a React application, you can use a combination of event listeners, a timer, and state management. The idea is to reset the idle timer on user interaction (like mouse movement, keyboard input, etc.) and log the user out after a certain amount of inactivity.
 
@@ -222,8 +221,8 @@ Here’s how you can achieve this in React:
 
 ### **Example Implementation in React**
 
-```jsx
-import React, { useEffect, useState } from 'react';
+```js
+import React, { useEffect, useState } from "react";
 
 function AutoLogout() {
   // Set the idle timeout period in milliseconds (e.g., 5 minutes = 300000ms)
@@ -234,7 +233,7 @@ function AutoLogout() {
   // Function to log out the user
   const logout = () => {
     setIsLoggedIn(false);
-    alert('You have been logged out due to inactivity.');
+    alert("You have been logged out due to inactivity.");
     // You can also clear tokens or do any other necessary logout actions here
   };
 
@@ -252,15 +251,15 @@ function AutoLogout() {
     }, 1000); // Check every second for inactivity
 
     // Event listeners for user activity (reset idle timer on events)
-    const activityEvents = ['mousemove', 'keydown', 'click', 'scroll'];
-    activityEvents.forEach(event => {
+    const activityEvents = ["mousemove", "keydown", "click", "scroll"];
+    activityEvents.forEach((event) => {
       window.addEventListener(event, resetIdleTimer);
     });
 
     // Cleanup the interval and event listeners when the component is unmounted
     return () => {
       clearInterval(checkIdleTimeout);
-      activityEvents.forEach(event => {
+      activityEvents.forEach((event) => {
         window.removeEventListener(event, resetIdleTimer);
       });
     };
@@ -314,16 +313,16 @@ export default AutoLogout;
 
 1. **Session Timeout Warning**:
    - You could enhance the user experience by adding a warning before the session is timed out. For example, show a modal or toast notification that says, "You will be logged out in 1 minute due to inactivity." The user can click "Stay Logged In" to reset the idle timer.
-  
+
 2. **LocalStorage or SessionStorage**:
    - You might also want to persist the user's login state (e.g., using `localStorage` or `sessionStorage`) so the session can be maintained across page reloads.
-  
+
 3. **Server-Side Session Expiry**:
    - You can implement a similar idle timeout on the server side as well. If the server detects no activity (or no API requests) from the user for a specified time, the user can be logged out automatically.
 
 ### **Conclusion:**
-This solution provides a simple, effective way to implement automatic logout in a React application after a period of user inactivity. It ensures that your application remains secure by logging out inactive users, preventing potential misuse of an active session.
 
+This solution provides a simple, effective way to implement automatic logout in a React application after a period of user inactivity. It ensures that your application remains secure by logging out inactive users, preventing potential misuse of an active session.
 
 Creating a **custom hook** in React allows you to extract reusable logic that can be shared across multiple components. Custom hooks are a great way to manage state, side effects, or even complex behavior that doesn't belong directly in a component.
 
@@ -337,8 +336,8 @@ Let's create a custom hook that handles user inactivity (idle timeout) and logs 
 
 We'll create a custom hook called `useIdleTimeout` that will manage the inactivity timer and log the user out after the specified idle timeout period.
 
-```jsx
-import { useState, useEffect } from 'react';
+```js
+import { useState, useEffect } from "react";
 
 const useIdleTimeout = (timeoutDuration, onLogout) => {
   const [lastActivityTime, setLastActivityTime] = useState(Date.now());
@@ -363,15 +362,15 @@ const useIdleTimeout = (timeoutDuration, onLogout) => {
     }, 1000); // Check every second
 
     // Event listeners for user activity (reset idle timer on events)
-    const activityEvents = ['mousemove', 'keydown', 'click', 'scroll'];
-    activityEvents.forEach(event => {
+    const activityEvents = ["mousemove", "keydown", "click", "scroll"];
+    activityEvents.forEach((event) => {
       window.addEventListener(event, resetIdleTimer);
     });
 
     // Cleanup the interval and event listeners when the component is unmounted
     return () => {
       clearInterval(checkIdleTimeout);
-      activityEvents.forEach(event => {
+      activityEvents.forEach((event) => {
         window.removeEventListener(event, resetIdleTimer);
       });
     };
@@ -409,9 +408,9 @@ export default useIdleTimeout;
 
 Now, we can use this `useIdleTimeout` hook in a component to manage the idle timeout logic.
 
-```jsx
-import React, { useState } from 'react';
-import useIdleTimeout from './useIdleTimeout';
+```js
+import React, { useState } from "react";
+import useIdleTimeout from "./useIdleTimeout";
 
 const AutoLogoutComponent = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -419,7 +418,7 @@ const AutoLogoutComponent = () => {
   // Logout function to be passed to the custom hook
   const handleLogout = () => {
     setIsLoggedIn(false);
-    alert('You have been logged out due to inactivity!');
+    alert("You have been logged out due to inactivity!");
     // Optionally, clear session or token here
   };
 
@@ -458,7 +457,6 @@ export default AutoLogoutComponent;
 ### **Benefits of Using Custom Hooks**
 
 1. **Reusability**: The `useIdleTimeout` hook can now be used in multiple components without duplicating the logic for handling inactivity and logout.
-   
 2. **Separation of Concerns**: By moving the logic for managing idle timeout and logging out into a custom hook, the component becomes cleaner and more focused on UI rendering, while the hook handles the logic.
 
 3. **Maintainability**: The custom hook can be easily updated or extended without modifying the components that use it. For instance, you can add more event listeners or change the idle timeout duration in one place.
@@ -468,3 +466,7 @@ export default AutoLogoutComponent;
 ### **Conclusion**
 
 This is how you can create a **custom hook** in React to handle user inactivity and automatically log them out after a certain period. By using hooks, you can encapsulate the logic for idle timeouts, making your components more concise and reusable.
+
+```
+
+```

@@ -9,17 +9,17 @@ The code you've provided shows different ways to define and use functions in Jav
 In the first example, you define simple functions (`sum` and `multiply`) and call them directly within the same script.
 
 ```js
-function sum(a, b) { 
-    return a + b; 
-} 
-  
-function multiply(a, b) { 
-    return a * b; 
+function sum(a, b) {
+  return a + b;
+}
+
+function multiply(a, b) {
+  return a * b;
 }
 
 // Function calls
-console.log(sum(4, 6));  // Output: 10
-console.log(multiply(4, 6));  // Output: 24
+console.log(sum(4, 6)); // Output: 10
+console.log(multiply(4, 6)); // Output: 24
 ```
 
 Here, the functions are simple and executed within the same script context. This is standard function usage, and no external module system is used.
@@ -30,12 +30,12 @@ In the second example, you define two functions (`sum` and `multiply`) and expor
 
 ```js
 // Defining functions in helper.js
-function sum(a, b) { 
-    return a + b; 
-} 
-  
-function multiply(a, b) { 
-    return a * b; 
+function sum(a, b) {
+  return a + b;
+}
+
+function multiply(a, b) {
+  return a * b;
 }
 
 // Exporting functions
@@ -45,11 +45,11 @@ export { sum, multiply };
 Then, you can import and use these functions in another script, like `main.js`:
 
 ```js
-import { sum, multiply } from './helper.js';  // Importing the functions from helper.js
+import { sum, multiply } from "./helper.js"; // Importing the functions from helper.js
 
 // Function calls
-console.log(sum(4, 6));  // Output: 10
-console.log(multiply(4, 6));  // Output: 24
+console.log(sum(4, 6)); // Output: 10
+console.log(multiply(4, 6)); // Output: 24
 ```
 
 This is a modular approach to organizing code. By using `export` and `import`, you're able to keep code separated, and re-use functions across multiple files.
@@ -60,25 +60,25 @@ In the third example, you use an **IIFE (Immediately Invoked Function Expression
 
 ```js
 // Creating a module using IIFE
-const Helper = (function () { 
-    // Private functions
-    function sum(a, b) { 
-        return a + b; 
-    } 
-  
-    function multiply(a, b) { 
-        return a * b; 
-    } 
-  
-    // Returning the functions as part of an object
-    return { 
-        sum: sum, 
-        multiply: multiply, 
-    }; 
-})(); 
+const Helper = (function () {
+  // Private functions
+  function sum(a, b) {
+    return a + b;
+  }
+
+  function multiply(a, b) {
+    return a * b;
+  }
+
+  // Returning the functions as part of an object
+  return {
+    sum: sum,
+    multiply: multiply,
+  };
+})();
 
 // Exporting the Helper module (though it's implicitly available here)
-export default Helper;  // This makes Helper available as a default export
+export default Helper; // This makes Helper available as a default export
 ```
 
 In the above code:
@@ -90,11 +90,11 @@ In the above code:
 You can then import and use this module in another script:
 
 ```js
-import Helper from './helper';  // Importing the IIFE module
+import Helper from "./helper"; // Importing the IIFE module
 
 // Calling the methods
-console.log(Helper.sum(4, 6));  // Output: 10
-console.log(Helper.multiply(4, 6));  // Output: 24
+console.log(Helper.sum(4, 6)); // Output: 10
+console.log(Helper.multiply(4, 6)); // Output: 24
 ```
 
 This method encapsulates the functions and prevents external access to them directly. They are only accessible via the `Helper` object.
@@ -124,4 +124,3 @@ This method encapsulates the functions and prevents external access to them dire
 - **Basic Function Definitions** are suitable for small scripts where modularization is not necessary.
 - **Named Exports** are perfect for larger projects where you want to separate functionality into multiple files and reuse them across different parts of your application.
 - **IIFE Modules** are useful when you want to create a module that has private methods but still exposes certain methods to the outside world, making them ideal for creating well-encapsulated modules.
-

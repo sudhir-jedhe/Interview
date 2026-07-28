@@ -3,37 +3,38 @@
 // On the stop click, pause the counter.
 // When the start is clicked again, resume the counter.
 
-
-import React, { useState, useRef, useEffect } from 'https://esm.sh/react@18.2.0'
-import ReactDOM from 'https://esm.sh/react-dom@18.2.0'
+```js
+import React, {
+  useState,
+  useRef,
+  useEffect,
+} from "https://esm.sh/react@18.2.0";
+import ReactDOM from "https://esm.sh/react-dom@18.2.0";
 
 const App = () => {
   const [count, setCount] = useState(0);
   const timerIdRef = useRef(null);
-  
-  
+
   const onStart = () => {
     timerIdRef.current = setInterval(() => {
       setCount(count + 1);
     }, 1000);
   };
-  
+
   const onStop = () => {
     clearInterval(timerIdRef.current);
   };
-  
-  
-  return(
+
+  return (
     <div className="box">
       <h1>Count: {count}</h1>
       <button onClick={onStart}>Start</button>
       <button onClick={onStop}>Stop</button>
     </div>
   );
-}
+};
 
-ReactDOM.render(<App />,
-document.getElementById("root"))
+ReactDOM.render(<App />, document.getElementById("root"));
 
 // In this solution, the only problem is the counter moves from 0 to 1 and gets stuck at 1, this is because inside setInterval every time count variable is accessed its value remains 0 only. setInterval is not able to get the updated value.
 
@@ -41,15 +42,11 @@ document.getElementById("root"))
 
 // To fix this, rather than accessing the count variable, we will access the prevCount from the callback function that the state update function accepts.
 
-
 const onStart = () => {
-    timerIdRef.current = setInterval(() => {
-      setCount((prevCount) => prevCount + 1);
-    }, 1000);
-  };
-
-
-
+  timerIdRef.current = setInterval(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, 1000);
+};
 
 //   Solution 2: Using setTimeout and useEffect hook
 // useEffect hook in React is invoked on three instances.
@@ -66,44 +63,47 @@ const onStart = () => {
 // It will again update the count and things will run in a loop.
 // To stop the counter, stop the setTimeout, using the clearTimeout.
 
-import React, { useState, useRef, useEffect } from 'https://esm.sh/react@18.2.0'
-import ReactDOM from 'https://esm.sh/react-dom@18.2.0'
+import React, {
+  useState,
+  useRef,
+  useEffect,
+} from "https://esm.sh/react@18.2.0";
+import ReactDOM from "https://esm.sh/react-dom@18.2.0";
 
 const App = () => {
   const [count, setCount] = useState(0);
   const [start, setStart] = useState(false);
   const timerIdRef = useRef(null);
-  
+
   useEffect(() => {
-    if(start){
+    if (start) {
       timerIdRef.current = setTimeout(() => {
         setCount(count + 1);
       }, 1000);
     }
-    
+
     () => {
       clearTimeout(timerIdRef.current);
-    }
-  }, [count, start])
-  
+    };
+  }, [count, start]);
+
   const onStart = () => {
     setStart(true);
   };
-  
+
   const onStop = () => {
     clearTimeout(timerIdRef.current);
     setStart(false);
   };
-  
-  
-  return(
+
+  return (
     <div className="box">
       <h1>Count: {count}</h1>
       <button onClick={onStart}>Start</button>
       <button onClick={onStop}>Stop</button>
     </div>
   );
-}
+};
 
-ReactDOM.render(<App />,
-document.getElementById("root"))
+ReactDOM.render(<App />, document.getElementById("root"));
+```

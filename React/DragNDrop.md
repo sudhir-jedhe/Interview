@@ -1,3 +1,4 @@
+```js
 import React, { Component } from "react";
 import {
   sortableContainer,
@@ -64,13 +65,13 @@ export default SortableItems;
 const arrayMoveMutate = (array, from, to) => {
     array.splice(to < 0 ? array.length + to : to, 0, array.splice(from, 1)[0]);
   };
-  
+
   const arrayMove = (array, from, to) => {
     array = array.slice();
     arrayMoveMutate(array, from, to);
     return array;
   };
-  
+
   export default arrayMove;
 
 
@@ -80,7 +81,7 @@ const arrayMoveMutate = (array, from, to) => {
     width: 90%;
     margin: 0 auto;
   }
-  
+
   .dragHandler {
     padding: 1px 5px;
     color: #000;
@@ -89,7 +90,7 @@ const arrayMoveMutate = (array, from, to) => {
     cursor: grab;
     border: 1px solid;
   }
-  
+
   .dragElement {
     position: relative;
     display: flex;
@@ -99,3 +100,4 @@ const arrayMoveMutate = (array, from, to) => {
     margin-bottom: 10px;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
   }
+```

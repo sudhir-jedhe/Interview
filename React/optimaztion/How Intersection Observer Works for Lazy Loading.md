@@ -15,67 +15,85 @@ Using the Intersection Observer for lazy loading allows you to wait until an ele
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lazy Loading with Intersection Observer</title>
-  <style>
-    .image {
-      width: 100%;
-      height: auto;
-      display: block;
-      margin-bottom: 20px;
-    }
-    .placeholder {
-      background-color: #f0f0f0;
-      width: 100%;
-      height: 300px;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lazy Loading with Intersection Observer</title>
+    <style>
+      .image {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 20px;
+      }
+      .placeholder {
+        background-color: #f0f0f0;
+        width: 100%;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Lazy Loading Images with Intersection Observer</h1>
 
-  <h1>Lazy Loading Images with Intersection Observer</h1>
+    <!-- Placeholder images for lazy loading -->
+    <img
+      class="image placeholder"
+      data-src="https://via.placeholder.com/800x600?text=Image+1"
+      alt="Lazy Image 1"
+    />
+    <img
+      class="image placeholder"
+      data-src="https://via.placeholder.com/800x600?text=Image+2"
+      alt="Lazy Image 2"
+    />
+    <img
+      class="image placeholder"
+      data-src="https://via.placeholder.com/800x600?text=Image+3"
+      alt="Lazy Image 3"
+    />
+    <img
+      class="image placeholder"
+      data-src="https://via.placeholder.com/800x600?text=Image+4"
+      alt="Lazy Image 4"
+    />
+    <img
+      class="image placeholder"
+      data-src="https://via.placeholder.com/800x600?text=Image+5"
+      alt="Lazy Image 5"
+    />
 
-  <!-- Placeholder images for lazy loading -->
-  <img class="image placeholder" data-src="https://via.placeholder.com/800x600?text=Image+1" alt="Lazy Image 1">
-  <img class="image placeholder" data-src="https://via.placeholder.com/800x600?text=Image+2" alt="Lazy Image 2">
-  <img class="image placeholder" data-src="https://via.placeholder.com/800x600?text=Image+3" alt="Lazy Image 3">
-  <img class="image placeholder" data-src="https://via.placeholder.com/800x600?text=Image+4" alt="Lazy Image 4">
-  <img class="image placeholder" data-src="https://via.placeholder.com/800x600?text=Image+5" alt="Lazy Image 5">
+    <script>
+      // Callback function for when an element enters the viewport
+      const loadImage = (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Get the lazy-loaded image and update the src
+            const image = entry.target;
+            image.src = image.dataset.src; // Use the 'data-src' attribute
+            image.classList.remove("placeholder"); // Remove the placeholder class
+            observer.unobserve(image); // Stop observing the image after it has been loaded
+          }
+        });
+      };
 
-  <script>
-    // Callback function for when an element enters the viewport
-    const loadImage = (entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Get the lazy-loaded image and update the src
-          const image = entry.target;
-          image.src = image.dataset.src; // Use the 'data-src' attribute
-          image.classList.remove('placeholder'); // Remove the placeholder class
-          observer.unobserve(image); // Stop observing the image after it has been loaded
-        }
+      // Create the Intersection Observer
+      const observer = new IntersectionObserver(loadImage, {
+        root: null, // use the viewport as the root
+        rootMargin: "0px", // trigger when the element enters the viewport
+        threshold: 0.1, // trigger when 10% of the element is visible
       });
-    };
 
-    // Create the Intersection Observer
-    const observer = new IntersectionObserver(loadImage, {
-      root: null,  // use the viewport as the root
-      rootMargin: '0px', // trigger when the element enters the viewport
-      threshold: 0.1 // trigger when 10% of the element is visible
-    });
+      // Target all images with the "image" class
+      const images = document.querySelectorAll(".image");
 
-    // Target all images with the "image" class
-    const images = document.querySelectorAll('.image');
-
-    images.forEach(image => {
-      // Set the initial placeholder image
-      image.src = 'https://via.placeholder.com/800x600?text=Loading...';
-      observer.observe(image); // Start observing each image
-    });
-  </script>
-
-</body>
+      images.forEach((image) => {
+        // Set the initial placeholder image
+        image.src = "https://via.placeholder.com/800x600?text=Loading...";
+        observer.observe(image); // Start observing each image
+      });
+    </script>
+  </body>
 </html>
 ```
 
@@ -95,7 +113,6 @@ Using the Intersection Observer for lazy loading allows you to wait until an ele
      - The `isIntersecting` property checks whether the image is visible in the viewport.
      - If it is, the `data-src` attribute (which contains the actual image URL) is assigned to the `src` attribute, and the image is loaded.
      - The `observer.unobserve()` method is used to stop observing the image once it's loaded.
-   
    - The observer is configured to trigger when at least 10% of the image is visible in the viewport (set by `threshold: 0.1`).
 
 4. **Lazy Loading**:
@@ -103,6 +120,7 @@ Using the Intersection Observer for lazy loading allows you to wait until an ele
    - This results in images being loaded only when they are about to appear on the screen, reducing unnecessary network requests and speeding up the initial page load.
 
 ### Key Benefits of Using Intersection Observer for Lazy Loading:
+
 1. **Efficient Resource Loading**: Only loads images when they are needed, reducing the page load time and the number of requests made during initial page load.
 2. **Better Performance**: By delaying image loading until they are in the viewport, you can significantly reduce the initial bandwidth consumption, especially for pages with lots of images or heavy resources.
 3. **Native Browser Support**: The Intersection Observer API is supported by modern browsers and provides an efficient way to detect visibility changes without needing to constantly poll the DOM.

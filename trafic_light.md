@@ -1,38 +1,43 @@
 To implement a traffic light system that switches between red, yellow, and green with the specified intervals, we can use a combination of HTML, CSS, and JavaScript.
 
 ### HTML
+
 We'll create a basic structure for the traffic light, where each light (red, yellow, green) will be represented by a `div`. We'll style these `div` elements to visually represent the traffic light and use JavaScript to toggle the colors on and off.
 
 ### CSS
+
 We'll use basic styling to display the traffic lights in a vertical stack, and then use JavaScript to toggle the colors on the appropriate light. We will also include transitions to make the color change smooth.
 
 ### JavaScript
+
 We'll use `setInterval` to switch between the colors every specified interval.
 
 Here's how to implement this:
 
 ### 1. HTML Structure
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Traffic Light</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="traffic-light">
-    <div id="red" class="light red"></div>
-    <div id="yellow" class="light yellow"></div>
-    <div id="green" class="light green"></div>
-  </div>
-  <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Traffic Light</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="traffic-light">
+      <div id="red" class="light red"></div>
+      <div id="yellow" class="light yellow"></div>
+      <div id="green" class="light green"></div>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
 ```
 
 ### 2. CSS Styles
+
 ```css
 /* styles.css */
 
@@ -82,55 +87,55 @@ body {
 ```
 
 ### 3. JavaScript Logic
+
 ```javascript
 // script.js
 
 function trafficLight() {
-  let redLight = document.getElementById('red');
-  let yellowLight = document.getElementById('yellow');
-  let greenLight = document.getElementById('green');
+  let redLight = document.getElementById("red");
+  let yellowLight = document.getElementById("yellow");
+  let greenLight = document.getElementById("green");
 
   // Initial state: Red light is on
-  redLight.classList.add('active');
-  
-  let currentLight = 'red';
+  redLight.classList.add("active");
+
+  let currentLight = "red";
 
   setInterval(() => {
     switch (currentLight) {
-      case 'red':
+      case "red":
         // Switch to green after red
-        redLight.classList.remove('active');
-        greenLight.classList.add('active');
-        currentLight = 'green';
+        redLight.classList.remove("active");
+        greenLight.classList.add("active");
+        currentLight = "green";
         break;
-      case 'green':
+      case "green":
         // Switch to yellow after green
-        greenLight.classList.remove('active');
-        yellowLight.classList.add('active');
-        currentLight = 'yellow';
+        greenLight.classList.remove("active");
+        yellowLight.classList.add("active");
+        currentLight = "yellow";
         break;
-      case 'yellow':
+      case "yellow":
         // Switch to red after yellow
-        yellowLight.classList.remove('active');
-        redLight.classList.add('active');
-        currentLight = 'red';
+        yellowLight.classList.remove("active");
+        redLight.classList.add("active");
+        currentLight = "red";
         break;
     }
-  }, 1000);  // Change the light every 1 second (for demonstration purposes)
-
+  }, 1000); // Change the light every 1 second (for demonstration purposes)
 }
 
-trafficLight();  // Initialize the traffic light cycle
+trafficLight(); // Initialize the traffic light cycle
 ```
 
 ### Explanation:
 
-1. **HTML**: 
-   - We created three `div` elements inside a container `div` to represent the red, yellow, and green lights. 
+1. **HTML**:
+   - We created three `div` elements inside a container `div` to represent the red, yellow, and green lights.
    - Each light has a class corresponding to its color.
 
-2. **CSS**: 
-   - We styled each light to be a circle with a width and height of `50px`. 
+2. **CSS**:
+   - We styled each light to be a circle with a width and height of `50px`.
    - The `opacity` property is used to turn the lights on and off, and a transition is added for smooth changes.
 
 3. **JavaScript**:
@@ -157,34 +162,34 @@ In the current implementation, the `setInterval` is set to 1000ms (1 second) for
 // Green light duration: 3000ms
 
 function trafficLight() {
-  let redLight = document.getElementById('red');
-  let yellowLight = document.getElementById('yellow');
-  let greenLight = document.getElementById('green');
+  let redLight = document.getElementById("red");
+  let yellowLight = document.getElementById("yellow");
+  let greenLight = document.getElementById("green");
 
   // Initial state: Red light is on
-  redLight.classList.add('active');
-  
-  let currentLight = 'red';
+  redLight.classList.add("active");
+
+  let currentLight = "red";
 
   setInterval(() => {
     switch (currentLight) {
-      case 'red':
-        redLight.classList.remove('active');
-        greenLight.classList.add('active');
-        currentLight = 'green';
+      case "red":
+        redLight.classList.remove("active");
+        greenLight.classList.add("active");
+        currentLight = "green";
         break;
-      case 'green':
-        greenLight.classList.remove('active');
-        yellowLight.classList.add('active');
-        currentLight = 'yellow';
+      case "green":
+        greenLight.classList.remove("active");
+        yellowLight.classList.add("active");
+        currentLight = "yellow";
         break;
-      case 'yellow':
-        yellowLight.classList.remove('active');
-        redLight.classList.add('active');
-        currentLight = 'red';
+      case "yellow":
+        yellowLight.classList.remove("active");
+        redLight.classList.add("active");
+        currentLight = "red";
         break;
     }
-  }, 4000);  // Change the light after the red duration (4000ms for this example)
+  }, 4000); // Change the light after the red duration (4000ms for this example)
 }
 
 trafficLight();
@@ -192,10 +197,7 @@ trafficLight();
 
 This example would work for any of the time settings you need.
 
-
-
-
-It seems like you're asking for a traffic light system where each light (Red, Yellow, Green) is represented by a series of binary values. This approach uses `1` to indicate that a light is on and `0` to indicate that it is off. You might want to visualize the traffic light's state in a way that shows the status of the lights using the binary representation. 
+It seems like you're asking for a traffic light system where each light (Red, Yellow, Green) is represented by a series of binary values. This approach uses `1` to indicate that a light is on and `0` to indicate that it is off. You might want to visualize the traffic light's state in a way that shows the status of the lights using the binary representation.
 
 Here’s how to implement a traffic light using `1` and `0` to represent the state of each light:
 
@@ -214,20 +216,20 @@ We will simulate this behavior in JavaScript, where we display the state of the 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Traffic Light Simulation</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="traffic-light">
-    <div id="light" class="light"></div>
-    <div id="status" class="status">Current State: 1 0 0</div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Traffic Light Simulation</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="traffic-light">
+      <div id="light" class="light"></div>
+      <div id="status" class="status">Current State: 1 0 0</div>
+    </div>
 
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
 ```
 
@@ -327,6 +329,7 @@ trafficLightCycle();
      - The cycle then repeats indefinitely.
 
 ### Result:
+
 The traffic light will follow a cycle like this:
 
 1. **Red Light (1 0 0)** is on for 4000ms (4 seconds).

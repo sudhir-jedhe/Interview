@@ -1,3 +1,4 @@
+```js
 import React from "react";
 import useLogger from "./useLogger";
 import { useEffect } from "react";
@@ -34,3 +35,4 @@ const MyComponent = (props) => {
 };
 
 export default MyComponent;
+```

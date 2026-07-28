@@ -9,7 +9,6 @@ Snapshot testing is especially popular in the world of React, where it is often 
 ### How Snapshot Testing Works
 
 1. **Generate a Snapshot**: During the first test run, the output of the component is rendered and saved in a snapshot file (usually with a `.snap` extension).
-   
 2. **Save the Snapshot**: The snapshot file is stored in the test folder alongside the test. It captures the rendered markup or output of the component at that point in time.
 
 3. **Compare Snapshots**: On subsequent test runs, the new output is compared to the stored snapshot. If there are any differences, the test fails, indicating that the component’s output has changed since the last test.
@@ -41,12 +40,10 @@ Here’s a simple example of using Jest to perform snapshot testing in a React a
 
 ```javascript
 // MyButton.js (React component)
-import React from 'react';
+import React from "react";
 
 const MyButton = ({ label }) => {
-  return (
-    <button>{label}</button>
-  );
+  return <button>{label}</button>;
 };
 
 export default MyButton;
@@ -56,13 +53,13 @@ Now, to write a **snapshot test** for this component:
 
 ```javascript
 // MyButton.test.js (Test file)
-import React from 'react';
-import { render } from '@testing-library/react';
-import MyButton from './MyButton';
+import React from "react";
+import { render } from "@testing-library/react";
+import MyButton from "./MyButton";
 
-test('renders MyButton correctly', () => {
+test("renders MyButton correctly", () => {
   const { asFragment } = render(<MyButton label="Click Me" />);
-  
+
   // Take a snapshot of the rendered component
   expect(asFragment()).toMatchSnapshot();
 });
@@ -91,14 +88,12 @@ exports[`renders MyButton correctly 1`] = `
 
 - **Passing Snapshot**: If the output has not changed, the test passes.
 - **Failing Snapshot**: If the component's rendered output changes, the test fails, and Jest will provide a diff of the changes. You can review the differences and decide whether to accept or reject them.
-  
+
   For instance, if you change the button label in the component:
 
   ```javascript
   const MyButton = ({ label }) => {
-    return (
-      <button>{label}</button>
-    );
+    return <button>{label}</button>;
   };
   ```
 
@@ -133,3 +128,74 @@ This will replace the old snapshot with the new one.
 ### Conclusion
 
 Snapshot testing is a powerful tool to catch regressions and verify that components or functions are rendering as expected. It’s widely used in React applications but can be applied to any type of output that you want to compare over time. While it is highly effective for ensuring UI consistency, it should be used alongside other testing techniques (like unit, integration, and end-to-end testing) to ensure comprehensive test coverage and prevent over-reliance on snapshots alone.
+
+**Snapshot testing** is a software testing technique where a test runner takes a "picture" (a text representation or literal image) of a component, data structure, or output, saves it as a reference file, and compares future test runs against that saved reference.
+
+If the new output matches the snapshot, the test passes. If it doesn't, the test fails, alerting you that the rendered output or structure has changed.
+
+---
+
+## 1. How Snapshot Testing Works
+
+```
+[ First Test Run ] ──> Generates Output ──> Saves Reference File (.snap)
+                                                   │
+[ Future Runs ]   ──> Generates Output ──> Compares ──> Match?  ──> PASS
+                                                   └──> Differ? ──> FAIL (Diff Shown)
+
+```
+
+1. **Initial Run:** You write a test asserting that a component or function output matches a snapshot (e.g., `expect(renderedUI).toMatchSnapshot()`). The test framework renders the subject and creates a `.snap` file on disk storing the output.
+2. **Commit Snapshot:** The saved `.snap` file is committed to your version control system (Git) alongside the source code.
+3. **Regression Check:** On subsequent test runs (and CI/CD pipelines), the test runner generates the output again and compares it line-by-line against the saved `.snap` file.
+4. **Intentional Updates:** If you deliberately changed a feature or component, the test will fail. You then review the diff in your terminal and press a key (or run `jest -u`) to update the snapshot reference.
+
+---
+
+## 2. Common Types of Snapshot Testing
+
+### A. DOM / Component Snapshot Testing (Most Common)
+
+Frequently used in React, Vue, or Angular testing with frameworks like **Jest** or **Vitest**. It renders a component to a lightweight text representation (like HTML/JSX tree) rather than actual pixels.
+
+```javascript
+import { render } from "@testing-library/react";
+import Button from "./Button";
+
+test("renders primary button correctly", () => {
+  const { container } = render(<Button label="Submit" variant="primary" />);
+  expect(container.firstChild).toMatchSnapshot();
+});
+```
+
+### B. Visual Regression Testing
+
+Takes actual pixel screenshots of rendered pages across different browsers and viewport sizes (using tools like **Percy**, **Chromatic**, or **Playwright**). It compares the visual pixels to detect layout shifts, broken CSS, or unwanted styling bugs.
+
+### C. Data / API Contract Snapshot Testing
+
+Snapshots can also test large JSON objects, API responses, or Redux state trees to ensure data contracts remain stable over time.
+
+---
+
+## 3. Benefits vs. Pitfalls
+
+### Benefits
+
+- **Fast Setup:** Allows you to generate structural test coverage in seconds without writing dozens of individual assertions (`expect(title).toBe(...)`, `expect(button).toHaveClass(...)`).
+- **Prevents Unintended Changes:** Instantly alerts you if a refactor in a shared component accidentally breaks the structure of a completely different page.
+- **Great for Static Markup:** Ideal for UI components whose structure changes infrequently.
+
+### Common Pitfalls
+
+- **Mindless Updating (`-u` Syndrome):** Developers often get used to failing snapshot tests during routine refactoring and update snapshots automatically without inspecting the diff, defeating the purpose of the test.
+- **Large, Fragile Files:** Snapshots containing hundreds of lines of HTML make diffs hard to review in Pull Requests and fail too frequently over minor, irrelevant markup changes.
+- **Does Not Test Functionality:** A passing snapshot test only proves that the HTML structure matches history—it does not prove that clicking a button triggers the correct business logic or API call.
+
+---
+
+## 4. Best Practices
+
+1. **Keep Snapshots Small:** Instead of snapshotting entire pages, snapshot small, focused sub-components or atomic UI elements.
+2. **Combine with Behavioral Tests:** Rely on functional testing (e.g., using `@testing-library/react` to test user interactions like clicks, typing, and state changes) for core business logic, using snapshots primarily for structural regression detection.
+3. **Review Snapshot Diffs in Code Review:** Treat `.snap` files as code. When reviewing Pull Requests, carefully check snapshot diffs to ensure no unexpected DOM changes were introduced.

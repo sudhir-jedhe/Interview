@@ -677,6 +677,7 @@ const updatedFormData = {
 };
 
 return (
+
 <form onSubmit={handleSubmit(onSubmit)}>
 <StepComponent
         register={register}
@@ -746,6 +747,7 @@ visibleSteps
 } = useWizardNavigation();
 
 return (
+
 <nav
 style={{
         display: "flex",
@@ -808,6 +810,7 @@ getVisibleSteps
 
 function WizardLayout() {
 return (
+
 <div
 style={{
         maxWidth: "760px",
@@ -874,6 +877,7 @@ replace
 
 function Completed() {
 return (
+
 <div>
 <h2>Wizard Completed</h2>
 <p>Your form has been submitted successfully.</p>
@@ -924,6 +928,7 @@ watch
 const isEmployed = watch("isEmployed");
 
 return (
+
 <section>
 <h2>Personal Details</h2>
 
@@ -986,6 +991,7 @@ register,
 errors
 }) {
 return (
+
 <section>
 <h2>Employment Details</h2>
 
@@ -1021,6 +1027,7 @@ register,
 errors
 }) {
 return (
+
 <section>
 <h2>Team Details</h2>
 
@@ -1059,6 +1066,7 @@ register,
 errors
 }) {
 return (
+
 <section>
 <h2>Security Access</h2>
 
@@ -1098,6 +1106,7 @@ export default function ReviewStep({
 formData
 }) {
 return (
+
 <section>
 <h2>Review Details</h2>
 
@@ -1332,6 +1341,7 @@ render={({ messages }) =>
 Object.values(
 messages
 ).map(message => (
+
 <p key={message}>
 {message}
 </p>
@@ -1532,6 +1542,7 @@ value: formData.companyName
 
 {
 fields.map(field => (
+
 <div key={field.label}>
 {field.label}
 

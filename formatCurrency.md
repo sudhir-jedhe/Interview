@@ -3,31 +3,34 @@ The code you've provided is an excellent way to format currency values using the
 ### Function: `formatCurrency`
 
 ```javascript
-function formatCurrency(amount, currencyCode = 'USD', locale = 'en-US') {
-    if (typeof amount !== 'number') {
-        throw new Error('Amount must be a number.');
-    }
+function formatCurrency(amount, currencyCode = "USD", locale = "en-US") {
+  if (typeof amount !== "number") {
+    throw new Error("Amount must be a number.");
+  }
 
-    const formattedAmount = new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency: currencyCode
-    }).format(amount);
+  const formattedAmount = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currencyCode,
+  }).format(amount);
 
-    return formattedAmount;
+  return formattedAmount;
 }
 ```
 
 #### Parameters:
+
 1. **`amount`**: The value to format, e.g., `12345.6789`.
 2. **`currencyCode`**: A string representing the currency code, defaulting to `'USD'`. This is the ISO 4217 currency code (e.g., `'EUR'`, `'GBP'`, `'JPY'`, etc.).
 3. **`locale`**: A string representing the locale for formatting the currency. It defaults to `'en-US'`, which will format the currency according to the conventions of the United States (e.g., `$12,345.68`).
 
 #### Inside the Function:
-1. **Type Checking**: 
+
+1. **Type Checking**:
    The function first checks if the `amount` is a number. If not, it throws an error.
+
    ```javascript
-   if (typeof amount !== 'number') {
-       throw new Error('Amount must be a number.');
+   if (typeof amount !== "number") {
+     throw new Error("Amount must be a number.");
    }
    ```
 
@@ -36,8 +39,8 @@ function formatCurrency(amount, currencyCode = 'USD', locale = 'en-US') {
 
    ```javascript
    const formattedAmount = new Intl.NumberFormat(locale, {
-       style: 'currency',
-       currency: currencyCode
+     style: "currency",
+     currency: currencyCode,
    }).format(amount);
    ```
 
@@ -52,8 +55,8 @@ function formatCurrency(amount, currencyCode = 'USD', locale = 'en-US') {
 
 ```javascript
 const price = 12345.6789;
-const formattedPrice = formatCurrency(price, 'USD', 'en-US');
-console.log(formattedPrice);  // Output: $12,345.68
+const formattedPrice = formatCurrency(price, "USD", "en-US");
+console.log(formattedPrice); // Output: $12,345.68
 ```
 
 - In this example, you are passing a price of `12345.6789`, and formatting it as USD (`'USD'`) using the locale `'en-US'`.
@@ -62,16 +65,19 @@ console.log(formattedPrice);  // Output: $12,345.68
 ---
 
 ### Edge Cases:
-1. **Invalid Amount**: 
+
+1. **Invalid Amount**:
    If you pass a non-numeric value as `amount`, the function will throw an error. For example:
+
    ```javascript
-   formatCurrency('not-a-number'); // Throws error: Amount must be a number.
+   formatCurrency("not-a-number"); // Throws error: Amount must be a number.
    ```
 
 2. **Different Currency and Locale**:
    You can use different currencies and locales. For example:
+
    ```javascript
-   const formattedPriceEuro = formatCurrency(price, 'EUR', 'de-DE');
+   const formattedPriceEuro = formatCurrency(price, "EUR", "de-DE");
    console.log(formattedPriceEuro); // Output: 12.345,68 €
    ```
 
@@ -83,4 +89,5 @@ console.log(formattedPrice);  // Output: $12,345.68
 ---
 
 ### Summary:
+
 This is a clean and efficient way to format currency values in JavaScript. The `Intl.NumberFormat` API is powerful and supports different locales, currencies, and various formatting options, making it ideal for internationalization. Your function covers the basics and ensures proper type handling for the `amount` parameter.

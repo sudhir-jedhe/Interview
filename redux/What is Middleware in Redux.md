@@ -3,6 +3,7 @@
 **Middleware** in Redux is a **function** that sits between the **dispatching of an action** and the **reduction of the state** in the Redux store. Middleware allows you to extend Redux's capabilities by intercepting and processing actions before they reach the reducers or by dispatching additional actions.
 
 The core idea behind middleware is to let you **extend** Redux with extra functionality, such as:
+
 - Logging actions,
 - Handling asynchronous operations (e.g., fetching data),
 - Modifying actions before they reach reducers,
@@ -15,11 +16,12 @@ Middleware in Redux is applied during the store creation process. It is placed b
 The middleware receives the `store` (including `dispatch` and `getState` functions) and the `next` middleware function as parameters. It can either modify the action or pass it along to the next middleware by calling `next(action)`.
 
 ### **Basic Structure of Middleware in Redux**
+
 ```javascript
-const myMiddleware = store => next => action => {
+const myMiddleware = (store) => (next) => (action) => {
   // Do something with the action or state here
-  console.log('Dispatched action:', action);
-  
+  console.log("Dispatched action:", action);
+
   // Pass action to the next middleware or reducer
   return next(action);
 };
@@ -30,12 +32,12 @@ const myMiddleware = store => next => action => {
 When creating the Redux store, middleware is added using `applyMiddleware` from Redux.
 
 ```javascript
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers';
+import { createStore, applyMiddleware } from "redux";
+import rootReducer from "./reducers";
 
 const store = createStore(
   rootReducer,
-  applyMiddleware(myMiddleware) // Applying middleware here
+  applyMiddleware(myMiddleware), // Applying middleware here
 );
 ```
 
@@ -55,6 +57,7 @@ Redux Thunk is a middleware that allows you to write action creators that return
 #### **Example: Fetching Data with Redux Thunk**
 
 1. **Install Redux Thunk**:
+
    ```bash
    npm install redux-thunk
    ```
@@ -63,13 +66,13 @@ Redux Thunk is a middleware that allows you to write action creators that return
    Add the middleware when creating the Redux store.
 
    ```javascript
-   import { createStore, applyMiddleware } from 'redux';
-   import thunk from 'redux-thunk';
-   import rootReducer from './reducers';
+   import { createStore, applyMiddleware } from "redux";
+   import thunk from "redux-thunk";
+   import rootReducer from "./reducers";
 
    const store = createStore(
      rootReducer,
-     applyMiddleware(thunk)  // Adding Redux Thunk middleware
+     applyMiddleware(thunk), // Adding Redux Thunk middleware
    );
    ```
 
@@ -80,14 +83,16 @@ Redux Thunk is a middleware that allows you to write action creators that return
    // src/redux/actions/userActions.js
    export const fetchUsers = () => {
      return async (dispatch) => {
-       dispatch({ type: 'FETCH_USERS_REQUEST' });
-       
+       dispatch({ type: "FETCH_USERS_REQUEST" });
+
        try {
-         const response = await fetch('https://jsonplaceholder.typicode.com/users');
+         const response = await fetch(
+           "https://jsonplaceholder.typicode.com/users",
+         );
          const data = await response.json();
-         dispatch({ type: 'FETCH_USERS_SUCCESS', payload: data });
+         dispatch({ type: "FETCH_USERS_SUCCESS", payload: data });
        } catch (error) {
-         dispatch({ type: 'FETCH_USERS_FAILURE', error: error.message });
+         dispatch({ type: "FETCH_USERS_FAILURE", error: error.message });
        }
      };
    };
@@ -101,16 +106,16 @@ Redux Thunk is a middleware that allows you to write action creators that return
    const initialState = {
      loading: false,
      users: [],
-     error: '',
+     error: "",
    };
 
    const userReducer = (state = initialState, action) => {
      switch (action.type) {
-       case 'FETCH_USERS_REQUEST':
+       case "FETCH_USERS_REQUEST":
          return { ...state, loading: true };
-       case 'FETCH_USERS_SUCCESS':
+       case "FETCH_USERS_SUCCESS":
          return { ...state, loading: false, users: action.payload };
-       case 'FETCH_USERS_FAILURE':
+       case "FETCH_USERS_FAILURE":
          return { ...state, loading: false, error: action.error };
        default:
          return state;
@@ -125,9 +130,9 @@ Redux Thunk is a middleware that allows you to write action creators that return
 
    ```javascript
    // src/components/UserList.js
-   import React, { useEffect } from 'react';
-   import { useDispatch, useSelector } from 'react-redux';
-   import { fetchUsers } from '../redux/actions/userActions';
+   import React, { useEffect } from "react";
+   import { useDispatch, useSelector } from "react-redux";
+   import { fetchUsers } from "../redux/actions/userActions";
 
    const UserList = () => {
      const dispatch = useDispatch();
@@ -165,6 +170,7 @@ Redux Logger is a simple middleware that logs every action and state change to t
 #### **Example: Using Redux Logger**
 
 1. **Install Redux Logger**:
+
    ```bash
    npm install redux-logger
    ```
@@ -173,13 +179,13 @@ Redux Logger is a simple middleware that logs every action and state change to t
    Add the `redux-logger` middleware when creating the store.
 
    ```javascript
-   import { createStore, applyMiddleware } from 'redux';
-   import logger from 'redux-logger';
-   import rootReducer from './reducers';
+   import { createStore, applyMiddleware } from "redux";
+   import logger from "redux-logger";
+   import rootReducer from "./reducers";
 
    const store = createStore(
      rootReducer,
-     applyMiddleware(logger) // Adding Redux Logger middleware
+     applyMiddleware(logger), // Adding Redux Logger middleware
    );
    ```
 
@@ -205,12 +211,13 @@ Redux DevTools is a popular extension for Chrome/Firefox that allows you to insp
    When creating the store, you can enable Redux DevTools by using the `window.__REDUX_DEVTOOLS_EXTENSION__`.
 
    ```javascript
-   import { createStore } from 'redux';
-   import rootReducer from './reducers';
+   import { createStore } from "redux";
+   import rootReducer from "./reducers";
 
    const store = createStore(
      rootReducer,
-     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // Enabling Redux DevTools
+     window.__REDUX_DEVTOOLS_EXTENSION__ &&
+       window.__REDUX_DEVTOOLS_EXTENSION__(), // Enabling Redux DevTools
    );
    ```
 
@@ -227,6 +234,7 @@ Redux Saga is a middleware library used to manage side effects in Redux, such as
 #### **Example: Using Redux Saga**
 
 1. **Install Redux Saga**:
+
    ```bash
    npm install redux-saga
    ```
@@ -235,17 +243,14 @@ Redux Saga is a middleware library used to manage side effects in Redux, such as
    Set up Redux Saga middleware and apply it to the store.
 
    ```javascript
-   import createSagaMiddleware from 'redux-saga';
-   import { createStore, applyMiddleware } from 'redux';
-   import rootReducer from './reducers';
-   import rootSaga from './sagas';
+   import createSagaMiddleware from "redux-saga";
+   import { createStore, applyMiddleware } from "redux";
+   import rootReducer from "./reducers";
+   import rootSaga from "./sagas";
 
    const sagaMiddleware = createSagaMiddleware();
 
-   const store = createStore(
-     rootReducer,
-     applyMiddleware(sagaMiddleware)
-   );
+   const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 
    sagaMiddleware.run(rootSaga);
    ```
@@ -254,12 +259,19 @@ Redux Saga is a middleware library used to manage side effects in Redux, such as
    A basic saga that watches for an action and then performs an async operation.
 
    ```javascript
-   import { call, put, takeEvery } from 'redux-saga/effects';
-   import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE } from './actionTypes';
+   import { call, put, takeEvery } from "redux-saga/effects";
+   import {
+     FETCH_USERS_REQUEST,
+     FETCH_USERS_SUCCESS,
+     FETCH_USERS_FAILURE,
+   } from "./actionTypes";
 
    function* fetchUsers() {
      try {
-       const response = yield call(fetch, 'https://jsonplaceholder.typicode.com/users');
+       const response = yield call(
+         fetch,
+         "https://jsonplaceholder.typicode.com/users",
+       );
        const users = yield response.json();
        yield put({ type: FETCH_USERS_SUCCESS, payload: users });
      } catch (error) {
@@ -278,8 +290,8 @@ Redux Saga is a middleware library used to manage side effects in Redux, such as
    Dispatch the action as usual in your component, and the saga will handle the async operation.
 
    ```javascript
-   import { useDispatch } from 'react-redux';
-   import { FETCH_USERS_REQUEST } from './actionTypes';
+   import { useDispatch } from "react-redux";
+   import { FETCH_USERS_REQUEST } from "./actionTypes";
 
    const MyComponent = () => {
      const dispatch = useDispatch();
@@ -299,16 +311,14 @@ You can also write your own custom middleware. This allows you to extend Redux's
 #### **Example: Custom Middleware Logging Action Types**
 
 ```javascript
-
-
-const actionLoggerMiddleware = store => next => action => {
-  console.log('Dispatching action of type:', action.type);
+const actionLoggerMiddleware = (store) => (next) => (action) => {
+  console.log("Dispatching action of type:", action.type);
   return next(action); // Pass the action along
 };
 
 const store = createStore(
   rootReducer,
-  applyMiddleware(actionLoggerMiddleware) // Adding custom middleware
+  applyMiddleware(actionLoggerMiddleware), // Adding custom middleware
 );
 ```
 
@@ -317,8 +327,6 @@ const store = createStore(
 ### **Conclusion**
 
 Middleware in Redux enhances the functionality of the Redux store by allowing you to add custom behavior, perform side effects, or handle async operations. Common middleware like **Redux Thunk** and **Redux Saga** are used for managing side effects, while tools like **Redux Logger** and **Redux DevTools** help with debugging. Custom middleware can be created for specialized use cases, such as logging or action transformation.
-
-
 
 ### **Redux Middleware: When to Use and Why**
 
@@ -331,7 +339,7 @@ Middleware in Redux is a way to extend Redux functionality. It is used to interc
 A middleware function has the following signature:
 
 ```js
-const myMiddleware = store => next => action => {
+const myMiddleware = (store) => (next) => (action) => {
   // Your custom logic here
   return next(action); // Pass action to next middleware or reducer
 };
@@ -341,18 +349,21 @@ const myMiddleware = store => next => action => {
 
 1. **Handling Asynchronous Actions**:
    - Middleware is commonly used to handle asynchronous logic, such as API calls. You would usually use libraries like `redux-thunk` or `redux-saga` for this.
-   
+
    **Example with `redux-thunk`**:
+
    ```js
    const fetchUserData = (userId) => {
      return async (dispatch) => {
-       dispatch({ type: 'FETCH_USER_REQUEST' });
+       dispatch({ type: "FETCH_USER_REQUEST" });
        try {
-         const response = await fetch(`https://api.example.com/users/${userId}`);
+         const response = await fetch(
+           `https://api.example.com/users/${userId}`,
+         );
          const data = await response.json();
-         dispatch({ type: 'FETCH_USER_SUCCESS', payload: data });
+         dispatch({ type: "FETCH_USER_SUCCESS", payload: data });
        } catch (error) {
-         dispatch({ type: 'FETCH_USER_FAILURE', error });
+         dispatch({ type: "FETCH_USER_FAILURE", error });
        }
      };
    };
@@ -360,30 +371,32 @@ const myMiddleware = store => next => action => {
 
    **When to use**:
    - When you need to handle asynchronous actions like fetching data from an API or performing any side effects in response to an action.
-   
+
 2. **Logging Actions**:
    - A middleware can be used to log actions that are dispatched. This is useful for debugging and tracking action flows during development.
-   
+
    **Example**:
+
    ```js
-   const loggerMiddleware = store => next => action => {
-     console.log('Dispatching action:', action);
+   const loggerMiddleware = (store) => (next) => (action) => {
+     console.log("Dispatching action:", action);
      return next(action); // Pass action to the next middleware or reducer
    };
    ```
 
    **When to use**:
    - When you need to log actions or state transitions for debugging purposes during development.
-   
+
 3. **Analytics Tracking**:
    - You can use middleware to track analytics data whenever an action is dispatched. This allows you to collect data on which actions are most frequently triggered or track how users interact with your application.
-   
+
    **Example**:
+
    ```js
-   const analyticsMiddleware = store => next => action => {
-     if (action.type === 'USER_LOGIN') {
+   const analyticsMiddleware = (store) => (next) => (action) => {
+     if (action.type === "USER_LOGIN") {
        // Track analytics event for user login
-       analyticsService.track('user_login', { userId: action.payload.userId });
+       analyticsService.track("user_login", { userId: action.payload.userId });
      }
      return next(action);
    };
@@ -391,35 +404,37 @@ const myMiddleware = store => next => action => {
 
    **When to use**:
    - When you need to track user interactions or send analytics data on certain events.
-   
+
 4. **Error Handling**:
    - Middleware can be used to handle errors in your application gracefully. If an action causes an error, you can catch the error and dispatch another action to handle it.
-   
+
    **Example**:
+
    ```js
-   const errorHandlingMiddleware = store => next => action => {
+   const errorHandlingMiddleware = (store) => (next) => (action) => {
      try {
        return next(action); // Proceed with action dispatching
      } catch (error) {
-       console.error('Error occurred during dispatch:', error);
-       return next({ type: 'ACTION_FAILED', error: error.message });
+       console.error("Error occurred during dispatch:", error);
+       return next({ type: "ACTION_FAILED", error: error.message });
      }
    };
    ```
 
    **When to use**:
    - When you want to catch errors in actions or API calls, and handle them in a structured way.
-   
+
 5. **Authorization and Authentication**:
    - Middleware can be used to check if the user is authenticated before dispatching certain actions, or to intercept actions and perform authorization checks.
-   
+
    **Example**:
+
    ```js
-   const authMiddleware = store => next => action => {
-     if (action.type === 'FETCH_USER') {
-       const token = localStorage.getItem('authToken');
+   const authMiddleware = (store) => (next) => (action) => {
+     if (action.type === "FETCH_USER") {
+       const token = localStorage.getItem("authToken");
        if (!token) {
-         return next({ type: 'USER_NOT_AUTHENTICATED' });
+         return next({ type: "USER_NOT_AUTHENTICATED" });
        }
      }
      return next(action);
@@ -435,23 +450,26 @@ const myMiddleware = store => next => action => {
 
 1. **redux-thunk**:  
    Allows action creators to return functions (for handling async actions).
+
    ```js
-   import thunk from 'redux-thunk';
+   import thunk from "redux-thunk";
    const store = createStore(reducer, applyMiddleware(thunk));
    ```
 
 2. **redux-saga**:  
    A middleware library that makes side effects (like data fetching) more manageable by using generator functions.
+
    ```js
-   import createSagaMiddleware from 'redux-saga';
+   import createSagaMiddleware from "redux-saga";
    const sagaMiddleware = createSagaMiddleware();
    const store = createStore(reducer, applyMiddleware(sagaMiddleware));
    ```
 
 3. **redux-logger**:  
    A middleware to log Redux actions, which helps with debugging.
+
    ```js
-   import logger from 'redux-logger';
+   import logger from "redux-logger";
    const store = createStore(reducer, applyMiddleware(logger));
    ```
 

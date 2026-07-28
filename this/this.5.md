@@ -41,7 +41,6 @@ console.log(a.foo2());
   - `a.foo1` is a reference to the function `foo` (from `foo1: foo`).
   - `.call()` is used to invoke the function with a specific `this` context. However, no argument is passed to `.call()`, so `this` defaults to the **global object** (`window` in a browser or `global` in Node.js).
   - In **non-strict mode**, `this` refers to the global object. Thus, `this.bar++` modifies the global `bar`, which was initially `1`.
-  
 - **Global `bar`**:
   - The global `bar` is `1` before the call, and it will be incremented to `2` inside the function.
   - The function returns the value before it is incremented, so it returns `1`.
@@ -69,7 +68,6 @@ console.log(a.foo2());
   - `a.foo2` is a function defined as `foo2: function() { return foo(); }`.
   - In this case, `foo2` invokes `foo` without changing the context explicitly, so `this` inside `foo2` is still the object `a` (since `foo2` is a method of `a`).
   - **However**, inside `foo2`, the call to `foo()` does **not use `.call()`**, so `this` will still be the object `a`, meaning `a.bar` will be incremented.
-  
 - **Result**:
   ```javascript
   console.log(a.foo2.call()); // 11
@@ -79,7 +77,6 @@ console.log(a.foo2());
 
 - **Explanation**:
   - `a.foo2()` is calling `foo2` as a method of object `a`, and inside `foo2`, `foo()` is called directly without modifying `this`. Therefore, `this` inside `foo` will refer to `a`, and `a.bar` will be incremented.
-  
 - **Result**:
   ```javascript
   console.log(a.foo2()); // 12
@@ -88,10 +85,10 @@ console.log(a.foo2());
 ### Final Output:
 
 ```javascript
-1
-10
-11
-12
+1;
+10;
+11;
+12;
 ```
 
 ### Detailed Summary of Results:
@@ -113,4 +110,5 @@ console.log(a.foo2());
    - `a.bar` (which was `11`) is incremented, and the return value of `a.bar++` is `12`.
 
 ### Conclusion:
+
 The key takeaway is the importance of how `this` is set. When using `.call()`, `this` refers to the context passed to `.call()`. When calling methods directly, `this` refers to the object on which the method is called. Additionally, variable hoisting and the behavior of the increment operator `++` can sometimes lead to subtle results, especially when it involves object properties or the global object.

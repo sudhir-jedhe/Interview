@@ -39,7 +39,6 @@ While JavaScript itself is high-level, the actual **DOM manipulation** and rende
 #### JavaScript Engine in C++ (or C++-like languages)
 
 - **Low-Level Execution**: The JavaScript engine is typically written in **C++**, a lower-level language that interacts directly with the computer’s **CPU**. C++ is used for performance reasons because it offers fine-grained control over memory management and can be highly optimized for speed.
-  
 - **Native Code**: When JavaScript is executed, it is either interpreted or JIT-compiled into **machine code** that the CPU can understand directly. The process of compiling JavaScript to machine code is managed by the JavaScript engine, which itself is often written in C++.
 
 - **Hardware Interaction**: The JavaScript engine doesn't directly manipulate hardware, but it operates at a level where it can instruct the browser's rendering engine to interact with system resources (e.g., the GPU, memory) for efficient layout and graphics rendering.

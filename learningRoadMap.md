@@ -1,153 +1,153 @@
 // FRONTEND DEVELOPER Roadmap⚡
 
 // Master the Basics:
-//  Learn HTML Essentials:
-//  - HTML Basics
-//  - Emmet
-//  - Forms
-//  - Semantic HTML
-//  - SEO Basics
+// Learn HTML Essentials:
+// - HTML Basics
+// - Emmet
+// - Forms
+// - Semantic HTML
+// - SEO Basics
 
 // Dive into CSS Fundamentals:
-//  - CSS Basics
-//  - Selectors
-//  - Positioning
-//  - Box Model
-//  - Display
-//  - Specificity
-//  - FlexBox
-//  - Grid
-//  - Media Queries
-//  - Pseudo Elements
-//  - Pseudo Classes
+// - CSS Basics
+// - Selectors
+// - Positioning
+// - Box Model
+// - Display
+// - Specificity
+// - FlexBox
+// - Grid
+// - Media Queries
+// - Pseudo Elements
+// - Pseudo Classes
 
 // Grasp JavaScript Essentials:
-//  - JavaScript Basic Syntax
-//  - DOM Manipulation
-//  - Fetch API / Ajax
-//  - Async Await
-//  - Event Listeners
-//  - ES6+ JavaScript
-//  - JavaScript Promises
-//  - Classes
-//  - Array Methods
-//  - Scoping
-//  - Hoisting
-//  - Closures
+// - JavaScript Basic Syntax
+// - DOM Manipulation
+// - Fetch API / Ajax
+// - Async Await
+// - Event Listeners
+// - ES6+ JavaScript
+// - JavaScript Promises
+// - Classes
+// - Array Methods
+// - Scoping
+// - Hoisting
+// - Closures
 
 // Explore Frameworks and Tools:
-//  Choose a CSS Framework:
-//  - Bootstrap 
-//  - Tailwind 
-//  - Materialize
-//  - Semantic UI
-//  - Foundation
+// Choose a CSS Framework:
+// - Bootstrap
+// - Tailwind
+// - Materialize
+// - Semantic UI
+// - Foundation
 
 // Pick a CSS Preprocessor:
-//  - SASS and SCSS 
-//  - Postcss
-//  - Less
-//  - Stylus
-//  - Stylecow
+// - SASS and SCSS
+// - Postcss
+// - Less
+// - Stylus
+// - Stylecow
 
 // Learn Version Control:
-//  - Git
-//  - GitHub
+// - Git
+// - GitHub
 
 // Understand Package Managers:
-//  - NPM
-//  - Yarn
+// - NPM
+// - Yarn
 
 // Select a JavaScript Framework / Library:
-//  - React 
-//  - Vue
-//  - Angular
-//  - Svelte
+// - React
+// - Vue
+// - Angular
+// - Svelte
 
 // Master React and Beyond:
-//  Get Started with React Basics:
-//  - Components
-//  - JSX
-//  - Props
-//  - State
-//  - Events
-//  - Conditional Rendering
+// Get Started with React Basics:
+// - Components
+// - JSX
+// - Props
+// - State
+// - Events
+// - Conditional Rendering
 
 // Explore Key React Topics:
-//  - React Hooks
-//  - useState
-//  - useEffect
-//  - useRef
-//  - useContext
-//  - useReducer
-//  - useMemo
-//  - useCallback
+// - React Hooks
+// - useState
+// - useEffect
+// - useRef
+// - useContext
+// - useReducer
+// - useMemo
+// - useCallback
 
 // Discover React UI Frameworks:
-//  - Material UI 
-//  - Ant Design
-//  - Chakra UI
-//  - React Bootstrap
-//  - Blueprint
-//  - Semantic UI React
+// - Material UI
+// - Ant Design
+// - Chakra UI
+// - React Bootstrap
+// - Blueprint
+// - Semantic UI React
 
 // Utilize Popular React Packages:
-//  - React Router
-//  - React Query
-//  - Axios
-//  - React Hook Form
-//  - Styled Components
+// - React Router
+// - React Query
+// - Axios
+// - React Hook Form
+// - Styled Components
 
 // Learn State Management:
-//  - Redux 
-//  - MobX
-//  - Hookstate
-//  - Recoil
-//  - Akita
+// - Redux
+// - MobX
+// - Hookstate
+// - Recoil
+// - Akita
 
 // Expand Your Horizons:
-//  Dive into Advanced Topics:
-//  - Next JS 
-//  - Gatsby
-//  - TypeScript 
-//  - React Native
-//  - Electron
+// Dive into Advanced Topics:
+// - Next JS
+// - Gatsby
+// - TypeScript
+// - React Native
+// - Electron
 
 // Explore Next JS Features:
-//  - Static Site Generation
-//  - Server Side Rendering
-//  - Incremental Static Regeneration
-//  - Dynamic Pages
-//  - CSS / SASS Modules
-//  - Lazy loading Modules
-//  - API Routes
+// - Static Site Generation
+// - Server Side Rendering
+// - Incremental Static Regeneration
+// - Dynamic Pages
+// - CSS / SASS Modules
+// - Lazy loading Modules
+// - API Routes
 
 // Deploy Your Projects:
-//  - Netlify
-//  - Vercel
-//  - Firebase
-//  - Github Pages
-//  - Heroku
-//  - Render
+// - Netlify
+// - Vercel
+// - Firebase
+// - Github Pages
+// - Heroku
+// - Render
 
 // Learn Additional Topics:
-//  - PWA
-//  - Web Sockets
-//  - CORS
-//  - JSON
-//  - RESTful APIs
-//  - GraphQL APIs
-//  - Basic Security
-//  - Web Accessibility
+// - PWA
+// - Web Sockets
+// - CORS
+// - JSON
+// - RESTful APIs
+// - GraphQL APIs
+// - Basic Security
+// - Web Accessibility
 
 // Check Out Style Guides:
-//  - ES Lint
-//  - Standard
-//  - Prettier
+// - ES Lint
+// - Standard
+// - Prettier
 
 // Optional Learning - Module Bundlers:
-//  - Webpack
-//  - Parcel
+// - Webpack
+// - Parcel
 
 // Get Creative with Projects:
 // 📍 Real Estate App

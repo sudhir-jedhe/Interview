@@ -5,12 +5,15 @@ This JavaScript quiz you’ve shared covers several interesting topics about typ
 ### **Equality and Type Coercion (`==` vs `===` vs `Object.is`)**
 
 #### `==` (Loose Equality):
+
 - **`==`** compares values for equality, but **performs type coercion** if the values are of different types. This means that JavaScript will try to convert the operands to a common type before comparing them.
 
 #### `===` (Strict Equality):
+
 - **`===`** compares both the value **and the type**, so no type coercion is performed.
 
 #### `Object.is()`:
+
 - **`Object.is()`** behaves similarly to `===`, but has a few edge cases, such as distinguishing between `+0` and `-0`, and treating `NaN` as equal to `NaN`.
 
 ---
@@ -151,9 +154,9 @@ This JavaScript quiz you’ve shared covers several interesting topics about typ
 
 ---
 
-### **Comparison Operators with
+### \*\*Comparison Operators with
 
- `null` and `undefined`**
+`null` and `undefined`\*\*
 
 40. **`null == 0`**:
     - **False**. `null` is not loosely equal to `0`.

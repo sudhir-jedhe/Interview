@@ -1,5 +1,6 @@
 // The session storage provided methods for reading, writing and clearing the session data
 
+```js
 // Save data to sessionStorage
 sessionStorage.setItem("key", "value");
 
@@ -11,3 +12,4 @@ sessionStorage.removeItem("key");
 
 // Remove all saved data from sessionStorage
 sessionStorage.clear();
+```

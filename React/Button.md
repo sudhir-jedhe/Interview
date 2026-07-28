@@ -1,3 +1,4 @@
+```js
 //index.js
 import React, { Component } from "react";
 import styles from "./index.module.css";
@@ -71,9 +72,9 @@ class Button extends Component {
     );
 
     return (
-      
+
         {this.renderChildren()}
-      
+
     );
   }
 }
@@ -106,83 +107,83 @@ export default Button;
     -o-transition: background 0.2s ease;
     transition: background 0.2s ease;
   }
-  
+
   .medium {
     font-size: 16px;
   }
-  
+
   .large {
     font-size: 18px;
   }
-  
+
   .outline {
     background-color: #fff;
     border-color: #3777d1;
     color: #3777d1;
   }
-  
+
   .outline:hover {
     background-color: #3777d1;
     border-color: #3777d1;
     color: #fff;
   }
-  
+
   .basic {
     background-color: #3777d1;
     border-color: #3777d1;
     color: #fff;
   }
-  
+
   .basic:hover {
     background-color: #fff;
     border-color: #fff;
     color: #3777d1;
   }
-  
+
   .link {
     background-color: transparent;
     color: #4c4c4c;
     box-shadow: none;
   }
-  
+
   .link:hover {
     color: #40a9ff;
     background-color: transparent;
   }
-  
+
   .secondary {
     background-color: #fff;
     border-color: rgb(186, 186, 186);
     color: #4c4c4c;
   }
-  
+
   .secondary:hover {
     background-color: #eee;
     border-color: #eee;
   }
-  
+
   .primary {
     background-color: #2fcb53;
     border-color: #2fcb53;
     color: #fff;
   }
-  
+
   .primary:hover {
     background-color: #48dd84;
     border-color: #48dd84;
   }
-  
+
   .danger {
     color: #fff;
     background-color: rgb(214, 69, 64);
     border-color: rgb(214, 69, 64);
   }
-  
+
   .danger:hover {
     background-color: rgb(208, 50, 45);
     border-color: rgb(208, 50, 45);
   }
-  
+
   .disabled {
     background-color: #fff;
     border-color: #bababa;
@@ -192,7 +193,7 @@ export default Button;
     cursor: not-allowed;
     border: 1px solid;
   }
-  
+
   .disabled:hover {
     background-color: #fff;
     color: #bababa;
@@ -214,3 +215,4 @@ export default Button;
     </div>,
     document.getElementById("root")
   );
+```

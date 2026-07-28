@@ -1,3 +1,4 @@
+```js
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
@@ -86,7 +87,7 @@ export default FileUploader;
     align-items: center;
     margin: 10px;
   }
-  
+
   label {
     border: 1px solid;
     color: #8bc34a;
@@ -96,7 +97,7 @@ export default FileUploader;
     font-size: 16px;
     font-weight: 600;
   }
-  
+
   input[type="file"] {
     font-size: 100px;
     position: absolute;
@@ -105,11 +106,11 @@ export default FileUploader;
     opacity: 0;
     margin: 0;
   }
-  
+
   .readonly {
     color: #eee !important;
   }
-  
+
   .helperText {
     margin-left: 10px;
     font-weight: 600;
@@ -119,7 +120,7 @@ export default FileUploader;
     position: relative;
     color: #7cb342;
   }
-  
+
   .error {
     color: #eb5055;
   }
@@ -138,3 +139,4 @@ export default FileUploader;
     </div>,
     document.getElementById("root")
   );
+```

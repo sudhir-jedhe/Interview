@@ -1,6 +1,7 @@
 Sure, let's break down the differences between a development build and a production build in a React application:
 
 ### Development Build
+
 - **Purpose**: Used during development to help you debug and develop your app.
 - **Features**:
   - **Source Maps**: Included to help you understand the source of errors and debug your code.
@@ -9,6 +10,7 @@ Sure, let's break down the differences between a development build and a product
   - **Hot Reloading**: Often includes hot reloading, which allows for instant updates without refreshing the whole page.
 
 ### Production Build
+
 - **Purpose**: Used when you are ready to deploy your app to users.
 - **Features**:
   - **Minified Code**: The code is minified and optimized to reduce file size and improve load times.
@@ -18,24 +20,24 @@ Sure, let's break down the differences between a development build and a product
 
 ### Comparison Table
 
-| Feature             | Development Build            | Production Build            |
-|---------------------|------------------------------|-----------------------------|
-| Source Maps         | Yes                          | No                          |
-| Minification        | No                           | Yes                         |
-| Debugging           | Full error and warning messages | Stripped warnings            |
-| Performance         | Not optimized                | Optimized (tree shaking, code splitting) |
-| Code Readability    | High (unminified)            | Low (minified)              |
+| Feature          | Development Build               | Production Build                         |
+| ---------------- | ------------------------------- | ---------------------------------------- |
+| Source Maps      | Yes                             | No                                       |
+| Minification     | No                              | Yes                                      |
+| Debugging        | Full error and warning messages | Stripped warnings                        |
+| Performance      | Not optimized                   | Optimized (tree shaking, code splitting) |
+| Code Readability | High (unminified)               | Low (minified)                           |
 
 In summary, the development build is tailored for ease of debugging and development, while the production build is optimized for performance and efficiency when serving the app to end users. Transitioning from development to production is crucial to ensure your app runs smoothly and quickly for your users.
 
 Let me know if you need more details or examples!
-
 
 Here's a clear breakdown of the differences between a **development build** and a **production build** in a React application:
 
 ---
 
 ### **1. Development Build**
+
 - **Purpose**: Used during the development phase of the application.
 - **Features**:
   - Includes **detailed debugging information** and **developer warnings** to help troubleshoot issues.
@@ -49,6 +51,7 @@ Here's a clear breakdown of the differences between a **development build** and 
 ---
 
 ### **2. Production Build**
+
 - **Purpose**: Used when deploying the application to end-users.
 - **Features**:
   - Removes **development-only warnings**, logs, and debugging tools for better performance.
@@ -63,18 +66,19 @@ Here's a clear breakdown of the differences between a **development build** and 
 
 ### Key Differences at a Glance:
 
-| Feature                  | Development Build        | Production Build         |
-|--------------------------|--------------------------|--------------------------|
-| Debugging Tools          | Enabled                 | Removed                 |
-| Code Optimization        | None                    | Minified & optimized    |
-| Performance              | Slower                  | Faster                  |
-| Environment Variable     | `development`           | `production`            |
-| Size of Build            | Larger                  | Smaller                 |
-| Use Case                 | Local development       | Live deployment         |
+| Feature              | Development Build | Production Build     |
+| -------------------- | ----------------- | -------------------- |
+| Debugging Tools      | Enabled           | Removed              |
+| Code Optimization    | None              | Minified & optimized |
+| Performance          | Slower            | Faster               |
+| Environment Variable | `development`     | `production`         |
+| Size of Build        | Larger            | Smaller              |
+| Use Case             | Local development | Live deployment      |
 
 ---
 
 ### How to Generate Each Build in React:
+
 - **Development Build**: Run the app locally using:
   ```bash
   npm start

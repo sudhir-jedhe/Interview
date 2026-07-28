@@ -18,12 +18,12 @@ class EventEmitter {
 
   unsubscribe(event, listener) {
     if (!this.events[event]) return;
-    this.events[event] = this.events[event].filter(fn => fn !== listener);
+    this.events[event] = this.events[event].filter((fn) => fn !== listener);
   }
 
   emit(event, ...args) {
     if (!this.events[event]) return;
-    this.events[event].forEach(listener => listener(...args));
+    this.events[event].forEach((listener) => listener(...args));
   }
 }
 ```
@@ -42,12 +42,12 @@ A debounce function limits how frequently a function can be called, and a `cance
 function debounce(fn, delay) {
   let timer;
 
-  const debounced = function(...args) {
+  const debounced = function (...args) {
     clearTimeout(timer);
     timer = setTimeout(() => fn(...args), delay);
   };
 
-  debounced.cancel = function() {
+  debounced.cancel = function () {
     clearTimeout(timer);
   };
 
@@ -69,21 +69,24 @@ function throttle(fn, delay) {
   let lastCall = 0;
   let timer;
 
-  const throttled = function(...args) {
+  const throttled = function (...args) {
     const now = Date.now();
     if (now - lastCall >= delay) {
       lastCall = now;
       fn(...args);
     } else {
       clearTimeout(timer);
-      timer = setTimeout(() => {
-        lastCall = Date.now();
-        fn(...args);
-      }, delay - (now - lastCall));
+      timer = setTimeout(
+        () => {
+          lastCall = Date.now();
+          fn(...args);
+        },
+        delay - (now - lastCall),
+      );
     }
   };
 
-  throttled.cancel = function() {
+  throttled.cancel = function () {
     clearTimeout(timer);
   };
 
@@ -101,9 +104,9 @@ function throttle(fn, delay) {
 The `call` method invokes a function with a specified `this` value and arguments.
 
 ```javascript
-Function.prototype.myCall = function(context, ...args) {
+Function.prototype.myCall = function (context, ...args) {
   context = context || globalThis; // Handle null/undefined context by defaulting to global
-  const symbol = Symbol('fn');
+  const symbol = Symbol("fn");
   context[symbol] = this;
   const result = context[symbol](...args);
   delete context[symbol];
@@ -122,9 +125,9 @@ Here’s how you can implement your own versions of `call`, `apply`, and `bind`.
 
 ```javascript
 // Polyfill for `call`
-Function.prototype.myCall = function(context, ...args) {
+Function.prototype.myCall = function (context, ...args) {
   context = context || globalThis;
-  const symbol = Symbol('fn');
+  const symbol = Symbol("fn");
   context[symbol] = this;
   const result = context[symbol](...args);
   delete context[symbol];
@@ -132,9 +135,9 @@ Function.prototype.myCall = function(context, ...args) {
 };
 
 // Polyfill for `apply`
-Function.prototype.myApply = function(context, args) {
+Function.prototype.myApply = function (context, args) {
   context = context || globalThis;
-  const symbol = Symbol('fn');
+  const symbol = Symbol("fn");
   context[symbol] = this;
   const result = context[symbol](...args);
   delete context[symbol];
@@ -142,9 +145,9 @@ Function.prototype.myApply = function(context, args) {
 };
 
 // Polyfill for `bind`
-Function.prototype.myBind = function(context, ...args) {
+Function.prototype.myBind = function (context, ...args) {
   const fn = this;
-  return function(...newArgs) {
+  return function (...newArgs) {
     return fn.myCall(context, ...args, ...newArgs);
   };
 };
@@ -176,12 +179,14 @@ class PubSub {
 
   unsubscribe(event, callback) {
     if (!this.subscribers[event]) return;
-    this.subscribers[event] = this.subscribers[event].filter(fn => fn !== callback);
+    this.subscribers[event] = this.subscribers[event].filter(
+      (fn) => fn !== callback,
+    );
   }
 
   publish(event, ...args) {
     if (!this.subscribers[event]) return;
-    this.subscribers[event].forEach(callback => callback(...args));
+    this.subscribers[event].forEach((callback) => callback(...args));
   }
 }
 ```
@@ -219,12 +224,12 @@ class EventEmitterOnce {
 
   removeListener(event, listener) {
     if (!this.events[event]) return;
-    this.events[event] = this.events[event].filter(fn => fn !== listener);
+    this.events[event] = this.events[event].filter((fn) => fn !== listener);
   }
 
   emit(event, ...args) {
     if (!this.events[event]) return;
-    this.events[event].forEach(listener => listener(...args));
+    this.events[event].forEach((listener) => listener(...args));
   }
 }
 ```
@@ -239,7 +244,7 @@ Event delegation allows you to listen for events on a parent element and delegat
 
 ```javascript
 function addEventDelegation(parent, selector, eventType, handler) {
-  parent.addEventListener(eventType, function(event) {
+  parent.addEventListener(eventType, function (event) {
     const targetElement = event.target.closest(selector);
     if (targetElement) {
       handler.call(targetElement, event);
@@ -251,9 +256,10 @@ function addEventDelegation(parent, selector, eventType, handler) {
 - This method attaches an event listener to a parent element (`parent`) and checks if the event target matches a child element (`selector`). If so, it executes the `handler`.
 
 Example usage:
+
 ```javascript
-addEventDelegation(document.body, '.button', 'click', function() {
-  console.log('Button clicked!');
+addEventDelegation(document.body, ".button", "click", function () {
+  console.log("Button clicked!");
 });
 ```
 

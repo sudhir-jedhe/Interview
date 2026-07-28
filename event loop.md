@@ -20,15 +20,17 @@ JavaScript uses a mechanism called the Event Loop to manage asynchronous tasks. 
 `Event Loop:` The Event Loop constantly checks the Call Stack and the Callback Queue. If the Call Stack is empty, the Event Loop pushes the next task in the queue to the Call Stack.
 
 **Example:**
+
 ```js
 console.log("Start");
 
 setTimeout(() => {
-    console.log("This is asynchronous!");
+  console.log("This is asynchronous!");
 }, 1000);
 
 console.log("End");
 ```
+
 **Output:**
 
 ```js
@@ -36,31 +38,33 @@ Start
 End
 This is asynchronous!
 ```
+
 Even though the setTimeout is called first, it is handled asynchronously and doesn't block the main thread. The program logs "Start", then "End", and finally, after a 1-second delay, "This is asynchronous!" is logged.
 
 **JavaScript and Web Workers (Multi-threading)**
 Although JavaScript itself is single-threaded, it can still achieve multi-threading through Web Workers. Web Workers allow JavaScript to run scripts in background threads, separate from the main thread. This can be useful for CPU-intensive tasks that would otherwise block the main thread.
 
 **Example of Web Worker:**
+
 ```js
 // main.js
-const worker = new Worker('worker.js');
+const worker = new Worker("worker.js");
 
-worker.onmessage = function(event) {
-    console.log("Received message from worker:", event.data);
+worker.onmessage = function (event) {
+  console.log("Received message from worker:", event.data);
 };
 
-worker.postMessage('Hello, worker!');
+worker.postMessage("Hello, worker!");
 ```
 
 ```js
 // worker.js
-onmessage = function(event) {
-    console.log("Message received from main thread:", event.data);
-    postMessage('Hello, main thread!');
+onmessage = function (event) {
+  console.log("Message received from main thread:", event.data);
+  postMessage("Hello, main thread!");
 };
-
 ```
+
 `Main thread:` Executes JavaScript code normally.
 `Web Worker:` Runs JavaScript in a separate thread, independent of the main thread.
 Web Workers allow true parallel processing by offloading heavy computations to a separate thread, so the main thread (and user interface) remains responsive.
@@ -72,7 +76,6 @@ Web Workers allow true parallel processing by offloading heavy computations to a
 
 `For multi-threading, JavaScript can use Web Workers to offload tasks to separate threads.
 So, while JavaScript is single-threaded by design, it has ways to simulate multi-threading using asynchronous behavior and Web Workers for parallel execution.`
-
 
 **What is the Event Loop in JavaScript?**
 The Event Loop is one of the core concepts of JavaScript that allows asynchronous programming. It is responsible for managing the execution of code, events, and message handling in JavaScript. It ensures that JavaScript can run asynchronously and handle tasks like user input, network requests, and timers without blocking the execution of other code.
@@ -109,15 +112,17 @@ How the Event Loop Handles Asynchronous Code
 Let's break down how the event loop manages the execution flow using an example:
 
 Example Code:
+
 ```js
 console.log("Start");
 
-setTimeout(function() {
-    console.log("This is an asynchronous task.");
+setTimeout(function () {
+  console.log("This is an asynchronous task.");
 }, 1000);
 
 console.log("End");
 ```
+
 Step-by-Step Execution Flow
 Execution starts:
 
@@ -138,27 +143,30 @@ Event Loop picks up the callback:
 The event loop checks the call stack. Since it’s empty (all synchronous code has been executed), the event loop moves the callback from the callback queue to the call stack.
 The callback (console.log("This is an asynchronous task.")) is executed, and "This is an asynchronous task." is printed.
 Final Output:
+
 ```js
 Start
 End
 This is an asynchronous task.
 ```
+
 Event Loop with Multiple Asynchronous Tasks
 To better understand how the Event Loop handles multiple asynchronous tasks, consider the following example with both setTimeout and a Promise:
 
 ```js
 console.log("Start");
 
-setTimeout(function() {
-    console.log("This is a setTimeout callback.");
+setTimeout(function () {
+  console.log("This is a setTimeout callback.");
 }, 0);
 
-Promise.resolve().then(function() {
-    console.log("This is a Promise callback.");
+Promise.resolve().then(function () {
+  console.log("This is a Promise callback.");
 });
 
 console.log("End");
 ```
+
 Step-by-Step Breakdown:
 console.log("Start") is executed immediately, so "Start" is printed.
 
@@ -173,12 +181,14 @@ The microtask queue is processed next. The Promise callback is moved to the call
 The callback queue is checked next, and the setTimeout callback is executed, printing "This is a setTimeout callback.".
 
 Final Output:
+
 ```js
 Start
 End
 This is a Promise callback.
 This is a setTimeout callback.
 ```
+
 Notice that the Promise callback is executed before the setTimeout callback, even though both were scheduled at nearly the same time. This is because:
 
 **Microtasks** (like Promises) have higher priority than macrotasks (like setTimeout), and are processed first before the event loop moves to the callback queue.
@@ -196,7 +206,6 @@ The Event Loop allows JavaScript to perform asynchronous tasks without blocking 
 The Call Stack executes synchronous code, while the Callback Queue and Microtask Queue handle asynchronous tasks, with the event loop prioritizing microtasks before macrotasks.
 
 By understanding the event loop, we can better grasp how JavaScript handles concurrency and asynchronous operations, making our code more efficient and responsive.
-
 
 In JavaScript, **callbacks**, **promises**, and **async/await** all play important roles in handling asynchronous code execution, but they interact with the **event loop** in different ways. Understanding how each of these affects the event loop is crucial for writing efficient, non-blocking JavaScript code.
 
@@ -218,22 +227,24 @@ A **callback** is a function passed into another function as an argument and is 
 #### Example: Callback
 
 ```javascript
-console.log('Start');
+console.log("Start");
 
-setTimeout(function() {
-  console.log('Callback executed');
+setTimeout(function () {
+  console.log("Callback executed");
 }, 1000);
 
-console.log('End');
+console.log("End");
 ```
 
 **How the event loop works here**:
+
 - The synchronous code (`console.log('Start')` and `console.log('End')`) is pushed to the call stack and executed immediately.
 - The `setTimeout` function is handled by the **Web API** (timer).
 - After 1 second, the callback function (`console.log('Callback executed')`) is pushed to the event queue.
 - The event loop checks the call stack, and when it is empty, the callback is moved from the event queue to the call stack and executed.
 
 **Output**:
+
 ```plaintext
 Start
 End
@@ -241,6 +252,7 @@ Callback executed
 ```
 
 **Effect on the Event Loop**:
+
 - The callback waits in the event queue until the call stack is empty.
 - This means that even though the asynchronous operation (`setTimeout`) completes after 1 second, the callback won't execute until all synchronous code is finished.
 
@@ -251,24 +263,26 @@ A **promise** represents a value that may not be available yet but will be resol
 #### Example: Promise
 
 ```javascript
-console.log('Start');
+console.log("Start");
 
 new Promise((resolve, reject) => {
-  setTimeout(() => resolve('Promise resolved'), 1000);
+  setTimeout(() => resolve("Promise resolved"), 1000);
 }).then((message) => {
   console.log(message);
 });
 
-console.log('End');
+console.log("End");
 ```
 
 **How the event loop works here**:
+
 - The synchronous code (`console.log('Start')` and `console.log('End')`) is executed first.
 - The `setTimeout` function inside the promise executor is handled by the Web API.
 - After 1 second, the promise is resolved, and the `.then()` callback is placed into the **microtask queue**.
 - The event loop checks the microtask queue after the current stack is empty and processes all microtasks (like `.then()`, `.catch()`, etc.) before moving to the next task in the event queue.
 
 **Output**:
+
 ```plaintext
 Start
 End
@@ -276,6 +290,7 @@ Promise resolved
 ```
 
 **Effect on the Event Loop**:
+
 - Promises are always executed **after** the current call stack is cleared but **before** any events in the event queue.
 - This means that even though the promise is resolved after 1 second, the `.then()` callback executes **immediately after** the synchronous code has finished, before the next event queue item (e.g., a `setTimeout` callback).
 
@@ -286,20 +301,21 @@ The **async/await** syntax is built on top of promises, providing a more readabl
 #### Example: Async/Await
 
 ```javascript
-console.log('Start');
+console.log("Start");
 
 async function asyncFunction() {
-  console.log('Before await');
+  console.log("Before await");
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log('After await');
+  console.log("After await");
 }
 
 asyncFunction();
 
-console.log('End');
+console.log("End");
 ```
 
 **How the event loop works here**:
+
 - The synchronous code (`console.log('Start')` and `console.log('End')`) is executed first.
 - `asyncFunction` is called, and the first `console.log('Before await')` is executed.
 - The `await` pauses the execution of `asyncFunction` and returns control to the event loop.
@@ -307,6 +323,7 @@ console.log('End');
 - The event loop processes the microtask queue after the call stack is empty.
 
 **Output**:
+
 ```plaintext
 Start
 Before await
@@ -315,17 +332,18 @@ After await
 ```
 
 **Effect on the Event Loop**:
+
 - The `await` expression pauses the async function execution, but it does not block the entire thread.
 - The code following the `await` (like `console.log('After await')`) is placed in the microtask queue, which will be processed after all synchronous code has executed but before any event queue items.
 - This allows for non-blocking asynchronous code with a more synchronous-like flow.
 
 ### Key Differences Between Callbacks, Promises, and Async/Await in Relation to the Event Loop
 
-| Concept           | Event Loop Handling                                   | Execution Order                            | Microtasks or Event Queue? |
-|-------------------|-------------------------------------------------------|--------------------------------------------|----------------------------|
-| **Callback**       | Callback is added to the event queue after the task completes. | Callback executes after the call stack is empty and after synchronous code. | Event Queue                |
-| **Promise**        | `.then()` or `.catch()` callbacks are added to the microtask queue after promise resolves/rejects. | `.then()` or `.catch()` executes before the next event queue task. | Microtask Queue            |
-| **Async/Await**    | `await` pauses execution, and the continuation (after promise resolution) is added to the microtask queue. | The code after `await` is placed in the microtask queue and runs after synchronous code. | Microtask Queue            |
+| Concept         | Event Loop Handling                                                                                        | Execution Order                                                                          | Microtasks or Event Queue? |
+| --------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------- |
+| **Callback**    | Callback is added to the event queue after the task completes.                                             | Callback executes after the call stack is empty and after synchronous code.              | Event Queue                |
+| **Promise**     | `.then()` or `.catch()` callbacks are added to the microtask queue after promise resolves/rejects.         | `.then()` or `.catch()` executes before the next event queue task.                       | Microtask Queue            |
+| **Async/Await** | `await` pauses execution, and the continuation (after promise resolution) is added to the microtask queue. | The code after `await` is placed in the microtask queue and runs after synchronous code. | Microtask Queue            |
 
 ### Summary
 

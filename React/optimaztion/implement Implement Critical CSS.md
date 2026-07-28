@@ -12,13 +12,15 @@ Here’s how you can implement **Critical CSS** in your web application:
 2. **Extract Critical CSS**:
    - Use a tool like **Critical** or **PurgeCSS** to extract the styles that are critical to the above-the-fold content. You can use a build tool like Webpack, Gulp, or Grunt to automate this extraction process.
    - **Critical** is a Node.js module that can be used to extract the critical CSS from your webpage.
-   
+
    Example with **Critical**:
+
    ```bash
    npm install critical --save-dev
    ```
 
    Create a simple command to extract critical CSS from your HTML file:
+
    ```bash
    critical --base=./ --src=index.html --css=styles.css --target=critical.css
    ```
@@ -27,8 +29,9 @@ Here’s how you can implement **Critical CSS** in your web application:
 
 3. **Inline Critical CSS**:
    - Once you've extracted the critical CSS, you should **inline** it directly into the `<head>` of your HTML document. This way, the browser can start rendering the page with the critical styles without waiting for an external CSS file to be downloaded.
-   
+
    Example:
+
    ```html
    <style>
      /* Inlined Critical CSS */
@@ -47,20 +50,27 @@ Here’s how you can implement **Critical CSS** in your web application:
 4. **Load Remaining CSS Asynchronously**:
    - To further optimize performance, the **non-critical CSS** (i.e., the styles that are needed for below-the-fold content) should be loaded asynchronously. This ensures that the initial page rendering isn’t blocked by styles that are not required immediately.
    - You can use the `media="print"` trick and then change it after the page has loaded, or use JavaScript to load the non-critical CSS files dynamically.
-   
+
    Example of loading non-critical CSS asynchronously:
+
    ```html
-   <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
+   <link
+     rel="stylesheet"
+     href="styles.css"
+     media="print"
+     onload="this.media='all'"
+   />
    <noscript>
-     <link rel="stylesheet" href="styles.css">
+     <link rel="stylesheet" href="styles.css" />
    </noscript>
    ```
 
    Alternatively, you can use JavaScript:
+
    ```javascript
-   const link = document.createElement('link');
-   link.rel = 'stylesheet';
-   link.href = 'styles.css';
+   const link = document.createElement("link");
+   link.rel = "stylesheet";
+   link.href = "styles.css";
    document.head.appendChild(link);
    ```
 
@@ -70,24 +80,26 @@ Here’s how you can implement **Critical CSS** in your web application:
      - **Gulp Critical CSS Plugin**: For Gulp users, you can use the **gulp-critical-css** plugin to extract critical CSS during the build process.
 
    Example with **Webpack**:
+
    ```bash
    npm install critical-webpack-plugin --save-dev
    ```
 
    In your Webpack configuration, add the **CriticalWebpackPlugin**:
+
    ```javascript
-   const CriticalWebpackPlugin = require('critical-webpack-plugin');
+   const CriticalWebpackPlugin = require("critical-webpack-plugin");
 
    module.exports = {
      plugins: [
        new CriticalWebpackPlugin({
-         base: './',
-         src: 'index.html',
-         dest: 'index.html',
+         base: "./",
+         src: "index.html",
+         dest: "index.html",
          inline: true,
-         minify: true
-       })
-     ]
+         minify: true,
+       }),
+     ],
    };
    ```
 
@@ -99,7 +111,6 @@ Here’s how you can implement **Critical CSS** in your web application:
 
 - **Critical**: A Node.js module that extracts and inlines critical CSS for your HTML pages.
   - [Critical GitHub Repository](https://github.com/addyosmani/critical)
-  
 - **PurgeCSS**: A tool that removes unused CSS to reduce the size of CSS files.
   - [PurgeCSS Documentation](https://purgecss.com/)
 

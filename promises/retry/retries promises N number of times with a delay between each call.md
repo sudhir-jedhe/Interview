@@ -7,7 +7,7 @@
 // ... attempt 3 -> retry after 50ms -> failed
 // ... Failed.
 
-
+```js
 //delay func
 const wait = ms => new Promise((resolve) => {
     setTimeout(() => resolve(), ms);

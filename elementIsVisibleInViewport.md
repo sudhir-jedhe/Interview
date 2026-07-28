@@ -14,25 +14,24 @@ const elementIsVisibleInViewport = (el, partiallyVisible = false) => {
   if (partiallyVisible) {
     return (
       // Element must be within the vertical viewport bounds
-      (top < innerHeight && bottom > 0) && 
+      top < innerHeight &&
+      bottom > 0 &&
       // Element must be within the horizontal viewport bounds
-      (left < innerWidth && right > 0)
+      left < innerWidth &&
+      right > 0
     );
   }
 
   // Check for full visibility
   return (
     // Element is fully within the vertical viewport bounds
-    top >= 0 && 
-    left >= 0 && 
-    bottom <= innerHeight && 
-    right <= innerWidth
+    top >= 0 && left >= 0 && bottom <= innerHeight && right <= innerWidth
   );
 };
 
 // Example usage:
 
-const el = document.querySelector('.my-element');
+const el = document.querySelector(".my-element");
 
 // Check if the element is fully visible
 console.log(elementIsVisibleInViewport(el)); // Returns true or false
@@ -51,23 +50,23 @@ Here's an example of how you can throttle the visibility check:
 let timeout; // Declare a timeout variable for throttling
 
 // Throttle function for scroll event to check visibility
-window.addEventListener('scroll', () => {
+window.addEventListener("scroll", () => {
   // Clear the previous timeout if it exists
   if (timeout) clearTimeout(timeout);
 
   // Set a new timeout to check visibility after 100ms
   timeout = setTimeout(() => {
-    const el = document.querySelector('.my-element');
+    const el = document.querySelector(".my-element");
     const isVisible = elementIsVisibleInViewport(el, true); // Check if element is partially visible
     console.log(isVisible); // Output the visibility status
   }, 100);
 });
 
 // Example of checking visibility on resize
-window.addEventListener('resize', () => {
+window.addEventListener("resize", () => {
   if (timeout) clearTimeout(timeout);
   timeout = setTimeout(() => {
-    const el = document.querySelector('.my-element');
+    const el = document.querySelector(".my-element");
     const isVisible = elementIsVisibleInViewport(el, true); // Check visibility after resize
     console.log(isVisible);
   }, 100);
@@ -93,26 +92,26 @@ window.addEventListener('resize', () => {
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visibility Check Example</title>
-  <style>
-    .my-element {
-      width: 200px;
-      height: 200px;
-      margin: 1000px auto;
-      background-color: lightblue;
-    }
-  </style>
-</head>
-<body>
-  <div class="my-element">Check my visibility</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visibility Check Example</title>
+    <style>
+      .my-element {
+        width: 200px;
+        height: 200px;
+        margin: 1000px auto;
+        background-color: lightblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="my-element">Check my visibility</div>
 
-  <script>
-    // Paste the JavaScript code here
-  </script>
-</body>
+    <script>
+      // Paste the JavaScript code here
+    </script>
+  </body>
 </html>
 ```
 

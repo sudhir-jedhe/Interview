@@ -25,11 +25,12 @@ let gcd = (num1, num2) => {
 #### Example:
 
 ```javascript
-console.log(gcd(60, 15));  // Output: 15
-console.log(gcd(36, 60));  // Output: 12
+console.log(gcd(60, 15)); // Output: 15
+console.log(gcd(36, 60)); // Output: 12
 ```
 
 **Explanation**:
+
 - `gcd(60, 15)`: This will repeatedly subtract 15 from 60, eventually leading to 15 as the GCD.
 - `gcd(36, 60)`: This will repeatedly subtract 36 from 60, eventually leading to 12 as the GCD.
 
@@ -58,11 +59,12 @@ let gcd = (num1, num2) => {
 #### Example:
 
 ```javascript
-console.log(gcd(60, 15));  // Output: 15
-console.log(gcd(36, 60));  // Output: 12
+console.log(gcd(60, 15)); // Output: 15
+console.log(gcd(36, 60)); // Output: 12
 ```
 
 **Explanation**:
+
 - `gcd(60, 15)`: This will calculate `gcd(15, 60 % 15)` → `gcd(15, 0)` → 15.
 - `gcd(36, 60)`: This will calculate `gcd(60 % 36, 36)` → `gcd(24, 36)` → `gcd(36 % 24, 24)` → `gcd(12, 24)` → `gcd(24 % 12, 12)` → `gcd(0, 12)` → 12.
 
@@ -71,8 +73,8 @@ This method is the most efficient, as it reduces the problem size quickly.
 ### Output:
 
 ```javascript
-console.log(gcd(60, 15));  // Output: 15
-console.log(gcd(36, 60));  // Output: 12
+console.log(gcd(60, 15)); // Output: 15
+console.log(gcd(36, 60)); // Output: 12
 ```
 
 ### Summary of Outputs:

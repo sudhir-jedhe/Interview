@@ -1,6 +1,7 @@
 ### Explanation of Code Using `\w` in Regular Expressions
 
 The regular expression `\w` is used to match word characters, which, by default, include the following:
+
 - **Alphabets**: lowercase and uppercase (`a-zA-Z`)
 - **Digits**: (`0-9`)
 - **Underscore**: (`_`)
@@ -9,7 +10,7 @@ This means that `\w` matches **any alphanumeric character** or an underscore (`_
 
 ---
 
-### **First Example: Counting Matches of `\w` in the String `"GeeksforGeeks@_123_$"`
+### \*\*First Example: Counting Matches of `\w` in the String `"GeeksforGeeks@_123_$"`
 
 ```javascript
 function geek() {
@@ -23,6 +24,7 @@ geek();
 ```
 
 #### Explanation:
+
 1. **Input String**: `"GeeksforGeeks@_123_$"`
    - This string contains:
      - **Alphabets**: `G, e, e, k, s, f, o, r, G, e, e, k, s` (13 alphabet characters).
@@ -48,7 +50,7 @@ geek();
 
 ---
 
-### **Second Example: Replacing `\w` Matches with `#` in the String `"128@$%"`
+### \*\*Second Example: Replacing `\w` Matches with `#` in the String `"128@$%"`
 
 ```javascript
 function geek() {
@@ -64,6 +66,7 @@ geek();
 ```
 
 #### Explanation:
+
 1. **Input String**: `"128@$%"`
    - This string contains:
      - **Digits**: `1, 2, 8` (3 digits, which are considered word characters because `\w` matches digits).

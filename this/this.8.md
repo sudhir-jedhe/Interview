@@ -55,8 +55,9 @@ console.log(obj.a);
 - This directly accesses the `a` property of `obj`, which is `1`.
 
 **Output**:
+
 ```javascript
-1
+1;
 ```
 
 ---
@@ -71,8 +72,9 @@ obj.b();
 - `this.a` refers to `obj.a`, which is `1`.
 
 **Output**:
+
 ```javascript
-1
+1;
 ```
 
 ---
@@ -86,8 +88,9 @@ obj.b();
 - This is the same as the first call. `this` still refers to `obj`, and the result is `1`.
 
 **Output**:
+
 ```javascript
-1
+1;
 ```
 
 ---
@@ -103,8 +106,9 @@ b();
 - In **non-strict mode**, `this` will refer to the **global object** (e.g., `window` in browsers), and `this.a` is `undefined` because there is no `a` on the global object.
 
 **Output**:
+
 ```javascript
-undefined
+undefined;
 ```
 
 ---
@@ -118,8 +122,9 @@ obj.b.apply({ a: 2 });
 - `apply()` explicitly sets `this`. In this case, `this` inside `obj.b` is set to `{ a: 2 }`, so `this.a` is `2`.
 
 **Output**:
+
 ```javascript
-2
+2;
 ```
 
 ---
@@ -133,8 +138,9 @@ obj.c();
 - `c` is a method of `obj`, and `this` inside `obj.c()` refers to `obj`. Therefore, `this.a` is `1`.
 
 **Output**:
+
 ```javascript
-1
+1;
 ```
 
 ---
@@ -150,8 +156,9 @@ obj.d();
 - So, `this.a` will be `undefined` because `this.a` is not defined in the global context.
 
 **Output**:
+
 ```javascript
-undefined
+undefined;
 ```
 
 ---
@@ -165,8 +172,9 @@ obj.d();
 - This is the same as the first call. `this` still refers to the global object, so the result is still `undefined`.
 
 **Output**:
+
 ```javascript
-undefined
+undefined;
 ```
 
 ---
@@ -181,8 +189,9 @@ obj.d.apply({ a: 2 });
 - The result is still `undefined`.
 
 **Output**:
+
 ```javascript
-undefined
+undefined;
 ```
 
 ---
@@ -198,8 +207,9 @@ obj.e();
 - As a result, `this.a` is `undefined`.
 
 **Output**:
+
 ```javascript
-undefined
+undefined;
 ```
 
 ---
@@ -213,8 +223,9 @@ obj.e();
 - This is the same as the first call. The result is still `undefined`.
 
 **Output**:
+
 ```javascript
-undefined
+undefined;
 ```
 
 ---
@@ -229,8 +240,9 @@ obj.e.call({ a: 2 });
 - The result is still `undefined`.
 
 **Output**:
+
 ```javascript
-undefined
+undefined;
 ```
 
 ---
@@ -245,8 +257,9 @@ obj.f()();
 - `this.a` inside the returned arrow function refers to `obj.a`, which is `1`.
 
 **Output**:
+
 ```javascript
-1
+1;
 ```
 
 ---
@@ -260,8 +273,9 @@ obj.f()();
 - This is the same as the first call. The result is still `1`.
 
 **Output**:
+
 ```javascript
-1
+1;
 ```
 
 ---
@@ -277,8 +291,9 @@ obj.f().call({ a: 2 });
 - `this.a` is `1`.
 
 **Output**:
+
 ```javascript
-1
+1;
 ```
 
 ---
@@ -286,21 +301,21 @@ obj.f().call({ a: 2 });
 ### Final Output:
 
 ```javascript
-1             // Access obj.a
-1             // obj.b() called as method
-1             // obj.b() called again as method
-undefined     // b() called as standalone function, `this` is global
-2             // obj.b.apply({ a: 2 }) - this refers to { a: 2 }
-1             // obj.c() called as method
-undefined     // obj.d() - arrow function, `this` is global
-undefined     // obj.d() - called again, `this` is global
-undefined     // obj.d.apply({ a: 2 }) - apply doesn't affect `this` for arrow functions
-undefined     // obj.e() - arrow function inside IIFE, `this` is global
-undefined     // obj.e() - called again, `this` is global
-undefined     // obj.e.call({ a: 2 }) - call doesn't affect `this` for arrow functions
-1             // obj.f()() - arrow function inherits `this` from obj
-1             // obj.f()() - called again
-1             // obj.f().call({ a: 2 }) - call doesn't affect `this` for arrow functions
+1; // Access obj.a
+1; // obj.b() called as method
+1; // obj.b() called again as method
+undefined; // b() called as standalone function, `this` is global
+2; // obj.b.apply({ a: 2 }) - this refers to { a: 2 }
+1; // obj.c() called as method
+undefined; // obj.d() - arrow function, `this` is global
+undefined; // obj.d() - called again, `this` is global
+undefined; // obj.d.apply({ a: 2 }) - apply doesn't affect `this` for arrow functions
+undefined; // obj.e() - arrow function inside IIFE, `this` is global
+undefined; // obj.e() - called again, `this` is global
+undefined; // obj.e.call({ a: 2 }) - call doesn't affect `this` for arrow functions
+1; // obj.f()() - arrow function inherits `this` from obj
+1; // obj.f()() - called again
+1; // obj.f().call({ a: 2 }) - call doesn't affect `this` for arrow functions
 ```
 
 ### Summary of Key Points:

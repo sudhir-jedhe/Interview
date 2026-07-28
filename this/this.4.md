@@ -103,10 +103,10 @@ NaN
 ### Final Output:
 
 ```javascript
-NaN
-21
-NaN
-21
+NaN;
+21;
+NaN;
+21;
 ```
 
 ### Summary:

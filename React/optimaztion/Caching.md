@@ -1,6 +1,7 @@
 Caching is one of the most effective ways to improve the performance of a website or web application. It reduces the load on servers, minimizes network requests, and improves page load times by storing and reusing previously fetched resources. Caching can be applied at various layers, such as the browser, server, or CDN (Content Delivery Network).
 
 ### Types of Caching
+
 1. **Browser Caching**
 2. **Server-Side Caching**
 3. **CDN Caching**
@@ -16,6 +17,7 @@ Below are strategies to optimize caching at each of these layers.
 Browser caching allows resources such as images, CSS, JavaScript, and fonts to be stored locally in the user's browser for a specified amount of time. This way, when a user revisits your site, their browser doesn’t have to download the same resources again, speeding up load times.
 
 #### **Key Concepts**:
+
 - **Cache-Control**: Specifies caching rules, such as how long a resource should be cached.
 - **ETag**: A unique identifier for a version of a resource. It helps in determining whether a cached version is still valid.
 - **Last-Modified**: Specifies the last modification date of a resource. If the resource hasn’t changed, the server can serve the cached version.
@@ -26,9 +28,11 @@ Browser caching allows resources such as images, CSS, JavaScript, and fonts to b
   Use `Cache-Control` headers to specify caching rules in HTTP responses. You can define how long resources should be cached in the browser before checking for updates.
 
   Example for an image:
+
   ```http
   Cache-Control: public, max-age=31536000, immutable
   ```
+
   - `public`: The resource can be cached by any cache.
   - `max-age=31536000`: Cache the resource for one year (in seconds).
   - `immutable`: This tells the browser that the resource won't change during its lifetime.
@@ -37,6 +41,7 @@ Browser caching allows resources such as images, CSS, JavaScript, and fonts to b
   If a resource changes infrequently, you can use `ETag` or `Last-Modified` headers to let the server know if the cached resource is still valid.
 
   Example:
+
   ```http
   ETag: "abc123"
   Last-Modified: Tue, 19 Jan 2023 21:20:23 GMT
@@ -46,16 +51,13 @@ Browser caching allows resources such as images, CSS, JavaScript, and fonts to b
   Service Workers can intercept network requests and manage caching strategies for your application’s assets. They allow you to control when resources should be cached and fetched from the network.
 
   Example of simple service worker:
+
   ```js
-  self.addEventListener('install', function(event) {
+  self.addEventListener("install", function (event) {
     event.waitUntil(
-      caches.open('my-cache').then(function(cache) {
-        return cache.addAll([
-          '/index.html',
-          '/styles.css',
-          '/script.js',
-        ]);
-      })
+      caches.open("my-cache").then(function (cache) {
+        return cache.addAll(["/index.html", "/styles.css", "/script.js"]);
+      }),
     );
   });
   ```
@@ -67,6 +69,7 @@ Browser caching allows resources such as images, CSS, JavaScript, and fonts to b
 Server-side caching involves storing data or content at the server to avoid repeatedly querying the database or rendering dynamic content. This reduces server load and speeds up content delivery.
 
 #### **Strategies**:
+
 - **Page Caching**: Cache entire pages or HTML output on the server for subsequent requests.
 - **Database Query Caching**: Cache the results of expensive database queries to avoid hitting the database on each request.
 - **Object Caching**: Cache objects or data in memory to speed up access, often using systems like **Memcached** or **Redis**.
@@ -77,12 +80,13 @@ Server-side caching involves storing data or content at the server to avoid repe
   Redis and Memcached are in-memory data stores that allow you to cache database queries, API responses, or computed results. By caching frequently accessed data, you can reduce database load and speed up response times.
 
   Example (using Redis with Node.js):
+
   ```js
-  const redis = require('redis');
+  const redis = require("redis");
   const client = redis.createClient();
 
-  client.set('myKey', 'myValue', redis.print); // Cache a value
-  client.get('myKey', function(err, reply) {
+  client.set("myKey", "myValue", redis.print); // Cache a value
+  client.get("myKey", function (err, reply) {
     console.log(reply); // Outputs 'myValue'
   });
   ```
@@ -102,13 +106,16 @@ Server-side caching involves storing data or content at the server to avoid repe
 A **Content Delivery Network (CDN)** caches your static assets (images, JavaScript, CSS, fonts) on servers located in different geographic locations, reducing the distance between the user and the resource, which improves performance.
 
 #### **How to Implement**:
+
 - **Configure Cache-Control headers for CDN**:
   Set appropriate cache headers to ensure that your CDN caches the resources for an appropriate duration.
-  
+
   Example:
+
   ```http
   Cache-Control: public, max-age=86400, s-maxage=86400, stale-while-revalidate=60
   ```
+
   - `s-maxage=86400`: The CDN can cache the resource for 1 day.
   - `stale-while-revalidate`: Allow serving stale content while revalidating it in the background.
 
@@ -128,24 +135,21 @@ A **Content Delivery Network (CDN)** caches your static assets (images, JavaScri
   A service worker can intercept network requests and decide whether to serve a resource from the cache or fetch it from the network. This is especially useful for **Progressive Web Apps (PWAs)** and offline-first applications.
 
   Example:
+
   ```js
-  self.addEventListener('install', function(event) {
+  self.addEventListener("install", function (event) {
     event.waitUntil(
-      caches.open('my-cache-v1').then(function(cache) {
-        return cache.addAll([
-          '/index.html',
-          '/styles.css',
-          '/script.js',
-        ]);
-      })
+      caches.open("my-cache-v1").then(function (cache) {
+        return cache.addAll(["/index.html", "/styles.css", "/script.js"]);
+      }),
     );
   });
 
-  self.addEventListener('fetch', function(event) {
+  self.addEventListener("fetch", function (event) {
     event.respondWith(
-      caches.match(event.request).then(function(response) {
+      caches.match(event.request).then(function (response) {
         return response || fetch(event.request);
-      })
+      }),
     );
   });
   ```
@@ -162,7 +166,6 @@ Database caching reduces the need to perform expensive queries or calculations r
 
 - **Query Caching**: Cache the results of database queries. This is useful for frequently executed queries with little to no data change.
   - Example: Store database query results in Redis or Memcached to avoid querying the database each time.
-  
 - **Object Caching**: Cache entire objects or data sets in memory to prevent repeated fetching of the same data.
 
 ---
@@ -172,14 +175,17 @@ Database caching reduces the need to perform expensive queries or calculations r
 To ensure that users always get the most up-to-date version of your assets, you can use **cache busting**. This involves appending a unique identifier (like a version number or hash) to your resource URLs whenever they change.
 
 #### Example (with versioning):
+
 ```html
-<link rel="stylesheet" href="styles.css?v=1.2.3">
+<link rel="stylesheet" href="styles.css?v=1.2.3" />
 ```
+
 Alternatively, use **hashing** (e.g., `styles.abc123.css`) to generate unique URLs for each version of a file. Tools like Webpack automatically append hashes to filenames when building your assets.
 
 ---
 
 ### Key Benefits of Caching:
+
 - **Faster Load Times**: Caching reduces the time it takes to load resources since they are stored locally or closer to the user.
 - **Reduced Server Load**: By caching static content and reducing database queries, you reduce the number of requests your server needs to handle.
 - **Improved User Experience**: Faster load times lead to a better user experience, which is crucial for engagement and SEO.

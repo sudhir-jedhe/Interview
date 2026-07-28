@@ -6,10 +6,10 @@ Let's walk through the questions and answers:
 
 ```javascript
 console.log(1);
-setTimeout(function() {
+setTimeout(function () {
   console.log(2);
 }, 1000);
-setTimeout(function() {
+setTimeout(function () {
   console.log(3);
 }, 0);
 console.log(4);
@@ -42,7 +42,7 @@ function say(a) {
 }
 say(1);
 setTimeout(say(2), 5000);
-setTimeout(function() {
+setTimeout(function () {
   say(3);
 }, 1000);
 setTimeout(say, 2000, 4);
@@ -62,8 +62,8 @@ function say(a) {
   alert(a);
 }
 say(1);
-setTimeout(() => say(2), 5000);  // Fix the issue here
-setTimeout(function() {
+setTimeout(() => say(2), 5000); // Fix the issue here
+setTimeout(function () {
   say(3);
 }, 1000);
 setTimeout(say, 2000, 4);
@@ -75,7 +75,7 @@ setTimeout(say, 2000, 4);
 
 ```javascript
 var done = false;
-$.ajax(url, function() {
+$.ajax(url, function () {
   done = true;
 });
 while (!done) {
@@ -93,16 +93,16 @@ Use asynchronous programming (e.g., a callback, promise, or event loop) to handl
 
 ```javascript
 var done = false;
-$.ajax(url, function() {
+$.ajax(url, function () {
   done = true;
-  someWaitingStuff();  // Continue once AJAX is done
+  someWaitingStuff(); // Continue once AJAX is done
 });
 ```
 
 Alternatively, using **Promises**:
 
 ```javascript
-$.ajax(url).then(function() {
+$.ajax(url).then(function () {
   done = true;
   someWaitingStuff();
 });
@@ -113,10 +113,10 @@ $.ajax(url).then(function() {
 ### 4. Modify functions to get output `4,3,2,1,0,0,1,2,3,4`
 
 ```javascript
-var a = function(i) {
+var a = function (i) {
   console.log(i);
 };
-var b = function(i) {
+var b = function (i) {
   console.log(i);
 };
 for (var i = 0; i < 5; i++) {
@@ -134,10 +134,10 @@ We need to swap the functions `a` and `b` so that `b` starts with `4` and goes d
 **Modified Code:**
 
 ```javascript
-var a = function(i) {
+var a = function (i) {
   console.log(i);
 };
-var b = function(i) {
+var b = function (i) {
   console.log(i);
 };
 for (var i = 4; i >= 0; i--) {
@@ -154,7 +154,7 @@ for (var i = 0; i < 5; i++) {
 
 ```javascript
 var list = readHugeList();
-var nextListItem = function() {
+var nextListItem = function () {
   var item = list.pop();
   if (item) {
     // process the list item...
@@ -173,7 +173,7 @@ Use **tail recursion** or an **iterative approach** to avoid deep recursion. One
 
 ```javascript
 var list = readHugeList();
-var nextListItem = function() {
+var nextListItem = function () {
   var item = list.pop();
   if (item) {
     // process the list item...
@@ -197,7 +197,7 @@ while (list.length > 0) {
 ### 6. Output of Code with `Promise` and `setTimeout`
 
 ```javascript
-(function() {
+(function () {
   console.log(1);
   setTimeout(() => console.log(2), 1000);
   setTimeout(() => console.log(3), 0);
@@ -217,6 +217,7 @@ while (list.length > 0) {
 ```
 
 #### Explanation:
+
 1. `console.log(1)` runs immediately.
 2. `setTimeout(() => console.log(3), 0)` runs next, as it is queued in the event loop with a delay of `0`.
 3. `Promise.resolve(true).then(() => console.log(4))` is processed after the current stack, so `console.log(4)` runs.
@@ -231,11 +232,11 @@ while (list.length > 0) {
 ```javascript
 function fetchData(url, retries, delay = 1000) {
   return fetch(url)
-    .then(response => response.json())
-    .catch(error => {
+    .then((response) => response.json())
+    .catch((error) => {
       if (retries > 0) {
         return new Promise((resolve) =>
-          setTimeout(() => resolve(fetchData(url, retries - 1, delay)), delay)
+          setTimeout(() => resolve(fetchData(url, retries - 1, delay)), delay),
         );
       } else {
         throw error;
@@ -252,11 +253,11 @@ function fetchData(url, retries, delay = 1000) {
   function tryFetch() {
     attempts++;
     return fetch(url)
-      .then(response => response.json())
+      .then((response) => response.json())
       .catch((error) => {
         if (attempts < retries) {
-          return new Promise(resolve =>
-            setTimeout(() => resolve(tryFetch()), delay)
+          return new Promise((resolve) =>
+            setTimeout(() => resolve(tryFetch()), delay),
           );
         } else {
           throw error;
@@ -273,7 +274,7 @@ function fetchData(url, retries, delay = 1000) {
 
 ```javascript
 try {
-  setTimeout(function() {
+  setTimeout(function () {
     throw new Error();
   }, 1000);
 } catch (e) {
@@ -286,7 +287,7 @@ try {
 You need to handle the error inside the **callback** of `setTimeout`:
 
 ```javascript
-setTimeout(function() {
+setTimeout(function () {
   try {
     throw new Error();
   } catch (e) {
@@ -301,7 +302,7 @@ setTimeout(function() {
 
 ```javascript
 function promisify(fn) {
-  return function(...args) {
+  return function (...args) {
     return new Promise((resolve, reject) => {
       fn(...args, (error, data) => {
         if (error) reject(error);
@@ -323,7 +324,7 @@ function serialProcess(list, process, done) {
 
   function next() {
     if (index < list.length) {
-      process(list[index], index, list, function(result) {
+      process(list[index], index, list, function (result) {
         results.push(result);
         index++;
         next();
@@ -332,7 +333,7 @@ function serialProcess(list, process, done) {
       done(results);
     }
   }
-  
+
   next();
 }
 ```
@@ -340,11 +341,15 @@ function serialProcess(list, process, done) {
 **Callback style:**
 
 ```javascript
-serialProcess([1, 2, 3, 4, 5], (el, index, list, done) => {
-  console.log(`${el} start`);
-  setTimeout(() => {
-    console.log(`${el} end`);
-    done(el * el);
-  }, el * 100);
-}, (list) => console.log(list)); // [1, 4, 9, 16, 25]
+serialProcess(
+  [1, 2, 3, 4, 5],
+  (el, index, list, done) => {
+    console.log(`${el} start`);
+    setTimeout(() => {
+      console.log(`${el} end`);
+      done(el * el);
+    }, el * 100);
+  },
+  (list) => console.log(list),
+); // [1, 4, 9, 16, 25]
 ```

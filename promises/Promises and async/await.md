@@ -202,15 +202,15 @@ Both **Promises** and **async/await** are used in JavaScript to handle asynchron
 
 ### Summary Table: 
 
-| Feature                | Promises                                   | async/await                              |
-|------------------------|--------------------------------------------|------------------------------------------|
-| **Syntax**             | `.then()`, `.catch()`                      | `async function`, `await`                |
-| **Chaining**           | Chained using `.then()` and `.catch()`     | Linear and sequential flow, using `await` |
-| **Error Handling**     | `.catch()` for errors                      | `try...catch` for errors                 |
-| **Readability**        | Can get complex with multiple chains       | More readable, looks like synchronous code |
-| **Returning Values**   | Use `.then()` to get values                | `await` directly returns values         |
-| **Performance**        | Similar performance to `async/await`       | Slight overhead, but negligible in most cases |
-| **Compatibility**      | Supported in modern browsers (needs polyfill for old ones) | Supported in modern browsers (transpile for old ones) |
+| Feature              | Promises                                                   | async/await                                           |
+| -------------------- | ---------------------------------------------------------- | ----------------------------------------------------- |
+| **Syntax**           | `.then()`, `.catch()`                                      | `async function`, `await`                             |
+| **Chaining**         | Chained using `.then()` and `.catch()`                     | Linear and sequential flow, using `await`             |
+| **Error Handling**   | `.catch()` for errors                                      | `try...catch` for errors                              |
+| **Readability**      | Can get complex with multiple chains                       | More readable, looks like synchronous code            |
+| **Returning Values** | Use `.then()` to get values                                | `await` directly returns values                       |
+| **Performance**      | Similar performance to `async/await`                       | Slight overhead, but negligible in most cases         |
+| **Compatibility**    | Supported in modern browsers (needs polyfill for old ones) | Supported in modern browsers (transpile for old ones) |
 
 ### Conclusion:
 

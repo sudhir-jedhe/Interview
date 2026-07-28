@@ -15,8 +15,9 @@ console.log(a);
 - The result of the code will be the **original string** `"bfe.dev"`.
 
 **Output:**
+
 ```js
-bfe.dev
+bfe.dev;
 ```
 
 ---
@@ -45,6 +46,7 @@ console.log(String.raw`BFE\n.${"dev"}`);
 - Therefore, the string will include `\n` as part of the output rather than interpreting it as a newline.
 
 **Output:**
+
 ```js
 BFE\n.dev
 ```
@@ -59,13 +61,14 @@ BFE\n.dev
 console.log(String.raw({ raw: "BFE" }, "d", "e", "v"));
 ```
 
-- This line uses the `String.raw` function with an object as the first argument. The object `{ raw: "BFE" }` indicates that the raw string provided is `"BFE"`. 
+- This line uses the `String.raw` function with an object as the first argument. The object `{ raw: "BFE" }` indicates that the raw string provided is `"BFE"`.
 - The arguments `"d"`, `"e"`, and `"v"` are passed to the template literal, which will be inserted in place of any placeholders.
 - Since there are no placeholders in the template literal, the string remains unchanged except for the interpolation, which concatenates `"d"`, `"e"`, and `"v"` to the string.
 
 **Output:**
+
 ```js
-BFEdev
+BFEdev;
 ```
 
 - Since the `{ raw: "BFE" }` object does not include any placeholders, `String.raw` simply returns the concatenation of `"BFE"` with the string `"dev"`, producing `"BFEdev"`.
@@ -75,10 +78,10 @@ BFEdev
 ### Final Notes:
 
 - **Strings are immutable** in JavaScript, so trying to modify a string's character directly (like `a[0] = "c"`) will not change the string. Instead, it will have no effect.
-  
 - `String.raw` allows you to retrieve the raw form of a template string, including escape sequences, and is useful for working with strings where you need to preserve the exact input, including escape characters like `\n`.
 
 ### Summary of Output:
+
 ```js
 bfe.dev
 BFE\n.dev

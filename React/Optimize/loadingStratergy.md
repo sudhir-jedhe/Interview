@@ -1,6 +1,4 @@
-
 https://learnersbucket.com/examples/interview/different-loading-strategies-to-increase-the-website-speed/
-
 
 In this article we will learn different loading strategies to increase the website speed through different case studies.
 
@@ -133,8 +131,9 @@ Image source: Making Instagram faster – Part 2
 
 This is done by passing the data in the JSON format and storing it in the script tag.
 
+```js
 <script type="text/javascript">
-  // the server will write out the paths of any API calls it plans to 
+  // the server will write out the paths of any API calls it plans to
   // run server-side so the client knows to wait for the server, rather
   // than doing its own XHR request for the data
   window.__data = {
@@ -154,6 +153,8 @@ This is done by passing the data in the JSON format and storing it in the script
     }
   };
 </script>
+```
+
 Copy
 Code source: Making Instagram faster – Part 2
 
@@ -274,34 +275,45 @@ Adapting according to the number of logical CPU processor cores on the user’s 
 The purpose of the useMemoryStatus() hook is to adjust according to the user’s RAM (device memory).
 For example, if the user is on a flaky network with lower speed, we can replace the video with an image placeholder, auto-play the video only when the network is strong, or show the lower quality images.
 
-import React from 'react';
+```js
+import React from "react";
 
-import { useNetworkStatus } from 'react-adaptive-hooks/network';
+import { useNetworkStatus } from "react-adaptive-hooks/network";
 
 const MyComponent = () => {
   const { effectiveConnectionType } = useNetworkStatus();
 
   let media;
-  switch(effectiveConnectionType) {
-    case 'slow-2g':
-      media = <img src='...' alt='low resolution' />;
+  switch (effectiveConnectionType) {
+    case "slow-2g":
+      media = <img src="..." alt="low resolution" />;
       break;
-    case '2g':
-      media = <img src='...' alt='medium resolution' />;
+    case "2g":
+      media = <img src="..." alt="medium resolution" />;
       break;
-    case '3g':
-      media = <img src='...' alt='high resolution' />;
+    case "3g":
+      media = <img src="..." alt="high resolution" />;
       break;
-    case '4g':
-      media = <video muted controls>...</video>;
+    case "4g":
+      media = (
+        <video muted controls>
+          ...
+        </video>
+      );
       break;
     default:
-      media = <video muted controls>...</video>;
+      media = (
+        <video muted controls>
+          ...
+        </video>
+      );
       break;
   }
-  
+
   return <div>{media}</div>;
 };
+```
+
 Copy
 Case study: Ebay
 EBay conditionally turns on and off features like zooming when a user’s hardware or network conditions don’t support them well.

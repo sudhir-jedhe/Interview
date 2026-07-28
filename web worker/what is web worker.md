@@ -11,8 +11,8 @@ let i = 0;
 
 function timedCount() {
   i = i + 1;
-  postMessage(i);  // Send the updated value back to the main thread
-  setTimeout(timedCount, 500);  // Repeat after 500ms
+  postMessage(i); // Send the updated value back to the main thread
+  setTimeout(timedCount, 500); // Repeat after 500ms
 }
 
 timedCount();
@@ -30,7 +30,7 @@ if (typeof Worker !== "undefined") {
   let w = new Worker("counter.js");
 
   // Listen for messages from the worker (when the count changes)
-  w.onmessage = function(event) {
+  w.onmessage = function (event) {
     document.getElementById("message").innerHTML = event.data; // Update the UI with the new count
   };
 } else {
@@ -44,7 +44,7 @@ if (typeof Worker !== "undefined") {
 To stop a worker, you can use the `terminate` method. This immediately stops the worker, even if it is in the middle of its task. If you no longer need to interact with the worker, it’s a good idea to terminate it to free up resources.
 
 ```javascript
-w.terminate();  // Stop the worker when done
+w.terminate(); // Stop the worker when done
 ```
 
 #### 4. **Reusing the Web Worker**
@@ -52,8 +52,8 @@ w.terminate();  // Stop the worker when done
 If you want to reuse the worker after terminating it, you can set the `w` variable to `undefined` and create a new worker instance:
 
 ```javascript
-w = undefined;  // Clear the worker reference
-w = new Worker("counter.js");  // Recreate the worker instance
+w = undefined; // Clear the worker reference
+w = new Worker("counter.js"); // Recreate the worker instance
 ```
 
 #### 5. **Restrictions of Web Workers on DOM**
@@ -74,7 +74,7 @@ To communicate between the main thread and the worker thread, you must use the `
 The messages are asynchronous and event-driven. In the main thread, you can listen for messages from the worker using `onmessage`:
 
 ```javascript
-worker.onmessage = function(event) {
+worker.onmessage = function (event) {
   console.log("Message from worker: ", event.data);
 };
 ```

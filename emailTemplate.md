@@ -10,13 +10,13 @@ It looks like you’re drafting templates for outreach on LinkedIn or through em
 
 Hi [First Name],
 
-I hope this message finds you well. I came across your profile while researching [Industry Name] recruiters in [Location], and I wanted to reach out. 
+I hope this message finds you well. I came across your profile while researching [Industry Name] recruiters in [Location], and I wanted to reach out.
 
 I’m a [Job Title] with experience in [Brief description of your relevant experience or current position]. My core skills include [Key Skills], which I believe align well with the type of roles you typically recruit for.
 
-Does this sound like the kind of talent you're looking for? I’m especially drawn to [Company Name] because of [something about the company’s mission, values, or culture that resonates with you]. 
+Does this sound like the kind of talent you're looking for? I’m especially drawn to [Company Name] because of [something about the company’s mission, values, or culture that resonates with you].
 
-If you think my experience could be a match for the roles you handle, I’d love to connect and explore opportunities further. 
+If you think my experience could be a match for the roles you handle, I’d love to connect and explore opportunities further.
 
 Looking forward to hearing from you.
 
@@ -36,11 +36,11 @@ Hi [First Name],
 
 My name is [Your Name], and I’m a [Job Title] with [X] years of experience in [Industry/Field]. I came across your profile while researching [Industry] recruiters based in [Location], and I wanted to reach out to see if my skills could be a good fit for any open positions.
 
-I have experience in [Describe relevant experience or industry expertise]. My main skills include [List relevant skills], which I believe could be an asset for roles you typically recruit for. 
+I have experience in [Describe relevant experience or industry expertise]. My main skills include [List relevant skills], which I believe could be an asset for roles you typically recruit for.
 
-I’d love to work with [Company Name] because of [Company’s mission, values, or achievements that resonate with you], and I’m confident I can contribute meaningfully. 
+I’d love to work with [Company Name] because of [Company’s mission, values, or achievements that resonate with you], and I’m confident I can contribute meaningfully.
 
-Let me know if you have a moment to connect, and I’d be happy to discuss further. 
+Let me know if you have a moment to connect, and I’d be happy to discuss further.
 
 Best regards,  
 [Your Name]  
@@ -52,9 +52,9 @@ Best regards,
 
 ---
 
-**Subject**: Inquiry About Opportunities at [Company Name]  
+**Subject**: Inquiry About Opportunities at [Company Name]
 
-Greetings [First Name],  
+Greetings [First Name],
 
 I’m [Your Name], a [Your Job Title] with [X] years of experience in [Relevant Field/Industry]. I’ve been following [Company Name] for some time and have been really impressed by [Notable company achievements, products, or projects]. Your team’s work in [specific area] is particularly inspiring, and it has motivated me to reach out regarding potential job opportunities.
 
@@ -72,13 +72,13 @@ Best regards,
 
 ---
 
-**Subject**: Exploring Potential Opportunities at [Company Name]  
+**Subject**: Exploring Potential Opportunities at [Company Name]
 
 Hi [First Name],
 
 My name is [Your Name], and I’m a [Your Job Title] with experience in [Relevant Field/Industry]. I’ve been following the exciting work at [Company Name] for some time and would love the opportunity to contribute to your team.
 
-I understand that you may be busy, but if there are any job openings for a [Role Name] or similar positions, I would be thrilled to chat about how my experience in [Key skills/areas] could be valuable for your team. 
+I understand that you may be busy, but if there are any job openings for a [Role Name] or similar positions, I would be thrilled to chat about how my experience in [Key skills/areas] could be valuable for your team.
 
 Thank you so much for your time and consideration. I look forward to hearing from you!
 
@@ -92,11 +92,11 @@ Best regards,
 
 ---
 
-**Subject**: Interest in Opportunities at [Company Name]  
+**Subject**: Interest in Opportunities at [Company Name]
 
-Hi [First Name],  
+Hi [First Name],
 
-I hope you're doing well. I’m [Your Name], a [Job Title] with experience in [Relevant Industry/Field]. I came across your profile while researching recruiters in [Location] and wanted to connect. 
+I hope you're doing well. I’m [Your Name], a [Job Title] with experience in [Relevant Industry/Field]. I came across your profile while researching recruiters in [Location] and wanted to connect.
 
 I’m passionate about [specific aspect of the company, mission, or industry], and I’d love the chance to bring my skills in [Key Skills] to [Company Name]. If you think my background aligns with any of your roles, I would love to chat further.
 
@@ -109,11 +109,11 @@ Looking forward to connecting!
 
 ---
 
-**Subject**: Exploring Job Opportunities at [Company Name]  
+**Subject**: Exploring Job Opportunities at [Company Name]
 
-Hi [First Name],  
+Hi [First Name],
 
-My name is [Your Name], and I am a [Job Title] with [X] years of experience in [Relevant Field]. I have been following your company for a while and am excited about the work you’re doing in [specific area]. 
+My name is [Your Name], and I am a [Job Title] with [X] years of experience in [Relevant Field]. I have been following your company for a while and am excited about the work you’re doing in [specific area].
 
 I’m very interested in contributing to your team, and I would love to discuss any potential opportunities for a [Role Name]. If you’re open to connecting, I would be grateful for the chance to explore this further.
 

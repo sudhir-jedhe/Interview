@@ -9,12 +9,12 @@ console.log("👍".length);
 ### Explanation:
 
 - The 👍 emoji is a **multicode unit character**. Specifically, it is made up of two UTF-16 code units: one for the skin tone modifier (👍) and one for the emoji itself. In JavaScript, these are stored as two separate code units.
-  
 - **UTF-16** uses 16-bit code units, and for some characters (such as emojis, certain symbols, and many other non-BMP characters), more than one code unit is required to represent them. The "👍" emoji, for example, is encoded as a surrogate pair in UTF-16.
 
 ### Output:
+
 ```javascript
-console.log("👍".length);  // Output: 2
+console.log("👍".length); // Output: 2
 ```
 
 ### Why is this happening?

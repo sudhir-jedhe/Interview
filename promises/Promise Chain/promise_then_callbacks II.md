@@ -1,5 +1,5 @@
 // This is a JavaScript Quiz from BFE.dev
-
+```js
 Promise.resolve(1) // 1 promise fullfilled 1 pass to then
   .then((val) => {
     console.log(val); // 1

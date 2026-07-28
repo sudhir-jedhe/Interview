@@ -5,7 +5,7 @@ To add the same event listener to multiple elements, you can iterate over the No
 ```javascript
 function addEventListenerToMultipleElements(selector, eventType, handler) {
   const elements = document.querySelectorAll(selector);
-  elements.forEach(element => {
+  elements.forEach((element) => {
     element.addEventListener(eventType, handler);
   });
 }
@@ -14,9 +14,10 @@ function addEventListenerToMultipleElements(selector, eventType, handler) {
 - `addEventListenerToMultipleElements`: Adds the specified event listener to all elements that match the provided selector.
 
 Example usage:
+
 ```javascript
-addEventListenerToMultipleElements('.button', 'click', () => {
-  console.log('Button clicked!');
+addEventListenerToMultipleElements(".button", "click", () => {
+  console.log("Button clicked!");
 });
 ```
 
@@ -37,8 +38,9 @@ function removeAllChildNodes(parent) {
 - `removeAllChildNodes`: Removes all child nodes of a given DOM element.
 
 Example usage:
+
 ```javascript
-const parentElement = document.getElementById('parent');
+const parentElement = document.getElementById("parent");
 removeAllChildNodes(parentElement); // Removes all child nodes from the parent element
 ```
 
@@ -51,7 +53,7 @@ To toggle a class on an element when it's clicked, you can add an event listener
 ```javascript
 function toggleClassOnClick(selector, className) {
   const element = document.querySelector(selector);
-  element.addEventListener('click', () => {
+  element.addEventListener("click", () => {
     element.classList.toggle(className);
   });
 }
@@ -60,8 +62,9 @@ function toggleClassOnClick(selector, className) {
 - `toggleClassOnClick`: Toggles the specified class on the selected element when clicked.
 
 Example usage:
+
 ```javascript
-toggleClassOnClick('.my-element', 'active');
+toggleClassOnClick(".my-element", "active");
 ```
 
 When the element with the class `my-element` is clicked, it will toggle the `active` class on and off.
@@ -82,8 +85,9 @@ function cloneElementWithChildren(selector) {
 - `cloneElementWithChildren`: Clones the selected element and all its child nodes.
 
 Example usage:
+
 ```javascript
-const clonedElement = cloneElementWithChildren('#element-to-clone');
+const clonedElement = cloneElementWithChildren("#element-to-clone");
 document.body.appendChild(clonedElement); // Appends the cloned element to the body
 ```
 

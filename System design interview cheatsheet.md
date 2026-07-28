@@ -1,7 +1,8 @@
-System design interview cheatsheet I wish existed when I was interviewing as a candidate: 
+System design interview cheatsheet I wish existed when I was interviewing as a candidate:
 
 → Fundamentals
-- Scalability: https://lnkd.in/gpge_z76 
+
+- Scalability: https://lnkd.in/gpge_z76
 - Latency vs Throughput: https://lnkd.in/g_amhAtN
 - CAP Theorem: https://lnkd.in/g3hmVamx
 - ACID Transactions: https://lnkd.in/gMe2JqaF
@@ -56,10 +57,7 @@ https://lnkd.in/ezDNpSAM
 https://lnkd.in/ekU2urNH
 https://lnkd.in/ecacpFT3
 
-
-
 https://www.linkedin.com/posts/anshul-chhabra-46ba9b113_software-engineering-cheatsheet-i-always-activity-7277714720810250240-MWQ-/?utm_source=share&utm_medium=member_android
-
 
 1. 𝗔𝗻𝗶𝗺𝗫𝗬𝗭 📌 – 🌐 animxyz.com
 2. 𝗩𝗶𝘇𝘇𝘂 📌 – 🌐 vizzuhq.com
@@ -81,13 +79,11 @@ https://learnersbucket.com/javascript-sde-cheat-sheet/#machine-coding
 
 https://learnersbucket.com/examples/frontend-system-design/what-to-expect-in-frontend-system-design/
 
-
 https://learnersbucket.com/tag/web/
 
 https://upmostly.com/ultimate-reactjs-cheat-sheet
 
 https://www.shecodes.io/cheatsheets/react
-
 
 https://codingcheats.io/react/
 
@@ -95,55 +91,59 @@ https://www.youtube.com/watch?v=20F_KzHPpvI&list=PLKhlp2qtUcSZiWKJTi5-5r6IRdHhxP
 
 https://www.youtube.com/watch?v=IMEzmmP3WAs
 
-
-
 It looks like you're compiling an extensive list of resources for system design, software engineering, and frontend technologies. This is a great collection to help in system design interviews or when you're learning and preparing for coding challenges or interviews.
 
 ### Here's a summary of the sections you're sharing:
 
 #### 1. **System Design Fundamentals**
-   - **Scalability**: Learn about scaling systems efficiently, both vertically and horizontally.
-   - **Latency vs Throughput**: Key performance metrics for distributed systems.
-   - **CAP Theorem**: Understanding the trade-offs in distributed systems between consistency, availability, and partition tolerance.
-   - **ACID Transactions**: Database concepts related to ensuring atomicity, consistency, isolation, and durability.
-   - **Consistent Hashing**: A technique used for partitioning data across multiple nodes.
-   - **Rate Limiting**: Techniques to control the rate at which requests are processed.
-   - **API Design**: Best practices for designing RESTful APIs.
-   - **Strong vs Eventual Consistency**: Trade-offs between consistency models.
-   - **REST vs RPC**: Different communication protocols and when to use each.
-   - **Batch Processing vs Stream Processing**: Understanding the differences in processing large volumes of data.
-   - **Fault Tolerance**: How to design systems to handle failures gracefully.
-   - **Service Discovery, Load Balancing, CDN**: Key strategies for building scalable and fault-tolerant services.
-   - **Databases (SQL vs NoSQL, Sharding, Caching)**: Understanding different types of databases and techniques for scaling them.
-   - **Consensus Algorithms & Gossip Protocol**: Essential for distributed systems that need to maintain consistency.
-   - **Message Queues & WebSockets**: Handling asynchronous messaging in distributed systems.
+
+- **Scalability**: Learn about scaling systems efficiently, both vertically and horizontally.
+- **Latency vs Throughput**: Key performance metrics for distributed systems.
+- **CAP Theorem**: Understanding the trade-offs in distributed systems between consistency, availability, and partition tolerance.
+- **ACID Transactions**: Database concepts related to ensuring atomicity, consistency, isolation, and durability.
+- **Consistent Hashing**: A technique used for partitioning data across multiple nodes.
+- **Rate Limiting**: Techniques to control the rate at which requests are processed.
+- **API Design**: Best practices for designing RESTful APIs.
+- **Strong vs Eventual Consistency**: Trade-offs between consistency models.
+- **REST vs RPC**: Different communication protocols and when to use each.
+- **Batch Processing vs Stream Processing**: Understanding the differences in processing large volumes of data.
+- **Fault Tolerance**: How to design systems to handle failures gracefully.
+- **Service Discovery, Load Balancing, CDN**: Key strategies for building scalable and fault-tolerant services.
+- **Databases (SQL vs NoSQL, Sharding, Caching)**: Understanding different types of databases and techniques for scaling them.
+- **Consensus Algorithms & Gossip Protocol**: Essential for distributed systems that need to maintain consistency.
+- **Message Queues & WebSockets**: Handling asynchronous messaging in distributed systems.
 
 #### 2. **Key Concepts in Distributed Systems**
-   - **Fault Tolerance**: Techniques to ensure that systems keep functioning despite failures.
-   - **Circuit Breaker & Idempotency**: Important concepts to ensure resilience and prevent system overloads.
-   - **Distributed Locking & Consensus Algorithms**: Ensuring safe and consistent distributed operations.
-   - **API Gateway**: Architectural pattern for managing microservices.
-   - **Data Replication & Redundancy**: Techniques to ensure data durability and availability.
-   - **Proxy Servers & Checksum**: Used for security and ensuring data integrity.
+
+- **Fault Tolerance**: Techniques to ensure that systems keep functioning despite failures.
+- **Circuit Breaker & Idempotency**: Important concepts to ensure resilience and prevent system overloads.
+- **Distributed Locking & Consensus Algorithms**: Ensuring safe and consistent distributed operations.
+- **API Gateway**: Architectural pattern for managing microservices.
+- **Data Replication & Redundancy**: Techniques to ensure data durability and availability.
+- **Proxy Servers & Checksum**: Used for security and ensuring data integrity.
 
 #### 3. **Case Studies**
-   - Practical examples and breakdowns of real-world system design challenges, helping you apply the theoretical concepts.
+
+- Practical examples and breakdowns of real-world system design challenges, helping you apply the theoretical concepts.
 
 #### 4. **Frontend Design & Technologies**
-   - **React, JavaScript, UI Libraries, and Tools**: From basic UI design systems to advanced React JS resources.
-   - **Animation & 3D Libraries**: Resources like AnimXYZ, Vizzuhq, and Three.js for creating interactive and animated front-end interfaces.
-   - **Web Development Frameworks**: Tools and frameworks that can help speed up the development process (e.g., Party.js, Theatre.js).
-   - **UX/UI Design Systems**: Best practices for building reusable and scalable design systems.
-   - **UI Generators**: Tools like Glass UI to generate unique user interface components.
+
+- **React, JavaScript, UI Libraries, and Tools**: From basic UI design systems to advanced React JS resources.
+- **Animation & 3D Libraries**: Resources like AnimXYZ, Vizzuhq, and Three.js for creating interactive and animated front-end interfaces.
+- **Web Development Frameworks**: Tools and frameworks that can help speed up the development process (e.g., Party.js, Theatre.js).
+- **UX/UI Design Systems**: Best practices for building reusable and scalable design systems.
+- **UI Generators**: Tools like Glass UI to generate unique user interface components.
 
 #### 5. **Learning Resources & Cheat Sheets**
-   - **JavaScript Fundamentals**: Core JS concepts for development.
-   - **Frontend System Design**: Tips on how to approach system design from a frontend perspective.
-   - **React and Web Development**: Cheat sheets and learning resources for mastering modern frontend technologies.
+
+- **JavaScript Fundamentals**: Core JS concepts for development.
+- **Frontend System Design**: Tips on how to approach system design from a frontend perspective.
+- **React and Web Development**: Cheat sheets and learning resources for mastering modern frontend technologies.
 
 ---
 
 ### Some Additional Resources:
+
 - **JavaScript SDE Cheat Sheet**: [JavaScript Fundamentals](https://learnersbucket.com/javascript-sde-cheat-sheet/#javascript-fundamentals) is a great place for revisiting core JS concepts.
 - **Frontend Design**: [Frontend System Design](https://learnersbucket.com/examples/frontend-system-design/what-to-expect-in-frontend-system-design/) and other guides are excellent for learning how to approach interviews.
 - **YouTube Channels for System Design**: Videos like this one [System Design Interview](https://www.youtube.com/watch?v=IMEzmmP3WAs) are a good way to understand practical system design problems.

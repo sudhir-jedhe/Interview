@@ -7,12 +7,12 @@ Here are the functions that check for primitive types like `boolean`, `number`, 
 ```javascript
 // Checks if the value is a boolean
 function isBoolean(value) {
-  return typeof value === 'boolean';
+  return typeof value === "boolean";
 }
 
 // Checks if the value is a number (including NaN)
 function isNumber(value) {
-  return typeof value === 'number' && isFinite(value);
+  return typeof value === "number" && isFinite(value);
 }
 
 // Checks if the value is null
@@ -22,17 +22,17 @@ function isNull(value) {
 
 // Checks if the value is a string
 function isString(value) {
-  return typeof value === 'string';
+  return typeof value === "string";
 }
 
 // Checks if the value is a symbol
 function isSymbol(value) {
-  return typeof value === 'symbol';
+  return typeof value === "symbol";
 }
 
 // Checks if the value is undefined
 function isUndefined(value) {
-  return typeof value === 'undefined';
+  return typeof value === "undefined";
 }
 ```
 
@@ -48,12 +48,12 @@ function isArray(value) {
 
 // Checks if the value is a function
 function isFunction(value) {
-  return typeof value === 'function';
+  return typeof value === "function";
 }
 
 // Checks if the value is an object (excluding null)
 function isObject(value) {
-  return value !== null && typeof value === 'object';
+  return value !== null && typeof value === "object";
 }
 
 // Checks if the value is a plain object (POJO)
@@ -66,49 +66,40 @@ function isPlainObject(value) {
 
 1. **isBoolean**: Checks if the value is a `boolean`.
    - `typeof value === 'boolean'`
-   
 2. **isNumber**: Checks if the value is a `number`, including `NaN`. We also use `isFinite(value)` to ensure the value is a finite number and not `Infinity` or `NaN`.
    - `typeof value === 'number' && isFinite(value)`
-   
 3. **isNull**: Checks if the value is exactly `null`.
    - `value === null`
-   
 4. **isString**: Checks if the value is a `string`.
    - `typeof value === 'string'`
-   
 5. **isSymbol**: Checks if the value is a `symbol`.
    - `typeof value === 'symbol'`
-   
 6. **isUndefined**: Checks if the value is `undefined`.
    - `typeof value === 'undefined'`
-   
 7. **isArray**: Uses `Array.isArray(value)` to check if the value is an array.
-   
 8. **isFunction**: Checks if the value is a function using `typeof value === 'function'`.
-   
 9. **isObject**: Checks if the value is an object but excludes `null` because `typeof null === 'object'`. The condition is: `value !== null && typeof value === 'object'`.
-   
 10. **isPlainObject**: A plain object is defined as an object whose prototype is `Object.prototype`. We check this using `Object.getPrototypeOf(value) === Object.prototype`.
 
 ### **Example Usage:**
 
 ```javascript
 // Test Cases
-console.log(isBoolean(true));           // true
-console.log(isNumber(42));             // true
-console.log(isNull(null));             // true
-console.log(isString('hello world'));  // true
-console.log(isSymbol(Symbol('foo'))); // true
-console.log(isUndefined(undefined));   // true
+console.log(isBoolean(true)); // true
+console.log(isNumber(42)); // true
+console.log(isNull(null)); // true
+console.log(isString("hello world")); // true
+console.log(isSymbol(Symbol("foo"))); // true
+console.log(isUndefined(undefined)); // true
 
-console.log(isArray([1, 2, 3]));       // true
-console.log(isFunction(function() {})); // true
-console.log(isObject({a: 1}));         // true
-console.log(isPlainObject({a: 1}));    // true
+console.log(isArray([1, 2, 3])); // true
+console.log(isFunction(function () {})); // true
+console.log(isObject({ a: 1 })); // true
+console.log(isPlainObject({ a: 1 })); // true
 
 console.log(isPlainObject([1, 2, 3])); // false (Array is not a plain object)
 console.log(isPlainObject(new Date())); // false (Date is not a plain object)
-console.log(isPlainObject(function() {})); // false (Function is not a plain object)
+console.log(isPlainObject(function () {})); // false (Function is not a plain object)
 ```
 
 ### **Bonus - `typeOf()` Utility Function**
@@ -120,16 +111,19 @@ Here's how you can improve the function:
 ```javascript
 // Function to determine the type using Object.prototype.toString
 function typeOf(obj) {
-  return Object.prototype.toString.call(obj).match(/\[object (.*)\]/)[1].toLowerCase();
+  return Object.prototype.toString
+    .call(obj)
+    .match(/\[object (.*)\]/)[1]
+    .toLowerCase();
 }
 
 // Example usage
-console.log(typeOf('dsfsdf')); // "string"
-console.log(typeOf(123));      // "number"
-console.log(typeOf([]));       // "array"
-console.log(typeOf({}));       // "object"
-console.log(typeOf(function() {})); // "function"
-console.log(typeOf(null));     // "null"
+console.log(typeOf("dsfsdf")); // "string"
+console.log(typeOf(123)); // "number"
+console.log(typeOf([])); // "array"
+console.log(typeOf({})); // "object"
+console.log(typeOf(function () {})); // "function"
+console.log(typeOf(null)); // "null"
 ```
 
 - `Object.prototype.toString.call(obj)` returns a string in the format `[object Type]`, where `Type` is the type of the object.

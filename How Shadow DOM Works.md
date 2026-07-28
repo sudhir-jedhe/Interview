@@ -1,7 +1,9 @@
 ## **How Shadow DOM Works**
+
 The Shadow DOM is a web standard that allows you to create an isolated DOM subtree that is encapsulated within a host element. This provides a way to build web components with their own structure, styles, and behavior, without affecting or being affected by the global styles and scripts on the main page.
 
 ### **Key Concepts of Shadow DOM:**
+
 **Encapsulation**: Shadow DOM allows you to encapsulate a part of the DOM and CSS in a "shadow tree" that is completely separate from the main document's DOM. This means that the styles and elements inside the shadow DOM are isolated from the rest of the page.
 
 **Shadow Host**: The element that is used to attach the shadow tree is called the shadow host. This element behaves like a container for the shadow DOM.
@@ -13,6 +15,7 @@ The Shadow DOM is a web standard that allows you to create an isolated DOM subtr
 **Style Isolation**: Styles defined within the shadow tree are scoped and do not affect the rest of the page, and likewise, styles outside the shadow tree do not affect elements inside it.
 
 ### **Why Use Shadow DOM?**
+
 `Style Encapsulation:` Prevents styles from leaking out or being overridden by the global styles.
 `Script Encapsulation:` Allows the creation of custom UI components that are independent of global scripts.
 `Modularity:` Enables the development of reusable UI components.
@@ -24,8 +27,8 @@ To work with Shadow DOM in JavaScript, you need to:
 - Create a Shadow Host (the main element where the shadow DOM will be attached).
 - Attach the Shadow Root to the host using the attachShadow() method.
 - Populate the shadow DOM with elements and styles.
-Basic Example of Shadow DOM
-Here’s a simple example of how to create a web component with a shadow DOM.
+  Basic Example of Shadow DOM
+  Here’s a simple example of how to create a web component with a shadow DOM.
 
 ```js
 <!DOCTYPE html>
@@ -45,10 +48,10 @@ Here’s a simple example of how to create a web component with a shadow DOM.
     class MyShadowComponent extends HTMLElement {
       constructor() {
         super();
-        
+
         // Attach shadow DOM to the custom element
         const shadow = this.attachShadow({ mode: 'open' });
-        
+
         // Add some content to the shadow DOM
         shadow.innerHTML = `
           <style>
@@ -73,6 +76,7 @@ Here’s a simple example of how to create a web component with a shadow DOM.
 </html>
 
 ```
+
 Explanation:
 `Shadow Host:` The `<div id="shadowHost"></div>` is where the shadow DOM is attached.
 `Shadow Root:` The this.attachShadow({ mode: 'open' }) creates a shadow root attached to the custom element.
@@ -96,12 +100,13 @@ Example:
 const shadow = this.attachShadow({ mode: 'open' });
 mode: 'closed':
 ```
+
 Prevents external JavaScript from accessing the shadow DOM. The shadow DOM is not directly accessible via the shadowRoot property.
 Useful when you want to fully encapsulate the component and prevent direct access to its internals.
 Example:
 
 ```js
-const shadow = this.attachShadow({ mode: 'closed' });
+const shadow = this.attachShadow({ mode: "closed" });
 ```
 
 **Benefits of Shadow DOM**

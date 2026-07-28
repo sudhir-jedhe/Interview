@@ -1,3 +1,4 @@
+```js
 import Image from "next/image";
 import { Cards, Card } from "nextra/components";
 
@@ -14,6 +15,7 @@ Collection of modern interview code challenges on JavaScript suitable for <br />
   height={350}
   className="m-auto my-16"
 />
+
 </div>
 
 <Cards num={2} className="cards">
@@ -28,3 +30,4 @@ Collection of modern interview code challenges on JavaScript suitable for <br />
   Show your support by giving a ★ <br /> to [JavaScript Code
   Challenges](https://github.com/sadanandpai/javascript-code-challenges) repo
 </div>
+```

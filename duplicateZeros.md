@@ -3,6 +3,7 @@ The function you've implemented `duplicateZeros` seems correct and works as expe
 ### **Explanation of Code:**
 
 #### **Steps Taken in `duplicateZeros`:**
+
 1. **While Loop**: You iterate through the array with an index `i`.
 2. **Zero Check**: When a zero is encountered at `arr[i]`, a new zero is inserted at that position using `arr.splice(i, 0, 0)`.
 3. **Pop Last Element**: After inserting the zero, the last element is removed with `arr.pop()`, ensuring the array length remains the same.
@@ -22,7 +23,7 @@ For the input `arr = [1, 0, 2, 3, 0, 4, 5, 0]`:
 ### **Potential Improvements & Considerations:**
 
 - **Time Complexity**: The current implementation uses `splice` and `pop`, which are relatively expensive operations. `splice` is O(n) for shifting elements, and `pop` is O(1). In the worst case, if zeros are frequently inserted, this can result in quadratic time complexity, i.e., **O(n²)**.
-  
+
   We can improve the time complexity by avoiding `splice` and manipulating the array directly. Instead of modifying the array during iteration, you can first count how many zeros need to be duplicated, and then move backwards to insert the zeros. This will prevent shifting elements unnecessarily.
 
 ### **Optimized Approach:**
@@ -31,7 +32,7 @@ For the input `arr = [1, 0, 2, 3, 0, 4, 5, 0]`:
 export function duplicateZeros(arr) {
   const n = arr.length;
   let zerosToDuplicate = 0;
-  
+
   // Count the number of zeros that need to be duplicated
   for (let i = 0; i < n; i++) {
     if (arr[i] === 0) {

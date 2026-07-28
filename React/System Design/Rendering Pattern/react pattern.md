@@ -42,13 +42,13 @@ Below are the **5 most important advanced React component patterns** used in rea
 
 Each pattern has:
 
-* Explanation
-* Use cases
-* Full code
-* Pros
-* Cons
+- Explanation
+- Use cases
+- Full code
+- Pros
+- Cons
 
-***
+---
 
 # 1. Compound Component Pattern
 
@@ -64,7 +64,7 @@ Consumers compose components declaratively — similar to:
 
 Modern React libraries rely heavily on this pattern.
 
-***
+---
 
 ## When to Use
 
@@ -84,27 +84,21 @@ Modern React libraries rely heavily on this pattern.
 
 ✅ Design system building blocks
 
-***
+---
 
 ## Example
 
 ```jsx
-const TabsContext =
-  createContext();
+const TabsContext = createContext();
 
-function Tabs({
-  children,
-  defaultTab
-}) {
-
-  const [activeTab, setActiveTab] =
-    useState(defaultTab);
+function Tabs({ children, defaultTab }) {
+  const [activeTab, setActiveTab] = useState(defaultTab);
 
   return (
     <TabsContext.Provider
       value={{
         activeTab,
-        setActiveTab
+        setActiveTab,
       }}
     >
       {children}
@@ -112,74 +106,44 @@ function Tabs({
   );
 }
 
-Tabs.List = function List({
-  children
-}) {
+Tabs.List = function List({ children }) {
   return <div>{children}</div>;
 };
 
-Tabs.Tab = function Tab({
-  children,
-  tabKey
-}) {
+Tabs.Tab = function Tab({ children, tabKey }) {
+  const { activeTab, setActiveTab } = useContext(TabsContext);
 
-  const { activeTab, setActiveTab } =
-    useContext(TabsContext);
-
-  return (
-    <button
-      onClick={() =>
-        setActiveTab(tabKey)
-      }
-    >
-      {children}
-    </button>
-  );
+  return <button onClick={() => setActiveTab(tabKey)}>{children}</button>;
 };
 
-Tabs.Panel = function Panel({
-  children,
-  tabKey
-}) {
+Tabs.Panel = function Panel({ children, tabKey }) {
+  const { activeTab } = useContext(TabsContext);
 
-  const { activeTab } =
-    useContext(TabsContext);
-
-  return activeTab === tabKey
-    ? <div>{children}</div>
-    : null;
+  return activeTab === tabKey ? <div>{children}</div> : null;
 };
 
 export default Tabs;
 ```
 
-***
+---
 
 ## Consumer API
 
 ```jsx
 <Tabs defaultTab="home">
   <Tabs.List>
-    <Tabs.Tab tabKey="home">
-      Home
-    </Tabs.Tab>
+    <Tabs.Tab tabKey="home">Home</Tabs.Tab>
 
-    <Tabs.Tab tabKey="profile">
-      Profile
-    </Tabs.Tab>
+    <Tabs.Tab tabKey="profile">Profile</Tabs.Tab>
   </Tabs.List>
 
-  <Tabs.Panel tabKey="home">
-    Home Content
-  </Tabs.Panel>
+  <Tabs.Panel tabKey="home">Home Content</Tabs.Panel>
 
-  <Tabs.Panel tabKey="profile">
-    Profile Content
-  </Tabs.Panel>
+  <Tabs.Panel tabKey="profile">Profile Content</Tabs.Panel>
 </Tabs>
 ```
 
-***
+---
 
 ## Pros
 
@@ -199,7 +163,7 @@ export default Tabs;
 
 ❌ Coupled parent-child relation
 
-***
+---
 
 # 2. Provider Pattern
 
@@ -223,7 +187,7 @@ Wrap the tree in a Provider:
 
 Any component can access data directly.
 
-***
+---
 
 ## When to Use
 
@@ -243,41 +207,26 @@ Any component can access data directly.
 
 ✅ Design system contexts
 
-***
+---
 
 ## Example — Auth Provider
 
 ```jsx
-const AuthContext =
-  createContext();
+const AuthContext = createContext();
 
-export function AuthProvider({
-  children
-}) {
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
 
-  const [user, setUser] =
-    useState(null);
+  async function login(email, password) {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
 
-  async function login(
-    email,
-    password
-  ) {
-
-    const res =
-      await fetch(
-        "/api/login",
-        {
-          method: "POST",
-          body:
-            JSON.stringify({
-              email,
-              password
-            })
-        }
-      );
-
-    const data =
-      await res.json();
+    const data = await res.json();
 
     setUser(data.user);
   }
@@ -291,7 +240,7 @@ export function AuthProvider({
       value={{
         user,
         login,
-        logout
+        logout,
       }}
     >
       {children}
@@ -300,9 +249,7 @@ export function AuthProvider({
 }
 
 export function useAuth() {
-  return useContext(
-    AuthContext
-  );
+  return useContext(AuthContext);
 }
 ```
 
@@ -312,7 +259,7 @@ Usage:
 const { user, login } = useAuth();
 ```
 
-***
+---
 
 ## Pros
 
@@ -330,7 +277,7 @@ const { user, login } = useAuth();
 
 ❌ Can cause unnecessary rerenders (fix with `useMemo`)
 
-***
+---
 
 # 3. Higher-Order Component (HOC) Pattern
 
@@ -339,27 +286,26 @@ const { user, login } = useAuth();
 A **function** that takes a component and returns a new one with extra behavior:
 
 ```jsx
-const Enhanced =
-  withAuth(Component);
+const Enhanced = withAuth(Component);
 ```
 
 Even in modern React, HOCs are used for:
 
-* Auth wrappers
-* Feature flags
-* Analytics
-* Logging
-* Permissions
-* Data fetching wrappers
+- Auth wrappers
+- Feature flags
+- Analytics
+- Logging
+- Permissions
+- Data fetching wrappers
 
 Used by:
 
-* Redux (`connect`)
-* React Router v5 (`withRouter`)
-* MobX (`observer`)
-* Formik (`withFormik`)
+- Redux (`connect`)
+- React Router v5 (`withRouter`)
+- MobX (`observer`)
+- Formik (`withFormik`)
 
-***
+---
 
 ## When to Use
 
@@ -373,31 +319,18 @@ Used by:
 
 ✅ Enterprise systems
 
-***
+---
 
 ## Example — withLoading HOC
 
 ```jsx
-function withLoading(
-  Component
-) {
-
-  return function Wrapper({
-    isLoading,
-    ...props
-  }) {
-
+function withLoading(Component) {
+  return function Wrapper({ isLoading, ...props }) {
     if (isLoading) {
-      return (
-        <p>Loading...</p>
-      );
+      return <p>Loading...</p>;
     }
 
-    return (
-      <Component
-        {...props}
-      />
-    );
+    return <Component {...props} />;
   };
 }
 ```
@@ -405,19 +338,16 @@ function withLoading(
 Usage:
 
 ```jsx
-const UserListWithLoader =
-  withLoading(UserList);
+const UserListWithLoader = withLoading(UserList);
 ```
 
 Then:
 
 ```jsx
-<UserListWithLoader
-  isLoading={true}
-/>
+<UserListWithLoader isLoading={true} />
 ```
 
-***
+---
 
 ## Pros
 
@@ -439,7 +369,7 @@ Then:
 
 ❌ Less common in modern React (hooks replaced many use cases)
 
-***
+---
 
 # 4. Render Props Pattern
 
@@ -448,21 +378,19 @@ Then:
 A component uses a **function as a prop** to control rendering:
 
 ```jsx
-<Component>
-  {(state) => <Render/>}
-</Component>
+<Component>{(state) => <Render />}</Component>
 ```
 
 Used heavily in older React (React 15/16 era).
 
 Still used in:
 
-* Legacy libraries
-* React Query components
-* Downshift
-* Formik (older versions)
+- Legacy libraries
+- React Query components
+- Downshift
+- Formik (older versions)
 
-***
+---
 
 ## When to Use
 
@@ -474,37 +402,27 @@ Still used in:
 
 ✅ Legacy support
 
-***
+---
 
 ## Example — MousePosition Render Prop
 
 ```jsx
-class MouseTracker
-  extends React.Component {
-
+class MouseTracker extends React.Component {
   state = {
     x: 0,
-    y: 0
+    y: 0,
   };
 
   handleMove = (e) => {
     this.setState({
       x: e.clientX,
-      y: e.clientY
+      y: e.clientY,
     });
   };
 
   render() {
     return (
-      <div
-        onMouseMove={
-          this.handleMove
-        }
-      >
-        {this.props.children(
-          this.state
-        )}
-      </div>
+      <div onMouseMove={this.handleMove}>{this.props.children(this.state)}</div>
     );
   }
 }
@@ -522,7 +440,7 @@ Usage:
 </MouseTracker>
 ```
 
-***
+---
 
 ## Pros
 
@@ -546,7 +464,7 @@ Usage:
 
 Modern React prefers hooks or compound components.
 
-***
+---
 
 # 5. Controlled + Uncontrolled Component Pattern
 
@@ -554,17 +472,17 @@ Modern React prefers hooks or compound components.
 
 Components should support **both**:
 
-* Controlled mode (parent controls state)
-* Uncontrolled mode (component manages own state)
+- Controlled mode (parent controls state)
+- Uncontrolled mode (component manages own state)
 
 Used by:
 
-* React `<input>`
-* Ant Design components
-* Chakra UI components
-* Radix UI components
+- React `<input>`
+- Ant Design components
+- Chakra UI components
+- Radix UI components
 
-***
+---
 
 ## When to Use
 
@@ -588,34 +506,19 @@ Used by:
 
 ✅ Toggle switches
 
-***
+---
 
 ## Example — Controlled + Uncontrolled Tabs
 
 ```jsx
-function Tabs({
-  children,
-  defaultTab,
-  activeTab: controlledTab,
-  onChange
-}) {
+function Tabs({ children, defaultTab, activeTab: controlledTab, onChange }) {
+  const isControlled = controlledTab !== undefined;
 
-  const isControlled =
-    controlledTab !== undefined;
+  const [internalTab, setInternalTab] = useState(defaultTab);
 
-  const [internalTab,
-    setInternalTab] =
-    useState(defaultTab);
+  const currentTab = isControlled ? controlledTab : internalTab;
 
-  const currentTab =
-    isControlled
-      ? controlledTab
-      : internalTab;
-
-  function handleChange(
-    tab
-  ) {
-
+  function handleChange(tab) {
     if (!isControlled) {
       setInternalTab(tab);
     }
@@ -627,8 +530,7 @@ function Tabs({
     <TabsContext.Provider
       value={{
         activeTab: currentTab,
-        setActiveTab:
-          handleChange
+        setActiveTab: handleChange,
       }}
     >
       {children}
@@ -652,7 +554,7 @@ Usage — Controlled:
 >
 ```
 
-***
+---
 
 ## Pros
 
@@ -674,7 +576,7 @@ Usage — Controlled:
 
 ❌ Consumers may confuse both APIs
 
-***
+---
 
 # 6. Bonus Real-World Component Design Principle
 
@@ -682,20 +584,17 @@ Usage — Controlled:
 
 Modern React apps combine:
 
-* Compound
-* Provider
-* Hooks
-* Controlled/Uncontrolled
-* HOC
-* Slot-based composition
+- Compound
+- Provider
+- Hooks
+- Controlled/Uncontrolled
+- HOC
+- Slot-based composition
 
 Example:
 
 ```jsx
-<Tabs.Root
-  value={value}
-  onValueChange={setValue}
->
+<Tabs.Root value={value} onValueChange={setValue}>
   <Tabs.List>
     <Tabs.Trigger value="a" />
   </Tabs.List>
@@ -706,14 +605,14 @@ Example:
 
 Used in:
 
-* Radix UI
-* Headless UI
-* Chakra UI
-* Material UI
+- Radix UI
+- Headless UI
+- Chakra UI
+- Material UI
 
 Perfect for large-scale design systems.
 
-***
+---
 
 # 7. Data Flow Diagram
 
@@ -733,7 +632,7 @@ Composable Children
 Consistent UI + Accessible + Reusable
 ```
 
-***
+---
 
 # 8. Enterprise-Level Interview Answer
 

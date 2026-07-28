@@ -3,7 +3,6 @@ Redux is a predictable state container for JavaScript apps, and it follows three
 ### **1. Single Source of Truth**
 
 - **Principle**: The state of your entire application is stored in a single JavaScript object called the **store**.
-  
 - **Explanation**: Rather than having multiple places where your app's state is stored (like component-level state or multiple independent stores), Redux consolidates all of it into a single global state object. This makes it easier to track the state of your application, debug, and implement features like time-travel debugging.
 
 - **Benefits**:
@@ -31,8 +30,8 @@ Redux is a predictable state container for JavaScript apps, and it follows three
   ```javascript
   // Action is a plain object describing a change
   const action = {
-    type: 'ADD_TODO',
-    payload: 'Learn Redux'
+    type: "ADD_TODO",
+    payload: "Learn Redux",
   };
 
   // Dispatching the action to update the state
@@ -56,7 +55,7 @@ Redux is a predictable state container for JavaScript apps, and it follows three
   // Example reducer function
   function todoReducer(state = [], action) {
     switch (action.type) {
-      case 'ADD_TODO':
+      case "ADD_TODO":
         return [...state, action.payload];
       default:
         return state;

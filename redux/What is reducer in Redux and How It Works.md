@@ -27,25 +27,25 @@ const initialState = {
 
 const todoReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_TODO':
+    case "ADD_TODO":
       return {
         ...state, // Copy the existing state
         todos: [...state.todos, action.payload], // Add new todo to the list
       };
 
-    case 'REMOVE_TODO':
+    case "REMOVE_TODO":
       return {
         ...state,
-        todos: state.todos.filter(todo => todo.id !== action.payload), // Remove the todo with the given id
+        todos: state.todos.filter((todo) => todo.id !== action.payload), // Remove the todo with the given id
       };
 
-    case 'TOGGLE_TODO':
+    case "TOGGLE_TODO":
       return {
         ...state,
-        todos: state.todos.map(todo =>
+        todos: state.todos.map((todo) =>
           todo.id === action.payload
             ? { ...todo, completed: !todo.completed } // Toggle the completed status
-            : todo
+            : todo,
         ),
       };
 
@@ -84,22 +84,24 @@ export default todoReducer;
 Let’s build a simple **todo app** using Redux to understand how the `reducer` works in practice.
 
 #### **1. Action Types (Constants)**
+
 First, we define action types to avoid string literals throughout the code.
 
 ```javascript
 // src/redux/types.js
 
-export const ADD_TODO = 'ADD_TODO';
-export const REMOVE_TODO = 'REMOVE_TODO';
-export const TOGGLE_TODO = 'TOGGLE_TODO';
+export const ADD_TODO = "ADD_TODO";
+export const REMOVE_TODO = "REMOVE_TODO";
+export const TOGGLE_TODO = "TOGGLE_TODO";
 ```
 
 #### **2. Action Creators**
+
 Action creators generate the action objects that will be dispatched.
 
 ```javascript
 // src/redux/actions/todoActions.js
-import { ADD_TODO, REMOVE_TODO, TOGGLE_TODO } from './types';
+import { ADD_TODO, REMOVE_TODO, TOGGLE_TODO } from "./types";
 
 export const addTodo = (text) => ({
   type: ADD_TODO,
@@ -123,7 +125,7 @@ Here’s how the reducer works to handle the actions we defined earlier.
 
 ```javascript
 // src/redux/reducers/todoReducer.js
-import { ADD_TODO, REMOVE_TODO, TOGGLE_TODO } from '../types';
+import { ADD_TODO, REMOVE_TODO, TOGGLE_TODO } from "../types";
 
 const initialState = {
   todos: [],
@@ -140,16 +142,16 @@ const todoReducer = (state = initialState, action) => {
     case REMOVE_TODO:
       return {
         ...state, // Copy the current state
-        todos: state.todos.filter(todo => todo.id !== action.payload), // Remove todo by id
+        todos: state.todos.filter((todo) => todo.id !== action.payload), // Remove todo by id
       };
 
     case TOGGLE_TODO:
       return {
         ...state, // Copy the current state
-        todos: state.todos.map(todo =>
+        todos: state.todos.map((todo) =>
           todo.id === action.payload
             ? { ...todo, completed: !todo.completed } // Toggle completed status
-            : todo
+            : todo,
         ),
       };
 
@@ -162,12 +164,13 @@ export default todoReducer;
 ```
 
 #### **4. Store**
+
 Finally, we create the Redux store and combine the reducers.
 
 ```javascript
 // src/redux/store.js
-import { createStore, combineReducers } from 'redux';
-import todoReducer from './reducers/todoReducer';
+import { createStore, combineReducers } from "redux";
+import todoReducer from "./reducers/todoReducer";
 
 const rootReducer = combineReducers({
   todo: todoReducer, // Combine reducers (even though we have only one in this case)
@@ -184,19 +187,19 @@ In a React component, we can dispatch the actions using the `dispatch` function.
 
 ```javascript
 // src/containers/TodoApp.js
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addTodo, removeTodo, toggleTodo } from '../redux/actions/todoActions';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo, removeTodo, toggleTodo } from "../redux/actions/todoActions";
 
 function TodoApp() {
-  const [text, setText] = useState('');
-  const todos = useSelector(state => state.todo.todos);
+  const [text, setText] = useState("");
+  const todos = useSelector((state) => state.todo.todos);
   const dispatch = useDispatch();
 
   const handleAddTodo = () => {
     if (text.trim()) {
       dispatch(addTodo(text)); // Dispatch the ADD_TODO action
-      setText(''); // Clear input
+      setText(""); // Clear input
     }
   };
 
@@ -219,10 +222,12 @@ function TodoApp() {
       <button onClick={handleAddTodo}>Add Todo</button>
 
       <ul>
-        {todos.map(todo => (
+        {todos.map((todo) => (
           <li key={todo.id}>
             <span
-              style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+              style={{
+                textDecoration: todo.completed ? "line-through" : "none",
+              }}
               onClick={() => handleToggleTodo(todo.id)}
             >
               {todo.text}

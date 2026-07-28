@@ -26,12 +26,12 @@ console.log(year);
 ```
 
 #### Explanation:
+
 - **Regex**: `/(\d{2})-(\d{2})-(\d{4})/`
   - `\d{2}`: Matches exactly two digits. This is used for the day and month.
   - `\d{4}`: Matches exactly four digits. This is used for the year.
   - `-`: The dash `-` is used as a separator between day, month, and year.
   - The entire pattern is wrapped in parentheses `()`, which captures groups.
-  
 - **Input**: `"27-06-2023"`
   - This is the string we want to match and extract information from.
 
@@ -76,6 +76,7 @@ console.log(path);
 ```
 
 #### Explanation:
+
 - **Regex**: `/((https?):\/\/([^:/\s]+)(:\d{2,5})?(\/[^\s]*)?)/`
   - `(https?)`: This captures the protocol (either `http` or `https`).
     - `https?` matches the literal string "http" or "https".
@@ -106,9 +107,7 @@ console.log(path);
 ### Key Points
 
 - **Capturing Groups**: Parentheses `()` are used in regular expressions to capture parts of the match. These captured groups are stored in the array returned by `exec()`.
-  
 - **Optional Matches**: The `?` symbol in regular expressions denotes that a part of the pattern is optional. For example, the port (`(:\d{2,5})?`) and the path (`(\/[^\s]*)?`) are optional in the URL regex.
-  
 - **Method `exec()`**: The `exec()` method executes the regular expression on the string and returns an array containing:
   - The entire match at index `0`.
   - The captured groups starting at index `1` onwards.

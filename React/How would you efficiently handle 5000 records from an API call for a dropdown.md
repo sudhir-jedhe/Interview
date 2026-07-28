@@ -1,6 +1,7 @@
 To efficiently handle **5000 records** from an API call for a dropdown in a React application, you need to consider both **performance** and **user experience**. Here are some strategies that can help:
 
 ### 1. **Lazy Loading / Infinite Scroll**
+
 Instead of loading all 5000 records at once, you can load a small subset initially (e.g., 20-50 records) and load more as the user scrolls or interacts with the dropdown. This improves the perceived performance by reducing the initial loading time and limiting the number of DOM elements at once.
 
 - **How to Implement:**
@@ -9,7 +10,7 @@ Instead of loading all 5000 records at once, you can load a small subset initial
   - Use **Intersection Observer API** to detect when the user has reached the bottom of the dropdown and trigger a new fetch.
 
 ```js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const DropdownWithInfiniteScroll = ({ fetchData }) => {
   const [items, setItems] = useState([]);
@@ -20,7 +21,7 @@ const DropdownWithInfiniteScroll = ({ fetchData }) => {
     const loadItems = async () => {
       setIsLoading(true);
       const newItems = await fetchData(page); // Fetch new batch of data
-      setItems(prevItems => [...prevItems, ...newItems]);
+      setItems((prevItems) => [...prevItems, ...newItems]);
       setIsLoading(false);
     };
 
@@ -28,16 +29,20 @@ const DropdownWithInfiniteScroll = ({ fetchData }) => {
   }, [page]);
 
   const handleScroll = (e) => {
-    const bottom = e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
+    const bottom =
+      e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
     if (bottom && !isLoading) {
-      setPage(prevPage => prevPage + 1); // Load next page of items
+      setPage((prevPage) => prevPage + 1); // Load next page of items
     }
   };
 
   return (
-    <div onScroll={handleScroll} style={{ maxHeight: '300px', overflowY: 'auto' }}>
+    <div
+      onScroll={handleScroll}
+      style={{ maxHeight: "300px", overflowY: "auto" }}
+    >
       <select>
-        {items.map(item => (
+        {items.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
           </option>
@@ -50,6 +55,7 @@ const DropdownWithInfiniteScroll = ({ fetchData }) => {
 ```
 
 ### 2. **Virtualization**
+
 For large datasets, you can use **virtualization** to render only the items that are currently visible in the dropdown, which can drastically reduce the amount of DOM elements.
 
 - **How to Implement:**
@@ -63,8 +69,8 @@ npm install react-window
 ```
 
 ```js
-import React, { useState, useEffect } from 'react';
-import { FixedSizeList as List } from 'react-window';
+import React, { useState, useEffect } from "react";
+import { FixedSizeList as List } from "react-window";
 
 const DropdownWithVirtualization = ({ fetchData }) => {
   const [items, setItems] = useState([]);
@@ -98,6 +104,7 @@ const DropdownWithVirtualization = ({ fetchData }) => {
 ```
 
 ### 3. **Search-as-you-type / Debouncing**
+
 For dropdowns with large datasets, allow the user to filter the items by typing. Implement **debouncing** to avoid triggering an API request on every keystroke.
 
 - **How to Implement:**
@@ -105,11 +112,11 @@ For dropdowns with large datasets, allow the user to filter the items by typing.
   - Only fetch data when needed (i.e., when the user types in the search box).
 
 ```js
-import React, { useState } from 'react';
-import { debounce } from 'lodash';
+import React, { useState } from "react";
+import { debounce } from "lodash";
 
 const SearchableDropdown = ({ fetchData }) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [items, setItems] = useState([]);
 
   const debouncedFetch = debounce(async (query) => {
@@ -131,7 +138,7 @@ const SearchableDropdown = ({ fetchData }) => {
         placeholder="Search..."
       />
       <select>
-        {items.map(item => (
+        {items.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
           </option>
@@ -143,14 +150,15 @@ const SearchableDropdown = ({ fetchData }) => {
 ```
 
 ### 4. **Paginated Dropdown**
+
 Instead of showing all the records, divide the records into pages. Users can select pages to view additional data.
 
 - **How to Implement:**
   - Fetch records in pages and display the first page initially.
   - Provide pagination controls to allow users to navigate through pages.
-  
+
 ```js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const PaginatedDropdown = ({ fetchData }) => {
   const [items, setItems] = useState([]);
@@ -170,17 +178,23 @@ const PaginatedDropdown = ({ fetchData }) => {
   return (
     <div>
       <select>
-        {items.map(item => (
+        {items.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
           </option>
         ))}
       </select>
       <div>
-        <button disabled={currentPage <= 1} onClick={() => setCurrentPage(currentPage - 1)}>
+        <button
+          disabled={currentPage <= 1}
+          onClick={() => setCurrentPage(currentPage - 1)}
+        >
           Previous
         </button>
-        <button disabled={currentPage >= totalPages} onClick={() => setCurrentPage(currentPage + 1)}>
+        <button
+          disabled={currentPage >= totalPages}
+          onClick={() => setCurrentPage(currentPage + 1)}
+        >
           Next
         </button>
       </div>
@@ -190,7 +204,9 @@ const PaginatedDropdown = ({ fetchData }) => {
 ```
 
 ### Conclusion:
+
 For efficiently handling 5000 records for a dropdown:
+
 - **Lazy loading** or **infinite scroll** can help load records on demand.
 - **Virtualization** is a great choice to render only a subset of records.
 - **Search-as-you-type** with **debouncing** can improve user interaction.

@@ -1,3 +1,4 @@
+```js
 areAnagrams("cinema", "iceman"); // Output: true
 areAnagrams("restful", "fluster"); // Output: true
 areAnagrams("hello", "world"); // Output: false
@@ -16,3 +17,4 @@ export const areAnagrams = (strOne, strTwo) => {
 
   return sortedStrOne === sortedStrTwo;
 };
+```

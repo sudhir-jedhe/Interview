@@ -20,7 +20,7 @@ As a result, even if only a small part of the state changes (e.g., a single prop
 // Accessing the entire state
 const { albums } = useSelector((state) => state);
 
-// In this case, even if only one part of the state changes (e.g., another slice of state), 
+// In this case, even if only one part of the state changes (e.g., another slice of state),
 // this component will re-render because the entire `state` object is a new reference.
 ```
 
@@ -49,12 +49,12 @@ const albums = useSelector((state) => state.albums);
 #### Why Does This Improve Performance?
 
 - **Shallow Comparison**: `useSelector` uses shallow equality checks to compare the previous and current state. By accessing only specific properties (e.g., `state.albums`), the equality check is much faster compared to checking the entire state object.
-  
 - **Preventing Unnecessary Re-renders**: If you were to access the entire state, even a small change in a completely unrelated part of the state would trigger a re-render. By accessing only the slice of state that matters to your component, you reduce unnecessary re-renders.
 
 #### When to Use the Entire State?
 
 There are cases where you might need access to the entire state. For example:
+
 - **Global state access**: You need to read several properties across different slices of the state.
 - **Non-performance-critical components**: In components where performance is not a bottleneck or when the state is small and changes infrequently, accessing the entire state might not cause significant performance issues.
 

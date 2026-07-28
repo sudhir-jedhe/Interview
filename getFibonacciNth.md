@@ -78,12 +78,12 @@ let fibonacci = (num) => {
 If you want to optimize the recursive approach and avoid redundant calculations, you can use **memoization**. Here's an optimized version using an internal cache.
 
 ```javascript
-const fibonacciMemo = (function() {
+const fibonacciMemo = (function () {
   const memo = {};
   return function fib(n) {
     if (n <= 1) return n;
     if (memo[n]) return memo[n];
-    return memo[n] = fib(n - 1) + fib(n - 2);
+    return (memo[n] = fib(n - 1) + fib(n - 2));
   };
 })();
 ```
@@ -107,7 +107,7 @@ const nthFibonacci = (n) => {
   return sum;
 };
 
-console.log(nthFibonacci(10));  // Output: 34
+console.log(nthFibonacci(10)); // Output: 34
 ```
 
 - **Time Complexity**: **O(n)**, because the loop runs for `n-2` iterations.
@@ -131,8 +131,14 @@ For very large `n`, you can even calculate Fibonacci numbers in logarithmic time
 
 ```javascript
 const matrixMultiply = (A, B) => [
-  [A[0][0] * B[0][0] + A[0][1] * B[1][0], A[0][0] * B[0][1] + A[0][1] * B[1][1]],
-  [A[1][0] * B[0][0] + A[1][1] * B[1][0], A[1][0] * B[0][1] + A[1][1] * B[1][1]],
+  [
+    A[0][0] * B[0][0] + A[0][1] * B[1][0],
+    A[0][0] * B[0][1] + A[0][1] * B[1][1],
+  ],
+  [
+    A[1][0] * B[0][0] + A[1][1] * B[1][0],
+    A[1][0] * B[0][1] + A[1][1] * B[1][1],
+  ],
 ];
 
 const matrixPow = (M, n) => {
@@ -147,12 +153,15 @@ const matrixPow = (M, n) => {
 
 const nthFibonacci = (n) => {
   if (n <= 1) return n;
-  const M = [[1, 1], [1, 0]];
+  const M = [
+    [1, 1],
+    [1, 0],
+  ];
   const result = matrixPow(M, n - 1);
   return result[0][0];
 };
 
-console.log(nthFibonacci(10));  // Output: 55 (for n = 10)
+console.log(nthFibonacci(10)); // Output: 55 (for n = 10)
 ```
 
 - **Time Complexity**: **O(log n)**

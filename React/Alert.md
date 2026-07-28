@@ -1,3 +1,4 @@
+````js
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
@@ -107,30 +108,30 @@ export default AlertBox;
     background: #eee;
     border: 1px solid #aba3a3;
   }
-  
+
   .bottom {
     bottom: 5%;
   }
-  
+
   .top {
     top: 5%;
   }
-  
+
   .danger {
     background: #ff5722;
     border: 1px solid #bf360c;
   }
-  
+
   .primary {
     background: #8bc34a;
     border: 1px solid #33691e;
   }
-  
+
   .basic {
     background: #00bcd4;
     border: 1px solid #006064;
   }
-  
+
   .close {
     font-size: 20px;
     cursor: pointer;
@@ -360,7 +361,7 @@ const AlertStack = ({ placement = "top", darkMode = false }) => {
 };
 
 export default AlertStack;
-```
+````
 
 ---
 
@@ -379,7 +380,9 @@ export default AlertStack;
   background: #eee;
   border: 1px solid #aba3a3;
   opacity: 0;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .alertBox.show {
@@ -433,7 +436,7 @@ export default AlertStack;
   left: 0;
   height: 4px;
   width: 100%;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .progressFill {
@@ -482,12 +485,13 @@ export default AlertStack;
 ---
 
 ## 🪄 Result
-- Alerts **fade in/out** with placement-aware animation.  
-- **Stack dynamically** without overlap.  
-- **Icons per variant** (✅, ❌, ℹ️).  
-- **Progress bar** shrinks as auto-close counts down.  
-- Progress bar **color matches variant** (green, red, blue).  
-- **Dark mode support** with `darkMode` prop.  
+
+- Alerts **fade in/out** with placement-aware animation.
+- **Stack dynamically** without overlap.
+- **Icons per variant** (✅, ❌, ℹ️).
+- **Progress bar** shrinks as auto-close counts down.
+- Progress bar **color matches variant** (green, red, blue).
+- **Dark mode support** with `darkMode` prop.
 
 ---
 

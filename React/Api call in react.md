@@ -9,7 +9,7 @@ The `fetch` API is a native JavaScript API to make HTTP requests.
 #### Example in **Functional Component** with `useEffect` and `fetch`:
 
 ```javascript
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function App() {
   const [data, setData] = useState(null);
@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     // Fetch data when the component mounts
-    fetch('https://api.example.com/data')
+    fetch("https://api.example.com/data")
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -45,6 +45,7 @@ export default App;
 ```
 
 #### Key points:
+
 - `useEffect` runs once on component mount (because of the empty dependency array `[]`).
 - `fetch` returns a Promise, which is handled with `.then()` and `.catch()` for success and error handling.
 - Use `useState` to manage the fetched data (`data`), loading state (`loading`), and any errors (`error`).
@@ -52,7 +53,7 @@ export default App;
 #### Example in **Class Component** with `componentDidMount`:
 
 ```javascript
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class App extends Component {
   constructor(props) {
@@ -66,7 +67,7 @@ class App extends Component {
 
   componentDidMount() {
     // Fetch data when the component mounts
-    fetch('https://api.example.com/data')
+    fetch("https://api.example.com/data")
       .then((response) => response.json())
       .then((data) => {
         this.setState({ data, loading: false });
@@ -95,6 +96,7 @@ export default App;
 ```
 
 #### Key points:
+
 - The `componentDidMount` lifecycle method is used to fetch data after the component is mounted.
 - State is managed via `this.setState()` to update the data, loading state, and error state.
 
@@ -113,8 +115,8 @@ npm install axios
 #### Example in **Functional Component** with `useEffect` and `axios`:
 
 ```javascript
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function App() {
   const [data, setData] = useState(null);
@@ -124,7 +126,7 @@ function App() {
   useEffect(() => {
     // Fetch data with axios when the component mounts
     axios
-      .get('https://api.example.com/data')
+      .get("https://api.example.com/data")
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -152,8 +154,8 @@ export default App;
 #### Example in **Class Component** with `componentDidMount` and `axios`:
 
 ```javascript
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 
 class App extends Component {
   constructor(props) {
@@ -168,7 +170,7 @@ class App extends Component {
   componentDidMount() {
     // Fetch data with axios when the component mounts
     axios
-      .get('https://api.example.com/data')
+      .get("https://api.example.com/data")
       .then((response) => {
         this.setState({ data: response.data, loading: false });
       })
@@ -196,6 +198,7 @@ export default App;
 ```
 
 #### Key points:
+
 - `axios.get()` is used to send a GET request to the API.
 - It handles the promise-based response with `.then()` for success and `.catch()` for errors.
 - `axios` automatically parses the response data as JSON, so you don’t need to manually call `.json()` like with `fetch`.
@@ -209,30 +212,30 @@ You can use both `fetch` and `axios` to make POST requests by passing the requir
 #### Example with **`axios`** (POST Request):
 
 ```javascript
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 function App() {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [response, setResponse] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('https://api.example.com/submit', { name });
+      const res = await axios.post("https://api.example.com/submit", { name });
       setResponse(res.data);
     } catch (error) {
-      console.error('Error submitting form', error);
+      console.error("Error submitting form", error);
     }
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input 
-          type="text" 
-          value={name} 
-          onChange={(e) => setName(e.target.value)} 
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <button type="submit">Submit</button>
       </form>
@@ -254,7 +257,7 @@ You can also use `async/await` for cleaner code when dealing with promises.
 #### Example with **`fetch` and async/await`**:
 
 ```javascript
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function App() {
   const [data, setData] = useState(null);
@@ -264,7 +267,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://api.example.com/data');
+        const response = await fetch("https://api.example.com/data");
         const data = await response.json();
         setData(data);
         setLoading(false);
@@ -302,7 +305,6 @@ export default App;
 
 Both methods work well, but `axios` is often preferred due to its simplicity, better error handling, and additional features.
 
-
 Yes, absolutely! You can create separate files for API calls like `fetch` or `axios` to make your code more modular and reusable. This is a great practice for maintaining clean and maintainable code. You can either create a custom hook or an `axios` instance that can be imported into your components when needed.
 
 Here are the steps for both approaches:
@@ -318,13 +320,13 @@ Create a new file `api.js` or `axiosInstance.js` for managing API calls using `a
 ```javascript
 // src/api/axiosInstance.js
 
-import axios from 'axios';
+import axios from "axios";
 
 // Create an axios instance with common configurations
 const axiosInstance = axios.create({
-  baseURL: 'https://api.example.com/', // Set the base URL for your API
+  baseURL: "https://api.example.com/", // Set the base URL for your API
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
     // Add any other headers like authorization token if required
   },
 });
@@ -341,8 +343,8 @@ Now, in your React components, you can import the `axiosInstance` and use it to 
 ```javascript
 // src/components/MyComponent.js
 
-import React, { useState, useEffect } from 'react';
-import axiosInstance from '../api/axiosInstance';
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../api/axiosInstance";
 
 function MyComponent() {
   const [data, setData] = useState(null);
@@ -351,7 +353,7 @@ function MyComponent() {
 
   useEffect(() => {
     axiosInstance
-      .get('data') // Relative URL since the base URL is already set
+      .get("data") // Relative URL since the base URL is already set
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -377,6 +379,7 @@ export default MyComponent;
 ```
 
 #### Key benefits of this approach:
+
 - **Reusability**: The `axiosInstance` can be reused across multiple components without needing to repeat the configuration.
 - **Centralized configuration**: Any changes (such as the base URL, headers, or authorization) can be easily managed in one place.
 
@@ -391,8 +394,8 @@ Another approach is to create a **custom hook** to handle the API calls. This is
 ```javascript
 // src/hooks/useApi.js
 
-import { useState, useEffect } from 'react';
-import axiosInstance from '../api/axiosInstance';
+import { useState, useEffect } from "react";
+import axiosInstance from "../api/axiosInstance";
 
 const useApi = (endpoint) => {
   const [data, setData] = useState(null);
@@ -427,11 +430,11 @@ Now, you can use this custom hook inside any functional component to fetch data.
 ```javascript
 // src/components/MyComponent.js
 
-import React from 'react';
-import useApi from '../hooks/useApi';
+import React from "react";
+import useApi from "../hooks/useApi";
 
 function MyComponent() {
-  const { data, loading, error } = useApi('data'); // The endpoint you want to call
+  const { data, loading, error } = useApi("data"); // The endpoint you want to call
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -448,6 +451,7 @@ export default MyComponent;
 ```
 
 #### Key benefits of this approach:
+
 - **Separation of concerns**: The hook abstracts the logic of making an API request and handling the state.
 - **Reusability**: You can reuse the hook across multiple components without needing to rewrite the logic for fetching data.
 - **Cleaner components**: The components focus solely on UI rendering, while the API logic is abstracted away.
@@ -463,7 +467,7 @@ If you prefer using `fetch` instead of `axios`, you can also create a custom hoo
 ```javascript
 // src/hooks/useFetch.js
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const useFetch = (url) => {
   const [data, setData] = useState(null);
@@ -474,7 +478,7 @@ const useFetch = (url) => {
     const fetchData = async () => {
       try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error('Network response was not ok');
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setData(data);
         setLoading(false);
@@ -498,11 +502,11 @@ export default useFetch;
 ```javascript
 // src/components/MyComponent.js
 
-import React from 'react';
-import useFetch from '../hooks/useFetch';
+import React from "react";
+import useFetch from "../hooks/useFetch";
 
 function MyComponent() {
-  const { data, loading, error } = useFetch('https://api.example.com/data');
+  const { data, loading, error } = useFetch("https://api.example.com/data");
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;

@@ -1,6 +1,7 @@
 **TTFB (Time to First Byte)** is a key performance metric used to measure the responsiveness of a web server. It represents the time taken from the moment a user sends a request (e.g., clicking a link or entering a URL) until the **first byte of data** is received by the browser. In other words, TTFB measures the time it takes for the server to start sending data back to the client after receiving the request.
 
 ### Components of TTFB:
+
 TTFB is typically broken down into three main components:
 
 1. **DNS Lookup**: The time it takes to resolve the domain name to an IP address.
@@ -28,7 +29,6 @@ To improve TTFB, you need to focus on reducing the time it takes for the server 
 
 - **Use a Fast Web Server**:
   Web servers like **Nginx** and **LiteSpeed** are known for their high performance and low overhead compared to older servers like Apache. These can significantly reduce TTFB.
-  
 - **Reduce Server Processing Time**:
   If your server has high TTFB due to slow processing, consider optimizing the backend:
   - Optimize server-side scripts (e.g., PHP, Node.js).
@@ -46,17 +46,18 @@ Caching can reduce the time it takes for the server to respond to requests, part
 - **Object Caching**: Use an in-memory caching system like **Redis** or **Memcached** to cache server-side objects or API responses.
 
 #### Example (with Redis in Node.js):
+
 ```js
-const redis = require('redis');
+const redis = require("redis");
 const client = redis.createClient();
 
 // Cache the result of a database query
-client.setex('user:123', 3600, JSON.stringify(userData));
+client.setex("user:123", 3600, JSON.stringify(userData));
 
 // Retrieve from cache
-client.get('user:123', function(err, reply) {
+client.get("user:123", function (err, reply) {
   if (reply) {
-    console.log('Cache hit:', JSON.parse(reply));
+    console.log("Cache hit:", JSON.parse(reply));
   } else {
     // Fetch data from database if cache miss
   }
@@ -86,6 +87,7 @@ A **CDN** caches static resources (images, CSS, JavaScript) at edge locations cl
 - **Server Push**: HTTP/2 can push resources to the browser before it even requests them, improving performance.
 
 #### Example (Enabling HTTP/2 with Nginx):
+
 ```nginx
 server {
     listen 443 ssl http2;
@@ -105,12 +107,14 @@ server {
 ---
 
 ### 6. **Enable Compression (GZIP/Br)**
+
 Server-side compression, such as **GZIP** or **Brotli**, can significantly reduce the size of HTTP responses, speeding up data transfer between the server and the client. This, in turn, can help reduce the TTFB.
 
 - **GZIP**: Compresses text-based resources (HTML, CSS, JavaScript) for faster transmission.
 - **Brotli**: A more efficient compression algorithm, supported by modern browsers.
 
 #### Example (Enabling GZIP with Nginx):
+
 ```nginx
 gzip on;
 gzip_types text/plain text/css application/javascript;

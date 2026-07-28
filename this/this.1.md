@@ -4,7 +4,7 @@ The code you've provided involves both instance-level properties and static prop
 
 ```javascript
 class A {
-  static dev = "BFE";  // Static property of class A
+  static dev = "BFE"; // Static property of class A
   dev = "bigfrontend"; // Instance property of class A
 }
 
@@ -18,8 +18,8 @@ class B extends A {
   }
 }
 
-B.log();         // Call the static method of class B
-new B().log();   // Create an instance of B and call the instance method
+B.log(); // Call the static method of class B
+new B().log(); // Create an instance of B and call the instance method
 ```
 
 ### Step-by-Step Breakdown:
@@ -34,7 +34,6 @@ new B().log();   // Create an instance of B and call the instance method
 
 3. **Class B: Inherited Behavior**:
    - Class `B` inherits from class `A`, so it has access to the instance property `dev` from `A` and can also override or use static methods from `A`.
-   
 4. **Calling `B.log()`**:
    - The static method `log()` in class `B` is called. Inside this method, `this.dev` is accessed. Since `log()` is a static method, `this` refers to the class itself (i.e., `B`).
    - Therefore, `this.dev` will refer to `B.dev`, but since `B` does not have its own static `dev` property, it falls back to `A.dev` (the static property of class `A`).
@@ -49,8 +48,8 @@ new B().log();   // Create an instance of B and call the instance method
 ### Output:
 
 ```javascript
-BFE        // From B.log(), static method
-bigfrontend // From new B().log(), instance method
+BFE; // From B.log(), static method
+bigfrontend; // From new B().log(), instance method
 ```
 
 ### Summary:

@@ -1,6 +1,5 @@
 https://learnersbucket.com/examples/web/single-page-application-csr-vs-multi-page-application-ssr/
 
-
 In this tutorial, we will understand the difference between a single-page application (client-side rendered or CSR) and a multi-page application (server-side rendered or SSR).
 
 Single page application (CSR) vs Multi page application (SSR)

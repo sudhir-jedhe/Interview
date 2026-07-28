@@ -15,17 +15,18 @@ There are three main concepts that help manage asynchronous tasks in JavaScript:
 A callback is a function passed into another function as an argument, which is then executed when the asynchronous operation is complete.
 
 **Example with setTimeout (Timer):**
+
 ```js
 console.log("Start");
 
-setTimeout(function() {
-    console.log("This is an asynchronous task.");
+setTimeout(function () {
+  console.log("This is an asynchronous task.");
 }, 1000);
 
 console.log("End");
 ```
-**Output:**
 
+**Output:**
 
 ```js
 Start
@@ -51,21 +52,20 @@ A Promise can be in one of the following states:
 
 ```js
 // Create a promise using fetch to make an API call
-fetch('https://jsonplaceholder.typicode.com/posts')
-  .then(response => {
+fetch("https://jsonplaceholder.typicode.com/posts")
+  .then((response) => {
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
     return response.json(); // Parse JSON from the response
   })
-  .then(data => {
+  .then((data) => {
     console.log(data); // Handle the resolved data
   })
-  .catch(error => {
-    console.error('There was an error!', error); // Handle any error
+  .catch((error) => {
+    console.error("There was an error!", error); // Handle any error
   });
-
-  ```
+```
 
 **How it works:**
 `fetch()` returns a Promise.
@@ -88,14 +88,14 @@ Example with async/await:
 // Asynchronous function using async/await
 async function getData() {
   try {
-    const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
     const data = await response.json(); // Wait until the JSON is parsed
     console.log(data); // Handle the resolved data
   } catch (error) {
-    console.error('There was an error!', error); // Handle any error
+    console.error("There was an error!", error); // Handle any error
   }
 }
 
@@ -118,8 +118,8 @@ Example to Explain Event Loop:
 ```js
 console.log("Start");
 
-setTimeout(function() {
-    console.log("This is an asynchronous task.");
+setTimeout(function () {
+  console.log("This is an asynchronous task.");
 }, 1000);
 
 console.log("End");

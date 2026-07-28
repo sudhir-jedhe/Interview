@@ -1,4 +1,3 @@
-
 https://learnersbucket.com/examples/frontend-system-design/what-to-expect-in-frontend-system-design/
 
 We already discussed what system design is in software engineering in detail. I would summarise it here again, but I would advise you to read the article once for in depth understanding with real-life example.

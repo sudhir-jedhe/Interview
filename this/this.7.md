@@ -30,9 +30,10 @@ console.log(obj.b());
 - Inside the method `b()`, `this` refers to the object `obj`, so `this.a` is `1`.
 - The return value is `1`.
 
-**Output**: 
+**Output**:
+
 ```javascript
-1
+1;
 ```
 
 ---
@@ -49,10 +50,11 @@ console.log((true ? obj.b : a)());
 - `obj.b` is a function, but when it's called without being invoked as a method of `obj`, **`this` inside `obj.b()` will refer to the global object**, not `obj`.
   - In **non-strict mode**, `this` refers to the **global object** (`window` in the browser).
   - Since `this.a` is `undefined` in the global object, the result will be `undefined`.
-  
-**Output**: 
+
+**Output**:
+
 ```javascript
-undefined
+undefined;
 ```
 
 ---
@@ -67,9 +69,10 @@ console.log((true, obj.b)());
 - After that, `obj.b()` is called, but since `obj.b` is not invoked as a method of `obj`, **`this` inside `obj.b()` will again refer to the global object**.
   - In the global context, `this.a` is `undefined`, so the result is `undefined`.
 
-**Output**: 
+**Output**:
+
 ```javascript
-undefined
+undefined;
 ```
 
 ---
@@ -84,9 +87,10 @@ console.log((3, obj["b"])());
 - After this, `obj["b"]()` is called, and again, since `obj.b` is not invoked as a method of `obj`, **`this` inside `obj.b()` will refer to the global object**.
   - The result will again be `undefined`, because `this.a` is `undefined` in the global context.
 
-**Output**: 
+**Output**:
+
 ```javascript
-undefined
+undefined;
 ```
 
 ---
@@ -100,9 +104,10 @@ console.log(obj.b());
 - This is the same as the first case, where `obj.b()` is called as a method of `obj`.
 - Since `this` inside `obj.b()` refers to `obj`, and `obj.a` is `1`, the result is `1`.
 
-**Output**: 
+**Output**:
+
 ```javascript
-1
+1;
 ```
 
 ---
@@ -118,9 +123,10 @@ console.log((obj.c = obj.b)());
 - When `obj.b` is invoked as `obj.c()`, `this` inside `obj.b()` **will refer to `obj`**, because `obj.c` is still a method of `obj`.
   - `this.a` is `1`, so the result is `1`.
 
-**Output**: 
+**Output**:
+
 ```javascript
-1
+1;
 ```
 
 ---
@@ -128,12 +134,12 @@ console.log((obj.c = obj.b)());
 ### Final Output:
 
 ```javascript
-1             // obj.b() as a method of obj (this refers to obj)
-undefined     // (true ? obj.b : a)() - obj.b is called without a context (this refers to global object)
-undefined     // (true, obj.b)() - obj.b is called without a context (this refers to global object)
-undefined     // (3, obj["b"])() - obj.b is called without a context (this refers to global object)
-1             // obj.b() as a method of obj (this refers to obj)
-1             // (obj.c = obj.b)() - obj.b is called as a method of obj (this refers to obj)
+1; // obj.b() as a method of obj (this refers to obj)
+undefined; // (true ? obj.b : a)() - obj.b is called without a context (this refers to global object)
+undefined; // (true, obj.b)() - obj.b is called without a context (this refers to global object)
+undefined; // (3, obj["b"])() - obj.b is called without a context (this refers to global object)
+1; // obj.b() as a method of obj (this refers to obj)
+1; // (obj.c = obj.b)() - obj.b is called as a method of obj (this refers to obj)
 ```
 
 ### Summary:

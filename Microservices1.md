@@ -1695,6 +1695,7 @@ mfName
 return (
 <ErrorBoundary
 fallback={
+
 <div>
 {mfName}
 unavailable
@@ -1727,3 +1728,1079 @@ How would you implement authentication and RBAC across multiple MFEs?
 How would you trace a user journey across MFEs using OpenTelemetry?
 How would you version shared contracts in event-driven MFE communication?
 How would you migrate a Redux monolith to an event-driven micro-frontend architecture?
+
+Here are the comprehensive, production-grade answers to the **Senior/Staff React Architect follow-up questions**, structured specifically for enterprise interviews.
+
+---
+
+# 1. How would you implement authentication and RBAC across multiple MFEs?
+
+### Architecture Strategy
+
+Authentication is a **cross-cutting concern**. In an enterprise MFE setup, authentication and session authority belong exclusively to the **Shell (Host) Application**, while Authorization (RBAC) rules are enforced **decentrally by backend services** via the API Gateway.
+
+```
+                    ┌─────────────────────────┐
+                    │    Identity Provider    │
+                    │ (Azure AD / Auth0 / OIDC)│
+                    └────────────┬────────────┘
+                                 │ PKCE Flow
+                                 ▼
+                    ┌─────────────────────────┐
+                    │     Shell / Host App    │
+                    │  (Owns Session & Tokens)│
+                    └────────────┬────────────┘
+                                 │
+           ┌─────────────────────┼─────────────────────┐
+           │ Pass Token/User     │ Pass Token/User     │ Pass Token/User
+           ▼                     ▼                     ▼
+    ┌──────────────┐      ┌──────────────┐      ┌──────────────┐
+    │ Product MFE  │      │   Cart MFE   │      │ Profile MFE  │
+    └──────┬───────┘      └──────┬───────┘      └──────┬───────┘
+           │                     │                     │
+           └─────────────────────┼─────────────────────┘
+                                 │ Requests with Authorization Header / Cookie
+                                 ▼
+                    ┌─────────────────────────┐
+                    │   API Gateway / BFF     │
+                    │ (Validates JWT Claims)  │
+                    └─────────────────────────┘
+
+```
+
+### Key Technical Patterns
+
+1. **Centralized Authentication (OIDC / OAuth 2.0 PKCE):**
+
+- The Shell application handles the authorization code exchange with the Identity Provider (Azure AD, Auth0, Okta).
+- **Token Storage:** Access tokens are stored in **Secure, SameSite, HTTP-Only Cookies** set by the BFF/Gateway layer to eliminate XSS token-theft risks. If SPA token handling is strictly required, tokens are stored in-memory inside the Shell's state (never in `localStorage`).
+
+2. **Propagating Auth State to Remotes:**
+
+- **Module Federation Singleton Auth Provider:** The Shell exposes an `AuthProvider` via Module Federation (`shared: { "@company/auth": { singleton: true } }`).
+- **Custom Event Fallback (Polyglot / Loose Coupling):** For framework-agnostic MFEs, the Shell broadcasts auth state changes over an Event Bus:
+
+```javascript
+window.dispatchEvent(
+  new CustomEvent("auth:state-changed", {
+    detail: { user, isAuthenticated, roles },
+  }),
+);
+```
+
+3. **Role-Based Access Control (RBAC):**
+
+- **JWT Claims Structure:** The Identity Provider issues a JWT containing decoded user roles:
+
+```json
+{
+  "sub": "usr_99812",
+  "roles": ["Order_Manager", "Billing_Admin"]
+}
+```
+
+- **UI Visibility Control:** A shared `<Guard role="Billing_Admin">` component hides/reveals UI elements in MFEs for UX purposes.
+- **Strict Security Enforcement:** Frontends **never** enforce hard security—the API Gateway and microservices inspect and validate JWT claims on every HTTP request, rejecting unauthorized actions with a `403 Forbidden`.
+
+4. **Token Refresh Mechanics:**
+
+- Only the Shell executes the background token refresh timer or handles silent refresh calls via hidden `iframe` / refresh token APIs.
+- When a new Access Token is acquired, the Shell updates the shared Auth Context/Event Bus; child MFEs consume the update transparently without re-triggering user logins.
+
+---
+
+# 2. How would you trace a user journey across MFEs using OpenTelemetry?
+
+### Observability Challenge
+
+In a micro-frontend architecture, a user transaction (e.g., "Checkout") spans multiple micro-frontend modules, the API Gateway, and down to underlying microservices and databases. Without unified tracing, debugging client-side errors or latency bottlenecks across teams becomes nearly impossible.
+
+```
+React Shell ──(Span 1)──► Product MFE ──(Span 2)──► API Gateway ──(Span 3)──► Order Service
+  │                         │                         │                        │
+  └─────────────────────────┴─────────────────────────┴────────────────────────┘
+                       Unified Trace ID: `4bf92f3577b34da6a3ce929d0e0e4736`
+
+```
+
+### End-to-End Implementation
+
+1. **OpenTelemetry Web SDK Initialization in Shell:**
+   Initialize the OpenTelemetry JS SDK once inside the Shell application before any MFE or component loads.
+
+```javascript
+import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
+import { ZoneContextManager } from "@opentelemetry/context-zone";
+import { registerInstrumentations } from "@opentelemetry/instrumentation";
+import { FetchInstrumentation } from "@opentelemetry/instrumentation-fetch";
+import { XMLHttpRequestInstrumentation } from "@opentelemetry/instrumentation-xml-http-request";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
+
+const provider = new WebTracerProvider();
+const exporter = new OTLPTraceExporter({
+  url: "https://otel-collector.company.com/v1/traces",
+});
+
+provider.addSpanProcessor(new BatchSpanProcessor(exporter));
+provider.register({ contextManager: new ZoneContextManager() });
+
+// Automatically inject traceparent headers into outgoing API requests
+registerInstrumentations({
+  instrumentations: [
+    new FetchInstrumentation({
+      propagateTraceHeaderCorsUrls: [/^https:\/\/api\.company\.com/],
+    }),
+    new XMLHttpRequestInstrumentation(),
+  ],
+});
+```
+
+2. **Propagating Context Across MFEs and HTTP Boundaries:**
+
+- **W3C Trace Context Standard:** The OpenTelemetry instrumentation automatically injects the standard `traceparent` header into every `fetch` / `axios` call made by _any_ MFE:
+  `traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`
+- **Custom Correlation ID (`X-Correlation-ID`):** To aid log aggregation in tools like Splunk, Datadog, or Application Insights, attach a correlation ID middleware to API requests:
+
+```javascript
+const correlationId = window.__CORRELATION_ID__ || crypto.randomUUID();
+headers.set("X-Correlation-ID", correlationId);
+```
+
+3. **Tracing User Actions (User Interactions across MFEs):**
+   When a user clicks "Add to Cart" in `Product MFE`, manually capture custom spans and correlate them with client-side state:
+
+```javascript
+import { trace } from "@opentelemetry/api";
+
+const tracer = trace.getTracer("product-mfe");
+
+export const handleAddToCart = (product) => {
+  const span = tracer.startSpan("user_action_add_to_cart");
+  span.setAttribute("mfe.name", "ProductMFE");
+  span.setAttribute("product.id", product.id);
+
+  try {
+    eventBus.emit("cart:add", product);
+    span.setStatus({ code: 0 }); // OK
+  } catch (err) {
+    span.recordException(err);
+    span.setStatus({ code: 2, message: err.message }); // ERROR
+  } finally {
+    span.end();
+  }
+};
+```
+
+4. **Connecting Client Traces to Gateway & Microservices:**
+
+- The API Gateway receives `traceparent` and `X-Correlation-ID`.
+- Gateway passes these headers to downstream microservices (`Order Service` $\rightarrow$ `Payment Service`).
+- **Result:** A single Datadog/Jaeger trace timeline shows the initial browser click, network transfer time, gateway latency, and database query executions in one unified view.
+
+---
+
+# 3. How would you version shared contracts in event-driven MFE communication?
+
+### The Risk of Unversioned Events
+
+In an event-driven Micro-Frontend architecture, MFEs communicate asynchronously via custom browser events (`window.dispatchEvent`) or a publish-subscribe bus. If `Product MFE` changes the payload schema of `cart:item-added` and deploys independently, `Cart MFE` can crash or corrupt its state at runtime.
+
+### Enterprise Governance & Schema Versioning
+
+1. **Event Naming Convention (`domain:event-name:version`):**
+   Name events explicitly incorporating a version namespace:
+
+- **v1 Event:** `cart:item-added:v1`
+- **v2 Event:** `cart:item-added:v2`
+
+2. **Schema Registry & TypeScript Contracts:**
+   Maintain a shared contract library (`@company/mfe-events`) published to an internal npm registry containing Zod schemas and TypeScript definitions:
+
+```typescript
+// @company/mfe-events (Published Package)
+import { z } from "zod";
+
+export const CartItemAddedV1Schema = z.object({
+  productId: z.string(),
+  quantity: z.number(),
+  price: z.number(),
+});
+
+export const CartItemAddedV2Schema = CartItemAddedV1Schema.extend({
+  variantId: z.string().optional(),
+  sku: z.string(),
+});
+
+export type CartItemAddedV2 = z.infer<typeof CartItemAddedV2Schema>;
+```
+
+3. **Schema Validation at Event Bus Layer:**
+   The shared Event Bus runtime validates outgoing and incoming events against schemas to ensure contract compliance:
+
+```javascript
+class VersionedEventBus {
+  publish(eventName, schema, payload) {
+    const result = schema.safeParse(payload);
+    if (!result.success) {
+      console.error(
+        `[MFE Contract Violation] Invalid payload for ${eventName}:`,
+        result.error,
+      );
+      // Emit error telemetry to Datadog
+      return;
+    }
+    window.dispatchEvent(new CustomEvent(eventName, { detail: payload }));
+  }
+
+  subscribe(eventName, callback) {
+    window.addEventListener(eventName, (event) => callback(event.detail));
+  }
+}
+```
+
+4. **Handling Non-Breaking vs. Breaking Changes:**
+   | Change Type | Rule | Strategy |
+   | --- | --- | --- |
+   | **Non-Breaking** | Adding optional fields | Keep version same (`cart:item-added:v1`). Consumer ignores unknown/optional fields. |
+   | **Breaking** | Renaming/removing required fields | Bump version (`cart:item-added:v2`). Producer publishes **both** `v1` and `v2` concurrently during transition. |
+
+5. **Deprecation Pipeline:**
+
+- `Product MFE` publishes both `v1` and `v2` events for a defined grace period (e.g., 2 sprints).
+- `Cart MFE` upgrades its listener to `v2`.
+- Telemetry tracks consumer usage of `v1`. Once `v1` listener traffic drops to 0%, `Product MFE` removes the `v1` event emitter.
+
+---
+
+# 4. How would you migrate a Redux monolith to an event-driven micro-frontend architecture?
+
+### Migration Philosophy
+
+Migrating a large React/Redux monolith to Micro Frontends cannot be done as a "big bang" rewrite. It requires the **Strangler Fig Pattern**, incrementally extracting functional domains out of the monolith into independently deployable MFEs while maintaining business continuity.
+
+```
+Phase 1: Redux Monolith
+┌────────────────────────────────────────────────────────┐
+│                   Monolith React App                   │
+│   ┌────────────────────────────────────────────────┐   │
+│   │               Global Redux Store               │   │
+│   │   [Auth State]   [Product State]   [Cart State]│   │
+│   └────────────────────────────────────────────────┘   │
+└────────────────────────────────────────────────────────┘
+
+Phase 2: Strangler Fig Pattern (Co-existence)
+┌────────────────────────────────────────────────────────┐
+│                Shell App (Old Monolith)                │
+│   ┌──────────────────────┐                             │
+│   │ Global Redux Store   │◄────── Event Adapter ──────►│──┐ (Module Federation)
+│   └──────────────────────┘                            │  │
+└────────────────────────────────────────────────────────┘  ▼
+                                                   ┌────────────────┐
+                                                   │  Product MFE   │
+                                                   │ (Isolated State│
+                                                   │  React Query)  │
+                                                   └────────────────┘
+
+```
+
+### Step-by-Step Migration Strategy
+
+#### Phase 1: Establish the Host (Shell) & Module Federation Setup
+
+- Convert the existing Redux monolith into the **Host Shell**.
+- Introduce Webpack Module Federation / Vite Module Federation to allow loading remote applications at runtime.
+
+#### Phase 2: Decouple Shared State with an "Event Adapter Layer"
+
+In a monolith, features communicate directly by reaching into the global Redux store (`store.getState().cart`). When extracting the `Product` or `Cart` domain into an MFE, this global state access breaks.
+
+Create an **Event Adapter Bridge** inside the monolith to convert Redux actions into Custom Events:
+
+```javascript
+// Inside the legacy Monolith Redux Middleware
+export const reduxToEventBridgeMiddleware = (store) => (next) => (action) => {
+  const result = next(action);
+
+  // Sync Redux action to global event bus for newly migrated MFEs
+  if (action.type === "cart/itemAdded") {
+    window.dispatchEvent(
+      new CustomEvent("cart:item-added:v1", {
+        detail: action.payload,
+      }),
+    );
+  }
+
+  return result;
+};
+```
+
+Conversely, listen for events coming from new MFEs and dispatch them back into legacy Redux:
+
+```javascript
+// Monolith listens to MFE events
+window.addEventListener("cart:item-added:v1", (event) => {
+  monolithStore.dispatch({
+    type: "cart/itemAdded",
+    payload: event.detail,
+  });
+});
+```
+
+#### Phase 3: Extract the First Slice (Vertical Slicing)
+
+- Select a low-risk, self-contained feature domain (e.g., `Product Catalog` or `User Profile`).
+- Extract the component tree into its own Git repository (`product-mfe`).
+- **Replace Redux with Server State Management:** Replace global Redux slices in the MFE with **React Query (TanStack Query)** or **RTK Query** for API state, isolating feature state completely.
+- **Expose MFE via Module Federation:**
+
+```javascript
+// product-mfe / webpack.config.js
+new ModuleFederationPlugin({
+  name: "productMFE",
+  filename: "remoteEntry.js",
+  exposes: {
+    "./ProductWidget": "./src/ProductWidget",
+  },
+  shared: { react: { singleton: true }, "react-dom": { singleton: true } },
+});
+```
+
+#### Phase 4: Route Delegation & Shell Shrinking
+
+- Point the Shell’s router (`/products/*`) to lazy-load `productMFE/ProductWidget` inside a React `Suspense` and `ErrorBoundary` container.
+- Delete the corresponding legacy Redux reducers and actions from the monolith codebase.
+- Repeat this domain extraction slice-by-slice (`Cart MFE`, `Checkout MFE`, `Admin MFE`).
+
+#### Phase 5: Final Cleanup
+
+Once all domains are extracted:
+
+- The original Redux store in the Shell shrinks down to only managing **Authentication and Global Preferences**.
+- Feature-to-feature communication runs entirely on the **asynchronous Event Bus**, establishing a decoupled Micro-Frontend architecture.
+
+---
+
+### Concise Summary Statement for Interviews
+
+> "When migrating a Redux monolith to an event-driven micro-frontend architecture, I apply the **Strangler Fig Pattern**. I set up a Module Federation host and introduce an **Event Adapter Bridge** that translates legacy Redux actions into versioned custom browser events. This allows new, independently deployed MFEs to run with isolated server-state solutions like React Query while maintaining two-way sync with the legacy monolith. Over time, features are sliced out domain by domain until the global Redux store is completely decoupled, resulting in autonomous teams, resilient fault isolation, and independent deployment pipelines."
+
+Here is a comprehensive, production-grade guide designed for **Senior/Staff React Architect interviews**, pulling together all the concepts covered in your enterprise material—from backend microservices integration to Micro-Frontend (MFE) governance, Module Federation, and distributed tracing.
+
+---
+
+# Executive Summary (2-Minute Elevator Pitch)
+
+> "React itself is the presentation layer in a microservices ecosystem. In large-scale enterprise architectures, React applications communicate with backend microservices through an **API Gateway or Backend-for-Frontend (BFF)** layer to minimize network chatter, centralize security, and aggregate data.
+> To scale frontend teams and codebase complexity, we adopt **Micro-Frontend (MFE) Architecture** using **Webpack/Vite Module Federation**. The Host/Shell app manages shared concerns—such as OIDC authentication, session refresh, and routing—while remotes are independently built and deployed by feature teams.
+> To ensure system stability, we enforce singletons for React runtimes to prevent hook registry corruption, isolate lazy-loaded MFEs with `ErrorBoundary` wrappers, decouple cross-MFE state using versioned custom browser events, and implement end-to-end observability using **OpenTelemetry and correlation IDs (`X-Correlation-ID`)** across client apps, gateways, and microservices."
+
+---
+
+## Architecture Breakdown: React + Microservices
+
+```
+                        ┌──────────────────────────────┐
+                        │       React Shell App        │
+                        │ (Host / Routing / Auth State)│
+                        └──────────────┬───────────────┘
+                                       │
+            ┌──────────────────────────┼──────────────────────────┐
+            ▼                          ▼                          ▼
+     ┌──────────────┐           ┌──────────────┐           ┌──────────────┐
+     │ Product MFE  │           │   Cart MFE   │           │ Profile MFE  │
+     └──────┬───────┘           └──────┬───────┘           └──────┬───────┘
+            │                          │                          │
+            └──────────────────────────┼──────────────────────────┘
+                                       │  X-Correlation-ID / traceparent
+                                       ▼
+                        ┌──────────────────────────────┐
+                        │      API Gateway / BFF       │
+                        │  (Aggregation, JWT Auth)     │
+                        └──────────────┬───────────────┘
+                                       │
+            ┌──────────────────────────┼──────────────────────────┐
+            ▼                          ▼                          ▼
+     ┌──────────────┐           ┌──────────────┐           ┌──────────────┐
+     │ User Service │           │ Order Service│           │Payment Service│
+     └──────────────┘           └──────────────┘           └──────────────┘
+
+```
+
+---
+
+## 1. Why React Uses an API Gateway / BFF Layer
+
+Calling 20 microservices directly from a React SPA introduces significant production issues:
+
+1. **Network Chatter & Latency:** High mobile latency due to multiple waterfall HTTP roundtrips.
+2. **Security Vulnerabilities:** Exposing internal microservice topographies, endpoints, and data contracts to the client browser.
+3. **Complex Frontend Aggregation:** Forcing React components to join data from multiple endpoints manually.
+4. **Tight Coupling to Service Versions:** Any breaking change in an internal microservice directly breaks the frontend client.
+
+### Pattern Comparison
+
+| Feature              | Direct Microservice Calls             | API Gateway / BFF Pattern          |
+| -------------------- | ------------------------------------- | ---------------------------------- |
+| **Network Overhead** | High ($N$ requests per page view)     | Low (Single aggregated response)   |
+| **Security Surface** | Large (All service endpoints exposed) | Small (Single secure domain / SSL) |
+| **Data Formatting**  | Done on client browser                | Done on backend BFF                |
+| **Token Handling**   | JS must manage multiple tokens        | Single HTTP-Only Cookie at Gateway |
+
+---
+
+## 2. Micro-Frontend (MFE) Architecture & Module Federation
+
+Module Federation allows independently built Webpack/Vite builds to dynamically load remote code at runtime without requiring a full rebuild or re-deployment of the Host application.
+
+### Preventing Duplicate React Instances & Hook Errors
+
+Loading multiple copies of React (e.g., Host running React 18.2, Remote running 18.1) causes:
+
+- **`Invalid Hook Call` runtime errors** (React’s internal hook dispatcher gets corrupted).
+- **Broken Context Providers** (`useContext` returns `undefined` across MFE boundaries).
+- **Bloated Bundle Sizes**.
+
+#### Production Module Federation Setup
+
+```javascript
+// host/webpack.config.js & remote/webpack.config.js
+const deps = require("./package.json").dependencies;
+
+module.exports = {
+  plugins: [
+    new ModuleFederationPlugin({
+      name: "hostApp",
+      remotes: {
+        productMFE: "productMFE@https://cdn.company.com/product/remoteEntry.js",
+      },
+      shared: {
+        react: {
+          singleton: true,
+          requiredVersion: deps.react,
+          eager: false,
+        },
+        "react-dom": {
+          singleton: true,
+          requiredVersion: deps["react-dom"],
+          eager: false,
+        },
+        "react-router-dom": {
+          singleton: true,
+          requiredVersion: deps["react-router-dom"],
+        },
+      },
+    }),
+  ],
+};
+```
+
+---
+
+## 3. Cross-MFE State Management Strategy
+
+A common mistake in MFE architecture is sharing too much state.
+
+```
+                           ✅ DO SHARE (Global State)
+               ┌──────────────────────────────────────────┐
+               │ Authentication, User Profile, Theme,     │
+               │ Locale, Global Permissions               │
+               └──────────────────────────────────────────┘
+
+                           ❌ DO NOT SHARE (Local State)
+               ┌──────────────────────────────────────────┐
+               │ Form Inputs, Table Pagination, Cart      │
+               │ Filters, Feature-specific Modals         │
+               └──────────────────────────────────────────┘
+
+```
+
+### Communication Patterns
+
+1. **Custom Event Bus (Recommended — Loose Coupling):**
+
+```javascript
+// Product MFE (Publisher)
+const addToCart = (product) => {
+  window.dispatchEvent(
+    new CustomEvent("cart:item-added:v1", {
+      detail: { productId: product.id, quantity: 1 },
+    }),
+  );
+};
+
+// Cart MFE (Subscriber)
+useEffect(() => {
+  const handleItemAdded = (event) => {
+    console.log("New item:", event.detail);
+  };
+  window.addEventListener("cart:item-added:v1", handleItemAdded);
+  return () =>
+    window.removeEventListener("cart:item-added:v1", handleItemAdded);
+}, []);
+```
+
+2. **URL Search Parameters (Route Sync):**
+   Use URL parameters (`/orders?customerId=123&tab=active`) for state that needs deep-linking support across micro-frontend boundaries.
+3. **Shared Redux Store (Use with Caution):**
+   Expose an RTK store slice from the Host. This introduces tight coupling and version/schema dependencies between remotes, so it should be restricted solely to core authentication or theme state.
+
+---
+
+## 4. Resilient Remote Loading (Error Boundaries & Suspense)
+
+Never allow an outage in an independently deployed remote module to crash the entire page. Wrap every remote MFE in a dedicated wrapper component combining `React.Suspense` and an `ErrorBoundary`.
+
+```tsx
+import React, { Component, ReactNode, Suspense } from "react";
+
+interface ErrorBoundaryProps {
+  fallback: ReactNode;
+  children: ReactNode;
+}
+
+class MFEErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    // Report remote load/runtime crash to monitoring tool (Datadog/Sentry)
+    console.error("[MFE Crash Log]:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
+
+// Production-Grade MFE Wrapper
+export const RemoteWrapper = ({
+  children,
+  name,
+}: {
+  children: ReactNode;
+  name: string;
+}) => (
+  <MFEErrorBoundary
+    fallback={<div className="mfe-error">{name} Widget Unavailable</div>}
+  >
+    <Suspense fallback={<div className="mfe-skeleton">Loading {name}...</div>}>
+      {children}
+    </Suspense>
+  </MFEErrorBoundary>
+);
+```
+
+---
+
+## 5. End-to-End Observability & Distributed Tracing
+
+In a distributed architecture, tracing a single user action from the React UI down to backend databases requires propagating **Trace Context Headers**.
+
+```
+React App (Span 1) ──► API Gateway (Span 2) ──► Order Service (Span 3) ──► Postgres DB
+  │                        │                        │                        │
+  └────────────────────────┴────────────────────────┴────────────────────────┘
+                      Unified Trace ID: `4bf92f3577b34da6a3ce929d0e0e4736`
+
+```
+
+### Implementing OpenTelemetry Header Injection
+
+```javascript
+import { registerInstrumentations } from "@opentelemetry/instrumentation";
+import { FetchInstrumentation } from "@opentelemetry/instrumentation-fetch";
+
+// Automatically attach W3C `traceparent` and `X-Correlation-ID` to all fetch calls
+registerInstrumentations({
+  instrumentations: [
+    new FetchInstrumentation({
+      propagateTraceHeaderCorsUrls: [/^https:\/\/api\.company\.com/],
+      clearTimingResources: true,
+      applyCustomAttributesOnSpan: (span, req) => {
+        const correlationId = window.__CORRELATION_ID__ || crypto.randomUUID();
+        span.setAttribute("correlation.id", correlationId);
+      },
+    }),
+  ],
+});
+```
+
+---
+
+## Quick Reference Interview Answers
+
+### Q: "How would you handle authentication when some MFEs are React and others are Angular?"
+
+> "I keep authentication framework-agnostic. The Host page or BFF handles the OIDC authentication flow with Azure AD/Okta and sets a secure `HTTP-Only` session cookie. For client-side user context, the Host exposes an OIDC client SDK or broadcasts auth events over an event bus using `window.dispatchEvent` with Custom Events. This ensures Angular, React, or Vanilla JS remotes receive authentication updates without any framework dependencies."
+
+### Q: "How do you debug 'Invalid Hook Call' errors in Module Federation?"
+
+> "This almost always indicates multiple copies of React are loaded in memory. First, I inspect `window.__webpack_share_scopes__.default` in DevTools to check loaded instances. Second, I ensure `react` and `react-dom` are configured with `singleton: true` and strict `requiredVersion` in all `ModuleFederationPlugin` configurations. Third, I verify that local `npm ls react` trees in remotes don't contain duplicate nested versions."
+
+To set up **Module Federation with Vite and React**, you can use the **`@originjs/vite-plugin-federation`** plugin.
+
+Vite uses `esbuild` during development and `Rollup` for production, whereas Webpack uses its own bundling pipeline. The `@originjs/vite-plugin-federation` plugin bridges this gap by enabling ES Module (ESM)-based module sharing.
+
+Here is a step-by-step implementation for setting up a **Remote App** (which exposes a component) and a **Host/Shell App** (which consumes it).
+
+---
+
+## Step 1: Install the Federation Plugin
+
+In both your **Remote** and **Host** React projects, install the plugin as a dev dependency:
+
+```bash
+pnpm add -D @originjs/vite-plugin-federation
+# or
+npm install --save-dev @originjs/vite-plugin-federation
+
+```
+
+---
+
+## Step 2: Configure the Remote App (`packages/remote`)
+
+The Remote app exposes its internal components (e.g., a `Button` component) via `remoteEntry.js`.
+
+### 1. Update `vite.config.ts` in the Remote App:
+
+```typescript
+// remote/vite.config.ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import federation from "@originjs/vite-plugin-federation";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    federation({
+      name: "remoteApp",
+      filename: "remoteEntry.js",
+      // Expose components using relative paths
+      exposes: {
+        "./Button": "./src/components/Button.tsx",
+      },
+      // Share core dependencies to prevent duplicate bundles
+      shared: ["react", "react-dom"],
+    }),
+  ],
+  build: {
+    // Required by vite-plugin-federation for ESM target support
+    target: "esnext",
+  },
+  server: {
+    port: 5001,
+  },
+});
+```
+
+### 2. Expose a Component (`src/components/Button.tsx`):
+
+```tsx
+import React from "react";
+
+export default function Button({ label }: { label: string }) {
+  return (
+    <button
+      style={{
+        padding: "8px 16px",
+        backgroundColor: "#0070f3",
+        color: "#fff",
+        borderRadius: "4px",
+      }}
+      onClick={() => alert("Remote Button Clicked!")}
+    >
+      {label}
+    </button>
+  );
+}
+```
+
+---
+
+## Step 3: Configure the Host/Shell App (`packages/host`)
+
+The Host app connects to the Remote app's manifest URL and dynamically imports its exposed modules.
+
+### 1. Update `vite.config.ts` in the Host App:
+
+```typescript
+// host/vite.config.ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import federation from "@originjs/vite-plugin-federation";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    federation({
+      name: "hostApp",
+      remotes: {
+        // Points to the built assets directory of the remote app
+        remoteApp: "http://localhost:5001/assets/remoteEntry.js",
+      },
+      shared: ["react", "react-dom"],
+    }),
+  ],
+  build: {
+    target: "esnext",
+  },
+  server: {
+    port: 5000,
+  },
+});
+```
+
+---
+
+## Step 4: Consume the Remote Component in Host
+
+Use `React.lazy` and `React.Suspense` to load the remote component asynchronously:
+
+```tsx
+// host/src/App.tsx
+import React, { Suspense } from "react";
+
+// TypeScript declaration (if using TS)
+// @ts-ignore
+const RemoteButton = React.lazy(() => import("remoteApp/Button"));
+
+export default function App() {
+  return (
+    <div style={{ padding: "2rem" }}>
+      <h1>Host Application</h1>
+
+      <Suspense fallback={<div>Loading Remote Button...</div>}>
+        <RemoteButton label="Click Me (Loaded from Remote)" />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+---
+
+## Step 5: Handling TypeScript Types (Optional)
+
+If using TypeScript in the Host app, create a declaration file so TypeScript understands the remote import:
+
+```typescript
+// host/src/remotes.d.ts
+declare module "remoteApp/Button" {
+  import React from "react";
+  const Button: React.ComponentType<{ label: string }>;
+  export default Button;
+}
+```
+
+---
+
+## Crucial Production & Dev Caveat
+
+> ⚠️ **Development Mode vs. Production Build:**
+> `@originjs/vite-plugin-federation` operates on **production Rollup builds**. During local development (`vite dev`), Vite's dev server relies on `esbuild`, which bypasses the Rollup plugin pipeline.
+
+To run and test Vite Module Federation locally:
+
+1. **Build and Preview the Remote App:**
+
+```bash
+cd remote
+pnpm run build && pnpm run preview --port 5001
+
+```
+
+2. **Start the Host App:**
+
+```bash
+cd host
+pnpm run dev --port 5000
+
+```
+
+Now open `http://localhost:5000` to see the Host dynamically fetching and rendering the Remote `Button` component over ES Modules!
+
+How do I configure dynamic remote URLs (e.g. staging vs production) in Vite Module Federation?
+
+Configuring dynamic remote URLs for different environments (such as Local, Staging, and Production) in `@originjs/vite-plugin-federation` can be achieved using **Environment Variables**, **Promise-based External URLs**, or **Runtime Remote Injection**.
+
+---
+
+### Strategy 1: Environment Variable Resolution (Build Time)
+
+If remote URLs are known at build time for each target environment, use Vite's built-in `loadEnv` or `import.meta.env` to resolve the URL during the build.
+
+#### 1. Define Environment Files
+
+Create `.env.staging` and `.env.production` files in your host project root:
+
+```ini
+# .env.staging
+VITE_REMOTE_APP_URL=https://staging-cdn.company.com/remote/assets/remoteEntry.js
+
+# .env.production
+VITE_REMOTE_APP_URL=https://cdn.company.com/remote/assets/remoteEntry.js
+
+```
+
+#### 2. Update `vite.config.ts`
+
+Use Vite's `loadEnv` helper inside `defineConfig`:
+
+```typescript
+import { defineConfig, loadEnv } from "vite";
+import react from "@vitejs/plugin-react";
+import federation from "@originjs/vite-plugin-federation";
+
+export default defineConfig(({ mode }) => {
+  // Load environment variables based on `mode` (e.g. staging, production)
+  const env = loadEnv(mode, process.cwd(), "");
+
+  return {
+    plugins: [
+      react(),
+      federation({
+        name: "hostApp",
+        remotes: {
+          // Fallback to localhost if environment variable isn't defined
+          remoteApp:
+            env.VITE_REMOTE_APP_URL ||
+            "http://localhost:5001/assets/remoteEntry.js",
+        },
+        shared: ["react", "react-dom"],
+      }),
+    ],
+    build: {
+      target: "esnext",
+    },
+  };
+});
+```
+
+#### 3. Build Command
+
+```bash
+pnpm build --mode staging
+# or
+pnpm build --mode production
+
+```
+
+---
+
+### Strategy 2: Promise-Based External Loading (Runtime Resolution)
+
+When you need to resolve remote URLs dynamically at runtime—such as fetching the endpoint from an API gateway or `window` configuration object before loading the module—use **Promise-based externals**.
+
+#### Example A: Fetching Remote URL from a Global Config Object
+
+If your HTML injects runtime configuration into `window.__CONFIG__`:
+
+```typescript
+// host/vite.config.ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import federation from "@originjs/vite-plugin-federation";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    federation({
+      name: "hostApp",
+      remotes: {
+        remoteApp: {
+          // Resolves the entry URL dynamically from window.__CONFIG__ at runtime
+          external: `Promise.resolve(window.__CONFIG__?.REMOTE_APP_URL || 'http://localhost:5001/assets/remoteEntry.js')`,
+          externalType: "promise",
+        },
+      },
+      shared: ["react", "react-dom"],
+    }),
+  ],
+  build: {
+    target: "esnext",
+  },
+});
+```
+
+#### Example B: Fetching Remote URL from an API Endpoint
+
+If you maintain a dynamic service registry or discovery endpoint:
+
+```typescript
+remotes: {
+  remoteApp: {
+    external: `fetch('/api/v1/config/remotes')
+      .then(res => res.json())
+      .then(data => data.remoteAppUrl)`,
+    externalType: 'promise',
+  },
+}
+
+```
+
+---
+
+### Strategy 3: Dynamic Runtime Remotes via `__federation__` API
+
+When remote URLs are not known upfront or are loaded asynchronously after user interaction, use the plugin's internal runtime helper method.
+
+#### Create a Dynamic Loader Helper (`src/utils/loadRemote.ts`)
+
+```typescript
+import { ReactNode, lazy } from "react";
+
+// Declare internal Vite Federation types
+declare global {
+  var remotesMap: Record<string, { url: string; format: string }>;
+  var __federation__: {
+    ensure: (remoteId: string) => Promise<any>;
+  };
+}
+
+/**
+ * Dynamically registers and imports a remote component at runtime
+ */
+export function loadDynamicRemoteComponent<T = any>(
+  remoteName: string,
+  exposedModule: string,
+  remoteUrl: string,
+) {
+  return lazy(async () => {
+    // 1. Inject or update the remote URL map at runtime
+    window.remotesMap = window.remotesMap || {};
+    window.remotesMap[remoteName] = {
+      url: remoteUrl,
+      format: "esm",
+    };
+
+    // 2. Initialize and import the remote container
+    const container = await window.__federation__.ensure(remoteName);
+    const module = await container.get(exposedModule);
+    return module();
+  });
+}
+```
+
+#### Consume in React
+
+```tsx
+import React, { Suspense, useMemo } from "react";
+import { loadDynamicRemoteComponent } from "./utils/loadRemote";
+
+export default function DynamicRemoteWrapper({
+  env,
+}: {
+  env: "staging" | "prod";
+}) {
+  const remoteUrl =
+    env === "prod"
+      ? "https://cdn.company.com/remote/assets/remoteEntry.js"
+      : "https://staging-cdn.company.com/remote/assets/remoteEntry.js";
+
+  // Dynamically resolve component based on current environment state
+  const RemoteButton = useMemo(
+    () => loadDynamicRemoteComponent("remoteApp", "./Button", remoteUrl),
+    [remoteUrl],
+  );
+
+  return (
+    <Suspense fallback={<div>Loading Dynamic Component...</div>}>
+      <RemoteButton label="Dynamic Remote Button" />
+    </Suspense>
+  );
+}
+```
+
+---
+
+### Summary Recommendation
+
+| Use Case                                                 | Recommended Strategy                                    |
+| -------------------------------------------------------- | ------------------------------------------------------- |
+| **Known at build time** (different CI/CD environments)   | **Strategy 1:** Vite `loadEnv` with `.env.[mode]` files |
+| **Loaded from `window` config / API** at runtime startup | **Strategy 2:** `externalType: 'promise'`               |
+| **User/tenant-specific remotes** or loaded on-demand     | **Strategy 3:** Runtime `loadDynamicRemoteComponent()`  |
+
+What are the key trade-offs between Webpack Module Federation and Vite Module Federation?
+Choosing between **Webpack Module Federation** and **Vite Module Federation** (`@originjs/vite-plugin-federation` or `@module-federation/vite`) comes down to **ecosystem maturity vs. modern build performance**.
+
+While both frameworks adhere to the same underlying core concept—runtime loading of independently deployed modules—their architectural differences impact development experience, runtime resilience, and deployment complexity.
+
+---
+
+## 1. Development Experience (DX) & Server Architecture
+
+| Aspect                  | Webpack Module Federation                                                            | Vite Module Federation                                                                                                                                                                                     |
+| ----------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dev Server Model**    | **Bundled Mode:** Every file is processed and bundled through Webpack in dev mode.   | **Unbundled Native ESM:** Serves modules directly via browser `import` over ES Modules.                                                                                                                    |
+| **Startup & HMR Speed** | **Slower.** Initial startup and Hot Module Replacement (HMR) lag in large monorepos. | **Lightning Fast.** Near-instantaneous server startup and sub-millisecond HMR.                                                                                                                             |
+| **Dev-Mode Caveat**     | Both Host and Remote apps run seamlessly in dev mode (`webpack serve`).              | **The "Build & Preview" Gotcha:** With `@originjs/vite-plugin-federation`, Remotes **cannot serve `remoteEntry.js` in pure unbundled dev mode**. Remotes must run `vite build --watch` and `vite preview`. |
+
+---
+
+## 2. Standard Native Support vs. Plugin Abstractions
+
+### Webpack Module Federation
+
+- **First-Class Engine Feature:** Built directly into Webpack 5 as a native core plugin (`ModuleFederationPlugin`).
+- **Runtime Mechanics:** Uses Webpack's internal module graph and container protocol. It intercepts module resolution at runtime, seamlessly sharing dependencies and loading asynchronous chunks.
+
+### Vite Module Federation
+
+- **Third-Party Abstraction:** Vite does not natively implement Webpack's container protocol. It relies on community plugins (`@originjs/vite-plugin-federation` or `@module-federation/vite`).
+- **Runtime Mechanics:** Transforms federated modules into browser-native **ESM imports** using dynamic `import()` and Top-Level Await.
+
+---
+
+## 3. Ecosystem & Cross-Framework Compatibility
+
+- **Mixed Frameworks & Bundlers:** Webpack Module Federation is the industry standard for enterprise legacy migrations (e.g., embedding an Angular/Vue 2 remote inside a React host or vice versa).
+- **Vite-to-Webpack Interop:** While `@originjs/vite-plugin-federation` offers experimental Webpack interoperability, mixing Vite/Rollup and Webpack in complex React apps is **discouraged** due to differences in CommonJS packaging and chunk generation, which can break shared singletons.
+
+---
+
+## 4. Production Resilience & Shared Singletons
+
+```
+                       Production Trade-off Matrix
+ ┌─────────────────────────────────────────────────────────────────────┐
+ │ Webpack: Rich runtime container, battle-tested singleton resolution │
+ │ Vite:    Simpler ESM-based output, faster production builds         │
+ └─────────────────────────────────────────────────────────────────────┘
+
+```
+
+- **Singleton Resolution:** Webpack excels at resolving shared singletons (`singleton: true`) across complex, multi-version trees. Vite uses `resolve.dedupe` and Rollup chunking rules, which can occasionally result in duplicate instances in complex `pnpm` monorepo workspace configurations.
+- **Enterprise Governance:** Production features like **Server-Side Rendering (SSR)**, Content Security Policies (CSP), and advanced circuit breaker/fallback mechanics are natively supported and thoroughly documented in the core `@module-federation/enhanced` Webpack ecosystem.
+
+---
+
+## Summary Comparison Matrix
+
+| Feature / Capability      | Webpack Module Federation                | Vite Module Federation                       |
+| ------------------------- | ---------------------------------------- | -------------------------------------------- |
+| **Primary Engine**        | Webpack 5 (Native Core Plugin)           | Rollup (Build) + Esbuild (Dev via Plugin)    |
+| **Local Dev Speed**       | Moderate to Slow (Full bundling)         | Extremely Fast (Native ESM)                  |
+| **Remote Dev Workflow**   | Standard `webpack serve`                 | Requires `vite build --watch` for Remotes    |
+| **Output Standard**       | Webpack Container Chunks                 | Native ES Modules (ESM)                      |
+| **Production Stability**  | **Battle-tested** across enterprise apps | Excellent for modern, Vite-only stacks       |
+| **Cross-Bundler Support** | Universal across Webpack ecosystems      | Best when **both Host and Remotes use Vite** |
+
+---
+
+## Verdict: Which Should You Choose?
+
+- **Choose Webpack Module Federation if:** You are working in a large enterprise environment, migrating legacy applications (Next.js, Angular, Webpack-based React apps), require strict cross-bundler compatibility, or need complex runtime fallback governance.
+- **Choose Vite Module Federation if:** You are building a greenfield micro-frontend architecture where **all apps use Vite**, developer speed/HMR is your top priority, and you want modern, clean ES Module production output.

@@ -1,3 +1,4 @@
+```js
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from "./index.module.css";
@@ -202,7 +203,7 @@ export default DropDown;
     position: relative;
     flex-direction: column;
   }
-  
+
   .dropToggler {
     position: relative;
     padding: 10px;
@@ -212,15 +213,15 @@ export default DropDown;
     color: #607d8b;
     cursor: pointer;
   }
-  
+
   .dropToggler > .arrow {
     margin-left: 10px;
   }
-  
+
   .displayArea {
     position: relative;
   }
-  
+
   .displayArea > .children {
     position: absolute;
     left: 1px;
@@ -273,3 +274,4 @@ class DropDownTest extends Component {
 }
 
 export default DropDownTest;
+```

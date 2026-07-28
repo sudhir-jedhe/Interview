@@ -1,3 +1,4 @@
+```js
 Length of Last Word
 
 var lengthOfLastWord = function (s) {
@@ -11,3 +12,4 @@ var lengthOfLastWord = function (s) {
     }
     return i - j;
 };
+```

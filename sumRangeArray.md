@@ -8,7 +8,7 @@ Let's break it down step-by-step:
 
 The **prefix sum** is a common technique used to quickly calculate the sum of any subarray within an array.
 
-Given an array `nums`, the **prefix sum array** `prefixSum` is an array where each element at index `i` represents the sum of all elements in `nums` from index 0 to `i-1`. 
+Given an array `nums`, the **prefix sum array** `prefixSum` is an array where each element at index `i` represents the sum of all elements in `nums` from index 0 to `i-1`.
 
 For example, given the array:
 
@@ -96,9 +96,8 @@ console.log(obj.sumRange(0, 5)); // Output: -3
 
 ### **Time Complexity**
 
-- **Constructor (`constructor(nums)`):** 
+- **Constructor (`constructor(nums)`):**
   - The constructor takes `O(n)` time, where `n` is the length of the `nums` array, since it iterates through the array once to build the prefix sum.
-  
 - **`sumRange(left, right)` Method:**
   - The `sumRange` method runs in **constant time**, i.e., `O(1)`, because it only involves accessing two elements from the `prefixSum` array and performing a subtraction.
 

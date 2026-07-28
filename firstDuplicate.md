@@ -19,10 +19,11 @@ function firstDuplicateCharacter(str) {
 ```
 
 ### Explanation:
+
 - **Time Complexity**: O(n), where `n` is the length of the string.
 - **Space Complexity**: O(n) due to the usage of an object (`charCount`) to track the characters.
 - The function loops through each character of the string and stores it in the object `charCount`. If a character already exists in the object, it returns that character as the first duplicate.
-  
+
 ### Approach 2: Using a `Map`
 
 ```javascript
@@ -43,6 +44,7 @@ function firstDuplicateCharacter(str) {
 ```
 
 ### Explanation:
+
 - **Time Complexity**: O(n), where `n` is the length of the string.
 - **Space Complexity**: O(n) due to the usage of a `Map`.
 - Similar to the object approach, but here we use a `Map` instead of an object to track the characters.
@@ -67,6 +69,7 @@ function firstDuplicate(str) {
 ```
 
 ### Explanation:
+
 - **Time Complexity**: O(n)
 - **Space Complexity**: O(n)
 - This is another variation that uses a `Map`. The function loops through the string and checks if a character already exists in the map using `map.get(num)`. If it does, it immediately returns that character.
@@ -87,6 +90,7 @@ function firstDuplicate(str) {
 ```
 
 ### Explanation:
+
 - **Time Complexity**: O(n), where `n` is the length of the string.
 - **Space Complexity**: O(n) due to the usage of a `Set`.
 - Here, you convert the string to an array using `[...]` and then use the `find` method to check if a character has already been added to the set.
@@ -97,25 +101,25 @@ function firstDuplicate(str) {
 ```javascript
 const inputString = "abcdefgahij";
 const firstDuplicate = firstDuplicateCharacter(inputString);
-console.log("First duplicate character:", firstDuplicate);  // Output: "a"
+console.log("First duplicate character:", firstDuplicate); // Output: "a"
 
 const inputString2 = "abcdefgabc";
 const firstDuplicate2 = firstDuplicateCharacter(inputString2);
-console.log("First duplicate character:", firstDuplicate2);  // Output: "a"
+console.log("First duplicate character:", firstDuplicate2); // Output: "a"
 
 const inputString3 = "abcdefe";
-console.log(firstDuplicate(inputString3));  // Output: "e"
+console.log(firstDuplicate(inputString3)); // Output: "e"
 ```
 
 ### Comparison of Approaches:
 
 - **Efficiency**: All these approaches have a time complexity of **O(n)**, where `n` is the length of the string, making them efficient for larger inputs.
-  
-- **Space Complexity**: 
+- **Space Complexity**:
   - The approaches using an object (`charCount`) or `Map` have **O(n)** space complexity.
   - The approach using a `Set` also has **O(n)** space complexity, as it stores each unique character.
 
 ### Conclusion:
+
 - All approaches you provided are valid for finding the first duplicate character in a string.
 - The **Set-based** solution (`Approach 4`) and the **Map-based** solutions (`Approach 2` and `Approach 3`) are the most elegant and concise for this problem.
 - Among these, using a `Set` (`Approach 4`) is slightly more modern and easier to read, while still being efficient.

@@ -1,3 +1,4 @@
+```js
 import { Ref, useCallback, useRef, useState } from "react";
 import { Ref, useCallback, useRef, useState } from "react";
 import { useCallback, useLayoutEffect, useState } from "react";
@@ -44,7 +45,7 @@ export function useHover<T extends HTMLElement>(): [Ref<T | undefined>, boolean]
       return
     const setYes = () => setHovering(true)
     const setNo = () => setHovering(false)
-  
+
     element.addEventListener('mouseenter', setYes)
     element.addEventListener('mouseleave', setNo)
     return () => {
@@ -96,7 +97,7 @@ export function useHover<T extends HTMLElement | null>(): [
     if (!node) return;
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
-    
+
     node.addEventListener('mouseenter', handleMouseEnter);
     node.addEventListener('mouseleave', handleMouseLeave);
     return () => {
@@ -106,3 +107,4 @@ export function useHover<T extends HTMLElement | null>(): [
   }, [node]);
   return [ref, isHovered];
 }
+```

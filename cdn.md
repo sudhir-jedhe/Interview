@@ -12,7 +12,7 @@ For modern frontend applications, image optimisation is no longer just about com
 
 This is where **Image CDNs** come in. An Image CDN combines traditional CDN capabilities with image-specific features such as dynamic optimisation, resizing, format conversion, and adaptive delivery. [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/), [\[edgeone.ai\]](https://edgeone.ai/learning/image-cdn)
 
-***
+---
 
 # Why Image CDNs Exist
 
@@ -47,7 +47,7 @@ Optimised Image
 
 Images are cached near users and can be transformed before delivery. [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/), [\[edgeone.ai\]](https://edgeone.ai/learning/image-cdn)
 
-***
+---
 
 # Typical Architecture
 
@@ -73,7 +73,7 @@ Images are cached near users and can be transformed before delivery. [\[codeluck
 
 A common architecture uses object storage for originals, image processing for transformations, and edge caching for global delivery. [\[medium.com\]](https://medium.com/@lorenzo_33729/building-a-scalable-image-cdn-with-minio-imgproxy-and-cloudflare-4694ad4b93df), [\[edgeone.ai\]](https://edgeone.ai/learning/image-cdn)
 
-***
+---
 
 # What Image CDNs Do
 
@@ -105,9 +105,9 @@ Example pattern:
 hero.jpg?width=800
 ```
 
- [\[edge.network\]](https://edge.network/docs/cdn/image-optimization)
+[\[edge.network\]](https://edge.network/docs/cdn/image-optimization)
 
-***
+---
 
 ## 2. Automatic Format Conversion
 
@@ -137,7 +137,7 @@ hero.jpeg
 
 Many image delivery platforms automatically select the best format based on browser support. [\[cloudflare.com\]](https://www.cloudflare.com/products/images/), [\[edge.network\]](https://edge.network/docs/cdn/image-optimization), [\[edgeone.ai\]](https://edgeone.ai/learning/image-cdn)
 
-***
+---
 
 ## 3. Smart Compression
 
@@ -152,7 +152,7 @@ Strip unnecessary bytes
 
 before serving images. [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/), [\[edge.network\]](https://edge.network/docs/cdn/image-optimization)
 
-***
+---
 
 ## 4. Edge Caching
 
@@ -170,7 +170,7 @@ Edge → User
 
 This significantly reduces latency and origin load. [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/), [\[edgeone.ai\]](https://edgeone.ai/learning/image-cdn), [\[cloudflare.com\]](https://www.cloudflare.com/products/images/)
 
-***
+---
 
 # Real Request Flow
 
@@ -197,7 +197,7 @@ Yes  │   No
 
 This cache-first pattern is explicitly described in image CDN architectures. [\[medium.com\]](https://medium.com/@lorenzo_33729/building-a-scalable-image-cdn-with-minio-imgproxy-and-cloudflare-4694ad4b93df), [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/)
 
-***
+---
 
 # Popular Image CDN Capabilities
 
@@ -209,7 +209,7 @@ sizes
 device-aware optimisation
 ```
 
- [\[cloudflare.com\]](https://www.cloudflare.com/products/images/), [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/)
+[\[cloudflare.com\]](https://www.cloudflare.com/products/images/), [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/)
 
 ### Format Optimisation
 
@@ -220,7 +220,7 @@ JPEG
 PNG
 ```
 
- [\[cloudflare.com\]](https://www.cloudflare.com/products/images/), [\[edge.network\]](https://edge.network/docs/cdn/image-optimization), [\[edgeone.ai\]](https://edgeone.ai/learning/image-cdn)
+[\[cloudflare.com\]](https://www.cloudflare.com/products/images/), [\[edge.network\]](https://edge.network/docs/cdn/image-optimization), [\[edgeone.ai\]](https://edgeone.ai/learning/image-cdn)
 
 ### On-the-Fly Transformations
 
@@ -232,7 +232,7 @@ Sharpen
 Grayscale
 ```
 
- [\[edge.network\]](https://edge.network/docs/cdn/image-optimization)
+[\[edge.network\]](https://edge.network/docs/cdn/image-optimization)
 
 ### Security
 
@@ -242,9 +242,9 @@ Hotlink protection
 HTTPS delivery
 ```
 
- [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/)
+[\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/)
 
-***
+---
 
 # React / Next.js Perspective
 
@@ -271,7 +271,7 @@ With image infrastructure:
 
 The backing image service can handle optimisation and delivery automatically. (This is a general architectural pattern; exact behaviour depends on the platform.)
 
-***
+---
 
 # Core Web Vitals Benefits
 
@@ -289,9 +289,9 @@ Closer edge location
 Pre-generated variants
 ```
 
- [\[cloudflare.com\]](https://www.cloudflare.com/products/images/), [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/)
+[\[cloudflare.com\]](https://www.cloudflare.com/products/images/), [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/)
 
-***
+---
 
 ## CLS
 
@@ -301,7 +301,7 @@ Properly sized images
 
 when combined with responsive delivery. [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/), [\[edgeone.ai\]](https://edgeone.ai/learning/image-cdn)
 
-***
+---
 
 ## INP
 
@@ -312,7 +312,7 @@ Smaller decode costs
 
 due to lighter image payloads and optimised delivery. [\[cloudflare.com\]](https://www.cloudflare.com/products/images/), [\[codelucky.com\]](https://codelucky.com/image-cdn-specialized-image-delivery-networks/)
 
-***
+---
 
 # Senior System Design Interview Answer
 

@@ -15,43 +15,45 @@ Live Feeds: Stream live content such as news updates, weather conditions, or liv
 
 SSE is suitable for scenarios where updates need to be pushed from the server to the client in a straightforward, efficient manner.
 
-
 In a React application, integrating **Server-Sent Events (SSE)** allows you to push real-time updates from the server to the client. It's useful for applications like live notifications, real-time stock price updates, or collaborative editing tools.
 
 ### Steps to Implement SSE in a React Application:
 
 #### 1. **Set Up the Server (Node.js Example)**
+
 You will need a backend server to handle the SSE connection. Here’s an example of how to set up SSE in a Node.js server:
 
 ```js
 // server.js (Node.js Express example)
-const express = require('express');
+const express = require("express");
 const app = express();
 const port = 3000;
 
 // SSE route
-app.get('/events', (req, res) => {
-    // Set headers for SSE
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-    
-    // Send an event every 5 seconds
-    const sendData = () => {
-        res.write('data: Hello, client! ' + new Date().toLocaleTimeString() + '\n\n');
-    };
-    
-    const interval = setInterval(sendData, 5000);
+app.get("/events", (req, res) => {
+  // Set headers for SSE
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
 
-    // Close the connection when the client disconnects
-    req.on('close', () => {
-        clearInterval(interval);
-        res.end();
-    });
+  // Send an event every 5 seconds
+  const sendData = () => {
+    res.write(
+      "data: Hello, client! " + new Date().toLocaleTimeString() + "\n\n",
+    );
+  };
+
+  const interval = setInterval(sendData, 5000);
+
+  // Close the connection when the client disconnects
+  req.on("close", () => {
+    clearInterval(interval);
+    res.end();
+  });
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
 ```
 
@@ -63,54 +65,56 @@ Here’s an example of how to handle SSE in a React component:
 
 ```jsx
 // SSEComponent.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 const SSEComponent = () => {
-    const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([]);
 
-    useEffect(() => {
-        // Create a new EventSource to connect to the server
-        const eventSource = new EventSource('http://localhost:3000/events');
+  useEffect(() => {
+    // Create a new EventSource to connect to the server
+    const eventSource = new EventSource("http://localhost:3000/events");
 
-        // Handle incoming messages from the server
-        eventSource.onmessage = (event) => {
-            const newMessage = event.data;
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
-        };
+    // Handle incoming messages from the server
+    eventSource.onmessage = (event) => {
+      const newMessage = event.data;
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    };
 
-        // Handle errors
-        eventSource.onerror = (error) => {
-            console.error('SSE Error:', error);
-        };
+    // Handle errors
+    eventSource.onerror = (error) => {
+      console.error("SSE Error:", error);
+    };
 
-        // Clean up the connection when the component is unmounted
-        return () => {
-            eventSource.close();
-        };
-    }, []);
+    // Clean up the connection when the component is unmounted
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
-    return (
-        <div>
-            <h1>Real-Time Updates</h1>
-            <ul>
-                {messages.map((msg, index) => (
-                    <li key={index}>{msg}</li>
-                ))}
-            </ul>
-        </div>
-    );
+  return (
+    <div>
+      <h1>Real-Time Updates</h1>
+      <ul>
+        {messages.map((msg, index) => (
+          <li key={index}>{msg}</li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default SSEComponent;
 ```
 
 ### Key Points:
+
 - **Server Side:** The server sends updates to the client via the `/events` endpoint with the `Content-Type: text/event-stream` header.
 - **Client Side:** The React component uses the `EventSource` API to listen for updates from the server.
 - **Handling Messages:** The client listens for `onmessage` events and updates the state with incoming messages.
 - **Reconnection:** If the connection drops, the client can automatically reconnect (handled by the browser by default).
 
 ### Use Cases in React:
+
 - **Live Notifications:** Display new notifications in real-time without requiring the user to refresh the page.
 - **Real-Time Updates:** For applications like stock prices, social media feeds, or sports scores, you can show updates in real-time as they happen.
 - **Collaborative Tools:** Use SSE to send updates to all users working on the same document, allowing for collaborative editing or live activity updates.

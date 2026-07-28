@@ -10,8 +10,8 @@ function mergeArray(arr1, arr2 = arr1) {
 }
 
 // Example usage:
-console.log(mergeArray([1, 2, 3]));  // Output: [1, 2, 3, 1, 2, 3]
-console.log(mergeArray([1, 2], [3, 4]));  // Output: [1, 2, 3, 4]
+console.log(mergeArray([1, 2, 3])); // Output: [1, 2, 3, 1, 2, 3]
+console.log(mergeArray([1, 2], [3, 4])); // Output: [1, 2, 3, 4]
 ```
 
 ---
@@ -32,10 +32,10 @@ const startPositionFor2ndArray = b.length / 2 - 1;
 a.splice(
   startPositionFor1stArray,
   3,
-  ...b.slice(startPositionFor2ndArray, startPositionFor2ndArray + 3)
+  ...b.slice(startPositionFor2ndArray, startPositionFor2ndArray + 3),
 );
 
-console.log(a);  // Output: [1, 2, 0, 0, 0, 8, 5]
+console.log(a); // Output: [1, 2, 0, 0, 0, 8, 5]
 ```
 
 ---
@@ -49,20 +49,20 @@ const arr = [5, 2, 9, 1, 5, 6];
 
 // Ascending order
 arr.sort((a, b) => a - b);
-console.log(arr);  // Output: [1, 2, 5, 5, 6, 9]
+console.log(arr); // Output: [1, 2, 5, 5, 6, 9]
 
 // Descending order
 arr.sort((a, b) => b - a);
-console.log(arr);  // Output: [9, 6, 5, 5, 2, 1]
+console.log(arr); // Output: [9, 6, 5, 5, 2, 1]
 ```
 
 For sorting objects by a property, like `age`:
 
 ```javascript
 const objects = [
-  { name: 'Alice', age: 25 },
-  { name: 'Bob', age: 30 },
-  { name: 'Carol', age: 27 },
+  { name: "Alice", age: 25 },
+  { name: "Bob", age: 30 },
+  { name: "Carol", age: 27 },
 ];
 
 // Sort by age in ascending order
@@ -86,7 +86,7 @@ const books = [
 books.sort((book1, book2) => {
   const authorLastName1 = book1.author.split(" ")[1];
   const authorLastName2 = book2.author.split(" ")[1];
-  return authorLastName1.localeCompare(authorLastName2);  // Ascending order
+  return authorLastName1.localeCompare(authorLastName2); // Ascending order
 });
 
 console.log(books);
@@ -102,10 +102,10 @@ Using `filter` to get positive numbers and `map` to square them.
 const arr = [-4, -1, 2, 3, 5];
 
 const squaredPositiveArr = arr
-  .filter(value => value >= 0)  // Filter positive numbers
-  .map(value => value * value); // Square the positive numbers
+  .filter((value) => value >= 0) // Filter positive numbers
+  .map((value) => value * value); // Square the positive numbers
 
-console.log(squaredPositiveArr);  // Output: [4, 9, 25]
+console.log(squaredPositiveArr); // Output: [4, 9, 25]
 ```
 
 ---
@@ -137,7 +137,7 @@ function* rangeGen(start = 1, end = 0) {
   }
 }
 
-let arr = [...rangeGen(1, 10)];  // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+let arr = [...rangeGen(1, 10)]; // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 let shuffledArr = [];
 const length = arr.length;
 
@@ -155,17 +155,13 @@ console.log(shuffledArr);
 We can use `some` or `find` to check if a user exists by name.
 
 ```javascript
-const arr = [
-  { name: 'Alice' },
-  { name: 'Bob' },
-  { name: 'John' },
-];
+const arr = [{ name: "Alice" }, { name: "Bob" }, { name: "John" }];
 
-const doesJohnExist = arr.some(obj => obj.name === 'John');
-console.log(doesJohnExist);  // Output: true
+const doesJohnExist = arr.some((obj) => obj.name === "John");
+console.log(doesJohnExist); // Output: true
 
-const johnObject = arr.find(obj => obj.name === 'John');
-console.log(johnObject);  // Output: { name: 'John' }
+const johnObject = arr.find((obj) => obj.name === "John");
+console.log(johnObject); // Output: { name: 'John' }
 ```
 
 ---
@@ -176,13 +172,13 @@ Using `map`, you can generate the new array format.
 
 ```javascript
 const arr = [
-  { id: 1, firstName: 'John', lastName: 'Doe' },
-  { id: 2, firstName: 'Jane', lastName: 'Smith' }
+  { id: 1, firstName: "John", lastName: "Doe" },
+  { id: 2, firstName: "Jane", lastName: "Smith" },
 ];
 
-const employeesListWithFullName = arr.map(obj => ({
+const employeesListWithFullName = arr.map((obj) => ({
   id: obj.id,
-  fullName: `${obj.firstName} ${obj.lastName}`
+  fullName: `${obj.firstName} ${obj.lastName}`,
 }));
 
 console.log(employeesListWithFullName);
@@ -198,7 +194,7 @@ You can use `reduce` to calculate the sum efficiently.
 const arr = [1, 2, 3, 4, 5];
 
 const sum = arr.reduce((acc, value) => acc + value, 0);
-console.log(sum);  // Output: 15
+console.log(sum); // Output: 15
 ```
 
 ---
@@ -212,7 +208,7 @@ const arr = [1, 3, 7, 0, 5];
 
 const max = Math.max(...arr);
 const maxIndex = arr.indexOf(max);
-console.log(`Max Value: ${max}, Index: ${maxIndex}`);  // Output: Max Value: 7, Index: 2
+console.log(`Max Value: ${max}, Index: ${maxIndex}`); // Output: Max Value: 7, Index: 2
 ```
 
 Alternatively, using `reduce`:
@@ -236,8 +232,8 @@ You can use `Math.min()` to find the minimum value and then `filter()` to count 
 ```javascript
 const arr = [4, 1, 3, 1, 2, 1];
 const min = Math.min(...arr);
-const minArr = arr.filter(value => value === min);
-console.log(minArr.length);  // Output: 3
+const minArr = arr.filter((value) => value === min);
+console.log(minArr.length); // Output: 3
 ```
 
 ---
@@ -249,7 +245,7 @@ You can use the `fill()` method to fill all elements in an array with the value 
 ```javascript
 const n = 5;
 const arr = new Array(n).fill(10);
-console.log(arr);  // Output: [10, 10, 10, 10, 10]
+console.log(arr); // Output: [10, 10, 10, 10, 10]
 ```
 
 ---
@@ -261,7 +257,7 @@ You can use `Set` to automatically remove duplicate values from the array. Conve
 ```javascript
 const arr = [1, 2, 2, 3, 4, 4, 5];
 const distinctArr = [...new Set(arr)];
-console.log(distinctArr);  // Output: [1, 2, 3, 4, 5]
+console.log(distinctArr); // Output: [1, 2, 3, 4, 5]
 ```
 
 ---
@@ -273,9 +269,9 @@ You can recursively flatten an array using `flat()` or by manually checking if a
 ```javascript
 function flat(arr) {
   const flatArr = [];
-  arr.forEach(value => {
+  arr.forEach((value) => {
     if (Array.isArray(value)) {
-      flatArr.push(...flat(value));  // Recursively flatten nested arrays
+      flatArr.push(...flat(value)); // Recursively flatten nested arrays
     } else {
       flatArr.push(value);
     }
@@ -284,7 +280,7 @@ function flat(arr) {
 }
 
 const nestedArray = [1, [2, [3, 4], 5], 6];
-console.log(flat(nestedArray));  // Output: [1, 2, 3, 4, 5, 6]
+console.log(flat(nestedArray)); // Output: [1, 2, 3, 4, 5, 6]
 ```
 
 ---
@@ -295,13 +291,13 @@ You can use the `every()` method to check if all students have passed the marks 
 
 ```javascript
 const students = [
-  { name: 'Alice', marks: 50 },
-  { name: 'Bob', marks: 60 },
-  { name: 'Charlie', marks: 70 },
+  { name: "Alice", marks: 50 },
+  { name: "Bob", marks: 60 },
+  { name: "Charlie", marks: 70 },
 ];
 
-const isAllPass = students.every(student => student.marks >= 40);
-console.log(isAllPass);  // Output: true
+const isAllPass = students.every((student) => student.marks >= 40);
+console.log(isAllPass); // Output: true
 ```
 
 ---
@@ -312,16 +308,21 @@ First, filter employees based on salary and department, then calculate the avera
 
 ```javascript
 const employees = [
-  { name: 'John', salary: 12000, dept: 'IT' },
-  { name: 'Jane', salary: 15000, dept: 'IT' },
-  { name: 'Alice', salary: 8000, dept: 'HR' },
+  { name: "John", salary: 12000, dept: "IT" },
+  { name: "Jane", salary: 15000, dept: "IT" },
+  { name: "Alice", salary: 8000, dept: "HR" },
 ];
 
-const itEmployeesWithSalaryGT10K = employees.filter(employee => employee.salary > 10000 && employee.dept === 'IT');
-const itTotalSalaryGT10K = itEmployeesWithSalaryGT10K.reduce((acc, value) => acc + value.salary, 0);
+const itEmployeesWithSalaryGT10K = employees.filter(
+  (employee) => employee.salary > 10000 && employee.dept === "IT",
+);
+const itTotalSalaryGT10K = itEmployeesWithSalaryGT10K.reduce(
+  (acc, value) => acc + value.salary,
+  0,
+);
 const itAvgSalaryGT10K = itTotalSalaryGT10K / itEmployeesWithSalaryGT10K.length;
 
-console.log(itAvgSalaryGT10K);  // Output: 13500
+console.log(itAvgSalaryGT10K); // Output: 13500
 ```
 
 ---
@@ -335,7 +336,7 @@ const arr1 = [1, 2, 3];
 const arr2 = [3, 4, 5];
 
 const unionArr = [...new Set([...arr1, ...arr2])];
-console.log(unionArr);  // Output: [1, 2, 3, 4, 5]
+console.log(unionArr); // Output: [1, 2, 3, 4, 5]
 ```
 
 ---
@@ -348,10 +349,10 @@ To find common elements between two arrays, use `filter()` combined with `includ
 const arr1 = [1, 2, 3];
 const arr2 = [2, 3, 4];
 
-const intersectionArr = arr1.filter(value => arr2.includes(value));
+const intersectionArr = arr1.filter((value) => arr2.includes(value));
 const distinctIntersectionArr = [...new Set(intersectionArr)];
 
-console.log(distinctIntersectionArr);  // Output: [2, 3]
+console.log(distinctIntersectionArr); // Output: [2, 3]
 ```
 
 Or using `Set` for better performance:
@@ -359,8 +360,8 @@ Or using `Set` for better performance:
 ```javascript
 const set1 = new Set(arr1);
 const set2 = new Set(arr2);
-const distinctIntersectionArr = [...set1].filter(value => set2.has(value));
-console.log(distinctIntersectionArr);  // Output: [2, 3]
+const distinctIntersectionArr = [...set1].filter((value) => set2.has(value));
+console.log(distinctIntersectionArr); // Output: [2, 3]
 ```
 
 ---
@@ -373,8 +374,10 @@ To get the elements that are only present in the first list, filter the elements
 const arr1 = [1, 2, 3, 4];
 const arr2 = [3, 4, 5];
 
-const onlyInFirstArr = [...new Set(arr1)].filter(value => !new Set(arr2).has(value));
-console.log(onlyInFirstArr);  // Output: [1, 2]
+const onlyInFirstArr = [...new Set(arr1)].filter(
+  (value) => !new Set(arr2).has(value),
+);
+console.log(onlyInFirstArr); // Output: [1, 2]
 ```
 
 ---
@@ -390,16 +393,16 @@ Array.prototype.average = function () {
 };
 
 const arr = [10, 20, 30, 40, 50];
-console.log(arr.average());  // Output: 30
+console.log(arr.average()); // Output: 30
 ```
 
 ### Notes:
+
 - The method `Array.prototype.average` will now be available to all array instances, making it accessible through `arr.average()` directly on any array.
 
 ---
 
 These solutions cover all the problems and demonstrate how to manipulate arrays in JavaScript using various built-in methods like `map()`, `filter()`, `reduce()`, `some()`, `concat()`, `Set`, `splice()`, and `fill()`.
-
 
 Here are the solutions for the additional problems you've mentioned:
 
@@ -413,7 +416,7 @@ You can use a `Map` to store objects by their `id` and ensure that only the obje
 const arr = [
   { id: 1, name: "emp1", rank: 4 },
   { id: 2, name: "emp2", rank: 1 },
-  { id: 2, name: "emp2", rank: 2 },  // Duplicate with lower rank
+  { id: 2, name: "emp2", rank: 2 }, // Duplicate with lower rank
   { id: 3, name: "emp3", rank: 3 },
 ];
 
@@ -422,10 +425,10 @@ const map = new Map();
 arr.forEach((obj) => {
   if (map.has(obj.id)) {
     if (obj.rank > map.get(obj.id).rank) {
-      map.set(obj.id, obj);  // Keep the one with the higher rank
+      map.set(obj.id, obj); // Keep the one with the higher rank
     }
   } else {
-    map.set(obj.id, obj);  // Add the object if not present
+    map.set(obj.id, obj); // Add the object if not present
   }
 });
 
@@ -434,15 +437,17 @@ console.log(distinctArr);
 ```
 
 **Output:**
+
 ```javascript
 [
-  { id: 1, name: 'emp1', rank: 4 },
-  { id: 2, name: 'emp2', rank: 2 },  // Retained the higher rank (rank: 2)
-  { id: 3, name: 'emp3', rank: 3 }
-]
+  { id: 1, name: "emp1", rank: 4 },
+  { id: 2, name: "emp2", rank: 2 }, // Retained the higher rank (rank: 2)
+  { id: 3, name: "emp3", rank: 3 },
+];
 ```
 
 ### Explanation:
+
 - A `Map` is used to track unique `id`s.
 - When a duplicate `id` is found, the one with the higher rank is retained.
 
@@ -458,23 +463,25 @@ let stringsArr = [];
 stringsArr = new Proxy(stringsArr, {
   set(target, prop, receiver) {
     if (typeof receiver === "string") {
-      target[target.length] = receiver;  // Only allow strings to be added
+      target[target.length] = receiver; // Only allow strings to be added
     }
     return true;
-  }
+  },
 });
 
 // Test the functionality
 stringsArr.push("Hello", 5, {}, "world", true, [1, 2, 3]);
-console.log(stringsArr);  // Output: ["Hello", "world"]
+console.log(stringsArr); // Output: ["Hello", "world"]
 ```
 
 **Output:**
+
 ```javascript
-["Hello", "world"]
+["Hello", "world"];
 ```
 
 ### Explanation:
+
 - The `set` trap in the `Proxy` checks whether the value being added is a string.
 - If it is a string, it is added to the array; otherwise, it is ignored.
 
@@ -490,25 +497,27 @@ let arr = [10, 20, 30];
 arr = new Proxy(arr, {
   get(target, handler) {
     if (handler < 0) {
-      return target[target.length + Number(handler)];  // Map negative index to valid position
+      return target[target.length + Number(handler)]; // Map negative index to valid position
     } else {
       return target[handler];
     }
-  }
+  },
 });
 
 // Test negative index access
-console.log(arr[-1]);  // Output: 30
-console.log(arr[-2]);  // Output: 20
+console.log(arr[-1]); // Output: 30
+console.log(arr[-2]); // Output: 20
 ```
 
 **Output:**
+
 ```javascript
-30
-20
+30;
+20;
 ```
 
 ### Explanation:
+
 - The `get` trap intercepts access to array elements.
 - If the index is negative, it maps the negative index to the corresponding position from the end of the array.
 
@@ -519,6 +528,7 @@ These solutions leverage the power of **Proxies** in JavaScript, enabling fine-g
 ---
 
 ### Recap:
+
 - **Problem 21**: Uses a `Map` to eliminate duplicate objects based on `id`, keeping the object with the highest rank.
 - **Problem 22**: Uses a `Proxy` to create a homogeneous array that only accepts string values.
 - **Problem 23**: Uses a `Proxy` to allow access to array elements using negative indices.

@@ -1,5 +1,5 @@
 /**************************************** */
-
+```js
 const promiseOne = new Promise((resolve, reject) => setTimeout(resolve, 4000));
 const promiseTwo = new Promise((resolve, reject) => setTimeout(reject, 4000));
 

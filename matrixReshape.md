@@ -1,3 +1,4 @@
+```js
 export function matrixReshape(mat, r, c) {
   const m = mat.length;
   const n = mat[0].length;
@@ -33,3 +34,4 @@ console.log(matrixReshape(mat, r, c)); // Output: [[1, 2, 3, 4]]
 
 // [[1, 2],
 // [3, 4]]
+```

@@ -12,8 +12,8 @@ However, there is a subtle issue with the way the `forEach` method is used insid
 
 ```javascript
 const obj = {
-  prefix: 'BFE',
-  list: ['1', '2', '3'],
+  prefix: "BFE",
+  list: ["1", "2", "3"],
   log() {
     this.list.forEach(function (item) {
       console.log(this.prefix + item);
@@ -44,9 +44,9 @@ obj.log();
 Since `this.prefix` is undefined in the `forEach` function, the result of `this.prefix + item` will be `undefined + item` for each item in `this.list`. This will produce the following output:
 
 ```javascript
-undefined1
-undefined2
-undefined3
+undefined1;
+undefined2;
+undefined3;
 ```
 
 ### Solution: Use an Arrow Function to Lexically Bind `this`
@@ -57,11 +57,12 @@ To fix this issue, you can use an **arrow function** inside `forEach`. Arrow fun
 
 ```javascript
 const obj = {
-  prefix: 'BFE',
-  list: ['1', '2', '3'],
+  prefix: "BFE",
+  list: ["1", "2", "3"],
   log() {
-    this.list.forEach((item) => {  // Use arrow function here
-      console.log(this.prefix + item);  // 'this' now refers to 'obj'
+    this.list.forEach((item) => {
+      // Use arrow function here
+      console.log(this.prefix + item); // 'this' now refers to 'obj'
     });
   },
 };
@@ -72,10 +73,11 @@ obj.log();
 ### Output after Fix:
 
 ```javascript
-BFE1
-BFE2
-BFE3
+BFE1;
+BFE2;
+BFE3;
 ```
 
 ### Why This Works:
+
 - With the arrow function, `this` correctly refers to the `obj` object, so `this.prefix` is `"BFE"`, and the `log` method produces the desired output.

@@ -145,6 +145,7 @@ const regexp = /.{1,2}/g;
 - `\D`: Matches any non-digit (opposite of `\d`).
 
 **Character Classes:**
+
 - `[abc]`: Matches any one of the characters `a`, `b`, or `c`.
 - `[^abc]`: Matches any character not `a`, `b`, or `c`.
 - `[a-z]`: Matches any lowercase letter.
@@ -178,7 +179,7 @@ const regexp = /.{1,2}/g;
 - `m`: Multiline matching (matches across multiple lines).
 - `i`: Case-insensitive matching.
 - `u`: Unicode matching (useful for matching Unicode characters).
-  
+
 ---
 
 ### **Advanced Features**
@@ -188,7 +189,7 @@ const regexp = /.{1,2}/g;
 Capturing groups allow you to extract specific parts of a match:
 
 ```js
-const str = 'JavaScript is a programming language';
+const str = "JavaScript is a programming language";
 /(JavaScript) is a (.*)/.exec(str);
 /* 
   Result:
@@ -205,7 +206,7 @@ const str = 'JavaScript is a programming language';
 Non-capturing groups are used when you don't need to capture the matched content:
 
 ```js
-const str = 'JavaScript is a programming language';
+const str = "JavaScript is a programming language";
 /(?:JavaScript|Python) is a (.+)/.exec(str);
 /* 
   Result:
@@ -221,7 +222,7 @@ const str = 'JavaScript is a programming language';
 Named capturing groups allow you to refer to a matched group by name:
 
 ```js
-const str = 'JavaScript is a programming language';
+const str = "JavaScript is a programming language";
 /(?<subject>.+) is a (?<description>.+)/.exec(str);
 /* 
   Result:
@@ -242,7 +243,8 @@ const str = 'JavaScript is a programming language';
 Backreferences allow you to refer to a previously captured group:
 
 ```js
-const str = 'JavaScript is a programming language - an awesome programming language JavaScript is';
+const str =
+  "JavaScript is a programming language - an awesome programming language JavaScript is";
 /(.+) is a (?<description>.+) - an awesome \k<description> \1 is/.exec(str);
 /* 
   Result:
@@ -267,7 +269,7 @@ Lookaheads allow you to check if a pattern is followed by another pattern:
 
 ```js
 // Positive Lookahead
-const str = 'JavaScript is not the same as Java and you should remember that';
+const str = "JavaScript is not the same as Java and you should remember that";
 /Java(?=Script)(.*)/.exec(str);
 /* 
   Result:
@@ -293,7 +295,7 @@ const str = 'JavaScript is not the same as Java and you should remember that';
 Unicode matching allows you to match characters from different scripts, such as Greek or emoji characters:
 
 ```js
-const str = 'Greek looks like this: γεια';
+const str = "Greek looks like this: γεια";
 /\p{Script=Greek}+/u.exec(str);
 /* 
   Result:
@@ -303,7 +305,7 @@ const str = 'Greek looks like this: γεια';
 */
 ```
 
---- 
+---
 
 ### **Summary**
 

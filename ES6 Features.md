@@ -10,10 +10,10 @@ ES6 (ECMAScript 2015) introduced many new features to JavaScript that made the l
 - **`const`**: A block-scoped variable declaration with a constant value.
 
 ```javascript
-let name = 'John';  // Block-scoped variable
-name = 'Doe';  // Re-assignable
+let name = "John"; // Block-scoped variable
+name = "Doe"; // Re-assignable
 
-const age = 25;  // Cannot be reassigned
+const age = 25; // Cannot be reassigned
 // age = 26;  // Error: Assignment to constant variable.
 ```
 
@@ -36,7 +36,7 @@ console.log(add(2, 3)); // 5
 - Template literals allow embedded expressions and multi-line strings.
 
 ```javascript
-const name = 'Alice';
+const name = "Alice";
 const greeting = `Hello, ${name}!`;
 console.log(greeting); // Hello, Alice!
 
@@ -52,6 +52,7 @@ console.log(multiline);
 - Destructuring allows you to unpack values from arrays or properties from objects into distinct variables.
 
 **Array Destructuring:**
+
 ```javascript
 const arr = [1, 2, 3];
 const [a, b, c] = arr;
@@ -59,8 +60,9 @@ console.log(a, b, c); // 1 2 3
 ```
 
 **Object Destructuring:**
+
 ```javascript
-const person = { name: 'John', age: 30 };
+const person = { name: "John", age: 30 };
 const { name, age } = person;
 console.log(name, age); // John 30
 ```
@@ -72,12 +74,12 @@ console.log(name, age); // John 30
 - You can assign default values to function parameters.
 
 ```javascript
-const greet = (name = 'Guest') => {
+const greet = (name = "Guest") => {
   console.log(`Hello, ${name}!`);
 };
 
 greet(); // Hello, Guest!
-greet('John'); // Hello, John!
+greet("John"); // Hello, John!
 ```
 
 ---
@@ -88,6 +90,7 @@ greet('John'); // Hello, John!
 - **Spread**: Expands an array or object into individual elements.
 
 **Rest (for functions):**
+
 ```javascript
 const sum = (...numbers) => {
   return numbers.reduce((acc, num) => acc + num, 0);
@@ -97,12 +100,13 @@ console.log(sum(1, 2, 3)); // 6
 ```
 
 **Spread (for arrays/objects):**
+
 ```javascript
 const arr1 = [1, 2];
 const arr2 = [...arr1, 3, 4];
 console.log(arr2); // [1, 2, 3, 4]
 
-const obj1 = { name: 'Alice' };
+const obj1 = { name: "Alice" };
 const obj2 = { ...obj1, age: 30 };
 console.log(obj2); // { name: 'Alice', age: 30 }
 ```
@@ -125,7 +129,7 @@ class Person {
   }
 }
 
-const john = new Person('John', 30);
+const john = new Person("John", 30);
 john.greet(); // Hello, I'm John and I'm 30 years old.
 ```
 
@@ -137,11 +141,11 @@ john.greet(); // Hello, I'm John and I'm 30 years old.
 
 ```javascript
 // person.js
-export const name = 'John';
+export const name = "John";
 export const age = 30;
 
 // app.js
-import { name, age } from './person.js';
+import { name, age } from "./person.js";
 console.log(name, age); // John 30
 ```
 
@@ -155,14 +159,14 @@ console.log(name, age); // John 30
 const myPromise = new Promise((resolve, reject) => {
   const success = true;
   if (success) {
-    resolve('Success!');
+    resolve("Success!");
   } else {
-    reject('Error!');
+    reject("Error!");
   }
 });
 
-myPromise.then(response => console.log(response)); // Success!
-myPromise.catch(error => console.log(error)); // Error!
+myPromise.then((response) => console.log(response)); // Success!
+myPromise.catch((error) => console.log(error)); // Error!
 ```
 
 ---
@@ -173,12 +177,12 @@ myPromise.catch(error => console.log(error)); // Error!
 
 ```javascript
 const fetchData = async () => {
-  const response = await fetch('https://api.example.com');
+  const response = await fetch("https://api.example.com");
   const data = await response.json();
   return data;
 };
 
-fetchData().then(data => console.log(data));
+fetchData().then((data) => console.log(data));
 ```
 
 ---
@@ -193,9 +197,9 @@ const set = new Set([1, 2, 3, 3]);
 console.log(set); // Set {1, 2, 3}
 
 const map = new Map();
-map.set('name', 'Alice');
-map.set('age', 25);
-console.log(map.get('name')); // Alice
+map.set("name", "Alice");
+map.set("age", 25);
+console.log(map.get("name")); // Alice
 ```
 
 ---
@@ -205,8 +209,8 @@ console.log(map.get('name')); // Alice
 - Symbols are a primitive data type used for unique identifiers.
 
 ```javascript
-const sym1 = Symbol('desc');
-const sym2 = Symbol('desc');
+const sym1 = Symbol("desc");
+const sym2 = Symbol("desc");
 console.log(sym1 === sym2); // false
 ```
 
@@ -230,10 +234,10 @@ console.log(result); // { a: 1, b: 2, c: 3 }
 - These methods provide ways to check for substrings in a string.
 
 ```javascript
-const str = 'Hello, World!';
-console.log(str.includes('World')); // true
-console.log(str.startsWith('Hello')); // true
-console.log(str.endsWith('!')); // true
+const str = "Hello, World!";
+console.log(str.includes("World")); // true
+console.log(str.startsWith("Hello")); // true
+console.log(str.endsWith("!")); // true
 ```
 
 ---
@@ -257,11 +261,11 @@ console.log(Object.values(obj)); // [1, 2]
 - **`Array.of()`**: Creates a new array with a variable number of elements.
 
 ```javascript
-const str = '123';
-const arr = Array.from(str);  // ['1', '2', '3']
+const str = "123";
+const arr = Array.from(str); // ['1', '2', '3']
 console.log(arr);
 
-const arr2 = Array.of(1, 2, 3, 4);  // [1, 2, 3, 4]
+const arr2 = Array.of(1, 2, 3, 4); // [1, 2, 3, 4]
 console.log(arr2);
 ```
 
@@ -274,8 +278,8 @@ console.log(arr2);
 
 ```javascript
 const arr = [1, 2, 3, 4];
-const found = arr.find(num => num > 2); // 3
-const foundIndex = arr.findIndex(num => num > 2); // 2
+const found = arr.find((num) => num > 2); // 3
+const foundIndex = arr.findIndex((num) => num > 2); // 2
 console.log(found, foundIndex);
 ```
 
@@ -301,7 +305,7 @@ console.log(arr.includes(5)); // false
 ```javascript
 const obj = {};
 const weakMap = new WeakMap();
-weakMap.set(obj, 'value');
+weakMap.set(obj, "value");
 console.log(weakMap.get(obj)); // 'value'
 ```
 
@@ -313,21 +317,21 @@ console.log(weakMap.get(obj)); // 'value'
 
 ```javascript
 const person = {
-  name: 'John',
-  age: 30
+  name: "John",
+  age: 30,
 };
 
 const handler = {
   get(target, prop) {
-    if (prop === 'age') {
+    if (prop === "age") {
       return `Age is: ${target[prop]}`;
     }
     return target[prop];
-  }
+  },
 };
 
 const proxyPerson = new Proxy(person, handler);
-console.log(proxyPerson.age);  // Age is: 30
+console.log(proxyPerson.age); // Age is: 30
 ```
 
 ---
@@ -349,7 +353,7 @@ console.log(bigNumber); // 123456789012345678901234567890n
 
 ```javascript
 const name = null;
-const greeting = name ?? 'Guest';
+const greeting = name ?? "Guest";
 console.log(greeting); // Guest
 ```
 
@@ -360,8 +364,8 @@ console.log(greeting); // Guest
 - The `Optional chaining` operator allows you to safely access deeply nested properties.
 
 ```javascript
-const person = { name: 'Alice', address: { city: 'Wonderland' } };
-console.log(person.address?.city);  // Wonderland
+const person = { name: "Alice", address: { city: "Wonderland" } };
+console.log(person.address?.city); // Wonderland
 console.log(person.contact?.phone); // undefined
 ```
 
@@ -373,11 +377,12 @@ console.log(person.contact?.phone); // undefined
 
 ```javascript
 const promise1 = Promise.resolve(3);
-const promise2 = Promise.reject('Error');
+const promise2 = Promise.reject("Error");
 const promise3 = Promise.resolve(5);
 
-Promise.allSettled([promise1, promise2, promise3])
-  .then(results => console.log(results));
+Promise.allSettled([promise1, promise2, promise3]).then((results) =>
+  console.log(results),
+);
 ```
 
 ---
@@ -387,15 +392,14 @@ Promise.allSettled([promise1, promise2, promise3])
 - Replaces all occurrences of a substring within a string.
 
 ```javascript
-const sentence = 'Hello, world! Hello, everyone!';
-const updatedSentence = sentence.replaceAll('Hello', 'Hi');
+const sentence = "Hello, world! Hello, everyone!";
+const updatedSentence = sentence.replaceAll("Hello", "Hi");
 console.log(updatedSentence); // Hi, world! Hi, everyone!
 ```
 
 ---
 
 These are just some of the most important features in ES6 and later versions. Each feature helps improve code readability, maintainability, and performance, making JavaScript a more powerful and enjoyable language to work with.
-
 
 Certainly! Let’s continue by adding more advanced JavaScript (ES6+ to ES2025) features, as new versions of ECMAScript introduce a wide range of enhancements. I'll provide a comprehensive list with explanations and examples for each feature:
 
@@ -419,7 +423,7 @@ class Person {
   }
 }
 
-const person = new Person('Alice');
+const person = new Person("Alice");
 console.log(person.getName()); // Alice
 // console.log(person.#name); // Error: Private field '#name' must be declared in an enclosing class
 ```
@@ -438,7 +442,7 @@ a &&= b; // a = a && b
 console.log(a); // false
 
 let c = null;
-c ??= 'Default';
+c ??= "Default";
 console.log(c); // 'Default'
 ```
 
@@ -449,11 +453,11 @@ console.log(c); // 'Default'
 - **`Promise.any()`** takes an iterable of Promise objects and returns a Promise that resolves as soon as any of the promises in the iterable resolves.
 
 ```javascript
-const p1 = Promise.reject('Error 1');
-const p2 = Promise.reject('Error 2');
-const p3 = Promise.resolve('Success');
+const p1 = Promise.reject("Error 1");
+const p2 = Promise.reject("Error 2");
+const p3 = Promise.resolve("Success");
 
-Promise.any([p1, p2, p3]).then(value => console.log(value)); // Success
+Promise.any([p1, p2, p3]).then((value) => console.log(value)); // Success
 ```
 
 ---
@@ -463,7 +467,7 @@ Promise.any([p1, p2, p3]).then(value => console.log(value)); // Success
 - **WeakRef** allows you to hold a weak reference to an object without preventing it from being garbage collected.
 
 ```javascript
-let obj = { name: 'Weak Reference' };
+let obj = { name: "Weak Reference" };
 const weakRef = new WeakRef(obj);
 
 console.log(weakRef.deref()); // { name: 'Weak Reference' }
@@ -478,7 +482,7 @@ console.log(weakRef.deref()); // { name: 'Weak Reference' }
 
 ```javascript
 // top-level-await.js
-const response = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
 const data = await response.json();
 console.log(data);
 ```
@@ -490,9 +494,9 @@ console.log(data);
 - **`Object.hasOwn()`** is a new method that checks if an object has a direct property (similar to `hasOwnProperty`).
 
 ```javascript
-const obj = { name: 'Alice' };
-console.log(Object.hasOwn(obj, 'name')); // true
-console.log(Object.hasOwn(obj, 'age'));  // false
+const obj = { name: "Alice" };
+console.log(Object.hasOwn(obj, "name")); // true
+console.log(Object.hasOwn(obj, "age")); // false
 ```
 
 ---
@@ -515,7 +519,7 @@ console.log(arr.at(-2)); // 4
 
 ```javascript
 const regex = /(\d+)/;
-const result = 'My number is 12345'.matchAll(regex);
+const result = "My number is 12345".matchAll(regex);
 
 for (const match of result) {
   console.log(match.indices); // [[12, 17]]
@@ -536,19 +540,19 @@ console.log(arr); // [5, 4, 3, 2, 1]
 
 ---
 
-### **35. `ArrayGroupBy()` (ES2025)** *(Proposed)*
+### **35. `ArrayGroupBy()` (ES2025)** _(Proposed)_
 
 - The `groupBy()` method would allow you to group elements based on a property.
 
 ```javascript
 const numbers = [1, 2, 3, 4, 5, 6];
-const grouped = numbers.groupBy(num => num % 2 === 0 ? 'even' : 'odd');
+const grouped = numbers.groupBy((num) => (num % 2 === 0 ? "even" : "odd"));
 console.log(grouped); // { even: [2, 4, 6], odd: [1, 3, 5] }
 ```
 
 ---
 
-### **36. `Array.prototype.toSorted()` (ES2025)** *(Proposed)*
+### **36. `Array.prototype.toSorted()` (ES2025)** _(Proposed)_
 
 - **`toSorted()`** would provide a non-mutating version of `sort()`.
 
@@ -565,37 +569,40 @@ console.log(sortedArr); // [1, 2, 3]
 - **`replaceAll()`** replaces all instances of a substring, without requiring a global regex.
 
 ```javascript
-const str = 'Hello World. Welcome to the World.';
-const updatedStr = str.replaceAll('World', 'Universe');
+const str = "Hello World. Welcome to the World.";
+const updatedStr = str.replaceAll("World", "Universe");
 console.log(updatedStr); // "Hello Universe. Welcome to the Universe."
 ```
 
 ---
 
-### **38. `Intl.ListFormat` (ES2025)** *(Proposed)*
+### **38. `Intl.ListFormat` (ES2025)** _(Proposed)_
 
 - **`Intl.ListFormat`** provides a way to format lists in a way that's appropriate for the language of the user.
 
 ```javascript
-const items = ['apple', 'banana', 'orange'];
-const formattedList = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' }).format(items);
+const items = ["apple", "banana", "orange"];
+const formattedList = new Intl.ListFormat("en", {
+  style: "long",
+  type: "conjunction",
+}).format(items);
 console.log(formattedList); // "apple, banana, and orange"
 ```
 
 ---
 
-### **39. `Array.prototype.sort()` Enhancements (ES2025)** *(Proposed)*
+### **39. `Array.prototype.sort()` Enhancements (ES2025)** _(Proposed)_
 
 - **`sort()`** might receive a new behavior to handle large arrays more efficiently and consistently with internationalization settings.
 
 ---
 
-### **40. `String.prototype.split()` with Support for Regex Flags (ES2025)** *(Proposed)*
+### **40. `String.prototype.split()` with Support for Regex Flags (ES2025)** _(Proposed)_
 
 - **`split()`** would accept regular expressions with flags such as `g` or `i` to split a string more flexibly.
 
 ```javascript
-const str = 'apple,banana,orange';
+const str = "apple,banana,orange";
 const result = str.split(/,/g);
 console.log(result); // ['apple', 'banana', 'orange']
 ```
@@ -608,20 +615,20 @@ console.log(result); // ['apple', 'banana', 'orange']
 - More reliable than using `Object.prototype.hasOwnProperty` for checking properties.
 
 ```javascript
-const obj = { name: 'Alice' };
-console.log(Object.hasOwn(obj, 'name')); // true
-console.log(Object.hasOwn(obj, 'age'));  // false
+const obj = { name: "Alice" };
+console.log(Object.hasOwn(obj, "name")); // true
+console.log(Object.hasOwn(obj, "age")); // false
 ```
 
 ---
 
-### **42. `Error Cause Property` (ES2025)** *(Proposed)*
+### **42. `Error Cause Property` (ES2025)** _(Proposed)_
 
 - The `cause` property for `Error` objects would allow you to provide context for errors more easily.
 
 ```javascript
 try {
-  throw new Error('Primary error', { cause: new Error('Underlying cause') });
+  throw new Error("Primary error", { cause: new Error("Underlying cause") });
 } catch (e) {
   console.log(e.cause.message); // 'Underlying cause'
 }
@@ -629,7 +636,7 @@ try {
 
 ---
 
-### **43. `Function.prototype.toString()` (ES2025)** *(Proposed)*
+### **43. `Function.prototype.toString()` (ES2025)** _(Proposed)_
 
 - **`toString()`** of functions will be able to return a more reliable and consistent string representation.
 
@@ -640,7 +647,7 @@ console.log(func.toString()); // `() => {}`  (improved consistency)
 
 ---
 
-### **44. `ArrayBuffer.prototype.transfer()` (ES2025)** *(Proposed)*
+### **44. `ArrayBuffer.prototype.transfer()` (ES2025)** _(Proposed)_
 
 - **`ArrayBuffer.prototype.transfer()`** would allow you to easily move data between ArrayBuffers.
 
@@ -658,10 +665,10 @@ console.log(transferredBuffer.byteLength); // 16
 
 ```javascript
 const p1 = Promise.resolve(3);
-const p2 = Promise.reject('Error!');
+const p2 = Promise.reject("Error!");
 const p3 = Promise.resolve(7);
 
-Promise.allSettled([p1, p2, p3]).then(results => {
+Promise.allSettled([p1, p2, p3]).then((results) => {
   console.log(results);
   // [
   //   { status: 'fulfilled', value: 3 },
@@ -691,7 +698,7 @@ console.log(arr.at(-2)); // 3
 
 ```javascript
 const arr = [1, 2, 3];
-const result = arr.flatMap(x => [x, x * 2]);
+const result = arr.flatMap((x) => [x, x * 2]);
 console.log(result); // [1, 2, 2, 4, 3, 6]
 ```
 
@@ -703,7 +710,7 @@ console.log(result); // [1, 2, 2, 4, 3, 6]
 
 ```javascript
 const regex = /a/g;
-const str = 'apple banana';
+const str = "apple banana";
 const matches = str.matchAll(regex);
 for (const match of matches) {
   console.log(match);

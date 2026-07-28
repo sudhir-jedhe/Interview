@@ -23,21 +23,22 @@ The approach involves using two pointers, `lo` and `hi`, to control the range of
 ```js
 // diStringMatch.js
 export function diStringMatch(s) {
-  const n = s.length;  // Length of the string
-  let lo = 0, hi = n;  // Initialize low and high pointers
-  const perm = [];      // Result array to store the permutation
+  const n = s.length; // Length of the string
+  let lo = 0,
+    hi = n; // Initialize low and high pointers
+  const perm = []; // Result array to store the permutation
 
   // Traverse the string to construct the permutation
   for (let i = 0; i < n; i++) {
     if (s[i] === "I") {
-      perm.push(lo++);  // For 'I', add lo and increment it
+      perm.push(lo++); // For 'I', add lo and increment it
     } else {
-      perm.push(hi--);  // For 'D', add hi and decrement it
+      perm.push(hi--); // For 'D', add hi and decrement it
     }
   }
 
   // After the loop, add the last remaining number (either lo or hi)
-  perm.push(lo);  // At the end, lo == hi, so we can use either one
+  perm.push(lo); // At the end, lo == hi, so we can use either one
 
   return perm;
 }
@@ -79,7 +80,6 @@ export function diStringMatch(s) {
 ### Time Complexity
 
 - **Time Complexity**: \( O(n) \), where \( n \) is the length of the string `s`. This is because we loop through the string once and each operation inside the loop is constant time.
-  
 - **Space Complexity**: \( O(n) \) because we are storing the result array `perm` which has a length of \( n+1 \).
 
 ### Example Usage
@@ -90,13 +90,13 @@ You can test the function using the following script:
 import { diStringMatch } from "./diStringMatch.js";
 
 // Example 1
-console.log(diStringMatch("IDID"));  // Output: [0, 4, 1, 3, 2]
+console.log(diStringMatch("IDID")); // Output: [0, 4, 1, 3, 2]
 
 // Example 2
-console.log(diStringMatch("III"));   // Output: [0, 1, 2, 3]
+console.log(diStringMatch("III")); // Output: [0, 1, 2, 3]
 
 // Example 3
-console.log(diStringMatch("DDI"));   // Output: [3, 2, 0, 1]
+console.log(diStringMatch("DDI")); // Output: [3, 2, 0, 1]
 ```
 
 ### Conclusion

@@ -1,7 +1,7 @@
 // Promises in JavaScript allow you to execute non-blocking (asynchronous) code and produces a value if the operation is successful or throws an error when the process fails.
 
 // In short, the eventual success (or failure) of an asynchronous operation and its associated value are represented by the Promise object.
-
+```js
 const promise = new Promise((resolve, reject) => {
   // time-consuming async operation
   // initial state will be pending

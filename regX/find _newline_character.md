@@ -7,10 +7,11 @@ In your code snippets, you are testing the use of newline characters (`\n`) in s
 ```javascript
 function geek() {
   let str1 = "GeeksforGeeks@_123_$";
-  let regex4 = /\n/;  // Regular expression to match a newline character.
-  let match4 = str1.search(regex4);  // Searching for the newline character.
+  let regex4 = /\n/; // Regular expression to match a newline character.
+  let match4 = str1.search(regex4); // Searching for the newline character.
 
-  if (match4 == -1) {  // If no match is found, index will be -1.
+  if (match4 == -1) {
+    // If no match is found, index will be -1.
     console.log("No newline characters present. ");
   } else {
     console.log("Index of newline character: " + match4);
@@ -25,7 +26,7 @@ geek();
   - `search(regex4)` searches for the first match of the regular expression `regex4` (which is looking for `\n`), and it returns the **index of the first match**.
   - If no newline is found, `search` returns `-1`, and the `if` statement logs `"No newline characters present."`.
   - Since there is no newline character in `"GeeksforGeeks@_123_$"`, the output will be:
-  
+
   ```
   No newline characters present.
   ```
@@ -35,10 +36,10 @@ geek();
 ```javascript
 function geek() {
   let str1 = "123ge\neky456";
-  let regex4 = new RegExp("\\n");  // Using RegExp constructor to match newline character.
-  let match4 = str1.search(regex4);  // Searching for the newline character.
+  let regex4 = new RegExp("\\n"); // Using RegExp constructor to match newline character.
+  let match4 = str1.search(regex4); // Searching for the newline character.
 
-  console.log("Index of newline character: " + match4);  // Logs the index of newline.
+  console.log("Index of newline character: " + match4); // Logs the index of newline.
 }
 
 geek();

@@ -15,7 +15,7 @@ Let’s create a React component where a dropdown closes if the user clicks outs
 #### 1. **Creating a ClickawayDropdown Component**
 
 ```javascript
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 // ClickawayDropdown component
 const ClickawayDropdown = ({ options, label, onSelect }) => {
@@ -44,11 +44,11 @@ const ClickawayDropdown = ({ options, label, onSelect }) => {
     };
 
     // Attach event listener to document
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     // Cleanup on component unmount
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []); // Empty dependency array to ensure this effect runs once on mount
 
@@ -56,13 +56,17 @@ const ClickawayDropdown = ({ options, label, onSelect }) => {
     <div className="dropdown" ref={dropdownRef}>
       <label>{label}</label>
       <div className="dropdown-toggle" onClick={toggleDropdown}>
-        {selectedOption || 'Select an option'}
+        {selectedOption || "Select an option"}
       </div>
 
       {isOpen && (
         <ul className="dropdown-menu">
           {options.map((option, index) => (
-            <li key={index} className="dropdown-item" onClick={() => handleSelect(option)}>
+            <li
+              key={index}
+              className="dropdown-item"
+              onClick={() => handleSelect(option)}
+            >
               {option}
             </li>
           ))}
@@ -80,11 +84,11 @@ export default ClickawayDropdown;
 Now, use the `ClickawayDropdown` component in your application.
 
 ```javascript
-import React from 'react';
-import ClickawayDropdown from './ClickawayDropdown';
+import React from "react";
+import ClickawayDropdown from "./ClickawayDropdown";
 
 const App = () => {
-  const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+  const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
   const handleSelect = (selectedOption) => {
     alert(`Selected option: ${selectedOption}`);
@@ -93,7 +97,11 @@ const App = () => {
   return (
     <div>
       <h1>Clickaway Dropdown Example</h1>
-      <ClickawayDropdown options={options} label="Choose an Option" onSelect={handleSelect} />
+      <ClickawayDropdown
+        options={options}
+        label="Choose an Option"
+        onSelect={handleSelect}
+      />
     </div>
   );
 };
@@ -180,14 +188,16 @@ If you prefer not to implement this from scratch, you can use a third-party libr
 #### Example with `react-clickaway-listener`:
 
 1. Install the package:
+
    ```bash
    npm install react-clickaway-listener
    ```
 
 2. Use it in your component:
+
    ```javascript
-   import React, { useState } from 'react';
-   import ClickAwayListener from 'react-clickaway-listener';
+   import React, { useState } from "react";
+   import ClickAwayListener from "react-clickaway-listener";
 
    const ClickawayDropdown = ({ options, label, onSelect }) => {
      const [isOpen, setIsOpen] = useState(false);
@@ -208,13 +218,17 @@ If you prefer not to implement this from scratch, you can use a third-party libr
          <div className="dropdown">
            <label>{label}</label>
            <div className="dropdown-toggle" onClick={toggleDropdown}>
-             {selectedOption || 'Select an option'}
+             {selectedOption || "Select an option"}
            </div>
 
            {isOpen && (
              <ul className="dropdown-menu">
                {options.map((option, index) => (
-                 <li key={index} className="dropdown-item" onClick={() => handleSelect(option)}>
+                 <li
+                   key={index}
+                   className="dropdown-item"
+                   onClick={() => handleSelect(option)}
+                 >
                    {option}
                  </li>
                ))}

@@ -23,32 +23,32 @@ function findMax(array, criteria) {
 // Example 1: Find the maximum element in an array
 const array1 = [1, 2, 3, 4, 5];
 const max1 = findMax(array1, (element) => element);
-console.log("Max (based on element):", max1);  // Output: 5
+console.log("Max (based on element):", max1); // Output: 5
 
 // Example 2: Find the maximum element based on the square of the element
 const array2 = [1, 2, 3, 4, 5];
 const maxSquare = findMax(array2, (element) => element * element);
-console.log("Max (based on square of element):", maxSquare);  // Output: 25
+console.log("Max (based on square of element):", maxSquare); // Output: 25
 
 // Example 3: Find the maximum element based on the absolute value
 const array3 = [-10, 5, -3, 7, 0];
 const maxAbs = findMax(array3, (element) => Math.abs(element));
-console.log("Max (based on absolute value):", maxAbs);  // Output: -10 (as -10 has the largest absolute value of 10)
+console.log("Max (based on absolute value):", maxAbs); // Output: -10 (as -10 has the largest absolute value of 10)
 
 // Example 4: Find the maximum element from an array of objects based on a property
 const objects = [
   { name: "Alice", age: 25 },
   { name: "Bob", age: 30 },
-  { name: "Charlie", age: 28 }
+  { name: "Charlie", age: 28 },
 ];
 
 const oldest = findMax(objects, (obj) => obj.age);
-console.log("Max (based on age):", oldest);  // Output: { name: "Bob", age: 30 }
+console.log("Max (based on age):", oldest); // Output: { name: "Bob", age: 30 }
 
 // Example 5: Find the maximum element based on a string's length
 const words = ["apple", "banana", "cherry", "date"];
 const longestWord = findMax(words, (word) => word.length);
-console.log("Max (based on word length):", longestWord);  // Output: "banana"
+console.log("Max (based on word length):", longestWord); // Output: "banana"
 ```
 
 ### Explanation of Each Example:
@@ -69,6 +69,7 @@ console.log("Max (based on word length):", longestWord);  // Output: "banana"
    - In this case, we compare words based on their length using `word.length`, allowing us to find the longest word in the list.
 
 ### Edge Cases:
+
 1. **Empty Array:**
    The current implementation does not handle an empty array. You may want to add a check at the beginning of the function to handle this scenario and return an appropriate response, like `null` or throw an error.
 
@@ -85,4 +86,5 @@ console.log("Max (based on word length):", longestWord);  // Output: "banana"
    The implementation handles negative numbers in all cases, as the `criteria` function can be adjusted to handle transformations like absolute value or squaring the elements.
 
 ### Final Thoughts:
+
 This `findMax` function is versatile, thanks to the `criteria` function. It allows you to compute the "maximum" in different ways based on your requirements. Whether you need to compare numbers, absolute values, object properties, or string lengths, this solution is flexible and can be adapted for different kinds of data.

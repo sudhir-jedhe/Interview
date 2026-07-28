@@ -8,8 +8,6 @@ Understanding Call By Value vs Call By Reference in JavaScript
 by Yomesh Gupta
 Monday, July 27, 2020
 
-
-
 In this post, we will try to understand how JavaScript works a bit different than other programming languages when it comes to data manipulation. We will primarily look at two fundamental ways of manipulating data i.e. Call By Value and Call By Reference.
 
 Data Types
@@ -33,8 +31,8 @@ When a variable is passed by value to a function then a copy of the variable is 
 var original = 10;
 
 function modify(copy) {
-  copy += 20;
-  return copy;
+copy += 20;
+return copy;
 }
 
 var modified = modify(original);
@@ -57,8 +55,8 @@ As you can see in the above code snippet the second variable holds a reference t
 var person = { name: "Yomesh" };
 
 function modify(person) {
-  person.name = "Ajay";
-  return person;
+person.name = "Ajay";
+return person;
 }
 
 var newPerson = modify(person);
@@ -73,68 +71,72 @@ var person = { name: "Yomesh" };
 
 // passed by value where value is a reference (Step 1)
 function modify(newPerson) {
-  newPerson.name = "Ajay"; // original value is modified via reference (Step 2)
+newPerson.name = "Ajay"; // original value is modified via reference (Step 2)
 }
 
 modify(person);
 
-/** ====== Illustrations ======
+/\*\* ====== Illustrations ======
 
       ----------------------
       | { name: 'Yomesh' } | // Step 1
       ----------------------
           | |
-  person ---------| |
-            |
-  newPerson ----------|
+
+person ---------| |
+|
+newPerson ----------|
 
       ----------------------
       | { name: 'Ajay' } | // Step 2
       ----------------------
           | |
-  person ---------| |
-            |
-  newPerson ----------|
 
-**/
+person ---------| |
+|
+newPerson ----------|
+
+\*\*/
 Argument newPerson maintains a reference to the original value due to which it can change the original value and it is reflected everywhere. However, if the reference is altered in some way then it is not visible outside.
 
 var person = { name: "Yomesh" };
 
 // passed by value where value is a reference (Step 1)
 function modify(newPerson) {
-  newPerson = { name: "Ajay" }; // reference is overwritten with a reference to a new value (Step 2)
+newPerson = { name: "Ajay" }; // reference is overwritten with a reference to a new value (Step 2)
 }
 
 modify(person);
 
-/** ====== Illustrations ======
+/\*\* ====== Illustrations ======
 
       ----------------------
       | { name: 'Yomesh' } | // Step 1
       ----------------------
           | |
-  person ---------| |
-            |
-  newPerson ----------|
+
+person ---------| |
+|
+newPerson ----------|
 
       ----------------------      ----------------------
       | { name: 'Yomesh' } |      | { name: 'Ajay' }  | // Step 2
       ----------------------      ----------------------
           | X               |
-  person ---------| X                 |
-            X               |
-  newPerson ----------|-----------------------------|
 
-**/
+person ---------| X |
+X |
+newPerson ----------|-----------------------------|
+
+\*\*/
 Use-cases
 As we have seen modifying via reference leads to changes in the original value. We can rectify this by creating a copy.
 
 ...
 function processing(input, value) {
-  var copy = [...input];
-  copy.push(value);
-  return copy;
+var copy = [...input];
+copy.push(value);
+return copy;
 }
 ...
 var newPeople = processing(people, { name: 'prithvi' });
@@ -146,10 +148,10 @@ However, copying via spread operator or Object.assign creates a shallow copy whi
 var data = { name: "prithvi" };
 var people = [{ name: "yomesh" }, { name: "ajay" }];
 function processing(input, value) {
-  var copy = [...input];
-  copy.push(value);
-  copy[copy.length - 1].name = "joker";
-  return copy;
+var copy = [...input];
+copy.push(value);
+copy[copy.length - 1].name = "joker";
+return copy;
 }
 var newPeople = processing(people, data);
 console.log(people, newPeople, data);

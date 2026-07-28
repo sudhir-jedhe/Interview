@@ -52,78 +52,95 @@ For example, useNetworkStatus() uses the navigator.connection.effectiveType prop
 Adaptive loading examples in React
 We can use the useNetworkStatus() hook to serve the desired quality of images based on the current network condition.
 
-import React from 'react';
+```js
+import React from "react";
 
-import { useNetworkStatus } from 'react-adaptive-hooks/network';
+import { useNetworkStatus } from "react-adaptive-hooks/network";
 
 const AdaptiveComponent = () => {
   const { effectiveConnectionType } = useNetworkStatus();
 
   let media;
-  switch(effectiveConnectionType) {
-    case 'slow-2g':
-      media = <img src='...' alt='low resolution' />;
+  switch (effectiveConnectionType) {
+    case "slow-2g":
+      media = <img src="..." alt="low resolution" />;
       break;
-    case '2g':
-      media = <img src='...' alt='medium resolution' />;
+    case "2g":
+      media = <img src="..." alt="medium resolution" />;
       break;
-    case '3g':
-      media = <img src='...' alt='high resolution' />;
+    case "3g":
+      media = <img src="..." alt="high resolution" />;
       break;
-    case '4g':
-      media = <video muted controls>...</video>;
+    case "4g":
+      media = (
+        <video muted controls>
+          ...
+        </video>
+      );
       break;
     default:
-      media = <video muted controls>...</video>;
+      media = (
+        <video muted controls>
+          ...
+        </video>
+      );
       break;
   }
-  
+
   return <div>{media}</div>;
 };
 
 export default AdaptiveComponent;
+```
+
 Copy
 For more comprehensive enhancement, we can combine these hooks with other common performance improvement techniques like code splitting and load an entirely different component and its bundle based on the network condition.
 
 For example, on slower networks, we will serve AMP pages or components without large media, and on faster networks (4g), we will serve the full page.
 
-import React, { Suspense, lazy } from 'react';
+```js
+import React, { Suspense, lazy } from "react";
 
-import { useNetworkStatus } from 'react-adaptive-hooks/network';
+import { useNetworkStatus } from "react-adaptive-hooks/network";
 
-const Full = lazy(() => import(/* webpackChunkName: "full" */ './Full.js'));
-const AMP = lazy(() => import(/* webpackChunkName: "light" */ './AMP.js'));
+const Full = lazy(() => import(/* webpackChunkName: "full" */ "./Full.js"));
+const AMP = lazy(() => import(/* webpackChunkName: "light" */ "./AMP.js"));
 
 const AdaptiveComponent = () => {
   const { effectiveConnectionType } = useNetworkStatus();
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        { effectiveConnectionType === '4g' ? <Full /> : <AMP /> }
+        {effectiveConnectionType === "4g" ? <Full /> : <AMP />}
       </Suspense>
     </div>
   );
 };
 
 export default AdaptiveComponent;
+```
+
 Copy
 We can separate this, go further, and serve more optimized components on the different network types.
 
-import React, { Suspense } from 'react';
+```js
+import React, { Suspense } from "react";
 
 const AdaptiveComponent = React.lazy(() => {
-  const effectiveType = navigator.connection ? navigator.connection.effectiveType : null
+  const effectiveType = navigator.connection
+    ? navigator.connection.effectiveType
+    : null;
 
   let module;
   switch (effectiveType) {
-    case '3g':
-      module = import(/* webpackChunkName: "light" */ './AMP.js');
+    case "3g":
+      module = import(/* webpackChunkName: "light" */ "./AMP.js");
       break;
-    case '4g':
-      module = import(/* webpackChunkName: "full" */ './Full.js');
+    case "4g":
+      module = import(/* webpackChunkName: "full" */ "./Full.js");
       break;
     default:
-      module = import(/* webpackChunkName: "full" */ './Full.js');
+      module = import(/* webpackChunkName: "full" */ "./Full.js");
       break;
   }
 
@@ -132,7 +149,7 @@ const AdaptiveComponent = React.lazy(() => {
 
 const App = () => {
   return (
-    <div className='App'>
+    <div className="App">
       <Suspense fallback={<div>Loading...</div>}>
         <AdaptiveComponent />
       </Suspense>
@@ -141,6 +158,8 @@ const App = () => {
 };
 
 export default App;
+```
+
 Copy
 Examples of adaptive loading: progressively improving web performance
 Twitter provides a data-saver option for lower end devices, which, when enabled, serves the AMP pages..

@@ -1,10 +1,11 @@
 The code you've provided will throw an error. Let's walk through it:
 
 ### Code Breakdown:
+
 ```javascript
 function a() {
-  "use strict";  // Enabling strict mode
-  dev = "BFE";   // Implicit assignment to an undeclared variable
+  "use strict"; // Enabling strict mode
+  dev = "BFE"; // Implicit assignment to an undeclared variable
   console.log(dev);
 }
 
@@ -49,11 +50,11 @@ To avoid this error, you need to declare the variable `dev` before assigning a v
 ```javascript
 function a() {
   "use strict";
-  let dev = "BFE";  // Declare 'dev' properly
+  let dev = "BFE"; // Declare 'dev' properly
   console.log(dev);
 }
 
-a();  // Logs: "BFE"
+a(); // Logs: "BFE"
 ```
 
 Now, the code will work as expected and log `BFE`.
@@ -62,3 +63,128 @@ Now, the code will work as expected and log `BFE`.
 
 - The code throws a `ReferenceError` because of strict mode, which prevents the use of undeclared variables.
 - To fix the error, you need to explicitly declare the variable (`let dev = "BFE";`) before using it.
+
+**Strict Mode** is a feature in JavaScript introduced in ECMAScript 5 (ES5) that opts your code into a **stricter, cleaner, and safer operating context**.
+
+It catches common coding mistakes, prevents silent errors from failing silently, disables confusing language features, and helps JavaScript engines better optimize your code.
+
+---
+
+## 1. How to Enable Strict Mode
+
+You activate strict mode by placing the directive `"use strict";` at the top of a file or function.
+
+### A. Entire File / Script Scope
+
+```javascript
+"use strict";
+
+// Entire script operates in strict mode
+let message = "Hello, strict mode!";
+```
+
+### B. Function Scope
+
+```javascript
+function myFunction() {
+  "use strict";
+  // Only code inside this function runs in strict mode
+}
+```
+
+> **Note:** Modern JavaScript features—such as **ES6 Modules** (`import`/`export`) and **ES6 Classes**—enable strict mode **automatically** by default.
+
+---
+
+## 2. Key Changes & Behaviors in Strict Mode
+
+### 1. Prevents Accidental Global Variables
+
+In normal JS, assigning a value to an undeclared variable implicitly creates a global variable. In strict mode, it throws a `ReferenceError`.
+
+```javascript
+// Non-strict mode: Creates window.x = 10 silently
+// Strict mode: Throws ReferenceError: x is not defined
+"use strict";
+
+x = 10;
+```
+
+---
+
+### 2. Throws Errors on Silent Failures
+
+In non-strict mode, modifying a read-only property or deleting an undeclarable property silently fails. In strict mode, an error is thrown.
+
+```javascript
+"use strict";
+
+// Attempting to overwrite a read-only property
+const obj = {};
+Object.defineProperty(obj, "readOnlyProp", { value: 42, writable: false });
+
+obj.readOnlyProp = 100; // ❌ TypeError: Cannot assign to read-only property
+```
+
+---
+
+### 3. Changes `this` Behavior in Standalone Functions
+
+In non-strict mode, `this` in a standalone function defaults to the global object (`window` in browsers). In strict mode, `this` remains `undefined`.
+
+```javascript
+"use strict";
+
+function showThis() {
+  console.log(this);
+}
+
+showThis(); // Output: undefined (In non-strict mode: window)
+```
+
+---
+
+### 4. Eliminates Duplicate Parameter Names
+
+In non-strict mode, duplicate function parameter names are allowed. In strict mode, this is a syntax error.
+
+```javascript
+"use strict";
+
+// ❌ SyntaxError: Duplicate parameter name not allowed in this context
+function sum(a, a, c) {
+  return a + a + c;
+}
+```
+
+---
+
+### 5. Secures `eval()` Scope
+
+In strict mode, variables created inside an `eval()` call do not leak into the surrounding scope.
+
+```javascript
+"use strict";
+
+eval("var hiddenVar = 10;");
+console.log(hiddenVar); // ❌ ReferenceError: hiddenVar is not defined
+```
+
+---
+
+### 6. Bans Deprecated / Unsafe Features
+
+- **Bans `with` statement:** The `with` statement makes code ambiguous and hard to optimize.
+- **Disallows Octal Literals:** Writing zero-prefixed octals like `015` throws a syntax error (use `0o15` instead).
+
+---
+
+## Summary Comparison
+
+| Scenario                              | Non-Strict Mode                      | Strict Mode (`"use strict"`)  |
+| ------------------------------------- | ------------------------------------ | ----------------------------- |
+| **Undeclared Variables (`x = 10`)**   | Creates global variable              | Throws `ReferenceError`       |
+| **`this` in standalone functions**    | Points to `window` / `globalThis`    | Remains `undefined`           |
+| **Duplicate Parameters (`fn(a, a)`)** | Silently accepted (second overrides) | Throws `SyntaxError`          |
+| **Assigning to Read-Only Props**      | Silently fails                       | Throws `TypeError`            |
+| **ES Modules / ES6 Classes**          | Optional                             | **Always enabled by default** |

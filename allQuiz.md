@@ -1,0 +1,656 @@
+Here is the complete catalog of all 249 questions present across your interview preparation screenshots, organized chronologically by their respective technical domain:
+
+---
+
+### **1. Web Application Security & Cryptography (Q1–Q62 & Code Challenges Q1–Q3)**
+
+- **Q1:** What is a DDOS attack?
+- **Q2:** What is "Vulnerability"?
+- **Q3:** What is SQL injection?
+- **Q4:** What is a botnet?
+- **Q5:** What is the difference between Authentication vs Authorization?
+- **Q6:** What is Security Testing?
+- **Q7:** List the various methodologies in Security testing?
+- **Q8:** What is Content Security Policy?
+- **Q9:** What is Cross Site Scripting (XSS)?
+- **Q10:** How can we Protect Web Applications From Forced Browsing?
+- **Q11:** Explain what threat arises from not flagging HTTP cookies with tokens as secure?
+- **Q12:** What is an SSL Certificate?
+- **Q13:** How to mitigate the SQL Injection risks?
+- **Q14:** What is Session Hijacking?
+- **Q15:** Mention what flaw arises from session tokens having poor randomness across a range of values?
+- **Q16:** What is DOM-based XSS?
+- **Q17:** What is CORS and how to enable one?
+- **Q18:** What is Intrusion Detection System (IDS)?
+- **Q19:** What is Cross-Site Scripting (XSS)?
+- **Q20:** Why is the Root Certificate important?
+- **Q21:** What is impersonation?
+- **Q22:** How can I prevent XSS?
+- **Q23:** Apart from mailing links of error pages, are there other methods of exploiting XSS?
+- **Q24:** Can XSS be prevented without modifying the source code?
+- **Q25:** List the attributes of Security Testing
+- **Q26:** How to mitigate the risk of Sensitive Data Exposure?
+- **Q27:** Name the elements of PKI
+- **Q28:** What is the difference between IDS and firewalls?
+- **Q29:** List Top 10 OWASP Vulnerabilities
+- **Q30:** Mention what threat can be avoided by having unique usernames produced with a high degree of entropy?
+- **Q31:** What information can an attacker steal using XSS?
+- **Q32:** What is Cross-Site Request Forgery?
+- **Q33:** What is PKI?
+- **Q34:** What is Cross-site request forgery and how to mitigate it?
+- **Q35:** Could you explain the difference between penetration testing and other forms of security testing?
+- **Q36:** What Is Failure to Restrict URL Access?
+- **Q37:** What is the difference between encryption, encoding, and hashing?
+- **Q38:** How to mitigate the risk of Weak authentication and session management?
+- **Q39:** What is HTTP Public Key Pinning and when to use it?
+- **Q40:** Mention what happens when an application takes user inserted data and sends it to a web browser without proper validation and escaping?
+- **Q41:** What is a Honeypot?
+- **Q42:** What is ClickJacking?
+- **Q43:** Is it possible to decrypt MD5 hashes? Explain.
+- **Q44:** If you can decode JWT, how are they secure?
+- **Q45:** How to ensure that a file can only be decrypted after a specific date?
+- **Q46:** What's the difference between OpenID and OAuth?
+- **Q47:** How does SSL/TLS work?
+- **Q48:** Explain briefly CORS (Cross-Origin Resource Sharing)?
+- **Q49:** What is a Bug Bounty?
+- **Q50:** What is Stored XSS?
+- **Q51:** What is Reflected XSS?
+- **Q52:** What are X-Frame-Options?
+- **Q53:** What is Cross Site Tracing (XST)? How can it be prevented?
+- **Q54:** How to Prevent Breaches Due to Failure to Restrict URL Access?
+- **Q55:** What is HSTS?
+- **Q56:** What are the types of XSS?
+- **Q57:** Mention what is the basic design of OWASP ESAPI?
+- **Q58:** How to use Content Security Policy (CSP) against clickjacking?
+- **Q59:** How to use CHAP Authentication (Challenge Response Authentication) for webSockets?
+- **Q60:** How would you secure WebSockets communication on your project?
+- **Q61:** What is Content Security Policy (CSP)?
+- **Q62:** What is a Salt and How Does It Make Password Hashing More Secure?
+- **Security Code Challenge Q1:** Provide some "robots.txt" anti-pattern usage
+- **Security Code Challenge Q2:** How to check if HSTS is enabled?
+- **Security Code Challenge Q3:** How come that hash values are not reversible?
+
+---
+
+### **2. Core JavaScript Theoretical & Code Challenges (Q1–Q92 & Code Challenges Q1–Q83)**
+
+#### **Theoretical Questions:**
+
+- **Q1:** What is the object type?
+- **Q2:** What is typeof operator?
+- **Q3:** Explain arrays in JavaScript
+- **Q4:** Explain equality in JavaScript
+- **Q5:** What is Scope in JavaScript?
+- **Q6:** What's the difference between Host objects and Native objects?
+- **Q7:** What's the difference between throw Error('msg') vs throw new Error('msg') ?
+- **Q8:** Explain the same-origin policy with regards to JavaScript.
+- **Q9:** What is the difference between == and === ?
+- **Q10:** Is there anyway to force using strict mode in Node.js?
+- **Q11:** Why would you use something like the load event? Does this event have disadvantages? Do you know any alternatives, and why would you use those?
+- **Q12:** What is strict mode ?
+- **Q13:** What is Callback Hell and what is the main cause of it?
+- **Q14:** What does use strict do?
+- **Q15:** Explain event bubbling and how one may prevent it
+- **Q16:** What are some of the advantages/disadvantages of writing JavaScript code in a language that compiles to JavaScript?
+- **Q17:** What language constructions do you use for iterating over object properties and array items?
+- **Q18:** Explain Values and Types in JavaScript
+- **Q19:** Explain Null and Undefined in JavaScript
+- **Q20:** Explain what is Linear (Sequential) Search and when may we use one?
+- **Q21:** Why is it, in general, a good idea to leave the global scope of a website as-is and never touch it?
+- **Q22:** What is let keyword in JavaScript?
+- **Q23:** Explain what is Binary Search
+- **Q24:** What is a Polyfill?
+- **Q25:** What is the motivation for bringing Symbol to ES6?
+- **Q26:** What's the difference between using let and var to declare a variable in ES6?
+- **Q27:** What is generator in JS?
+- **Q28:** Why is extending built-in JavaScript objects not a good idea?
+- **Q29:** What advantages are using arrow functions?
+- **Q30:** What are the advantages and disadvantages of using use strict ?
+- **Q31:** When should we use generators in ES6?
+- **Q32:** How to compare two objects in JavaScript?
+- **Q33:** What will be the output of the following code?
+- **Q34:** What is a closure, and how/why would you use one?
+- **Q35:** What's a typical use case for anonymous functions?
+- **Q36:** What will be the output of the following code?
+- **Q37:** Suggest one simple way of removing duplicates from an array using ES6
+- **Q38:** What is the difference between Anonymous and Named functions?
+- **Q39:** Explain the difference between Object.freeze() vs const
+- **Q40:** Why should we use ES6 classes?
+- **Q41:** What are the differences between ES6 class and ES5 function constructors?
+- **Q42:** What is Currying?
+- **Q43:** What is the difference between document load event and document DOMContentLoaded event?
+- **Q44:** What is the difference between a shim and a polyfill?
+- **Q45:** What do you think of AMD vs CommonJS?
+- **Q46:** What is the definition of a Higher-Order Function?
+- **Q47:** What is a Jump (or Block) Search?
+- **Q48:** Explain the difference between undefined and not defined in JavaScript
+- **Q49:** What is Coercion in JavaScript?
+- **Q50:** What is IIFEs (Immediately Invoked Function Expressions)?
+- **Q51:** Explain what is Interpolation Search
+- **Q52:** What is export default in JavaScript?
+- **Q53:** When should I use Arrow Functions in ES6?
+- **Q54:** What are the benefits of using spread syntax in ES6 and how is it different from rest syntax?
+- **Q55:** Explain Function.prototype.bind .
+- **Q56:** Could you explain the difference between ES5 and ES6
+- **Q57:** Describe Closure concept in JavaScript as best as you could
+- **Q58:** What is the preferred syntax for defining enums in JavaScript?
+- **Q59:** What's the difference between .call and .apply ?
+- **Q60:** What is the drawback of creating true private in JavaScript?
+- **Q61:** Explain the differences on the usage of foo between function foo() {} and var foo = function() {}
+- **Q62:** Does JavaScript have a map function to iterate over an object properties?
+- **Q63:** How would you prevent Callback Hell without using promises, async or generators?
+- **Q64:** Explain how JSONP works (and how it's not really Ajax)
+- **Q65:** Could you compare usage of Module Pattern vs Constructor/Prototype pattern?
+- **Q66:** When would you use import \* as X from 'X' ?
+- **Q67:** What tools can be used to assure consistent code style?
+- **Q68:** What is the Temporal Dead Zone in ES6?
+- **Q69:** Explain Prototype Inheritance in JavaScript?
+- **Q70:** Explain what is Hoisting in Javascript
+- **Q71:** What's the difference between a variable that is: null , undefined or undeclared? How would you go about checking for any of these states?
+- **Q72:** Describe the JS module design pattern
+- **Q73:** Explain the Prototype Design Pattern
+- **Q74:** Can you give an example for destructuring an object or an array in ES6?
+- **Q75:** What does the term Transpiling stand for?
+- **Q76:** Can you describe the main difference between a .forEach loop and a .map() loop and why you would pick one versus the other?
+- **Q77:** What is the new keyword in JavaScript?
+- **Q78:** When should you NOT use arrow functions in ES6? Name three or more cases.
+- **Q79:** Check if a given string is a isomorphic
+- **Q80:** Explain difference between: function Person(){}, var person = Person(), and var person = new Person()?
+- **Q81:** What is Hoisting in JavaScript?
+- **Q82:** What are the actual uses of ES6 WeakMap?
+- **Q83:** How can you share code between files?
+- **Q84:** Can you give an example of a curry function and why this syntax offers an advantage?
+- **Q85:** In JavaScript, why is the this operator inconsistent?
+- **Q86:** Does JavaScript pass by references or pass by values?
+- **Q87:** Is JavaScript a pass-by-reference or pass-by-value language?
+- **Q88:** Is it possible to reset an ECMAScript 6 generator to its initial state?
+- **Q89:** What's the difference between ES6 Map and WeakMap ?
+- **Q90:** How to deep-freeze object in JavaScript?
+- **Q91:** Compare Async/Await and Generators usage to achieve same functionality
+- **Q92:** What is the difference between the await keyword and the yield keyword?
+
+#### **JS Code Challenges:**
+
+- **Q1:** Sum of Array Plus One
+- **Q2:** Lucky sevens
+- **Q3:** Explain how Bubble Sort works
+- **Q4:** String Rotation
+- **Q5:** Oddball sum
+- **Q6:** Test divisors of three
+- **Q7:** Sum of several arrays
+- **Q8:** Simple clock angle
+- **Q9:** Implement a Queue using two Stacks
+- **Q10:** Tree Level Order Print
+- **Q11:** Stock maximum profit
+- **Q12:** Make this work
+- **Q13:** Two sum problem
+- **Q14:** Given a string, reverse each word in the sentence
+- **Q15:** How to empty an array in JavaScript?
+- **Q16:** Explain what a callback function is and provide a simple example
+- **Q17:** Determine overlapping numbers in ranges
+- **Q18:** Write a "mul" function which will properly when invoked as below syntax
+- **Q19:** Implement enqueue and dequeue using only two stacks
+- **Q20:** How to check if an object is an array or not? Provide some code.
+- **Q21:** Write a function that would allow you to do this?
+- **Q22:** Find the missing number in O(n) time
+- **Q23:** Step-by-step solution for step counting using recursion
+- **Q24:** How would you check if a number is an integer?
+- **Q25:** Return the N-th value of the Fibonacci sequence. Solve in O(n) time
+- **Q26:** Implement Bubble Sort
+- **Q27:** Return the N-th value of the Fibonacci sequence Recursively
+- **Q28:** Remove duplicates of an array and return an array of only unique elements
+- **Q29:** Explain how Insertion Sort works
+- **Q30:** FizzBuzz Challenge
+- **Q31:** Check if a given string is a palindrome. Case sensitivity should be taken into account.
+- **Q32:** Find all string combinations consisting only of 0, 1 and ?
+- **Q33:** Generate all balanced bracket combinations
+- **Q34:** Write a recursive function that returns the binary string of a given decimal number
+- **Q35:** Find the intersection of two arrays
+- **Q36:** How would you use a closure to create a private counter?
+- **Q37:** Given two strings, return true if they are anagrams of one another
+- **Q38:** All Permutations (Anagrams) of a String
+- **Q39:** Given an array of integers, find the largest difference between two elements such that the element of lesser value must come before the greater element
+- **Q40:** Implement a queue using a linked list
+- **Q41:** Check if parentheses are balanced using Stack
+- **Q42:** Quickly calculate the cube root of 6 digit numbers
+- **Q43:** Find all the Permutations of a String
+- **Q44:** Implement pow(a,b) without multiplication or division
+- **Q45:** Write a program for Recursive Binary Search
+- **Q46:** Provide some examples of non-bulean value coercion to a boolean one
+- **Q47:** How to merge two sorted Arrays into a Sorted Array?
+- **Q48:** How would you read files in sequence in Node.js? Provide a code example
+- **Q49:** LIS: Find length of the longest increasing subsequence (LIS) in the array. Solve using DP.
+- **Q50:** Explain how Heap Sort works
+- **Q51:** Explain how Merge Sort works
+- **Q52:** Get the N-th Fibonacci number with O(n) time and O(1) space complexity
+- **Q53:** Fix this code. Explain the fix.
+- **Q54:** Insert an interval into a list of sorted disjoint intervals
+- **Q55:** Implement a queue using two stacks
+- **Q56:** What will be the output of the following code?
+- **Q57:** Throttle Function Implementation
+- **Q58:** Given an array of integers, find the largest product yielded from three of the integers
+- **Q59:** Find Word Positions in Text
+- **Q60:** Write a function that would allow you to do this
+- **Q61:** Dutch national flag sorting problem
+- **Q62:** Merge two sorted linked lists
+- **Q63:** What will the following code output?
+- **Q64:** Given an integer, determine if it is a power of 2. If so, return that number, else return -1
+- **Q65:** Transform Word
+- **Q66:** What is Closure in JavaScript? Provide an example
+- **Q67:** How would you create a private variable in JavaScript?
+- **Q68:** Create a function that will evaluate if a given expression has balanced parentheses using stacks
+- **Q69:** When would you use the bind function?
+- **Q70:** Write a recursive function that performs a binary search
+- **Q71:** Explain when and how to use Exponential (aka Doubling or Galloping) Search?
+- **Q72:** Explain what is Fibonacci Search technique?
+- **Q73:** Calculate n-th Fibonacci number using Tail Recursion
+- **Q74:** Explain how QuickSort works
+- **Q75:** Binet's formula: How to calculate Fibonacci numbers without Recursion or Iteration?
+- **Q76:** Explain how Radix Sort works
+- **Q77:** How to recursively reverse a Linked List?
+- **Q78:** How to use Memoization for N-th Fibonacci number?
+- **Q79:** Explain why the following doesn't work as an IIFE. What needs to be changed to properly make it an IIFE?
+- **Q80:** What will be the output of the following code?
+- **Q81:** What will the following code output?
+- **Q82:** What will be the output of the following code?
+- **Q83:** How does the this keyword work? Provide some code examples
+
+---
+
+### **3. React & Redux (Q1–Q35 & React Framework Q9–Q120)**
+
+#### **Redux Questions:**
+
+- **Q1:** Do you need to keep all component states in Redux store?
+- **Q2:** What is Redux?
+- **Q3:** What is Redux DevTools?
+- **Q4:** What is Flux?
+- **Q5:** What is redux-saga?
+- **Q6:** What are the core principles of Redux?
+- **Q7:** What are Redux selectors and Why to use them?
+- **Q8:** How to structure Redux top level directories?
+- **Q9:** What are the features of Redux DevTools?
+- **Q10:** How to add multiple middlewares to Redux?
+- **Q11:** What is Redux Thunk?
+- **Q12:** What is the difference between React context and React redux?
+- **Q13:** How to set initial state in Redux?
+- **Q14:** What is the difference between Component and Container in Redux?
+- **Q15:** What are reducers in redux?
+- **Q16:** What is Redux form?
+- **Q17:** What is a store in Redux?
+- **Q18:** What are typical middleware choices for handling asynchronous calls in Redux?
+- **Q19:** What are the differences between redux-saga and redux-thunk?
+- **Q20:** Are there any similarities between Redux and RxJS?
+- **Q21:** What is the purpose of the constants in Redux?
+- **Q22:** How to use connect from react redux?
+- **Q23:** What are the downsides of Redux over Flux?
+- **Q24:** How to access redux store outside a react component?
+- **Q25:** What are the main features of Redux Form?
+- **Q26:** How to make Ajax request in Redux?
+- **Q27:** What are the differences between call and put in redux-saga?
+- **Q28:** Why are Redux state functions called as reducers?
+- **Q29:** Whats the purpose of at (@) symbol in the redux connect decorator?
+- **Q30:** What is a Reducer?
+- **Q31:** How to reset state in redux?
+- **Q32:** What is the proper way to access Redux store?
+- **Q33:** What is the mental model of redux-saga?
+- **Q34:** How Relay is different from Redux?
+- **Q35:** What is Redux Thunk used for?
+
+#### **React Framework Questions:**
+
+- **Q9:** How would you write an inline style in React?
+- **Q10:** What are inline conditional expressions in ReactJS?
+- **Q11:** What are Stateful components in React?
+- **Q12:** What is Reconciliation in ReactJS?
+- **Q13:** What is the purpose of using super constructor with props argument in React?
+- **Q14:** What happens when you call setState ?
+- **Q15:** What is the difference between Element and Component in ReactJS?
+- **Q16:** What are Higher-Order Components (HOC) in React?
+- **Q17:** What are the advantages of using React?
+- **Q18:** What is the difference between Component and Container in Redux?
+- **Q28:** What is the difference between state and props ?
+- **Q29:** What are the differences between a Class component and Functional component?
+- **Q30:** What does it mean for a component to be mounted in React?
+- **Q31:** What are refs used for in React?
+- **Q32:** What is the difference between a Presentational component and a Container component?
+- **Q33:** What's the difference between a Controlled component and an Uncontrolled one in React?
+- **Q34:** What is useState() in React?
+- **Q47:** What is StrictMode in React?
+- **Q48:** What's the difference between useRef and createRef ?
+- **Q49:** How would you pass data from child to parent component in React?
+- **Q50:** What would be the common mistake of function being called every time the component renders?
+- **Q51:** How can I make use of Error Boundaries in functional React components?
+- **Q52:** Why we should not update state directly?
+- **Q53:** Do React Hooks cover all use cases for class components?
+- **Q54:** Compare useState and useReducer implementations
+- **Q55:** Are you familiar with Flux in the context of React?
+- **Q56:** What are the advantages of Batching in ReactJS?
+- **Q57:** What is the difference between HTML and React event handling?
+- **Q58:** What are Error Boundaries in ReactJS?
+- **Q59:** What does Batching mean in ReactJS?
+- **Q60:** What is Components Composition in React?
+- **Q61:** What's wrong with using Context in React?
+- **Q62:** What are Uncontrolled components?
+- **Q63:** What's the difference between an Element and a Component in React?
+- **Q64:** What do these three dots ( ... ) in React do?
+- **Q65:** What's the typical flow of data like in a React + Redux app?
+- **Q66:** What are some limitations of things you shouldn't do in the component's render method in React?
+- **Q67:** What is Lifting State Up in ReactJS?
+- **Q68:** What are Pure Components?
+- **Q77:** Why do class methods need to be bound to a class instance?
+- **Q78:** What is {this.props.children} and when you should use it?
+- **Q79:** What are Stateless components in React?
+- **Q80:** What is children prop ?
+- **Q81:** Why React uses className over class attribute?
+- **Q82:** How to bind methods or event handlers in JSX callbacks?
+- **Q83:** What does shouldComponentUpdate do and why is it important?
+- **Q84:** Name the different lifecycle methods for a class components
+- **Q85:** What is the point of shouldComponentUpdate() method?
+- **Q86:** When to use useCallback , useMemo and useEffect ?
+- **Q87:** Can you do Components Inheritance in React?
+- **Q88:** Explain why and when would you use useMemo() ?
+- **Q89:** Can you force a React component to rerender without calling setState ?
+- **Q90:** What is difference between Incremental DOM and Virtual DOM?
+- **Q91:** Explain the Virtual DOM concept in React
+- **Q94:** When to use useState vs useReducer ?
+- **Q95:** What is the purpose of super(props) ?
+- **Q96:** How would you store non-state/instance variables in functional React components?
+- **Q97:** Does React re-render all components and sub components every time setState is called?
+- **Q98:** What is the difference between using constructor vs getInitialState in React?
+- **Q99:** Why would you need to bind event handlers to this ?
+- **Q100:** Why doesn't this.props.children.map work?
+- **Q101:** When is it important to pass props to super() , and why?
+- **Q102:** How to create Props Proxy for HOC component?
+- **Q103:** What is the second argument that can optionally be passed to setState and what is its purpose?
+- **Q104:** How to conditionally add attributes to React components?
+- **Q105:** What's the difference between useCallback and useMemo in practice?
+- **Q106:** What's a Pure Functional Component in React?
+- **Q107:** How would you go about investigating slow React application rendering?
+- **Q108:** Why does React use SyntheticEvents ?
+- **Q109:** Describe Flux vs MVC?
+- **Q110:** Describe how events are handled in React
+- **Q111:** How to apply validation on props in ReactJS?
+- **Q112:** When would you use StrictMode component in React?
+- **Q113:** What is the order of useInsertionEffect , useEffect and useLayoutEffect hooks at component rendering?
+- **Q117:** How to avoid the need for binding in React?
+- **Q118:** What is a Pure Function?
+- **Q119:** How to use React.memo() ?
+- **Q120:** How does React renderer work exactly when we call setState ?
+
+---
+
+### **4. HTML, CSS, & Web Standards (HTML Q1–Q53, CSS Q1–Q40 & Challenges Q1–Q10)**
+
+#### **HTML Questions:**
+
+- **Q1:** What is the purpose of the alt attribute on images?
+- **Q2:** Explain meta tags in HTML
+- **Q3:** What is an iframe and how it works?
+- **Q4:** What were some of the key goals and motivations for the HTML5 specification?
+- **Q5:** What is the difference between span and div?
+- **Q6:** What's the difference between an "attribute" and a "property" in HTML?
+- **Q7:** Briefly describe the correct usage of the following HTML5 semantic elements: `<header>`, `<article>`, `<section>`, `<footer>`
+- **Q8:** What is Character Encoding?
+- **Q9:** What is a self closing tag?
+- **Q10:** How can you highlight text in HTML?
+- **Q11:** How Can I Get Indexed Better by Search Engines?
+- **Q12:** Explain the difference between cookies, session and local storage
+- **Q13:** Describe the difference between a 'cookie', 'sessionStorage' and 'localStorage'.
+- **Q14:** What is WebSQL?
+- **Q15:** What are Web Workers?
+- **Q16:** What's new in HTML 5?
+- **Q17:** What is the difference between `<section>` and `<div>` ?
+- **Q18:** What is the DOM?
+- **Q19:** What are some differences that XHTML has compared to HTML?
+- **Q20:** Where and why is the rel="noopener" attribute used?
+- **Q21:** Can a web page contain multiple `<header>` elements? What about `<footer>` elements?
+- **Q22:** What are data- attributes good for?
+- **Q23:** What is WebSQL?
+- **Q24:** What is HTML5 Web Storage? Explain localStorage and sessionStorage .
+- **Q25:** What is the purpose of cache busting and how can you achieve it?
+- **Q26:** How do you serve a page with content in multiple languages?
+- **Q27:** Discuss the differences between an HTML specification and a browser's implementation thereof.
+- **Q28:** When is it appropriate to use the small element?
+- **Q29:** What are defer and async attributes on a `<script>` tag?
+- **Q30:** How do you change the direction of html text?
+- **Q31:** Have you used different HTML templating languages before?
+- **Q32:** What is an optional tag?
+- **Q33:** How do you set IE compatibility mode?
+- **Q34:** What does a DOCTYPE do?
+- **Q35:** Explain the difference between block elements and inline elements
+- **Q36:** Explain almost standard, full standard and quirks mode
+- **Q37:** What's the difference between Full Standard, Almost Standard and Quirks Mode?
+- **Q38:** Why do I need a doctype and what does it do?
+- **Q39:** Describe the difference between , and .
+- **Q40:** What is WebP?
+- **Q41:** What kind of things must you be wary of when designing or developing for multilingual sites?
+- **Q42:** How would you select SVG or canvas for your site?
+- **Q43:** Why to use HTML5 semantic tags?
+- **Q44:** What are the building blocks of HTML5?
+- **Q45:** What is an HTML preprocessor and are you using it?
+- **Q46:** What is the purpose of 'main' element?
+- **Q47:** Why you would use a srcset attribute in an image tag? Explain the process the browser uses when evaluating the content of this attribute.
+- **Q48:** What is progressive rendering?
+- **Q49:** What are Web Components?
+- **Q50:** Why is it generally a good idea to position CSS s between and JS s just before ? Do you know any exceptions?
+- **Q51:** What is an IndexedDB?
+- **Q52:** What is accessibility & ARIA role means in a web application?
+- **Q53:** Could you generate a public key in HTML?
+
+#### **CSS Questions:**
+
+- **Q1:** Explain the three main ways to apply CSS styles to a web page
+- **Q2:** What is CSS?
+- **Q3:** How to use variables in Sass?
+- **Q4:** Explain what is a @extend directive used for in Sass?
+- **Q5:** What is a CSS rule?
+- **Q6:** List out the key features for Sass
+- **Q7:** What Selector Nesting in Sass is used for?
+- **Q8:** Describe floats and how they work
+- **Q9:** What is the difference between classe s and ID s in CSS?
+- **Q10:** Have you played around with the new CSS Flexbox or Grid specs?
+- **Q11:** What existing CSS frameworks have you used locally, or in production? How would you change/improve them?
+- **Q12:** List out the data types that Sass supports
+- **Q13:** Explain the CSS box model and the layout components that it consists of
+- **Q14:** What is Sass?
+- **Q15:** Explain CSS sprites, and how you would implement them on a page or site
+- **Q16:** What is DOM (Document Object Model) and how is it linked to CSS?
+- **Q17:** How would you approach fixing browser-specific styling issues?
+- **Q18:** What's the difference between resetting and normalizing CSS? Which would you choose, and why?
+- **Q19:** Explain your understanding of the box model and how you would tell the browser in CSS to render your layout in different box models.
+- **Q20:** What is CSS preprocessor and why to user one?
+- **Q21:** Describe pseudo-elements and discuss what they are used for
+- **Q22:** What is CSS selectors? Name some.
+- **Q23:** What does Accessibility (a11y) mean?
+- **Q24:** How is responsive design different from adaptive design?
+- **Q25:** What are the advantages/disadvantages of using CSS preprocessors?
+- **Q26:** Have you ever worked with retina graphics? If so, when and what techniques did you use?
+- **Q27:** What's the difference between relative , fixed , absolute and static ally positioned element?
+- **Q28:** How does CSS actually work (under the hood of browser)?
+- **Q29:** What is a Grid System in CSS?
+- **Q30:** Explain the usage of table-layout property
+- **Q31:** What's the difference between SCSS and Sass?
+- **Q32:** Explain the purpose of clearing floats in CSS
+- **Q33:** Describe z-index and how a stacking context is formed
+- **Q34:** Is there any reason you'd want to use translate() instead of absolute positioning, or vice-versa? And why?
+- **Q35:** What are the different ways to visually hide content (and make it available only for screen readers)?
+- **Q36:** Have you ever used a grid system, and if so, what do you prefer?
+- **Q37:** How do you optimize your webpages for print?
+- **Q38:** Explain the basic rules of CSS Specificity
+- **Q39:** Can you explain the difference between coding a website to be responsive versus using a mobile-first strategy?
+- **Q40:** What does \* { box-sizing: border-box; } do? What are its advantages?
+- **CSS Code Challenge Q1:** What is variable interpolation in Sass? Provide some examples.
+- **CSS Code Challenge Q2:** How to create a zebra striped table with CSS?
+- **CSS Code Challenge Q3:** What is a Mixin and how to use on?
+- **CSS Code Challenge Q4:** What is the @content directive used for?
+- **CSS Code Challenge Q5:** What will be the CSS output for the following Sass code?
+- **CSS Code Challenge Q6:** What the code fragment has the greater CSS specificity?
+- **CSS Code Challenge Q7:** What clearfix methods do you know? Provide some examples.
+- **CSS Code Challenge Q8:** What's wrong with Sass nesting? Provide some example.
+- **CSS Code Challenge Q9:** How to style every element which has an adjacent item right before it?
+- **CSS Code Challenge Q10:** Write down a selector that will match any links end in .zip , .ZIP , .Zip etc...
+
+---
+
+### **5. Unit Testing in JavaScript (Q1–Q23)**
+
+- **Q1:** How to unit test an object with database queries?
+- **Q2:** What is the difference between Unit Tests and Functional Tests?
+- **Q3:** What is Mocking?
+- **Q4:** Should unit tests be written for Getter and Setters?
+- **Q5:** What's the difference between Mock an object or Spy on it?
+- **Q6:** What do I lose by adopting TDD? What are the disadvantages of Test Driven Development?
+- **Q7:** Should I Unit Test private methods or only public ones?
+- **Q8:** What is the fundamental value of Unit Tests vs Integration Tests?
+- **Q9:** What's the difference between Unit Tests and Integration Tests?
+- **Q10:** Name some Unit Testing benefits for devs that you personally experienced
+- **Q11:** When and where should I use Mocking?
+- **Q12:** How would you unit test private methods?
+- **Q13:** How can I unit test a GUI?
+- **Q14:** Is writing Unit Tests worth it for already exciting functionality?
+- **Q15:** What is a reasonable Code Coverage % for unit tests (and why)?
+- **Q16:** Can Unit Testing be successfully added into an existing production project? If so, how and is it worth it?
+- **Q17:** Explain what is Arrange-Act-Assert pattern?
+- **Q18:** What are best practices for Unit Testing methods that use cache heavily?
+- **Q19:** What's the best strategy for Unit-Testing database-driven applications?
+- **Q20:** What is Unit test, Integration Test, Smoke test, Regression Test and what are the differences between them?
+- **Q21:** What is the best way to unit test a method that doesn't return anything ( void )?
+- **Q22:** How do I test a private function or a class that has private methods, fields or inner classes?
+- **Q23:** Is Unit Testing worth the effort?
+
+---
+
+### **6. Node.js Ecosystem & Runtime (Q1–Q112 & Code Challenges Q1–Q14)**
+
+#### **Theoretical Questions:**
+
+- **Q1:** What npm is used for?
+- **Q2:** Why does Node.js prefer Error-First Callback?
+- **Q3:** What is V8?
+- **Q4:** What is libuv ?
+- **Q5:** What does Promisifying technique mean in Node.js?
+- **Q6:** What are the benefits of using Node.js?
+- **Q7:** What's the difference between process.cwd() vs \_\_dirname ?
+- **Q8:** What do you mean by Asynchronous API?
+- **Q9:** What is the difference between returning a callback and just calling a callback?
+- **Q10:** Explain the difference between local and global npm packages installation
+- **Q11:** Why we always require modules at the top of a file? Can we require modules inside of functions?
+- **Q12:** What are the key features of Node.js?
+- **Q13:** Name some Built-in Globals in Node.js
+- **Q14:** What is Callback Hell and what is the main cause of it?
+- **Q15:** What is Callback?
+- **Q16:** What is the file package.json ?
+- **Q17:** What is the meaning of the @ prefix on npm package?
+- **Q18:** What exactly does module.exports do in Node.js, and what would a simple example be?
+- **Q19:** Explain how does Node.js work?
+- **Q20:** How does Node.js handle Child Threads?
+- **Q21:** What is the difference between require(x) and ES6 import x in Node.js?
+- **Q22:** Which one is better: Node.js built in cluster or PM2 clustering?
+- **Q23:** What is the relationship between Node.js and V8?
+- **Q24:** Explain the concept of Domain in Node.js
+- **Q25:** Provide some of the reasons not to use Node.js
+- **Q26:** Provide your favourite reasons to use Node.js
+- **Q27:** When would you use cluster module in Node.js?
+- **Q28:** What is stream and what are types of streams available in Node.js?
+- **Q29:** What is the purpose of pm2 save ?
+- **Q30:** How do I run a Node.js app as a background service?
+- **Q31:** Is an Event Emitter Synchronous or Asynchronous?
+- **Q32:** Explain the order of Event Listeners execution in Node.js
+- **Q33:** What is Event Loop in Node.js?
+- **Q34:** What is the preferred method of resolving unhandled exceptions in Node.js?
+- **Q35:** What is a Blocking Code in Node.js?
+- **Q36:** When should we use Node.js?
+- **Q37:** When should I use EventEmitter ?
+- **Q38:** What is difference between synchronous and asynchronous method of fs module?
+- **Q39:** What is export default in JavaScript?
+- **Q40:** What are the use cases for the Node.js vm core module?
+- **Q41:** What is the difference between cluster and worker_threads packages in Node.js?
+- **Q42:** How do you debug Node.js applications?
+- **Q43:** Could we run an external process with Node.js?
+- **Q44:** What is the difference between browser global scope and Node.js global scope?
+- **Q45:** How to use global variable in Node.js?
+- **Q46:** What is the difference between setTimeout(fn,0) vs setImmediate(fn) ?
+- **Q47:** When would you use global variables in Node.js? Are they always bad?
+- **Q48:** Are you familiar with differences between Node.js modules and ES6 modules?
+- **Q49:** What is N-API in Node.js?
+- **Q50:** How to avoid Callback Hell in Node.js?
+- **Q51:** What Are Buffer and why to use them in Node.js?
+- **Q52:** Is there any difference between res.send and return res.send in Express.js?
+- **Q53:** What are express.json() and express.urlencoded() in Express.js?
+- **Q54:** How does concurrency work in Node.js?
+- **Q55:** What are Event Emitters?
+- **Q56:** What is Stream Chaining in Node.js?
+- **Q57:** What is the purpose of using assert module in Node.js
+- **Q58:** What's the Event Loop?
+- **Q59:** Would you use Node.js assert library vs. other assert libraries like chai ? Why?
+- **Q60:** What is Mocha in Node.js userland?
+- **Q61:** What is chai and chai-http in Node.js userland?
+- **Q62:** Compare PM2 Cluster Mode vs. Node.js Cluster module usage
+- **Q63:** How to gracefully shutdown Node.js server?
+- **Q64:** Do I need Dependency Injection in Node.js and how to deal with it?
+- **Q65:** What is the difference between fork() & spawn() in Node.js?
+- **Q66:** What is the difference between the child_process spawn and execute functions in Node.js? When to use each one?
+- **Q67:** When would you use import \* as X from 'X' ?
+- **Q68:** List some differences between CommonJS module loader and ECMAScript module loader
+- **Q69:** What is the difference between Cluster and Fork mode in PM2?
+- **Q70:** Explain what is Arrange-Act-Assert pattern?
+- **Q71:** How can you have one global variable between all clustered workers in Node.js?
+- **Q72:** Compare strict vs legacy mode for Assert module in Node.js
+- **Q73:** What is the difference between pm2 restart and pm2 reload ?
+- **Q74:** How would you prevent Callback Hell without using promises, async or generators?
+- **Q75:** Is an Event Emitter synchronous or asynchronous?
+- **Q76:** How would you handle errors for async code in Node.js?
+- **Q77:** Why to use Buffer instead of binary string to handle binary data ?
+- **Q78:** How the V8 engine works?
+- **Q79:** Does Node.js support multi-core platforms? And is it capable of utilizing all the cores?
+- **Q80:** Is it possible to use Class in Node.js?
+- **Q81:** What is LTS releases of Node.js why should you care?
+- **Q82:** Is Node.js entirely based on a single-thread?
+- **Q83:** When not to use Node.js?
+- **Q84:** What is Piping in Node?
+- **Q85:** What is the purpose of \_\_filename variable in Node.js?
+- **Q86:** What's the difference between dependencies, devDependencies and peerDependencies in package.json file?
+- **Q87:** Can Node.js work without V8?
+- **Q88:** What are async functions in Node? Provide some examples.
+- **Q89:** What are the Timing features of Node.js?
+- **Q90:** Does JavaScript have a map function to iterate over an object properties?
+- **Q91:** When to use Synchronous vs Asynchronous code in Node.js?
+- **Q92:** Explain usage of NODE_ENV
+- **Q93:** How does the Cluster module work? What's the difference between it and a load balancer?
+- **Q94:** What is the difference between process.nextTick() and setImmediate() ?
+- **Q95:** How does libuv work under the hood?
+- **Q96:** Explain what is Reactor Pattern in Node.js?
+- **Q97:** Can Node.js use other engines than V8?
+- **Q98:** How many threads does Node actually create?
+- **Q99:** Why Node.js devs tend to lean towards the Module Requiring vs Dependency Injection?
+- **Q100:** How V8 compiles JavaScript code?
+- **Q101:** How to solve Process out of Memory Exception in Node.js ?
+- **Q102:** How would you scale Node application?
+- **Q103:** Does the cluster in Node.js utilizes same event loop?
+- **Q104:** Explain some Error Handling approaches in Node.js you know about. Which one will you use?
+- **Q105:** What is V8 Templates?
+- **Q106:** What is the purpose of using hidden classes in V8?
+- **Q107:** Why should you separate Express app and server?
+- **Q108:** Does JavaScript pass by references or pass by values?
+- **Q109:** What's the difference between pm2 and pm2-runtime and when to use one?
+- **Q110:** How would you implement process communication when using cluster module in Node.js?
+- **Q111:** What is the difference between cluster.fork() vs child_process.fork() in Node.js?
+- **Q112:** Why do we need C++ Addons in Node.js?
+
+#### **Node.js Code Challenges:**
+
+- **Q1:** How would you read files in parallel in Node.js? Provide a code example
+- **Q2:** How would you read files in sequence in Node.js? Provide a code example
+- **Q3:** Explain what is wrong with async/await use in the forEach loop
+- **Q4:** Fix this code. Explain the fix.
+- **Q5:** Rewrite promise-based Node.js applications to async/await
+- **Q6:** When is it best to use a module.exports vs a class vs an object literal when defining Node.js modules?
+- **Q7:** Explain the usage of module.exports vs exports in that Node.js code sample
+- **Q8:** Provide some example of config file separation for dev and prod environments
+- **Q9:** How do you convert an existing callback API to promises?
+- **Q10:** Consider following code snippet
+- **Q11:** Explain the result of this code execution
+- **Q12:** What will happen when that code will be executed?
+- **Q13:** Rewrite the code sample without try/catch block
+- **Q14:** Explain the result of this code execution

@@ -1,3 +1,4 @@
+```js
 import React, { useEffect, useRef } from "react";
 import React, { useEffect, useRef } from "react";
 import { useEffect, useRef } from "react";
@@ -42,3 +43,4 @@ export function useIsMounted(): () => boolean {
   }, [])
   return () => mountRef.current
 }
+```

@@ -28,8 +28,6 @@ hides folder contents when folder is clicked again
 supports nested folder expansion
 allows expanding public folder independently
 
-
-
 # File Explorer (Recursive Tree View) – Complete React Solution
 
 This is a very common **React machine-coding interview** question that tests:
@@ -43,7 +41,7 @@ This is a very common **React machine-coding interview** question that tests:
 ✅ Component Composition
 ```
 
-***
+---
 
 ## Types
 
@@ -55,7 +53,7 @@ export interface FileNode {
 }
 ```
 
-***
+---
 
 ## Example Data
 
@@ -104,7 +102,7 @@ export const files: FileNode[] = [
 ];
 ```
 
-***
+---
 
 # TreeNode.tsx
 
@@ -113,26 +111,17 @@ import { useState } from "react";
 
 import type { FileNode } from "./types";
 
-import {
-  ChevronIcon,
-  FolderIcon,
-  FileIcon,
-} from "./Components";
+import { ChevronIcon, FolderIcon, FileIcon } from "./Components";
 
 interface Props {
   node: FileNode;
   depth?: number;
 }
 
-export default function TreeNode({
-  node,
-  depth = 0,
-}: Props) {
-  const [expanded, setExpanded] =
-    useState(false);
+export default function TreeNode({ node, depth = 0 }: Props) {
+  const [expanded, setExpanded] = useState(false);
 
-  const paddingLeft =
-    depth * 20;
+  const paddingLeft = depth * 20;
 
   /*
     FILE
@@ -168,30 +157,19 @@ export default function TreeNode({
     <div>
       <button
         type="button"
-        aria-expanded={
-          expanded
-        }
-        onClick={() =>
-          setExpanded(
-            prev => !prev
-          )
-        }
+        aria-expanded={expanded}
+        onClick={() => setExpanded((prev) => !prev)}
         style={{
           paddingLeft,
           display: "flex",
           alignItems: "center",
           gap: "8px",
           border: "none",
-          background:
-            "transparent",
+          background: "transparent",
           cursor: "pointer",
         }}
       >
-        <ChevronIcon
-          expanded={
-            expanded
-          }
-        />
+        <ChevronIcon expanded={expanded} />
 
         <FolderIcon />
 
@@ -199,25 +177,15 @@ export default function TreeNode({
       </button>
 
       {expanded &&
-        node.children?.map(
-          child => (
-            <TreeNode
-              key={
-                child.name
-              }
-              node={child}
-              depth={
-                depth + 1
-              }
-            />
-          )
-        )}
+        node.children?.map((child) => (
+          <TreeNode key={child.name} node={child} depth={depth + 1} />
+        ))}
     </div>
   );
 }
 ```
 
-***
+---
 
 # FileExplorer.tsx
 
@@ -228,22 +196,17 @@ import { files } from "./data";
 export default function FileExplorer() {
   return (
     <div>
-      <h1>
-        File explorer
-      </h1>
+      <h1>File explorer</h1>
 
-      {files.map(node => (
-        <TreeNode
-          key={node.name}
-          node={node}
-        />
+      {files.map((node) => (
+        <TreeNode key={node.name} node={node} />
       ))}
     </div>
   );
 }
 ```
 
-***
+---
 
 # App.tsx
 
@@ -255,7 +218,7 @@ export default function App() {
 }
 ```
 
-***
+---
 
 # CSS (Optional)
 
@@ -281,7 +244,7 @@ button {
 }
 ```
 
-***
+---
 
 # Why This Passes the Tests
 
@@ -293,46 +256,45 @@ button {
 
 ✅ Test: renders the app title
 
-***
+---
 
 ### 2. Root Files Visible
 
 ```tsx
-src
-public
-package.json
+src;
+public;
+package.json;
 ```
 
 render immediately.
 
 ✅ Test: renders root-level files and folders
 
-***
+---
 
 ### 3. Contents Hidden Initially
 
 ```tsx
-const [expanded] =
-  useState(false);
+const [expanded] = useState(false);
 ```
 
 Children are hidden initially.
 
 ✅ Test: hides folder contents by default
 
-***
+---
 
 ### 4. Expand Folder
 
 ```tsx
-setExpanded(prev => !prev);
+setExpanded((prev) => !prev);
 ```
 
 Shows children.
 
 ✅ Test: shows folder contents when folder is clicked
 
-***
+---
 
 ### 5. Collapse Folder
 
@@ -340,15 +302,12 @@ Same toggle logic.
 
 ✅ Test: hides folder contents when folder is clicked again
 
-***
+---
 
 ### 6. Nested Folders
 
 ```tsx
-<TreeNode
-  node={child}
-  depth={depth + 1}
-/>
+<TreeNode node={child} depth={depth + 1} />
 ```
 
 Recursive rendering handles:
@@ -361,14 +320,14 @@ src
 
 ✅ Test: supports nested folder expansion
 
-***
+---
 
 ### 7. Independent State
 
 Each folder has:
 
 ```tsx
-const [expanded, setExpanded]
+const [expanded, setExpanded];
 ```
 
 inside its own TreeNode.
@@ -393,7 +352,7 @@ independently.
 
 ✅ Test: allows expanding public folder independently
 
-***
+---
 
 # Interview Explanation
 
@@ -413,12 +372,12 @@ Folder
 Each node can render:
 
 ```tsx
-TreeNode
+TreeNode;
 ```
 
 for its children.
 
-***
+---
 
 ## Complexity
 
@@ -434,7 +393,7 @@ where:
 n = total nodes
 ```
 
-***
+---
 
 ### Expand Folder
 
@@ -444,7 +403,7 @@ O(children)
 
 Only renders visible children.
 
-***
+---
 
 ## Senior-Level Enhancements
 

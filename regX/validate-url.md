@@ -3,9 +3,12 @@ The provided code contains two regular expressions designed to validate URLs, al
 ### **1. Regular Expressions:**
 
 #### **First Regular Expression (`expression`):**
+
 ```javascript
-var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+var expression =
+  /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
 ```
+
 This regex is used to match **generic URLs** (both domain names and paths). Here's how it works:
 
 - **`[-a-zA-Z0-9@:%_\+.~#?&//=]`**: Matches any character that can be part of a URL (letters, numbers, special characters like `@`, `:`, `%`, etc.).
@@ -18,9 +21,12 @@ This regex is used to match **generic URLs** (both domain names and paths). Here
   - **`i`**: Case-insensitive search.
 
 #### **Second Regular Expression (`expression1`):**
+
 ```javascript
-var expression1 = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+var expression1 =
+  /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
 ```
+
 This regex is designed for **URL validation with stricter checks** for `http` and `https` URLs:
 
 - **`https?:\/\/`**: Matches the `http` or `https` protocol part (`http://` or `https://`).
@@ -30,18 +36,23 @@ This regex is designed for **URL validation with stricter checks** for `http` an
 - **Flags `gi`**: Same as before, global and case-insensitive.
 
 ### **2. Creating a RegExp Object:**
+
 ```javascript
 var regex = new RegExp(expression);
 ```
+
 This line creates a `RegExp` object using the `expression` regular expression. The `regex` object is used to test URLs.
 
 ### **3. URL Validation:**
+
 ```javascript
 var url = "www.geeksforgeeks.org";
 ```
+
 The URL `www.geeksforgeeks.org` is tested against the regular expression.
 
 ### **4. `gfg_Run()` Function:**
+
 ```javascript
 function gfg_Run() {
   var res = "";
@@ -53,12 +64,14 @@ function gfg_Run() {
   return res;
 }
 ```
+
 The function `gfg_Run()` checks if the `url` matches the regex:
 
 - **`url.match(regex)`**: This checks if the URL matches the regular expression. If it matches, the result is `"Valid URL"`, otherwise it's `"Invalid URL"`.
 - **`res`**: Stores the result of the match check.
 
 ### **5. Execution:**
+
 The function `gfg_Run()` would return `"Valid URL"` if the given URL (`www.geeksforgeeks.org`) matches the `regex` pattern. If it doesn't match, it will return `"Invalid URL"`.
 
 ### **Example Use:**
@@ -74,6 +87,7 @@ For the URL `"www.geeksforgeeks.org"`, the output would be `"Valid URL"` since t
 ### **Improvements & Notes**:
 
 1. **Use of `expression1`**: Although `expression1` provides a more specific check for `http` and `https` URLs, it's not used in the `gfg_Run()` function. If you wanted to use `expression1` instead of `expression`, you can simply replace the line where `regex` is created:
+
    ```javascript
    var regex = new RegExp(expression1);
    ```

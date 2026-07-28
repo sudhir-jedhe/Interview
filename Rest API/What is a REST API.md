@@ -9,7 +9,6 @@ The REST architecture is based on the principles of **HTTP** and uses standard *
 1. **Stateless**:
    - Each request from the client to the server must contain all the information needed to understand and process the request.
    - The server does not store any information about previous requests. Each request is independent.
-   
 2. **Client-Server Architecture**:
    - The client and the server are separate entities. The client makes requests, and the server responds with the data or an action.
    - The client is responsible for the user interface, while the server handles data storage and business logic.
@@ -40,19 +39,15 @@ REST APIs use standard **HTTP methods** to perform operations on resources. The 
 1. **GET**:
    - Retrieve information about a resource.
    - **Example**: `GET /posts` retrieves a list of posts.
-   
 2. **POST**:
    - Create a new resource.
    - **Example**: `POST /posts` creates a new post.
-   
 3. **PUT**:
    - Update an existing resource completely (replace).
    - **Example**: `PUT /posts/{id}` updates the post with the given ID.
-   
 4. **PATCH**:
    - Update an existing resource partially.
    - **Example**: `PATCH /posts/{id}` updates part of the post with the given ID.
-   
 5. **DELETE**:
    - Delete a resource.
    - **Example**: `DELETE /posts/{id}` deletes the post with the given ID.
@@ -63,11 +58,11 @@ REST APIs use standard **HTTP methods** to perform operations on resources. The 
 
 ### Key Components of a REST API
 
-1. **Resource**: 
+1. **Resource**:
    - A resource is any object or data that the API can interact with (e.g., a user, a product, a blog post).
    - Resources are represented as URLs.
 
-2. **Endpoint**: 
+2. **Endpoint**:
    - An endpoint is a specific URL that is used to interact with a resource. Each endpoint corresponds to a set of data or operations on that data.
    - Example: `/users`, `/products/{id}`, `/posts/{id}`.
 
@@ -85,6 +80,7 @@ REST APIs use standard **HTTP methods** to perform operations on resources. The 
 Let’s take a simple **Blog API** as an example.
 
 #### Resources:
+
 - **Users**: `/users`
 - **Posts**: `/posts`
 
@@ -98,9 +94,11 @@ Let’s take a simple **Blog API** as an example.
 - **DELETE /posts/{id}**: Delete a specific post by ID.
 
 #### Example of GET Request:
+
 To retrieve a list of all posts:
 
 **Request**:
+
 ```
 GET /posts
 Host: api.example.com
@@ -108,6 +106,7 @@ Accept: application/json
 ```
 
 **Response**:
+
 ```json
 [
   {
@@ -126,9 +125,11 @@ Accept: application/json
 ```
 
 #### Example of POST Request:
+
 To create a new blog post:
 
 **Request**:
+
 ```
 POST /posts
 Host: api.example.com
@@ -143,6 +144,7 @@ Authorization: Bearer {token}
 ```
 
 **Response**:
+
 ```json
 {
   "id": 3,
@@ -153,9 +155,11 @@ Authorization: Bearer {token}
 ```
 
 #### Example of PUT Request:
+
 To update a specific post:
 
 **Request**:
+
 ```
 PUT /posts/3
 Host: api.example.com
@@ -170,6 +174,7 @@ Authorization: Bearer {token}
 ```
 
 **Response**:
+
 ```json
 {
   "id": 3,

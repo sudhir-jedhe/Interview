@@ -1,5 +1,6 @@
 // Implement a hook in react that helps to determine if the application is in focus or not. This will help stop the background processing when the user is not focused or on the tab.
 
+```js
 import { useState, useEffect } from "react";
 
 const useHasFocus = () => {
@@ -39,3 +40,4 @@ Output:
 true
 false // change the tab
 true // back to the tab
+```

@@ -2,7 +2,7 @@ The code you've provided describes a method for detecting if a certain CSS prope
 
 ### Explanation
 
-1. **CSS Property Detection**: 
+1. **CSS Property Detection**:
    The `document.body.style` object is used to access the style properties of the document's body element. This is where the browser stores supported CSS properties.
 
 2. **Vendor Prefixes**:
@@ -27,18 +27,19 @@ The code you've provided describes a method for detecting if a certain CSS prope
 ### Code Walkthrough
 
 ```js
-const prefix = prop => {
+const prefix = (prop) => {
   // Capitalize the first letter of the property
   const capitalizedProp = prop.charAt(0).toUpperCase() + prop.slice(1);
-  
+
   // Array of known vendor prefixes ('' for no prefix)
-  const prefixes = ['', 'webkit', 'moz', 'ms', 'o'];
+  const prefixes = ["", "webkit", "moz", "ms", "o"];
 
   // Find the index of the first supported prefixed property
   const i = prefixes.findIndex(
-    prefix =>
+    (prefix) =>
       // Check if the property exists in document.body.style
-      typeof document.body.style[prefix ? prefix + capitalizedProp : prop] !== 'undefined'
+      typeof document.body.style[prefix ? prefix + capitalizedProp : prop] !==
+      "undefined",
   );
 
   // If a valid index is found, return the appropriate property name
@@ -46,7 +47,7 @@ const prefix = prop => {
 };
 
 // Example usage
-console.log(prefix('appearance'));
+console.log(prefix("appearance"));
 // Output: 'appearance' or 'webkitAppearance', 'mozAppearance', 'msAppearance', or 'oAppearance' depending on the browser
 ```
 
@@ -72,12 +73,13 @@ console.log(prefix('appearance'));
 
    ```js
    const i = prefixes.findIndex(
-     prefix =>
-       typeof document.body.style[prefix ? prefix + capitalizedProp : prop] !== 'undefined'
+     (prefix) =>
+       typeof document.body.style[prefix ? prefix + capitalizedProp : prop] !==
+       "undefined",
    );
    ```
 
-4. **Return Value**:  
+4. **Return Value**:
    - If the prefix is found (i.e., the property is supported), the function returns the correct property name.
    - If no match is found, it returns `null`.
 

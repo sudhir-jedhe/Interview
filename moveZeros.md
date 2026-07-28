@@ -18,6 +18,7 @@ function moveZeros(list) {
 ```
 
 #### **Explanation**:
+
 - **First loop**: Iterate over the array and shift all non-zero elements to the front, updating the `index` to track where the next non-zero element should go.
 - **Second loop**: After all non-zero elements are moved to the front, fill the rest of the array with zeros, starting from the `index` position.
 - **Time Complexity**: O(n) where `n` is the length of the array. This is an efficient approach since it only requires two passes over the list.
@@ -29,10 +30,10 @@ function moveZeros(list) {
 
 ```javascript
 function moveZeros(list) {
-  list.sort((a, b) =>  {
+  list.sort((a, b) => {
     if (a === 0) {
       return 1;
-    } 
+    }
     if (b === 0) {
       return -1;
     }
@@ -41,10 +42,11 @@ function moveZeros(list) {
 }
 const list = [0, 1, 0, 3, 2, 6];
 moveZeros(list);
-console.log(list);  // [1, 2, 3, 6, 0, 0]
+console.log(list); // [1, 2, 3, 6, 0, 0]
 ```
 
 #### **Explanation**:
+
 - The `sort()` method is used to rearrange the elements so that all zeros appear at the end.
 - **Time Complexity**: O(n log n), because `sort()` generally has a time complexity of O(n log n) in most JavaScript engines.
 - **Space Complexity**: O(1) if the sort is done in place (depending on the engine's sorting algorithm).
@@ -66,6 +68,7 @@ function moveZeros(list) {
 ```
 
 #### **Explanation**:
+
 - **One-pass approach**: The idea is to swap non-zero elements with zeros, moving the non-zero elements towards the start.
 - The `start` variable tracks where the next non-zero element should go. Every time a non-zero element is found, it's swapped with the element at `start`.
 - **Time Complexity**: O(n), as it only requires one pass through the list.
@@ -77,7 +80,7 @@ function moveZeros(list) {
 
 ```javascript
 function moveZeros(list) {
-  for(let i = 0; i < list.length; i++) {
+  for (let i = 0; i < list.length; i++) {
     if (list[i] === 0) {
       let j = i + 1;
       while (j < list.length) {
@@ -94,6 +97,7 @@ function moveZeros(list) {
 ```
 
 #### **Explanation**:
+
 - This approach iterates over the list and, when a zero is encountered, it searches for the next non-zero element (using a `while` loop). When it finds a non-zero element, it swaps it with the zero.
 - **Time Complexity**: O(n²) in the worst case, since for every zero encountered, we may need to scan the entire rest of the list to find the next non-zero element. This makes it less efficient than the O(n) solutions above.
 - **Space Complexity**: O(1), as it modifies the list in place.

@@ -15,20 +15,23 @@ Here's a breakdown of the differences between **`mapStateToProps`** and **`mapDi
 You use `mapStateToProps` when your component needs to read or display data stored in the Redux store. It subscribes the component to the Redux store and makes sure the component re-renders whenever the part of the state it depends on changes.
 
 **Syntax**:
+
 ```javascript
 const mapStateToProps = (state) => {
   return {
-    propName: state.someStatePart
+    propName: state.someStatePart,
   };
 };
 ```
 
 **Key Points**:
+
 - **Takes the entire Redux state** as an argument.
 - **Returns an object** where the keys are the names of the props and the values are derived from the Redux store’s state.
 - **Component re-renders** whenever the mapped state changes.
 
 #### **Example**:
+
 ```javascript
 const mapStateToProps = (state) => ({
   count: state.counter.count,
@@ -38,6 +41,7 @@ export default connect(mapStateToProps)(Counter);
 ```
 
 In this example:
+
 - The `Counter` component will receive the `count` value from the Redux store as a prop (`this.props.count`).
 - If the `state.counter.count` value changes in the Redux store, the component will automatically re-render.
 
@@ -52,47 +56,53 @@ In this example:
 You use `mapDispatchToProps` when your component needs to dispatch actions (e.g., when a user interacts with the component, such as clicking a button).
 
 **Syntax**:
+
 ```javascript
 const mapDispatchToProps = (dispatch) => {
   return {
-    actionName: () => dispatch(actionCreator())
+    actionName: () => dispatch(actionCreator()),
   };
 };
 ```
 
 Alternatively, you can pass an **object** directly with action creators, and `connect` will automatically bind them to `dispatch`:
+
 ```javascript
 const mapDispatchToProps = {
-  actionName: actionCreator
+  actionName: actionCreator,
 };
 ```
 
 **Key Points**:
+
 - **Takes `dispatch`** as an argument and returns an object where the keys are function names, and the values are the **action creators** wrapped in `dispatch()`.
 - The returned object maps **action creators** to props, which you can then call to dispatch actions.
 - Helps your component **trigger state changes** in the Redux store.
 
 #### **Example**:
+
 ```javascript
 const mapDispatchToProps = (dispatch) => ({
-  increment: () => dispatch({ type: 'INCREMENT' }),
-  decrement: () => dispatch({ type: 'DECREMENT' })
+  increment: () => dispatch({ type: "INCREMENT" }),
+  decrement: () => dispatch({ type: "DECREMENT" }),
 });
 
 export default connect(null, mapDispatchToProps)(Counter);
 ```
 
 Or using the shorthand approach:
+
 ```javascript
 const mapDispatchToProps = {
-  increment: () => ({ type: 'INCREMENT' }),
-  decrement: () => ({ type: 'DECREMENT' })
+  increment: () => ({ type: "INCREMENT" }),
+  decrement: () => ({ type: "DECREMENT" }),
 };
 
 export default connect(null, mapDispatchToProps)(Counter);
 ```
 
 In these examples:
+
 - The `Counter` component will receive `increment` and `decrement` as props.
 - These props are functions that, when invoked, will **dispatch actions** to the Redux store.
 
@@ -100,13 +110,13 @@ In these examples:
 
 ### **Comparing `mapStateToProps` and `mapDispatchToProps`**
 
-| **Feature**               | **`mapStateToProps`**                        | **`mapDispatchToProps`**                           |
-|---------------------------|---------------------------------------------|---------------------------------------------------|
-| **Purpose**               | Maps Redux store state to component props   | Maps action creators to dispatch functions        |
-| **Argument**              | Receives the **entire Redux state**         | Receives the **`dispatch` function**              |
-| **Return**                | Returns an object with state values         | Returns an object with dispatch functions (action creators) |
-| **Usage**                 | When you need to **read** state values from the store | When you need to **dispatch actions** to update the store |
-| **Re-renders**            | Triggers component re-renders when mapped state changes | Does **not** affect re-renders directly; it maps action dispatch functions |
+| **Feature**    | **`mapStateToProps`**                                   | **`mapDispatchToProps`**                                                   |
+| -------------- | ------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **Purpose**    | Maps Redux store state to component props               | Maps action creators to dispatch functions                                 |
+| **Argument**   | Receives the **entire Redux state**                     | Receives the **`dispatch` function**                                       |
+| **Return**     | Returns an object with state values                     | Returns an object with dispatch functions (action creators)                |
+| **Usage**      | When you need to **read** state values from the store   | When you need to **dispatch actions** to update the store                  |
+| **Re-renders** | Triggers component re-renders when mapped state changes | Does **not** affect re-renders directly; it maps action dispatch functions |
 
 ---
 
@@ -182,6 +192,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Counter);
 ```
 
 ### **Explanation**:
+
 - **`mapStateToProps`** maps the `count` from the Redux store’s state to the `count` prop in the `Counter` component.
 - **`mapDispatchToProps`** maps the `increment` and `decrement` action creators to the component’s props, enabling the component to dispatch those actions when the user clicks the corresponding buttons.
 

@@ -36,7 +36,7 @@ b: this.a + 1,
 
 - **Result**:
   ```javascript
-  console.log(obj.b);  // NaN
+  console.log(obj.b); // NaN
   ```
 
 #### 2. **`obj.c()`**:
@@ -52,7 +52,7 @@ c: () => this.a + 1,
 
 - **Result**:
   ```javascript
-  console.log(obj.c());  // NaN
+  console.log(obj.c()); // NaN
   ```
 
 #### 3. **`obj.d()`**:
@@ -69,7 +69,7 @@ d() {
 
 - **Result**:
   ```javascript
-  console.log(obj.d());  // 2
+  console.log(obj.d()); // 2
   ```
 
 #### 4. **`obj.e()`**:
@@ -87,16 +87,16 @@ e() {
 
 - **Result**:
   ```javascript
-  console.log(obj.e());  // 2
+  console.log(obj.e()); // 2
   ```
 
 ### Final Output:
 
 ```javascript
-NaN  // From obj.b
-NaN  // From obj.c()
-2    // From obj.d()
-2    // From obj.e()
+NaN; // From obj.b
+NaN; // From obj.c()
+2; // From obj.d()
+2; // From obj.e()
 ```
 
 ### Summary:

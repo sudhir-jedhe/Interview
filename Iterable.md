@@ -18,15 +18,15 @@ The output will be as follows:
 
 ### Explanation:
 
-1. **`entries()` method**: 
+1. **`entries()` method**:
    - This method returns an iterator that produces a sequence of key-value pairs. For the array `[1, 2, 3, 4]`, calling `entries()` will return the following iterator:
      ```
      [[0, 1], [1, 2], [2, 3], [3, 4]]
      ```
-   Each entry consists of a two-element array where the first element is the index (`key`), and the second is the value (`value`).
+     Each entry consists of a two-element array where the first element is the index (`key`), and the second is the value (`value`).
 
 2. **First `for...of` loop**:
-   - The `for...of` loop is used to iterate over the iterator `entries`. 
+   - The `for...of` loop is used to iterate over the iterator `entries`.
    - In each iteration, we use destructuring to extract the `item` (which is the value of each key-value pair).
    - The `break` statement immediately stops the loop after the first iteration. Therefore, only the first item (`1`) is printed in the first loop.
 
@@ -37,7 +37,7 @@ The output will be as follows:
 ### Output:
 
 ```javascript
-1
+1;
 ```
 
 ### Why the Output is Only `1`:
@@ -68,13 +68,14 @@ for (const [, item] of entries2) {
 ```
 
 ### Output:
+
 ```javascript
-1
-1
+1;
+1;
 ```
 
 ### Summary:
+
 - An iterator created by `.entries()` can only be iterated once.
 - After the first loop consumes the iterator, it cannot be reused unless a new iterator is created.
 - To iterate twice, create a new iterator each time.
-

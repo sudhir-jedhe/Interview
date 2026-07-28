@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+```js
+const fs = require("fs");
+const path = require("path");
 
 const renameExtensions = (dir) => {
   // Read all files and directories in the current directory
@@ -15,9 +16,12 @@ const renameExtensions = (dir) => {
       if (file.isDirectory()) {
         // If it's a directory, recurse into it
         renameExtensions(fullPath);
-      } else if (file.isFile() && path.extname(file.name) === '.js') {
+      } else if (file.isFile() && path.extname(file.name) === ".js") {
         // If it's a .js file, rename it to .md
-        const newFullPath = path.join(dir, path.basename(file.name, '.js') + '.md');
+        const newFullPath = path.join(
+          dir,
+          path.basename(file.name, ".js") + ".md",
+        );
         fs.rename(fullPath, newFullPath, (err) => {
           if (err) {
             console.error(`Error renaming file: ${fullPath}`, err);
@@ -32,3 +36,4 @@ const renameExtensions = (dir) => {
 
 // Start from the current directory
 renameExtensions(__dirname);
+```

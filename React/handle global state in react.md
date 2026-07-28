@@ -7,6 +7,7 @@ There are several ways to manage global state in React, ranging from simpler sol
 The **React Context API** allows you to share state across components without having to explicitly pass props down through each level of the component tree. It's ideal for medium-sized applications or situations where you don't need the full power of a state management library like Redux.
 
 #### **Steps to Use React Context API**:
+
 1. **Create the Context**: This is where the state will live.
 2. **Create a Provider**: This component will manage the state and provide it to its children.
 3. **Consume the Context**: Components that need access to the global state will use the `useContext` hook to access the state.
@@ -14,8 +15,9 @@ The **React Context API** allows you to share state across components without ha
 #### **Example: Global State with React Context API**
 
 1. **Create Context** (`AppContext.js`):
+
    ```javascript
-   import React, { createContext, useState } from 'react';
+   import React, { createContext, useState } from "react";
 
    const AppContext = createContext();
 
@@ -41,33 +43,35 @@ The **React Context API** allows you to share state across components without ha
    ```
 
 2. **Wrap Your Application with the Provider** (`index.js`):
+
    ```javascript
-   import React from 'react';
-   import ReactDOM from 'react-dom';
-   import App from './App';
-   import { AppProvider } from './AppContext';
+   import React from "react";
+   import ReactDOM from "react-dom";
+   import App from "./App";
+   import { AppProvider } from "./AppContext";
 
    ReactDOM.render(
      <AppProvider>
        <App />
      </AppProvider>,
-     document.getElementById('root')
+     document.getElementById("root"),
    );
    ```
 
 3. **Consume the Context in a Component** (`Home.js`):
+
    ```javascript
-   import React, { useContext } from 'react';
-   import { AppContext } from './AppContext';
+   import React, { useContext } from "react";
+   import { AppContext } from "./AppContext";
 
    const Home = () => {
      const { user, login, logout } = useContext(AppContext);
 
      return (
        <div>
-         <h1>Welcome, {user ? user.name : 'Guest'}</h1>
+         <h1>Welcome, {user ? user.name : "Guest"}</h1>
          {!user ? (
-           <button onClick={() => login({ name: 'John Doe' })}>Login</button>
+           <button onClick={() => login({ name: "John Doe" })}>Login</button>
          ) : (
            <button onClick={logout}>Logout</button>
          )}
@@ -83,7 +87,9 @@ The **React Context API** allows you to share state across components without ha
 Redux is a more powerful state management solution, especially for larger applications where state management can become complex. Redux allows you to store and manage global state in a **single store**, and it provides a predictable flow for state changes with actions and reducers.
 
 #### **Steps to Use Redux**:
+
 1. **Install Redux and React-Redux**:
+
    ```bash
    npm install redux react-redux
    ```
@@ -98,18 +104,20 @@ Redux is a more powerful state management solution, especially for larger applic
 #### **Example: Global State with Redux**
 
 1. **Create Actions** (`actions.js`):
+
    ```javascript
    export const login = (userInfo) => ({
-     type: 'LOGIN',
+     type: "LOGIN",
      payload: userInfo,
    });
 
    export const logout = () => ({
-     type: 'LOGOUT',
+     type: "LOGOUT",
    });
    ```
 
 2. **Create Reducer** (`reducer.js`):
+
    ```javascript
    const initialState = {
      user: null,
@@ -117,9 +125,9 @@ Redux is a more powerful state management solution, especially for larger applic
 
    const userReducer = (state = initialState, action) => {
      switch (action.type) {
-       case 'LOGIN':
+       case "LOGIN":
          return { ...state, user: action.payload };
-       case 'LOGOUT':
+       case "LOGOUT":
          return { ...state, user: null };
        default:
          return state;
@@ -130,9 +138,10 @@ Redux is a more powerful state management solution, especially for larger applic
    ```
 
 3. **Create the Store** (`store.js`):
+
    ```javascript
-   import { createStore } from 'redux';
-   import userReducer from './reducer';
+   import { createStore } from "redux";
+   import userReducer from "./reducer";
 
    const store = createStore(userReducer);
 
@@ -140,33 +149,35 @@ Redux is a more powerful state management solution, especially for larger applic
    ```
 
 4. **Wrap Your Application with `Provider`** (`index.js`):
+
    ```javascript
-   import React from 'react';
-   import ReactDOM from 'react-dom';
-   import App from './App';
-   import { Provider } from 'react-redux';
-   import store from './store';
+   import React from "react";
+   import ReactDOM from "react-dom";
+   import App from "./App";
+   import { Provider } from "react-redux";
+   import store from "./store";
 
    ReactDOM.render(
      <Provider store={store}>
        <App />
      </Provider>,
-     document.getElementById('root')
+     document.getElementById("root"),
    );
    ```
 
 5. **Consume the Redux Store in a Component** (`Home.js`):
+
    ```javascript
-   import React from 'react';
-   import { useSelector, useDispatch } from 'react-redux';
-   import { login, logout } from './actions';
+   import React from "react";
+   import { useSelector, useDispatch } from "react-redux";
+   import { login, logout } from "./actions";
 
    const Home = () => {
      const user = useSelector((state) => state.user);
      const dispatch = useDispatch();
 
      const handleLogin = () => {
-       dispatch(login({ name: 'John Doe' }));
+       dispatch(login({ name: "John Doe" }));
      };
 
      const handleLogout = () => {
@@ -175,7 +186,7 @@ Redux is a more powerful state management solution, especially for larger applic
 
      return (
        <div>
-         <h1>Welcome, {user ? user.name : 'Guest'}</h1>
+         <h1>Welcome, {user ? user.name : "Guest"}</h1>
          {!user ? (
            <button onClick={handleLogin}>Login</button>
          ) : (
@@ -195,16 +206,18 @@ Redux is a more powerful state management solution, especially for larger applic
 #### **Steps to Use Redux Toolkit**:
 
 1. **Install Redux Toolkit**:
+
    ```bash
    npm install @reduxjs/toolkit react-redux
    ```
 
 2. **Create a Slice (Redux Toolkit's version of actions and reducers)**:
+
    ```javascript
-   import { createSlice } from '@reduxjs/toolkit';
+   import { createSlice } from "@reduxjs/toolkit";
 
    const userSlice = createSlice({
-     name: 'user',
+     name: "user",
      initialState: { user: null },
      reducers: {
        login: (state, action) => {
@@ -221,9 +234,10 @@ Redux is a more powerful state management solution, especially for larger applic
    ```
 
 3. **Create the Store**:
+
    ```javascript
-   import { configureStore } from '@reduxjs/toolkit';
-   import userReducer from './userSlice';
+   import { configureStore } from "@reduxjs/toolkit";
+   import userReducer from "./userSlice";
 
    const store = configureStore({
      reducer: {
@@ -235,26 +249,28 @@ Redux is a more powerful state management solution, especially for larger applic
    ```
 
 4. **Wrap Your Application with `Provider`**:
+
    ```javascript
-   import React from 'react';
-   import ReactDOM from 'react-dom';
-   import App from './App';
-   import { Provider } from 'react-redux';
-   import store from './store';
+   import React from "react";
+   import ReactDOM from "react-dom";
+   import App from "./App";
+   import { Provider } from "react-redux";
+   import store from "./store";
 
    ReactDOM.render(
      <Provider store={store}>
        <App />
      </Provider>,
-     document.getElementById('root')
+     document.getElementById("root"),
    );
    ```
 
 5. **Consume the Redux Store in a Component**:
+
    ```javascript
-   import React from 'react';
-   import { useSelector, useDispatch } from 'react-redux';
-   import { login, logout } from './userSlice';
+   import React from "react";
+   import { useSelector, useDispatch } from "react-redux";
+   import { login, logout } from "./userSlice";
 
    const Home = () => {
      const user = useSelector((state) => state.user.user);
@@ -262,9 +278,11 @@ Redux is a more powerful state management solution, especially for larger applic
 
      return (
        <div>
-         <h1>Welcome, {user ? user.name : 'Guest'}</h1>
+         <h1>Welcome, {user ? user.name : "Guest"}</h1>
          {!user ? (
-           <button onClick={() => dispatch(login({ name: 'John Doe' }))}>Login</button>
+           <button onClick={() => dispatch(login({ name: "John Doe" }))}>
+             Login
+           </button>
          ) : (
            <button onClick={() => dispatch(logout())}>Logout</button>
          )}
@@ -291,7 +309,8 @@ The way to handle global state in React depends on the complexity of your applic
 - **React Context API** is great for smaller to medium-sized applications or for sharing state between a few components.
 - **Redux** (with or without Redux Toolkit) is more
 
- powerful and suitable for larger applications that require fine-grained control over state management.
+powerful and suitable for larger applications that require fine-grained control over state management.
+
 - **Recoil** is an alternative that is gaining popularity for its simplicity and flexibility in handling both local and global state.
 
 Each approach has its trade-offs, so it's important to choose the one that best fits your application's needs.

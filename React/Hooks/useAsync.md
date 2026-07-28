@@ -13,7 +13,7 @@
 
 // At the end, we will pass the immediate flag that we took as input to the useEffect() hook that will trigger the refetch if the value of the immediate flag changes and is true.
 
-
+```js
 const useAsync = (asyncFn, immediate = false) => {
     // four status to choose ["idle", "pending", "success", "error"]
     const [state, setState] = useState({
@@ -21,7 +21,7 @@ const useAsync = (asyncFn, immediate = false) => {
       value: null,
       error: null,
     });
-  
+
     // return the memoized function
     // useCallback ensures the below useEffect is not called
     // on every render, but only if asyncFunction changes.
@@ -32,7 +32,7 @@ const useAsync = (asyncFn, immediate = false) => {
         value: null,
         error: null,
       });
-  
+
       return asyncFn()
         .then((response) => {
           setState({
@@ -49,7 +49,7 @@ const useAsync = (asyncFn, immediate = false) => {
           });
         });
     }, [asyncFn]);
-  
+
     // execute the function
     // if asked for immediate
     useEffect(() => {
@@ -57,10 +57,10 @@ const useAsync = (asyncFn, immediate = false) => {
         refetch();
       }
     }, [refetch, immediate]);
-  
+
     // state values
     const { status, value, error } = state;
-  
+
     return { refetch, status, value, error };
   };
 
@@ -93,3 +93,4 @@ Output:
 Status: success
 Value: Success
 error:
+```

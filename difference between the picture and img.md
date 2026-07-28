@@ -3,9 +3,11 @@ The difference between the `<picture>` and `<img>` tags in HTML lies in their fu
 **1. `<img>` Tag**
 Purpose: The `<img>` tag is used to display a single image on a webpage. It’s a simple and straightforward tag for embedding images.
 Syntax:
+
 ```html
-<img src="image.jpg" alt="Description of image">
+<img src="image.jpg" alt="Description of image" />
 ```
+
 Attributes:
 `src`: Specifies the path to the image.
 `alt`: Provides alternative text for the image, useful for accessibility and when the image is not loaded.
@@ -14,6 +16,7 @@ Attributes:
 **2. `<picture>` Tag**
 Purpose: The `<picture>` tag allows you to provide multiple versions of an image, enabling different images to be displayed based on conditions like screen size, image resolution, or device type. It provides greater control over responsive images.
 Syntax:
+
 ```js
 <picture>
   <source srcset="image-large.jpg" media="(min-width: 800px)">
@@ -21,6 +24,7 @@ Syntax:
   <img src="default-image.jpg" alt="Description of image">
 </picture>
 ```
+
 **Attributes:**
 `srcset`: Specifies a list of image sources (can include image sizes).
 `media`: Defines the media query for selecting a source image. For example, different images can be shown on different screen sizes or device types.
@@ -44,10 +48,12 @@ Syntax:
 
 Example Scenario:
 If you want a small image on mobile devices and a larger image on desktops, you would use the `<picture>` tag:
+
 ```js
 <picture>
   <source srcset="desktop-image.jpg" media="(min-width: 768px)">
   <img src="mobile-image.jpg" alt="A responsive image">
 </picture>
 ```
+
 In conclusion, use the `<img>` tag for simple, static images, and the `<picture>` tag when you need to serve different images based on device or screen size, providing a more responsive and adaptive experience.

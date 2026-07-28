@@ -1,3 +1,4 @@
+```js
 document
   .getElementById("countButton")
   .addEventListener("click", async function () {
@@ -33,6 +34,7 @@ document
     document.getElementById("result").innerText = JSON.stringify(
       frequency,
       null,
-      2
+      2,
     );
   });
+```

@@ -9,7 +9,7 @@
 // Promise.all() is frequently used when there are multiple concurrent API
 // requests and we want to wait for all of them to have completed to continue
 // with code execution, usually because we depend on data from both responses.
-
+```js
 const [userData, postsData, tagsData] = await Promise.all([
   fetch("/api/user"),
   fetch("/api/posts"),

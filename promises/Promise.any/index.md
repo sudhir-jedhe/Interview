@@ -11,7 +11,7 @@
 // returned promise is resolved as soon as any of the input promises resolves.
 // Else if all of the input promises are rejected then the returned promise is
 // rejected with the array of all the input promises reasons.
-
+```js
 const any = function (promisesArray) {
   const promiseErrors = new Array(promisesArray.length);
   let counter = 0;

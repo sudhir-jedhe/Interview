@@ -1,6 +1,6 @@
 The **Breadcrumb Chain Problem** is a popular Frontend/JavaScript machine coding interview question.
 
-***
+---
 
 # Problem Statement
 
@@ -24,15 +24,15 @@ Output:
   { label: "Products", url: "/products" },
   { label: "Electronics", url: "/products/electronics" },
   { label: "Mobile", url: "/products/electronics/mobile" },
-  { label: "iPhone 15", url: null }
-]
+  { label: "iPhone 15", url: null },
+];
 ```
 
 The last item represents the current page and is not clickable.
 
 Breadcrumbs are a common UI pattern used to show the current location within a hierarchy, typically in the form `Home → Category → Subcategory → Current Page`. [\[eleken.co\]](https://www.eleken.co/blog-posts/breadcrumbs-ux), [\[martinuke0.github.io\]](https://martinuke0.github.io/posts/2025-12-17-breadcrumbs-in-ux-and-seo-a-complete-guide-to-design-implementation-and-best-practices/)
 
-***
+---
 
 # Approach
 
@@ -41,30 +41,30 @@ Breadcrumbs are a common UI pattern used to show the current location within a h
 Split URL
 
 ```js
-"/products/electronics/mobile"
+"/products/electronics/mobile";
 ```
 
 ↓
 
 ```js
-["products", "electronics", "mobile"]
+["products", "electronics", "mobile"];
 ```
 
-***
+---
 
 ### Step 2
 
 Build cumulative paths
 
 ```js
-products
+products;
 
-products/electronics
+products / electronics;
 
-products/electronics/mobile
+products / electronics / mobile;
 ```
 
-***
+---
 
 ### Step 3
 
@@ -74,26 +74,24 @@ Generate breadcrumb objects
 [
   {
     label: "Products",
-    url: "/products"
-  }
-]
+    url: "/products",
+  },
+];
 ```
 
-***
+---
 
 # Solution
 
 ```js
 function generateBreadcrumbs(path) {
-  const segments = path
-    .split("/")
-    .filter(Boolean);
+  const segments = path.split("/").filter(Boolean);
 
   const breadcrumbs = [
     {
       label: "Home",
-      url: "/"
-    }
+      url: "/",
+    },
   ];
 
   let currentPath = "";
@@ -103,10 +101,7 @@ function generateBreadcrumbs(path) {
 
     breadcrumbs.push({
       label: formatLabel(segment),
-      url:
-        index === segments.length - 1
-          ? null
-          : currentPath
+      url: index === segments.length - 1 ? null : currentPath,
     });
   });
 
@@ -116,22 +111,14 @@ function generateBreadcrumbs(path) {
 function formatLabel(str) {
   return str
     .split("-")
-    .map(
-      word =>
-        word.charAt(0).toUpperCase() +
-        word.slice(1)
-    )
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
 
-console.log(
-  generateBreadcrumbs(
-    "/products/electronics/mobile/iphone-15"
-  )
-);
+console.log(generateBreadcrumbs("/products/electronics/mobile/iphone-15"));
 ```
 
-***
+---
 
 # Output
 
@@ -139,28 +126,28 @@ console.log(
 [
   {
     label: "Home",
-    url: "/"
+    url: "/",
   },
   {
     label: "Products",
-    url: "/products"
+    url: "/products",
   },
   {
     label: "Electronics",
-    url: "/products/electronics"
+    url: "/products/electronics",
   },
   {
     label: "Mobile",
-    url: "/products/electronics/mobile"
+    url: "/products/electronics/mobile",
   },
   {
     label: "Iphone 15",
-    url: null
-  }
-]
+    url: null,
+  },
+];
 ```
 
-***
+---
 
 # React Component
 
@@ -195,7 +182,7 @@ function Breadcrumbs({ path }) {
 }
 ```
 
-***
+---
 
 # Follow-Up Interview Questions
 
@@ -219,7 +206,7 @@ Products > iPhone 15
 
 Need API lookup.
 
-***
+---
 
 ### 2. Collapse Long Breadcrumbs
 
@@ -229,7 +216,7 @@ Home > ... > Mobile > iPhone 15
 
 Used for deep hierarchies.
 
-***
+---
 
 ### 3. Nested Menu Structure
 
@@ -253,7 +240,7 @@ Home
              └─ iPhone
 ```
 
-***
+---
 
 # Hard Variant (Parent Chain)
 
@@ -265,7 +252,7 @@ const categories = [
   { id: 2, name: "Products", parentId: 1 },
   { id: 3, name: "Electronics", parentId: 2 },
   { id: 4, name: "Mobile", parentId: 3 },
-  { id: 5, name: "iPhone", parentId: 4 }
+  { id: 5, name: "iPhone", parentId: 4 },
 ];
 ```
 
@@ -278,29 +265,19 @@ Home > Products > Electronics > Mobile > iPhone
 ### Optimized Solution
 
 ```js
-function getBreadcrumb(
-  categories,
-  currentId
-) {
+function getBreadcrumb(categories, currentId) {
   const map = new Map();
 
-  categories.forEach(item =>
-    map.set(item.id, item)
-  );
+  categories.forEach((item) => map.set(item.id, item));
 
   const result = [];
 
-  let current =
-    map.get(currentId);
+  let current = map.get(currentId);
 
   while (current) {
-    result.unshift(
-      current.name
-    );
+    result.unshift(current.name);
 
-    current = map.get(
-      current.parentId
-    );
+    current = map.get(current.parentId);
   }
 
   return result;
@@ -316,20 +293,19 @@ Space: O(n)
 
 This parent-chain variant is very common in React/Frontend Lead interviews because it tests HashMap usage, tree traversal, and hierarchy reconstruction.
 
-
-/********************/
+/********\*\*\*\*********/
 
 Yes. In a React application, a better approach is to generate breadcrumbs directly from the **route configuration** instead of parsing the URL string manually.
 
 This is the approach used in large applications because it supports:
 
-* Dynamic routes (`/products/:id`)
-* Permission-based routes
-* Lazy-loaded modules
-* Nested layouts
-* Internationalisation
+- Dynamic routes (`/products/:id`)
+- Permission-based routes
+- Lazy-loaded modules
+- Nested layouts
+- Internationalisation
 
-***
+---
 
 # Solution 1: Route Configuration Driven Breadcrumbs
 
@@ -360,24 +336,22 @@ export const routes = [
 ];
 ```
 
-***
+---
 
 ## Generate Breadcrumbs
 
 ```tsx
 import { matchPath } from "react-router-dom";
 
-function getBreadcrumbs(
-  pathname
-) {
-  return routes.filter(route =>
+function getBreadcrumbs(pathname) {
+  return routes.filter((route) =>
     matchPath(
       {
         path: route.path,
         end: false,
       },
-      pathname
-    )
+      pathname,
+    ),
   );
 }
 ```
@@ -393,16 +367,10 @@ pathname:
 Output:
 
 ```js
-[
-  "Home",
-  "Products",
-  "Electronics",
-  "Mobile",
-  "Product Details"
-]
+["Home", "Products", "Electronics", "Mobile", "Product Details"];
 ```
 
-***
+---
 
 # Solution 2: Nested Routes + React Router v6
 
@@ -434,8 +402,7 @@ const routes = [
         element: <Electronics />,
 
         handle: {
-          crumb: () =>
-            "Electronics",
+          crumb: () => "Electronics",
         },
 
         children: [
@@ -445,8 +412,7 @@ const routes = [
             element: <Mobile />,
 
             handle: {
-              crumb: () =>
-                "Mobile",
+              crumb: () => "Mobile",
             },
           },
         ],
@@ -456,37 +422,23 @@ const routes = [
 ];
 ```
 
-***
+---
 
 ## Breadcrumb Component
 
 ```tsx
-import {
-  useMatches,
-} from "react-router-dom";
+import { useMatches } from "react-router-dom";
 
 function Breadcrumbs() {
-  const matches =
-    useMatches();
+  const matches = useMatches();
 
   return (
     <nav>
       {matches
-        .filter(
-          match =>
-            match.handle?.crumb
-        )
+        .filter((match) => match.handle?.crumb)
         .map((match) => (
-          <span
-            key={
-              match.pathname
-            }
-          >
-            {
-              match.handle.crumb(
-                match.data
-              )
-            }
+          <span key={match.pathname}>
+            {match.handle.crumb(match.data)}
             {" > "}
           </span>
         ))}
@@ -505,7 +457,7 @@ Benefits:
 ✅ Type Safe
 ```
 
-***
+---
 
 # Solution 3: Dynamic Breadcrumbs From API
 
@@ -527,7 +479,7 @@ You want:
 Home > Products > iPhone 15
 ```
 
-***
+---
 
 ```tsx
 {
@@ -558,7 +510,7 @@ Breadcrumb:
 Home > Products > iPhone 15 Pro
 ```
 
-***
+---
 
 # Solution 4: Tree-Based Breadcrumbs
 
@@ -605,7 +557,7 @@ Products > Electronics > Mobile
 
 This is common in CMS/Admin Dashboard applications.
 
-***
+---
 
 # Senior React Interview Answer
 

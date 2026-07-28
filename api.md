@@ -2810,3 +2810,423 @@ This significantly reduces Mean Time To Resolution (MTTR) and is consistent with
 # Staff Engineer / Architect Interview Answer
 
 > In large-scale microservice systems, I generate correlation IDs at the gateway, propagate them across all synchronous and asynchronous calls, and include them in structured logs. For latency monitoring, I focus on P50, P95, and P99 dashboards, dependency breakdowns, and distributed traces rather than averages. For reliability, I monitor service-specific error rates, dependency failures, and SLO-based alerting. By correlating alerts, traces, logs, and metrics through a single correlation ID, production issues can be diagnosed and resolved much faster. [[React Fron..._5.1_grade | PDF]](https://persistentsystems.sharepoint.com/sites/MyLifeAtPersistent731/Shared%20Documents/General/React%20Frontend%20Developer_Gunjan%20Yadav_5.1_grade.pdf?web=1), [[UI_Intervi..._Questions | Word]](https://persistentsystems.sharepoint.com/sites/interviewquestions/_layouts/15/Doc.aspx?sourcedoc=%7B5A47BCB6-A3FC-4EAF-A505-7DD1A0BF3308%7D&file=UI_Interview_Questions.docx&action=default&mobileredirect=true&DefaultItemOpen=1)
+
+Here is a comprehensive breakdown of the key concepts, code implementations, and architectural strategies covered across your masterclass materials—structured cleanly for **Senior / Lead / Staff React Architect** interviews.
+
+---
+
+## Part 1: Core API Architecture & Best Practices
+
+### 1. Fetch API vs. Axios
+
+| Feature                  | Fetch API                                                                      | Axios                                              |
+| ------------------------ | ------------------------------------------------------------------------------ | -------------------------------------------------- |
+| **Environment**          | Built-in (Browsers, Node 18+)                                                  | Third-party library (`npm install axios`)          |
+| **JSON Parsing**         | Manual (`res.json()`)                                                          | Automatic (`res.data`)                             |
+| **HTTP Error Handling**  | Rejects **only** on network failure (404/500 are treated as resolved promises) | Rejects on any status code outside the `2xx` range |
+| **Interceptors**         | ❌ Requires custom wrapper functions                                           | ✅ Native request and response interceptors        |
+| **Request Cancellation** | Manual via `AbortController`                                                   | Built-in via `AbortController` / `CancelToken`     |
+| **Progress Monitoring**  | Native streams (Complex)                                                       | Native `onUploadProgress` / `onDownloadProgress`   |
+
+**Interview Script:**
+
+> _"While `fetch` works well for lightweight apps or Next.js server components, enterprise React applications prefer Axios because of request/response interceptors, automatic JSON transformation, centralized error handling, and simpler request cancellation."_
+
+---
+
+### 2. Preventing Memory Leaks & Race Conditions
+
+When a component unmounts or a user rapidly changes filter parameters, pending HTTP requests must be cancelled to avoid setting state on unmounted components or updating UI with stale data out-of-order.
+
+#### Using Native `AbortController` in `useEffect`
+
+```javascript
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+export function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchUser() {
+      try {
+        const response = await axios.get(`/api/users/${userId}`, {
+          signal: controller.signal,
+        });
+        setUser(response.data);
+      } catch (err) {
+        // Ignore aborted request errors
+        if (!axios.isCancel(err)) {
+          setError(err.message);
+        }
+      }
+    }
+
+    fetchUser();
+
+    // Clean up: abort ongoing request on unmount or when userId changes
+    return () => controller.abort();
+  }, [userId]);
+
+  if (error) return <div>Error: {error}</div>;
+  if (!user) return <div>Loading...</div>;
+
+  return <div>{user.name}</div>;
+}
+```
+
+---
+
+### 3. Avoiding Search Keystroke Spam (Debounce + Cancellation)
+
+For live search inputs, combine **debouncing** with **request cancellation** to ensure only the latest search query reaches the UI.
+
+```javascript
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+export function SearchUsers() {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    // 1. Debounce execution by 300ms
+    const timer = setTimeout(async () => {
+      try {
+        const response = await axios.get(
+          `/api/search?q=${encodeURIComponent(query)}`,
+          {
+            signal: controller.signal,
+          },
+        );
+        setResults(response.data);
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          console.error("Search failed:", err);
+        }
+      }
+    }, 300);
+
+    // 2. Clean up timer and cancel in-flight request if user types again
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query]);
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search users..."
+      />
+      <ul>
+        {results.map((u) => (
+          <li key={u.id}>{u.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+---
+
+## Part 2: Enterprise API Architecture Patterns
+
+### Scalable Directory Layout
+
+```text
+src/
+├── api/
+│   ├── apiClient.js          # Axios instance, baseURL, timeout, base interceptors
+│   ├── retry.js              # Exponential backoff utility
+│   └── circuitBreaker.js     # State machine circuit breaker
+├── services/
+│   ├── userService.js        # User domain API methods & response mapping
+│   └── productService.js     # Product domain API methods
+├── hooks/
+│   ├── useUsers.js           # Custom hook wrapping TanStack Query / state
+│   └── useDebounce.js        # Reusable debounce utility
+└── components/
+    └── UsersTable.jsx        # Presentation UI component
+
+```
+
+---
+
+### Production-Grade Axios Interceptor (Auth + Token Refresh Queue)
+
+Handles automatic JWT token injection and queues requests while refreshing expired access tokens on `401 Unauthorized` responses.
+
+```javascript
+import axios from "axios";
+
+const apiClient = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL || "https://api.company.com",
+  timeout: 10000,
+  headers: { "Content-Type": "application/json" },
+});
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) prom.reject(error);
+    else prom.resolve(token);
+  });
+  failedQueue = [];
+};
+
+// 1. Request Interceptor: Attach Token & Correlation ID
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  // Inject Correlation ID for end-to-end distributed tracing
+  config.headers["X-Correlation-ID"] = crypto.randomUUID();
+  return config;
+});
+
+// 2. Response Interceptor: Seamless Token Refreshing
+apiClient.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return apiClient(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const refreshToken = localStorage.getItem("refreshToken");
+        const { data } = await axios.post("/auth/refresh", {
+          token: refreshToken,
+        });
+
+        localStorage.setItem("token", data.accessToken);
+        apiClient.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
+
+        processQueue(null, data.accessToken);
+        return apiClient(originalRequest);
+      } catch (refreshErr) {
+        processQueue(refreshErr, null);
+        localStorage.clear();
+        window.location.href = "/login";
+        return Promise.reject(refreshErr);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);
+
+export default apiClient;
+```
+
+---
+
+## Part 3: Architect-Level Scenario Answers
+
+### Scenario 1: "Dashboard with 20 Widgets calling APIs simultaneously"
+
+> **How to Answer in an Interview:**
+> _"For a dashboard with 20 widgets, I address network congestion, browser connection limits (max 6 connections per domain), and backend load using a six-part architecture strategy:"_
+
+```
+                             ┌───────────────────────────────┐
+                             │       Dashboard Page          │
+                             └───────────────┬───────────────┘
+                                             │
+                      ┌──────────────────────┴──────────────────────┐
+                      ▼                                             ▼
+            ┌───────────────────┐                         ┌───────────────────┐
+            │  P0: Critical UI  │                         │ P1/P2: Below-Fold │
+            └─────────┬─────────┘                         └─────────┬─────────┘
+                      │                                             │
+          ┌───────────┴───────────┐                        ┌────────┴────────┐
+          ▼                       ▼                        ▼                 ▼
+   ┌─────────────┐         ┌─────────────┐          ┌─────────────┐   ┌─────────────┐
+   │ React Query │         │     BFF     │          │Intersection │   │ Idle / SSE  │
+   │ Caching &   │    OR   │ Aggregated  │          │ Observer    │   │ Push Stream │
+   │ Deduplication         │   Endpoint  │          │ Lazy Load   │   └─────────────┘
+   └─────────────┘         └─────────────┘          └─────────────┘
+
+```
+
+1. **Business Priority Partitioning:** Split widgets into tiers:
+
+- **P0 (Critical):** Revenue, Active Alerts $\rightarrow$ Fetch immediately.
+- **P1 (Primary):** Recent Transactions $\rightarrow$ Fetch right after initial paint.
+- **P2 (Secondary):** Historical Charts $\rightarrow$ Lazy load below the fold using `IntersectionObserver`.
+
+2. **Backend-for-Frontend (BFF) / Aggregation:** Instead of firing 20 individual client-side requests, introduce a `/api/v1/dashboard/summary` endpoint to aggregate data into a single payload.
+3. **Caching & Deduplication (TanStack Query):** If widgets share endpoints (e.g., three widgets consuming `GET /users/me`), TanStack Query collapses them into **one** network request.
+4. **Perceived Performance:** Render skeleton cards (`<Skeleton/>`) to eliminate cumulative layout shifts (CLS).
+5. **Fault Isolation:** Wrap every widget in an independent React `ErrorBoundary`. If one widget API returns `500 Internal Server Error`, the remaining 19 widgets remain fully interactive.
+6. **Non-Critical Deferral:** Use `requestIdleCallback()` for low-priority tracking or reporting telemetry.
+
+---
+
+### Scenario 2: "What if 1 API takes 10s while the other 19 finish in 500ms?"
+
+> **Follow-Up Solution:**
+>
+> 1. **Strict Timeouts:** Set request timeouts on individual widgets (e.g., 5 seconds) via `AbortController`.
+> 2. **Partial Rendering:** Render widgets as their respective promises resolve rather than waiting for `Promise.all()`.
+> 3. **Stale-While-Revalidate Fallback:** If an API call times out or fails, serve cached data from `localStorage` or TanStack Query cache while displaying a subtle _"Updated 10m ago"_ indicator.
+> 4. **Circuit Breaker:** If a downstream service fails repeatedly, open the circuit immediately so subsequent requests fail fast without clogging network pipelines.
+
+---
+
+## Part 4: Observability, Distributed Tracing & Azure App Insights
+
+### 1. Azure Application Insights React Integration
+
+```tsx
+import { useEffect } from "react";
+import { ApplicationInsights } from "@microsoft/applicationinsights-web";
+import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
+
+const reactPlugin = new ReactPlugin();
+const appInsights = new ApplicationInsights({
+  config: {
+    connectionString: process.env.REACT_APP_APPINSIGHTS_CONNECTION_STRING,
+    extensions: [reactPlugin],
+    enableAutoRouteTracking: true,
+  },
+});
+
+appInsights.loadAppInsights();
+
+export { appInsights, reactPlugin };
+
+// Example Component Tracking
+export function AnalyticsDashboard() {
+  useEffect(() => {
+    // Custom Page View
+    appInsights.trackPageView({ name: "Analytics Dashboard" });
+
+    // Performance Mark
+    performance.mark("dashboard_mount_start");
+
+    return () => {
+      performance.mark("dashboard_mount_end");
+      performance.measure(
+        "dashboard_mount_time",
+        "dashboard_mount_start",
+        "dashboard_mount_end",
+      );
+    };
+  }, []);
+
+  const handleExportReport = () => {
+    // Custom Business Event
+    appInsights.trackEvent({
+      name: "ExportReportClicked",
+      properties: { format: "PDF" },
+    });
+  };
+
+  return <button onClick={handleExportReport}>Export PDF</button>;
+}
+```
+
+---
+
+### 2. Distributed Tracing with Correlation IDs
+
+A **Correlation ID** (`X-Correlation-ID` or OpenTelemetry `traceparent`) ties together every client action across frontend apps, API gateways, microservices, and databases.
+
+```
+React UI ──(X-Correlation-ID: 3e6f)──> API Gateway ──(3e6f)──> User Service ──(3e6f)──> SQL DB
+
+```
+
+#### Node.js / Express Middleware Example
+
+```javascript
+import { v4 as uuidv4 } from "uuid";
+
+export function correlationIdMiddleware(req, res, next) {
+  // Use incoming ID or generate a new one at the edge
+  const correlationId = req.headers["x-correlation-id"] || uuidv4();
+
+  req.correlationId = correlationId;
+  res.setHeader("X-Correlation-ID", correlationId);
+
+  // Attach to logger context
+  req.logger = {
+    info: (msg) => console.log(`[INFO] [CorrID: ${correlationId}] ${msg}`),
+    error: (msg) => console.error(`[ERROR] [CorrID: ${correlationId}] ${msg}`),
+  };
+
+  next();
+}
+```
+
+---
+
+### 3. Key Observability Metrics (Datadog / New Relic / Azure Monitor)
+
+| Metric Category         | Target Indicators                                 | Why It Matters                                                                                                                        |
+| ----------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Latency Percentiles** | **P50, P95, P99**                                 | Averages hide outlier issues. P99 shows the worst-case speed experienced by 1% of users (e.g., 10,000 requests/min = 100 slow users). |
+| **Golden Signals**      | **Latency, Traffic, Errors, Saturation**          | Standard SRE framework for measuring system health.                                                                                   |
+| **Error Rates**         | **Failed Requests / Total Requests $\times$ 100** | Triggers automated alerts when error rates cross thresholds ($>1\%$ Warning, $>5\%$ Critical).                                        |
+| **User Metrics (RUM)**  | **FCP, LCP, INP, CLS**                            | Measures real-user experience and Core Web Vitals directly inside the browser.                                                        |
+
+---
+
+### 4. Useful Kusto Query Language (KQL) Snippets
+
+#### Query 1: Find Top 5 Slowest API Endpoints (P95 Latency)
+
+```kql
+requests
+| where timestamp > ago(24h)
+| summarize P95_Duration = percentiles(duration, 95), TotalCount = count() by name
+| order by P95_Duration desc
+| take 5
+
+```
+
+#### Query 2: Track Failed Requests Correlated with Exceptions
+
+```kql
+requests
+| where success == false
+| join kind=inner (
+    exceptions
+) on operation_Id
+| project timestamp, name, resultCode, customDimensions, exceptionType, outerMessage
+| order by timestamp desc
+
+```

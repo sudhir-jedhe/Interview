@@ -5,11 +5,13 @@ Let's go through each part of your code step by step and explain the behavior an
 ```js
 let mySet = new Set(); // Creating an empty set
 ```
+
 - `mySet` is an empty `Set`. A `Set` is a collection of unique values in JavaScript, meaning no duplicates.
 
 ```js
 let mySetWithValues = new Set([1, 2, 3, 4, 5]);
 ```
+
 - This creates a set `mySetWithValues` with initial values. The `Set` constructor accepts an array (or other iterable) to populate the set.
 
 ```js
@@ -17,6 +19,7 @@ mySet.add(1);
 mySet.add(2);
 mySet.add(3);
 ```
+
 - Values are added to the set using the `.add()` method. Duplicate values will not be added.
 
 ```js
@@ -26,11 +29,13 @@ if (mySet.has(3)) {
   console.log("3 is not present in the Set.");
 }
 ```
+
 - `.has(value)` checks if a value is present in the set and returns a boolean.
 
 ```js
 mySet.delete(2); // Removes the value 2 from the Set
 ```
+
 - `.delete(value)` removes a value from the set.
 
 ```js
@@ -38,6 +43,7 @@ mySet.forEach(function (value) {
   console.log(value);
 });
 ```
+
 - `.forEach()` iterates over each element in the set, logging them one by one.
 
 ```js
@@ -45,11 +51,13 @@ for (let value of mySet) {
   console.log(value);
 }
 ```
+
 - This is a `for...of` loop to iterate over the set. Both `.forEach()` and `for...of` can be used to iterate over sets.
 
 ```js
 console.log(mySet.size); // Prints the number of elements in the Set
 ```
+
 - `.size` returns the number of elements in the set.
 
 ---
@@ -134,6 +142,7 @@ class CustomSet {
 ```
 
 #### Explanation:
+
 - **Add**: The `add` method adds a value to the set if it doesn't already exist.
 - **Delete**: Removes a value if it exists in the set.
 - **Has**: Checks if the value exists in the set.
@@ -142,6 +151,7 @@ class CustomSet {
 - **Values**: Returns an array of the set's values.
 
 #### Set Operations:
+
 - **Union**: Combines values from both sets.
 - **Intersection**: Returns the common elements between two sets.
 - **Difference**: Returns elements that exist in the first set but not in the second.
@@ -169,6 +179,7 @@ console.log("Is Set 1 a subset of Set 2?", set1.isSubsetOf(set2));
 ```
 
 Output:
+
 ```
 Set 1: [ 1, 2, 3 ]
 Set 2: [ 3, 4, 5 ]
@@ -201,10 +212,10 @@ console.log(arrayFromSet); // Output: [1, 2, 3, 4, 5]
 ```js
 function unionSets(set1, set2) {
   let unionSet = new Set();
-  
+
   set1.forEach((value) => unionSet.add(value));
   set2.forEach((value) => unionSet.add(value));
-  
+
   return unionSet;
 }
 
@@ -267,6 +278,7 @@ console.log(modifiedSet); // Output: Set(5) { 1, 2, 3, 4, 5 }
 ---
 
 ### **Summary of Concepts**:
+
 - **Sets** in JavaScript are collections of unique values. The built-in `Set` object and the custom implementation both provide similar functionalities for adding, removing, checking, and iterating over elements.
 - You can perform various set operations such as **union**, **intersection**, **difference**, and **subset** either by using the built-in `Set` methods or by creating a custom set class.
 - **Conversion**: You can easily convert a `Set` to an array using `Array.from()`.

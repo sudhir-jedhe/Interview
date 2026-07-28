@@ -4,55 +4,78 @@ To update the function and ensure both **rows** and **columns** have exactly the
 
 ```javascript
 function isValidMatrix(matrix) {
-    const n = matrix.length;
+  const n = matrix.length;
 
-    // Ensure the matrix is square
-    if (matrix.some(row => row.length !== n)) {
-        return false;
+  // Ensure the matrix is square
+  if (matrix.some((row) => row.length !== n)) {
+    return false;
+  }
+
+  // Set to compare unique elements across rows and columns
+  const expectedSet = new Set(matrix[0]);
+
+  // Check if each row contains unique elements and matches the expected set
+  for (let i = 0; i < n; i++) {
+    const rowSet = new Set(matrix[i]);
+    if (rowSet.size !== n || !areSetsEqual(rowSet, expectedSet)) {
+      return false; // If the row has duplicates or doesn't match the expected set
     }
+  }
 
-    // Set to compare unique elements across rows and columns
-    const expectedSet = new Set(matrix[0]);
-
-    // Check if each row contains unique elements and matches the expected set
+  // Check if each column contains unique elements and matches the expected set
+  for (let j = 0; j < n; j++) {
+    const colSet = new Set();
     for (let i = 0; i < n; i++) {
-        const rowSet = new Set(matrix[i]);
-        if (rowSet.size !== n || !areSetsEqual(rowSet, expectedSet)) {
-            return false; // If the row has duplicates or doesn't match the expected set
-        }
+      colSet.add(matrix[i][j]);
     }
-
-    // Check if each column contains unique elements and matches the expected set
-    for (let j = 0; j < n; j++) {
-        const colSet = new Set();
-        for (let i = 0; i < n; i++) {
-            colSet.add(matrix[i][j]);
-        }
-        if (colSet.size !== n || !areSetsEqual(colSet, expectedSet)) {
-            return false; // If the column has duplicates or doesn't match the expected set
-        }
+    if (colSet.size !== n || !areSetsEqual(colSet, expectedSet)) {
+      return false; // If the column has duplicates or doesn't match the expected set
     }
+  }
 
-    return true;
+  return true;
 }
 
 // Helper function to compare two sets
 function areSetsEqual(set1, set2) {
-    if (set1.size !== set2.size) return false;
-    for (let elem of set1) {
-        if (!set2.has(elem)) return false;
-    }
-    return true;
+  if (set1.size !== set2.size) return false;
+  for (let elem of set1) {
+    if (!set2.has(elem)) return false;
+  }
+  return true;
 }
 
 // Test cases
-console.log(isValidMatrix([[1, 2, 3], [3, 1, 2], [2, 3, 1]])); // Output: true
-console.log(isValidMatrix([[1, 1, 1], [1, 2, 3], [1, 2, 3]])); // Output: false
-console.log(isValidMatrix([[1, 2], [3, 4]])); // Output: true
-console.log(isValidMatrix([[1, 2], [2, 3]])); // Output: false
+console.log(
+  isValidMatrix([
+    [1, 2, 3],
+    [3, 1, 2],
+    [2, 3, 1],
+  ]),
+); // Output: true
+console.log(
+  isValidMatrix([
+    [1, 1, 1],
+    [1, 2, 3],
+    [1, 2, 3],
+  ]),
+); // Output: false
+console.log(
+  isValidMatrix([
+    [1, 2],
+    [3, 4],
+  ]),
+); // Output: true
+console.log(
+  isValidMatrix([
+    [1, 2],
+    [2, 3],
+  ]),
+); // Output: false
 ```
 
 ### Explanation of the Updates:
+
 1. **Initial Matrix Check**:
    - The function ensures the matrix is square by checking that every row has `n` elements. If any row does not have the correct number of elements, the function returns `false`.
 
@@ -66,13 +89,16 @@ console.log(isValidMatrix([[1, 2], [2, 3]])); // Output: false
    - A helper function is used to compare two sets. It checks if the sets have the same size and if every element in one set is present in the other.
 
 ### Test Cases:
+
 - `[[1, 2, 3], [3, 1, 2], [2, 3, 1]]` → This matrix is valid, so the output is `true`.
 - `[[1, 1, 1], [1, 2, 3], [1, 2, 3]]` → This matrix has duplicate values in the first row and column, so the output is `false`.
 - `[[1, 2], [3, 4]]` → This matrix is valid, so the output is `true`.
 - `[[1, 2], [2, 3]]` → This matrix does not have matching sets across rows and columns, so the output is `false`.
 
 ### Summary:
+
 This solution checks that:
+
 1. Every row contains unique values.
 2. Every column contains unique values.
 3. All rows and columns contain the exact same set of unique elements.

@@ -6,11 +6,9 @@ The Core Web Vitals are a set of specific factors that Google considers importan
 2. First Input Delay (FID)
 3. Cumulative Layout Shift (CLS)
 
-
 Let's dive into each of these in detail:
 
 1. Largest Contentful Paint (LCP)
-
 
 Definition: LCP measures the time it takes for the largest content element visible in the viewport to be rendered on the screen. This could be an image, video, or block-level text element.
 
@@ -22,7 +20,6 @@ Threshold:
 - Needs Improvement: Between 2.5 and 4 seconds
 - Poor: More than 4 seconds
 
-
 How to improve LCP:
 
 - Optimize and compress images
@@ -31,13 +28,11 @@ How to improve LCP:
 - Remove or defer non-critical third-party scripts
 - Implement server-side rendering or static site generation for faster initial loads
 
-
 In Next.js, you can improve LCP by:
 
 - Using the Next.js Image component for automatic image optimization
 - Implementing server-side rendering (SSR) or static site generation (SSG) for faster initial page loads
 - Utilizing code splitting to reduce JavaScript bundle sizes
-
 
 Example of using the Next.js Image component:
 
@@ -59,7 +54,6 @@ function MyComponent() {
 
 2. First Input Delay (FID)
 
-
 Definition: FID measures the time from when a user first interacts with your site (i.e., clicks a link, taps a button) to the time when the browser is able to respond to that interaction.
 
 Why it's important: FID is a key indicator of your site's interactivity and responsiveness. A low FID helps ensure that the page is usable and responsive to user input.
@@ -70,7 +64,6 @@ Threshold:
 - Needs Improvement: Between 100 and 300 milliseconds
 - Poor: More than 300 milliseconds
 
-
 How to improve FID:
 
 - Reduce JavaScript execution time
@@ -79,13 +72,11 @@ How to improve FID:
 - Use a web worker for heavy JavaScript operations
 - Reduce JavaScript bundle size
 
-
 In Next.js, you can improve FID by:
 
 - Implementing code splitting to reduce initial JavaScript load
 - Using the `next/dynamic` function to load components lazily
 - Minimizing the use of client-side JavaScript where possible
-
 
 Example of using `next/dynamic` for lazy loading:
 
@@ -106,7 +97,6 @@ function MyComponent() {
 
 3. Cumulative Layout Shift (CLS)
 
-
 Definition: CLS measures the sum total of all individual layout shift scores for every unexpected layout shift that occurs during the entire lifespan of the page.
 
 Why it's important: CLS helps quantify how often users experience unexpected layout shifts. A low CLS ensures a good user experience by maintaining visual stability.
@@ -117,7 +107,6 @@ Threshold:
 - Needs Improvement: Between 0.1 and 0.25
 - Poor: More than 0.25
 
-
 How to improve CLS:
 
 - Always include size attributes on your images and video elements
@@ -125,13 +114,11 @@ How to improve CLS:
 - Avoid inserting new content above existing content
 - Use transform animations instead of animations of properties that trigger layout changes
 
-
 In Next.js, you can improve CLS by:
 
 - Using the Next.js Image component, which automatically reserves space for images
 - Implementing placeholder components for dynamic content
 - Using CSS techniques like `aspect-ratio` to reserve space for media elements
-
 
 Example of using `aspect-ratio` in Next.js:
 
@@ -159,7 +146,6 @@ You can measure Core Web Vitals using various tools:
 3. PageSpeed Insights
 4. Chrome User Experience Report
 5. Web Vitals JavaScript library
-
 
 In a Next.js application, you can use the Web Vitals API to measure these metrics in real-time:
 

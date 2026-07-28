@@ -11,13 +11,17 @@ Defining the function body.
 Our incrementor function will take two inputs, initial value, and steps.
 
 And within the function, we will need two variables,
+
 1. To track the value.
 2. For storing the IntervalId, so that it can be cleared to stop the timer and resume when needed.
 
+```js
 const timer = (init = 0, step = 1) => {
     let intervalId;
     let count = init;
-}Copy
+}
+
+Copy
 Start function
 In the start function, setInterval will be invoked at an interval of 1 second, and in each interval call, the initial value will be increased by the given step and it will be logged in the console.
 
@@ -54,7 +58,7 @@ return {
 const timer = (init = 0, step = 1) => {
     let intervalId;
     let count = init;
-  
+
     const startTimer = () => {
       if (!intervalId){
         intervalId = setInterval(() => {
@@ -63,14 +67,15 @@ const timer = (init = 0, step = 1) => {
         }, 1000);
       }
     }
-  
+
     const stopTimer = () => {
       clearInterval(intervalId);
       intervalId = null;
     }
-  
+
     return {
       startTimer,
       stopTimer,
     };
   }
+```

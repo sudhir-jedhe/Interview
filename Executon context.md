@@ -6,8 +6,8 @@ In simpler terms, the **execution context** is a container for the code being ev
 
 There are three primary types of execution contexts in JavaScript:
 
-1. **Global Execution Context (GEC)**  
-2. **Function Execution Context (FEC)**  
+1. **Global Execution Context (GEC)**
+2. **Function Execution Context (FEC)**
 3. **Eval Execution Context (rarely used)**
 
 ### **1. Global Execution Context (GEC)**
@@ -20,8 +20,8 @@ The **global execution context** is the default or base context in which all Jav
 **Example:**
 
 ```javascript
-console.log(this);  // In browser, logs the `window` object
-let x = 10;         // `x` is accessible globally
+console.log(this); // In browser, logs the `window` object
+let x = 10; // `x` is accessible globally
 ```
 
 ### **2. Function Execution Context (FEC)**
@@ -38,12 +38,12 @@ When the function is invoked, it gets added to the **execution stack** (also kno
 
 ```javascript
 function myFunction() {
-    let y = 20;  // `y` is in the function's local scope
-    console.log(x);  // Logs 10, because `x` is in the global scope
+  let y = 20; // `y` is in the function's local scope
+  console.log(x); // Logs 10, because `x` is in the global scope
 }
 
 let x = 10;
-myFunction();  // Creates a new execution context for `myFunction`
+myFunction(); // Creates a new execution context for `myFunction`
 ```
 
 ### **3. Eval Execution Context**
@@ -53,7 +53,7 @@ The **eval execution context** arises when code is executed inside the `eval()` 
 **Example:**
 
 ```javascript
-eval("let a = 5; console.log(a);");  // The eval function runs the string as code
+eval("let a = 5; console.log(a);"); // The eval function runs the string as code
 ```
 
 In general, **eval** should be avoided because it can execute arbitrary code and may introduce security risks.
@@ -85,12 +85,12 @@ Consider the following code snippet:
 var a = 10;
 
 function foo() {
-    var b = 20;
-    function bar() {
-        var c = 30;
-        console.log(a, b, c);  // Accessing variables from outer scopes
-    }
-    bar();
+  var b = 20;
+  function bar() {
+    var c = 30;
+    console.log(a, b, c); // Accessing variables from outer scopes
+  }
+  bar();
 }
 
 foo();
@@ -130,17 +130,18 @@ foo();
 JavaScript hoists function and variable declarations during the **creation phase**. This means that functions and variables are moved to the top of their containing scope before any code is executed.
 
 ```javascript
-console.log(x);  // undefined, not ReferenceError
+console.log(x); // undefined, not ReferenceError
 var x = 10;
 
-foo();  // Works fine, even though it's called before declaration
+foo(); // Works fine, even though it's called before declaration
 
 function foo() {
-    console.log("Hello");
+  console.log("Hello");
 }
 ```
 
 #### How Hoisting Works:
+
 - **Variables**: Only the declaration (`var x`) is hoisted, but not the initialization (`x = 10`). Hence, `x` is `undefined` before the assignment happens.
 - **Functions**: Function declarations (`function foo() {}`) are fully hoisted, so `foo()` can be called before the actual definition in the code.
 

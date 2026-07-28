@@ -4,7 +4,7 @@
 
 // This data can be normalized to remove duplicates and simplify its structure, making it easier to process and analyze.
 
-
+```js
 const blogPosts = [
     {
       id: 'post-1',
@@ -116,7 +116,7 @@ const addNewComment = (postId, comment) => {
     const {id: commentId} = comment;
     blogPosts.comments.byIds[commentId] = comment;
     blogPosts.comments.ids = [...blogPosts.comments.ids, commentId];
-  
+
     //update the post with the comment
     blogPosts.posts.byIds[postId].comments = [...blogPosts.posts.byIds[postId].comments, commentId];
   }
@@ -127,13 +127,14 @@ const addNewComment = (postId, comment) => {
     const mappedComments = blogPosts.posts.byIds[postId].comments.map((commentId) => {
       // get the comment details
       const comment = blogPosts.comments.byIds[commentId];
-  
+
       // get the author details
       const user = blogPosts.users.byIds[comment.author];
-  
+
       // get the comment along with the  author details
       return {...comment, author: user};
     });
-  
+
     return mappedComments
   };
+```

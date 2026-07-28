@@ -1,3 +1,4 @@
+```js
 import React, { Ref, useEffect, useRef, useState } from "react";
 import React, { Ref, useCallback, useRef, useState } from "react";
 import React, { Ref, useCallback, useEffect, useRef, useState } from "react";
@@ -9,10 +10,10 @@ export function useFocus<T extends HTMLElement>(): [Ref<T | undefined>, boolean]
     const currentElement = ref.current
       if (!currentElement)
       return
-    // !!IMPORTANT!! 
+    // !!IMPORTANT!!
     // initialize the focus state when currentElement changes.
     setFocused(document.activeElement === currentElement)
-    
+
     const onFocus = () => setFocused(true)
     const onBlur = () => setFocused(false)
     currentElement.addEventListener('focus', onFocus)
@@ -91,3 +92,4 @@ export function useFocus<T extends HTMLElement>(): [Ref<T>, boolean] {
     isFocused
   ]
 }
+```

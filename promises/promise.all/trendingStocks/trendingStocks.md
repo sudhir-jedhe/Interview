@@ -1,3 +1,4 @@
+```js
 async function trendingStocks(n) {
     // Define API endpoints for different types of stock information
     const SYMBOLS_API_BASE_URL = 'api_1';

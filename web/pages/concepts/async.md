@@ -90,7 +90,7 @@ promiseSuccess.then(
   },
   (failureData) => {
     console.log(failureData);
-  }
+  },
 );
 // Failed promise .then executes second function passed as argument
 promiseFailure.then(
@@ -99,7 +99,7 @@ promiseFailure.then(
   },
   (failureData) => {
     console.log(failureData);
-  }
+  },
 );
 ```
 
@@ -372,21 +372,21 @@ function asyncFunc1() {
   return new Promise((resolve) =>
     setTimeout(() => {
       resolve("Resolved async1");
-    }, 2000)
+    }, 2000),
   );
 }
 function asyncFunc2() {
   return new Promise((resolve) =>
     setTimeout(() => {
       resolve("Resolved async2");
-    }, 3000)
+    }, 3000),
   );
 }
 function asyncFunc3() {
   return new Promise((resolve, reject) =>
     setTimeout(() => {
       reject("Rejected async3");
-    }, 1000)
+    }, 1000),
   );
 }
 // driver code
@@ -555,7 +555,7 @@ function PromiseAll(promiseArr) {
               status: "rejected",
             });
           }
-        }
+        },
       );
     }
   });

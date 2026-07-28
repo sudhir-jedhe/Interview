@@ -5,6 +5,7 @@ The code demonstrates the use of **spread syntax** (`...`) in various scenarios.
 ### **1. Concatenating Arrays Using `concat` and Spread Syntax**
 
 #### Code:
+
 ```javascript
 let baseArr = [1, 2, 3];
 let baseArr2 = [4, 5, 6];
@@ -26,6 +27,7 @@ console.log(spreadArr);
   - Then, we use the spread operator (`...`) to join `spreadArr` and `spreadArr2`. The spread operator is shorthand for expanding elements of an array.
 
 #### **Output:**
+
 ```
 [1, 2, 3, 4, 5, 6]
 ["a", "b", "c", "d", "e", "f"]
@@ -36,6 +38,7 @@ console.log(spreadArr);
 ### **2. Understanding Array References and Spread Syntax**
 
 #### Code:
+
 ```javascript
 let baseArr = [1, 2, 3];
 let baseArr2 = baseArr;
@@ -55,6 +58,7 @@ console.log(spreadArr2);
   - For `spreadArr`, we use the spread operator to create a new array `spreadArr2`. Modifying `spreadArr2` does **not** affect `spreadArr` because they are independent arrays after the spread operation.
 
 #### **Output:**
+
 ```
 [1, 2, 3, 4] // baseArr2
 [1, 2, 3, 4] // baseArr
@@ -68,10 +72,11 @@ console.log(spreadArr2);
 ### **3. Using `Math.min` with and without Spread Syntax**
 
 #### Code:
+
 ```javascript
 let baseArr = [5, 2, 7, 8, 4, 9];
-console.log(Math.min(baseArr));  // Incorrect
-console.log(Math.min(...baseArr));  // Correct
+console.log(Math.min(baseArr)); // Incorrect
+console.log(Math.min(...baseArr)); // Correct
 ```
 
 - **Explanation:**
@@ -79,6 +84,7 @@ console.log(Math.min(...baseArr));  // Correct
   - Using the spread operator (`...baseArr`), you "spread" the array into individual elements, allowing `Math.min()` to work as intended.
 
 #### **Output:**
+
 ```
 NaN // Incorrect, because baseArr is passed as a single array argument
 2   // Correct, because the array elements are spread into individual arguments
@@ -89,6 +95,7 @@ NaN // Incorrect, because baseArr is passed as a single array argument
 ### **4. Cloning Objects Using Spread Syntax**
 
 #### Code:
+
 ```javascript
 const spreadObj = {
   name: "Ram",
@@ -104,6 +111,7 @@ console.log(newObj);
   - The spread operator (`...`) is used to create a shallow clone of `spreadObj`. It copies all enumerable properties from `spreadObj` into `newObj`.
 
 #### **Output:**
+
 ```
 { name: "Ram", country: "India" }
 ```
@@ -113,6 +121,7 @@ console.log(newObj);
 ### **5. Using Rest Parameters (`...`) in Functions**
 
 #### Code:
+
 ```javascript
 function add(...objects) {
   let ans = 0;
@@ -130,6 +139,7 @@ add(23, 45, 67, 56);
   - The function sums up all the arguments passed to it.
 
 #### **Output:**
+
 ```
 3   // 1 + 2
 191  // 23 + 45 + 67 + 56
@@ -140,9 +150,10 @@ add(23, 45, 67, 56);
 ### **6. Invalid Use of Spread Syntax on Non-iterable Objects**
 
 #### Code:
+
 ```javascript
 const plainObj = { name: "Ram" }; // Spreading non iterable object
-const baseArr = [...plainObj];  // This will throw an error
+const baseArr = [...plainObj]; // This will throw an error
 ```
 
 - **Explanation:**
@@ -150,6 +161,7 @@ const baseArr = [...plainObj];  // This will throw an error
   - **Plain objects** are not iterable, so you cannot spread them directly like arrays.
 
 #### **Error:**
+
 ```
 Uncaught TypeError: plainObj is not iterable
 ```

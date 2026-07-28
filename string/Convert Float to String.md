@@ -1,3 +1,4 @@
+```js
 const floatValue = 1000.25;
 const strValue = floatValue.toLocaleString();
 console.log(strValue);
@@ -21,3 +22,4 @@ console.log(strValue);
 // const floatValue = 3.14159265;
 // const strValue = String(floatValue);
 // console.log(strValue);
+```

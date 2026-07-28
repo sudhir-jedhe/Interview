@@ -3,6 +3,7 @@ Sure! Here’s the complete code for your problem, including edge case tests and
 ### **Increment Integer Code**:
 
 #### `incrementInteger.js`:
+
 ```javascript
 export function incrementInteger(digits) {
   const n = digits.length;
@@ -26,6 +27,7 @@ export function incrementInteger(digits) {
 ```
 
 #### `main.js`:
+
 ```javascript
 import { incrementInteger } from "./incrementInteger.js";
 
@@ -41,37 +43,39 @@ const testCases = [
 
 testCases.forEach(({ input, expected }) => {
   const result = incrementInteger(input);
-  console.log(`Input: [${input}], Expected: [${expected}], Result: [${result}]`);
+  console.log(
+    `Input: [${input}], Expected: [${expected}], Result: [${result}]`,
+  );
 });
 ```
 
 ### **Explanation of Edge Cases & Testing**:
 
-1. **Test Case: `[9, 9, 9]`**  
+1. **Test Case: `[9, 9, 9]`**
    - **Expected Output**: `[1, 0, 0, 0]`
    - **Reason**: You carry over through all the digits, resulting in an extra `1` at the start.
 
-2. **Test Case: `[0]`**  
+2. **Test Case: `[0]`**
    - **Expected Output**: `[1]`
    - **Reason**: Simple case where you increment `0` by `1`.
 
-3. **Test Case: `[9]`**  
+3. **Test Case: `[9]`**
    - **Expected Output**: `[1, 0]`
    - **Reason**: `9` becomes `10`, so we add a carry to the front.
 
-4. **Test Case: `[1, 2, 3]`**  
+4. **Test Case: `[1, 2, 3]`**
    - **Expected Output**: `[1, 2, 4]`
    - **Reason**: No carryover, just increment the last digit.
 
-5. **Test Case: `[0, 0, 0]`**  
+5. **Test Case: `[0, 0, 0]`**
    - **Expected Output**: `[0, 0, 1]`
    - **Reason**: The last digit becomes `1` as we add `1`.
 
-6. **Test Case: `[1, 9, 9, 9]`**  
+6. **Test Case: `[1, 9, 9, 9]`**
    - **Expected Output**: `[2, 0, 0, 0]`
    - **Reason**: The carryover propagates, and the result increments the first `1` to `2`.
 
-7. **Test Case: `[]` (empty array)**  
+7. **Test Case: `[]` (empty array)**
    - **Expected Output**: `[1]`
    - **Reason**: In case of an empty array, the function returns `[1]`, which is technically an edge case but can happen in certain scenarios.
 
@@ -82,6 +86,7 @@ testCases.forEach(({ input, expected }) => {
 - In Node.js, use `import` syntax by running the script with the `--experimental-modules` flag if needed (or use `require` for older versions).
 
 ### **Sample Output**:
+
 ```javascript
 Input: [9,9,9], Expected: [1,0,0,0], Result: [1,0,0,0]
 Input: [0], Expected: [1], Result: [1]

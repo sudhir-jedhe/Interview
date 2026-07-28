@@ -6,7 +6,7 @@ The problem you're tackling is to count the number of equivalent domino pairs in
    Each domino has two values `[a, b]`. To account for rotations (i.e., `[a, b]` is the same as `[b, a]`), we will sort each domino. For example:
    - `[1, 2]` will be stored as `1:2`
    - `[2, 1]` will also be stored as `1:2`
-   
+
    This way, both `[1, 2]` and `[2, 1]` are treated as equivalent.
 
 2. **Count Occurrences**:  
@@ -14,11 +14,11 @@ The problem you're tackling is to count the number of equivalent domino pairs in
 
 3. **Calculate the Number of Pairs**:  
    Once we have the counts of each unique domino, we can calculate the number of pairs for each unique domino using the combination formula:
-   
+
    \[
    \text{Pairs for a domino with count } c = \frac{c \times (c - 1)}{2}
    \]
-   
+
    This formula counts the number of ways to pick 2 dominoes out of `c` dominoes.
 
 ### Steps to Solve:
@@ -38,15 +38,18 @@ export function numEquivDominoPairs(dominoes) {
   // Step 1: Count occurrences of each unique normalized domino
   for (const domino of dominoes) {
     // Sort each domino to ensure that [a, b] and [b, a] are treated the same
-    const key = domino[0] < domino[1] ? `${domino[0]}:${domino[1]}` : `${domino[1]}:${domino[0]}`;
-    
+    const key =
+      domino[0] < domino[1]
+        ? `${domino[0]}:${domino[1]}`
+        : `${domino[1]}:${domino[0]}`;
+
     // Increment the count of the current domino
     countMap.set(key, (countMap.get(key) || 0) + 1);
   }
 
   // Step 2: Calculate the number of equivalent pairs
   for (const count of countMap.values()) {
-    pairs += (count * (count - 1)) / 2;  // Combination formula C(n, 2)
+    pairs += (count * (count - 1)) / 2; // Combination formula C(n, 2)
   }
 
   return pairs;
@@ -67,7 +70,7 @@ const dominoes = [
   [5, 6],
 ];
 
-console.log(numEquivDominoPairs(dominoes));  // Output: 1
+console.log(numEquivDominoPairs(dominoes)); // Output: 1
 ```
 
 - In this example:
@@ -87,7 +90,7 @@ const dominoes = [
   [2, 2],
 ];
 
-console.log(numEquivDominoPairs(dominoes));  // Output: 3
+console.log(numEquivDominoPairs(dominoes)); // Output: 3
 ```
 
 - In this example:

@@ -15,7 +15,7 @@ In React, the `useContext` API is used to access the value of a **Context** dire
 You can create a context using `React.createContext()`. This will allow you to share data across components.
 
 ```javascript
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from "react";
 
 // Create a Context
 const ThemeContext = createContext();
@@ -28,16 +28,16 @@ export default ThemeContext;
 In a higher-level component (like `App.js`), use the `Context.Provider` to wrap the components that need access to the context and pass down the value to be shared.
 
 ```javascript
-import React, { useState } from 'react';
-import ThemeContext from './ThemeContext';
-import ThemedComponent from './ThemedComponent';
+import React, { useState } from "react";
+import ThemeContext from "./ThemeContext";
+import ThemedComponent from "./ThemedComponent";
 
 function App() {
-  const [theme, setTheme] = useState('light'); // Example: light or dark theme
+  const [theme, setTheme] = useState("light"); // Example: light or dark theme
 
   // Function to toggle theme
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   return (
@@ -62,8 +62,8 @@ export default App;
 Inside a child component, you can use the `useContext` hook to access the context value.
 
 ```javascript
-import React, { useContext } from 'react';
-import ThemeContext from './ThemeContext';
+import React, { useContext } from "react";
+import ThemeContext from "./ThemeContext";
 
 function ThemedComponent() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -93,15 +93,15 @@ export default ThemedComponent;
 
 ```javascript
 // ThemeContext.js
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from "react";
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState("light");
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   return (
@@ -116,9 +116,9 @@ export default ThemeContext;
 
 ```javascript
 // App.js
-import React from 'react';
-import { ThemeProvider } from './ThemeContext';
-import ThemedComponent from './ThemedComponent';
+import React from "react";
+import { ThemeProvider } from "./ThemeContext";
+import ThemedComponent from "./ThemedComponent";
 
 function App() {
   return (
@@ -133,8 +133,8 @@ export default App;
 
 ```javascript
 // ThemedComponent.js
-import React, { useContext } from 'react';
-import ThemeContext from './ThemeContext';
+import React, { useContext } from "react";
+import ThemeContext from "./ThemeContext";
 
 function ThemedComponent() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -157,4 +157,5 @@ export default ThemedComponent;
 - Context allows for shared state without the need to manually pass props through multiple layers of components, making it perfect for things like themes, authentication status, or global settings.
 
 ### Performance Considerations:
+
 - **Re-rendering**: When the value of the context changes, every component that consumes the context will re-render. This is usually not an issue for small apps, but for larger applications, you may need to optimize the context usage or avoid placing large data in context.

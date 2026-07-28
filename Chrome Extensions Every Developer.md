@@ -42,7 +42,7 @@ Identify technologies (CMS, JS libraries, etc.) used on any website instantly.
 **1️⃣4️⃣ [JSON Viewer]→(https://lnkd.in/ezn8wWMJ)**
 Formats JSON files for better readability and debugging
 
-**1️⃣5️⃣ [Lorem Ipsum Generator]→(https://lnkd.in/gVm_SF5P)** 
+**1️⃣5️⃣ [Lorem Ipsum Generator]→(https://lnkd.in/gVm_SF5P)**
 Generate placeholder text for projects, customizable to your needs.
 
 **1️⃣6️⃣ [DayTicks]→(https://lnkd.in/ga6PpSDx)**

@@ -179,3 +179,87 @@ console.log(result); // Output: [1, 3, 12, 0, 0]
 - **Recommendation**:
   - If you want to minimize space usage and avoid creating new arrays, go with the **first or second approach** (two-pointer approach).
   - If you prioritize readability and simplicity, the **third (using `filter()` and `concat()`)** or **fourth (using `reduce()`)** approaches are great choices but come with an additional space cost of O(n).
+
+**Move Zeroes** (LeetCode 283) is a classic array manipulation problem. The objective is to move all `0`s in an array to the end while maintaining the relative order of the non-zero elements—**in-place** without making a copy of the array.
+
+---
+
+### Optimal Strategy: Two-Pointer Approach
+
+Instead of shifting elements repeatedly or using an extra array, we use a **two-pointer technique**:
+
+1. **`writeIndex` (Slow Pointer):** Tracks the position where the next non-zero element should be placed.
+2. **`i` (Fast Pointer):** Iterates through the array to find non-zero elements.
+
+As we iterate, whenever we find a non-zero element, we swap it with the element at `writeIndex` and increment `writeIndex`.
+
+#### Time & Space Complexity
+
+- **Time Complexity:** $O(n)$ — Single pass through the array.
+- **Space Complexity:** $O(1)$ — In-place modification with zero extra memory allocation.
+
+---
+
+### JavaScript Solution
+
+```javascript
+/**
+ * Modifies nums in-place to move all 0's to the end.
+ * @param {number[]} nums
+ * @return {void}
+ */
+function moveZeroes(nums) {
+  let writeIndex = 0;
+
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] !== 0) {
+      // Swap non-zero element with writeIndex position
+      if (i !== writeIndex) {
+        [nums[writeIndex], nums[i]] = [nums[i], nums[writeIndex]];
+      }
+      writeIndex++;
+    }
+  }
+}
+
+// --- Example Walkthrough ---
+const numbers = [0, 1, 0, 3, 12];
+moveZeroes(numbers);
+console.log(numbers); // Output: [1, 3, 12, 0, 0]
+```
+
+---
+
+### Python Solution
+
+```python
+def moveZeroes(nums: list[int]) -> None:
+    write_index = 0
+
+    for i in range(len(nums)):
+        if nums[i] != 0:
+            # Swap non-zero element to the front
+            nums[write_index], nums[i] = nums[i], nums[write_index]
+            write_index += 1
+
+# --- Example Walkthrough ---
+numbers = [0, 1, 0, 3, 12]
+moveZeroes(numbers)
+print(numbers) # Output: [1, 3, 12, 0, 0]
+
+```
+
+---
+
+### Step-by-Step Execution Trace
+
+Given input `[0, 1, 0, 3, 12]`:
+
+| Step      | `i` | `nums[i]` | Action                                     | Array State        | `writeIndex` |
+| --------- | --- | --------- | ------------------------------------------ | ------------------ | ------------ |
+| **Start** | -   | -         | Initial state                              | `[0, 1, 0, 3, 12]` | `0`          |
+| 1         | `0` | `0`       | Is `0` $\rightarrow$ Skip                  | `[0, 1, 0, 3, 12]` | `0`          |
+| 2         | `1` | `1`       | Non-zero $\rightarrow$ Swap with `nums[0]` | `[1, 0, 0, 3, 12]` | `1`          |
+| 3         | `2` | `0`       | Is `0` $\rightarrow$ Skip                  | `[1, 0, 0, 3, 12]` | `1`          |
+| 4         | `3` | `3`       | Non-zero $\rightarrow$ Swap with `nums[1]` | `[1, 3, 0, 0, 12]` | `2`          |
+| 5         | `4` | `12`      | Non-zero $\rightarrow$ Swap with `nums[2]` | `[1, 3, 12, 0, 0]` | `3`          |

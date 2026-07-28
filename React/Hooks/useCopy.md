@@ -2,8 +2,7 @@
 
 // The useCopy() method returns a method copy(text) which accepts the text as input and copies that text and the copied text.
 
-
-
+```js
 import { useState } from "react";
 
 const useCopy = () => {
@@ -43,3 +42,4 @@ export default Example;
 Output:
 copiedText:  // initially
 copiedText: Hello World! // after click
+```

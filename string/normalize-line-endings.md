@@ -4,14 +4,15 @@ Normalization is the process of converting all line endings in a string to a con
 
 Luckily, all you need to do is use String.prototype.replace() with a regular expression to match and replace line endings. As the sequences of characters are known and ordered consistently, you need only check for an optional carriage return (\r?) followed by a line feed (\n).
 
-const normalizeLineEndings = (str, normalized = '\n') =>
+```js
+const normalizeLineEndings = (str, normalized = "\n") =>
   str.replace(/\r?\n/g, normalized);
 
-normalizeLineEndings('This\r\nis a\nmultiline\nstring.\r\n');
+normalizeLineEndings("This\r\nis a\nmultiline\nstring.\r\n");
 // 'This\nis a\nmultiline\nstring.\n'
 
-normalizeLineEndings('This\r\nis a\nmultiline\nstring.\r\n', '\r\n');
+normalizeLineEndings("This\r\nis a\nmultiline\nstring.\r\n", "\r\n");
 // 'This\r\nis a\r\nmultiline\r\nstring.\r\n'
-
+```
 
 As the much older Mac systems are no longer in common use, you can safely ignore the standalone carriage return (\r) character in most cases. However, if you need to support these systems, you can modify the regular expression to include it: /\r?\n|\r/g.

@@ -1,3 +1,4 @@
+```js
 Input:
 // This test case is from stack overflow.
 const logger = (label, start = Date.now()) => (...values) => {

@@ -1,3 +1,4 @@
+```js
 import { useReducer } from "react";
 import { useState } from "react";
 import { useCallback, useState } from "react";
@@ -71,3 +72,4 @@ currentValue: d // onClick
 currentValue: a // onClick
 currentValue: b // onClick
 currentValue: c // onClick
+```

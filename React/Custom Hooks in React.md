@@ -7,7 +7,6 @@ Custom hooks leverage **React hooks** (like `useState`, `useEffect`, `useContext
 #### **Key Characteristics of Custom Hooks:**
 
 1. **Starts with `use`**: Custom hooks must follow the naming convention of starting with the word `use` (e.g., `useFetch`, `useForm`), as React expects hooks to follow this convention to ensure proper validation of hooks rules.
-   
 2. **Encapsulates logic**: They are used to encapsulate complex logic or state management, which can be reused across different components.
 
 3. **Returns state or functions**: Custom hooks can return any combination of state, functions, or other hooks, which can then be consumed by components.
@@ -27,7 +26,7 @@ Let’s consider an example where you want to create a custom hook for **fetchin
 #### **1. Custom Hook to Fetch Data (useFetch)**
 
 ```javascript
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 // Custom Hook: useFetch
 const useFetch = (url) => {
@@ -40,7 +39,7 @@ const useFetch = (url) => {
       try {
         const response = await fetch(url);
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const result = await response.json();
         setData(result);
@@ -52,7 +51,7 @@ const useFetch = (url) => {
     };
 
     fetchData();
-  }, [url]);  // Re-fetch when the URL changes
+  }, [url]); // Re-fetch when the URL changes
 
   return { data, loading, error };
 };
@@ -61,6 +60,7 @@ export default useFetch;
 ```
 
 #### **How it Works:**
+
 - **State**: The hook manages three states: `data`, `loading`, and `error`.
 - **Effect**: It uses `useEffect` to fetch data asynchronously when the component using the hook mounts (or when the `url` changes).
 - **Return**: It returns the state (`data`, `loading`, and `error`), which the component can use to render the UI.
@@ -70,11 +70,11 @@ export default useFetch;
 Now, you can use the `useFetch` hook in a component:
 
 ```javascript
-import React from 'react';
-import useFetch from './useFetch'; // Import the custom hook
+import React from "react";
+import useFetch from "./useFetch"; // Import the custom hook
 
 const DataFetchingComponent = () => {
-  const { data, loading, error } = useFetch('https://api.example.com/data');
+  const { data, loading, error } = useFetch("https://api.example.com/data");
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -91,6 +91,7 @@ export default DataFetchingComponent;
 ```
 
 In this example:
+
 - The component **uses** the `useFetch` hook to fetch data.
 - It **displays** loading text while waiting for the data, and an error message if the fetch fails.
 - Once the data is fetched, it displays the result.
@@ -102,7 +103,7 @@ A custom hook can be used to manage the state of a form input.
 #### **2. Custom Hook for Form Handling (useForm)**
 
 ```javascript
-import { useState } from 'react';
+import { useState } from "react";
 
 // Custom Hook: useForm
 const useForm = (initialValues) => {
@@ -118,7 +119,7 @@ const useForm = (initialValues) => {
 
   const handleSubmit = (event, callback) => {
     event.preventDefault();
-    callback(values);  // Pass form data to callback
+    callback(values); // Pass form data to callback
   };
 
   return {
@@ -134,14 +135,17 @@ export default useForm;
 #### **Using the Custom Hook in a Component**
 
 ```javascript
-import React from 'react';
-import useForm from './useForm';
+import React from "react";
+import useForm from "./useForm";
 
 const MyForm = () => {
-  const { values, handleChange, handleSubmit } = useForm({ name: '', email: '' });
+  const { values, handleChange, handleSubmit } = useForm({
+    name: "",
+    email: "",
+  });
 
   const submitForm = (formData) => {
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
   };
 
   return (
@@ -173,6 +177,7 @@ export default MyForm;
 ```
 
 #### **How it Works:**
+
 - **useForm** initializes form values (`name` and `email`).
 - The `handleChange` function updates the state whenever an input changes.
 - The `handleSubmit` function calls the passed `callback` with form data when the form is submitted.

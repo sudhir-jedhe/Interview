@@ -5,6 +5,7 @@ In React, **`useState`** and **`useEffect`** are two of the most commonly used *
 The **`useState`** hook is used to declare and manage state within a functional component. It allows the component to **track and update data** that might change during the component's lifecycle (e.g., user input, server responses, etc.).
 
 #### **Syntax**:
+
 ```javascript
 const [state, setState] = useState(initialState);
 ```
@@ -16,7 +17,7 @@ const [state, setState] = useState(initialState);
 #### **Example of `useState`**:
 
 ```javascript
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function Counter() {
   // Declare a state variable 'count' initialized to 0
@@ -34,10 +35,12 @@ export default Counter;
 ```
 
 #### **Explanation**:
+
 - `count` is the state variable, which starts at `0`.
 - `setCount` is the function used to update `count`. Each time the button is clicked, `setCount(count + 1)` updates the state, causing the component to re-render with the new `count` value.
 
 #### **Purpose of `useState`**:
+
 - **State management**: It lets you manage data within a component that may change over time.
 - **Trigger re-renders**: When the state changes, React automatically re-renders the component to reflect the updated state.
 
@@ -48,6 +51,7 @@ export default Counter;
 The **`useEffect`** hook is used to perform side effects in a functional component. Side effects are operations like data fetching, manually modifying the DOM, setting up subscriptions, or handling timers. These operations should not block the UI and should be done after the component renders.
 
 #### **Syntax**:
+
 ```javascript
 useEffect(() => {
   // Effect logic here
@@ -63,14 +67,14 @@ useEffect(() => {
 #### **Example of `useEffect`**:
 
 ```javascript
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function Timer() {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
     const timerId = setInterval(() => {
-      setSeconds(prevSeconds => prevSeconds + 1);
+      setSeconds((prevSeconds) => prevSeconds + 1);
     }, 1000);
 
     // Cleanup function to clear the interval when the component unmounts
@@ -84,11 +88,13 @@ export default Timer;
 ```
 
 #### **Explanation**:
+
 - The `useEffect` hook starts a timer when the component mounts. It uses `setInterval` to update the `seconds` state every second.
 - The cleanup function (`return () => clearInterval(timerId)`) ensures that when the component unmounts (or when the effect is re-run), the interval is cleared, preventing memory leaks.
 - The empty dependency array `[]` means this effect only runs once when the component is first rendered, which mimics the behavior of `componentDidMount` and `componentWillUnmount` in class components.
 
 #### **Purpose of `useEffect`**:
+
 - **Side effects**: It allows you to run logic after the render, like fetching data, subscribing to services, or interacting with external libraries.
 - **Component lifecycle simulation**: It can mimic lifecycle methods like `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` in class components, making it an all-in-one hook for managing component lifecycle.
 - **Cleanup**: It provides a way to clean up resources (e.g., clearing intervals, unsubscribing from services) when the component unmounts or when dependencies change.
@@ -102,7 +108,7 @@ export default Timer;
 #### **Example: Fetching Data with `useState` and `useEffect`**
 
 ```javascript
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function FetchData() {
   const [data, setData] = useState(null);
@@ -111,15 +117,15 @@ function FetchData() {
 
   useEffect(() => {
     // Fetch data when the component mounts
-    fetch('https://api.example.com/data')
-      .then(response => response.json())
-      .then(data => {
-        setData(data);  // Set the fetched data
-        setLoading(false);  // Set loading to false
+    fetch("https://api.example.com/data")
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data); // Set the fetched data
+        setLoading(false); // Set loading to false
       })
-      .catch(err => {
-        setError(err);  // Set error if the fetch fails
-        setLoading(false);  // Set loading to false even if there is an error
+      .catch((err) => {
+        setError(err); // Set error if the fetch fails
+        setLoading(false); // Set loading to false even if there is an error
       });
   }, []); // Empty dependency array: effect runs only once after the first render
 
@@ -138,6 +144,7 @@ export default FetchData;
 ```
 
 #### **Explanation**:
+
 - **State management**: `useState` is used to track three pieces of state:
   - `data`: Holds the fetched data.
   - `loading`: Tracks whether the data is still being loaded.

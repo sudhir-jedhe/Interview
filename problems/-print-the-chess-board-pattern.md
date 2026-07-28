@@ -1,3 +1,4 @@
+```js
 let chessboard = (row, column) => {
   for (let i = 0; i < row; i++) {
     //If odd then start with ' '

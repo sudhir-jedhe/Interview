@@ -3,6 +3,7 @@
 Redux Toolkit (RTK) is the official, recommended way to write Redux logic. It simplifies the Redux setup by providing a set of tools and utilities that make it easier to manage state in a Redux store. RTK eliminates much of the boilerplate code that is typically required when using Redux, making it easier to manage state and perform side effects.
 
 ### **Key Features of Redux Toolkit:**
+
 1. **`createSlice`** – Simplifies reducer and action creation.
 2. **`configureStore`** – A simplified way to configure the Redux store.
 3. **`createAsyncThunk`** – For handling asynchronous logic (e.g., API calls).
@@ -16,6 +17,7 @@ Redux Toolkit (RTK) is the official, recommended way to write Redux logic. It si
 This example shows how to set up Redux Toolkit with a simple counter application.
 
 #### **1. Install Redux Toolkit and React-Redux**
+
 ```bash
 npm install @reduxjs/toolkit react-redux
 ```
@@ -26,11 +28,11 @@ Create a file `counterSlice.js` to define the state and reducers for the counter
 
 ```javascript
 // src/redux/counterSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 // Create the slice with reducers
 const counterSlice = createSlice({
-  name: 'counter',
+  name: "counter",
   initialState: { value: 0 },
   reducers: {
     increment: (state) => {
@@ -58,8 +60,8 @@ Configure the Redux store using `configureStore` from Redux Toolkit.
 
 ```javascript
 // src/redux/store.js
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './counterSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./counterSlice";
 
 // Create the Redux store with counter reducer
 const store = configureStore({
@@ -77,17 +79,17 @@ In `index.js`, use `Provider` from `react-redux` to wrap your app with the Redux
 
 ```javascript
 // src/index.js
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import App from './App';
-import store from './redux/store';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import App from "./App";
+import store from "./redux/store";
 
 ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root')
+  document.getElementById("root"),
 );
 ```
 
@@ -97,9 +99,9 @@ Now, create a component `Counter.js` that interacts with the Redux store using `
 
 ```javascript
 // src/components/Counter.js
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement, incrementByAmount } from '../redux/counterSlice';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement, incrementByAmount } from "../redux/counterSlice";
 
 const Counter = () => {
   const [amount, setAmount] = useState(0);
@@ -117,7 +119,9 @@ const Counter = () => {
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
         />
-        <button onClick={() => dispatch(incrementByAmount(amount))}>Increment by Amount</button>
+        <button onClick={() => dispatch(incrementByAmount(amount))}>
+          Increment by Amount
+        </button>
       </div>
     </div>
   );
@@ -132,8 +136,8 @@ Finally, use the `Counter` component in the main `App.js` file.
 
 ```javascript
 // src/App.js
-import React from 'react';
-import Counter from './components/Counter';
+import React from "react";
+import Counter from "./components/Counter";
 
 const App = () => {
   return (
@@ -156,31 +160,31 @@ In this example, we will fetch user data from a public API and store it in Redux
 
 ```javascript
 // src/redux/userSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Create an async thunk for fetching users
-export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/users');
+export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
+  const response = await fetch("https://jsonplaceholder.typicode.com/users");
   const data = await response.json();
   return data;
 });
 
 // Create the slice
 const userSlice = createSlice({
-  name: 'users',
-  initialState: { users: [], status: 'idle', error: null },
+  name: "users",
+  initialState: { users: [], status: "idle", error: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.users = action.payload;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.error.message;
       });
   },
@@ -195,8 +199,8 @@ Add the `userSlice` to the store configuration.
 
 ```javascript
 // src/redux/store.js
-import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './userSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./userSlice";
 
 const store = configureStore({
   reducer: {
@@ -213,25 +217,25 @@ Now create a component that dispatches the `fetchUsers` action and displays the 
 
 ```javascript
 // src/components/UserList.js
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers } from '../redux/userSlice';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers } from "../redux/userSlice";
 
 const UserList = () => {
   const dispatch = useDispatch();
   const { users, status, error } = useSelector((state) => state.users);
 
   useEffect(() => {
-    if (status === 'idle') {
+    if (status === "idle") {
       dispatch(fetchUsers());
     }
   }, [status, dispatch]);
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return <div>Loading...</div>;
   }
 
-  if (status === 'failed') {
+  if (status === "failed") {
     return <div>Error: {error}</div>;
   }
 
@@ -256,8 +260,8 @@ Finally, display the `UserList` component in your app.
 
 ```javascript
 // src/App.js
-import React from 'react';
-import UserList from './components/UserList';
+import React from "react";
+import UserList from "./components/UserList";
 
 const App = () => {
   return (
@@ -282,7 +286,7 @@ Let’s say we need to manage a list of posts. We can use `createEntityAdapter` 
 
 ```javascript
 // src/redux/postsSlice.js
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 
 // Create an entity adapter for posts
 const postsAdapter = createEntityAdapter();
@@ -293,7 +297,7 @@ const initialState = postsAdapter.getInitialState({
 });
 
 const postsSlice = createSlice({
-  name: 'posts',
+  name: "posts",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -319,8 +323,8 @@ export default postsSlice.reducer;
 
 ```javascript
 // src/redux/store.js
-import { configureStore } from '@reduxjs/toolkit';
-import postsReducer from './postsSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import postsReducer from "./postsSlice";
 
 const store = configureStore({
   reducer: {
@@ -382,6 +386,7 @@ Redux Toolkit simplifies Redux development by:
 3. Simplifying store configuration with `configureStore`.
 
 These examples demonstrate how to set up Redux Toolkit with a variety of use cases:
+
 - **Basic state management with `createSlice`**.
 - **Handling asynchronous operations with `createAsyncThunk`**.
 - **Using `createEntityAdapter` to manage normalized data.**

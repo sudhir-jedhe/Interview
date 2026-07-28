@@ -10,59 +10,63 @@
 
 // Also, assign the load and error listener on the script to monitor if it is properly loaded or not. Depending upon the response from the listeners, update the status.
 
-
+```js
 function useScript(src) {
-    // keep track of script status ("idle", "loading", "ready", "error")
-    const [status, setStatus] = useState(src ? "loading" : "idle");
-  
-    useEffect(() => {
-      // if not url provided, set the state to be idle
-      if (!src) {
-        setStatus("idle");
-        return;
-      }
-  
-      // get the script to check if it is already sourced or not
-      let script = document.querySelector(`script[src="${src}"]`);
-  
-      if (!script) {
-        // create script
-        script = document.createElement("script");
-        script.src = src;
-        script.async = true;
-        script.setAttribute("data-status", "loading");
-        // inject the script at the end of the body
-        document.body.appendChild(script);
-  
-        // set the script status in a custom attribute
-        const setAttributeFromEvent = (event) => {
-          script.setAttribute("data-status", event.type === "load" ? "ready" : "error");
-        };
-  
-        script.addEventListener("load", setAttributeFromEvent);
-        script.addEventListener("error", setAttributeFromEvent);
-      } else {
-        // if the script is already loaded, get its status and update.
-        setStatus(script.getAttribute("data-status"));
-      }
-  
-      // update the script status
-      const setStateFromEvent = (event) => {
-        setStatus(event.type === "load" ? "ready" : "error");
+  // keep track of script status ("idle", "loading", "ready", "error")
+  const [status, setStatus] = useState(src ? "loading" : "idle");
+
+  useEffect(() => {
+    // if not url provided, set the state to be idle
+    if (!src) {
+      setStatus("idle");
+      return;
+    }
+
+    // get the script to check if it is already sourced or not
+    let script = document.querySelector(`script[src="${src}"]`);
+
+    if (!script) {
+      // create script
+      script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.setAttribute("data-status", "loading");
+      // inject the script at the end of the body
+      document.body.appendChild(script);
+
+      // set the script status in a custom attribute
+      const setAttributeFromEvent = (event) => {
+        script.setAttribute(
+          "data-status",
+          event.type === "load" ? "ready" : "error",
+        );
       };
-  
-      // setup
-      script.addEventListener("load", setStateFromEvent);
-      script.addEventListener("error", setStateFromEvent);
-  
-      // clean up
-      return () => {
-        if (script) {
-          script.removeEventListener("load", setStateFromEvent);
-          script.removeEventListener("error", setStateFromEvent);
-        }
-      };
-    }, [src]);
-  
-    return status;
-  }
+
+      script.addEventListener("load", setAttributeFromEvent);
+      script.addEventListener("error", setAttributeFromEvent);
+    } else {
+      // if the script is already loaded, get its status and update.
+      setStatus(script.getAttribute("data-status"));
+    }
+
+    // update the script status
+    const setStateFromEvent = (event) => {
+      setStatus(event.type === "load" ? "ready" : "error");
+    };
+
+    // setup
+    script.addEventListener("load", setStateFromEvent);
+    script.addEventListener("error", setStateFromEvent);
+
+    // clean up
+    return () => {
+      if (script) {
+        script.removeEventListener("load", setStateFromEvent);
+        script.removeEventListener("error", setStateFromEvent);
+      }
+    };
+  }, [src]);
+
+  return status;
+}
+```

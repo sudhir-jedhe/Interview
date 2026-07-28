@@ -34,7 +34,6 @@ console.log(findMissingNumber(nums)); // Output: 2
 const nums2 = [9, 6, 4, 2, 3, 5, 7, 0, 1];
 console.log(findMissingNumber(nums2)); // Output: 8
 
-
 // Function to find multiple missing elements in a given set of numbers
 function findMissingElements(arr) {
   // Define a full set of numbers (1 to 10 in this case)
@@ -63,16 +62,20 @@ console.log("Missing elements:", missing); // Output: [3, 5, 8, 9]
 ### Example Breakdown:
 
 #### 1. **`findMissingNumber` Example**:
-   For the array `[3, 0, 1]`:
-   - The length of the array `n = 3`.
-   - The expected sum for numbers `0` to `3` is: `(3 * (3 + 1)) / 2 = 6`.
-   - The actual sum of the elements is: `3 + 0 + 1 = 4`.
-   - The missing number is the difference between the expected sum and the actual sum: `6 - 4 = 2`.
+
+For the array `[3, 0, 1]`:
+
+- The length of the array `n = 3`.
+- The expected sum for numbers `0` to `3` is: `(3 * (3 + 1)) / 2 = 6`.
+- The actual sum of the elements is: `3 + 0 + 1 = 4`.
+- The missing number is the difference between the expected sum and the actual sum: `6 - 4 = 2`.
 
 #### 2. **`findMissingElements` Example**:
-   For the array `[1, 2, 4, 6, 7, 10]`:
-   - We have a predefined full set of numbers from `1` to `10`.
-   - The missing numbers are those that aren't in the provided array, which in this case are `[3, 5, 8, 9]`.
+
+For the array `[1, 2, 4, 6, 7, 10]`:
+
+- We have a predefined full set of numbers from `1` to `10`.
+- The missing numbers are those that aren't in the provided array, which in this case are `[3, 5, 8, 9]`.
 
 ### Additional Notes:
 
@@ -85,4 +88,5 @@ console.log("Missing elements:", missing); // Output: [3, 5, 8, 9]
    - If `findMissingElements` is given an array that already contains all the elements of the full set, it will return an empty array `[]` as there are no missing elements.
 
 ### Conclusion:
+
 Both functions work efficiently for their intended tasks and are flexible enough to handle different scenarios (finding a single missing number in a sequence or multiple missing numbers in a predefined set). You can easily adapt the full set for different ranges or apply the functions to various datasets.

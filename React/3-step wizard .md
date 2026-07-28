@@ -14,8 +14,7 @@ This challenge is essentially a **3-step wizard** with:
 ✅ Back Navigation
 ```
 
-***
-
+---
 
 mplement a multi-step form (3 steps) for event creation, with Zod validation, conditional navigation, and persistent form values between steps.
 
@@ -55,215 +54,140 @@ returns to step 2 when going back from step 3 for offline events
 ## Overall State
 
 ```tsx
-const [step, setStep] =
-  useState(1);
+const [step, setStep] = useState(1);
 
-const [eventData, setEventData] =
-  useState({});
+const [eventData, setEventData] = useState({});
 
-const [locationData, setLocationData] =
-  useState({});
+const [locationData, setLocationData] = useState({});
 
-const [settingsData, setSettingsData] =
-  useState({});
+const [settingsData, setSettingsData] = useState({});
 
-const [success, setSuccess] =
-  useState(false);
+const [success, setSuccess] = useState(false);
 ```
 
-***
+---
 
 # Step 1 Action
 
 ```tsx
-const eventAction =
-  createStepAction(
-    EventSchema,
-    async (
-      prevState,
-      formData
-    ) => {
-      const name =
-        formData
-          .get("name")
-          ?.toString() ?? "";
+const eventAction = createStepAction(
+  EventSchema,
+  async (prevState, formData) => {
+    const name = formData.get("name")?.toString() ?? "";
 
-      const description =
-        formData
-          .get(
-            "description"
-          )
-          ?.toString() ??
-        "";
+    const description = formData.get("description")?.toString() ?? "";
 
-      const isOnline =
-        formData.get(
-          "isOnline"
-        ) === "on";
+    const isOnline = formData.get("isOnline") === "on";
 
-      const result =
-        EventSchema.safeParse(
-          {
-            name,
-            description,
-            isOnline,
-          }
-        );
+    const result = EventSchema.safeParse({
+      name,
+      description,
+      isOnline,
+    });
 
-      if (
-        !result.success
-      ) {
-        return {
-          ok: false,
-          errors:
-            result.error
-              .flatten()
-              .fieldErrors,
-          values: {
-            name,
-            description,
-            isOnline,
-          },
-        };
-      }
-
+    if (!result.success) {
       return {
-        ok: true,
-        errors: {},
-        values:
-          result.data,
-        data: result.data,
+        ok: false,
+        errors: result.error.flatten().fieldErrors,
+        values: {
+          name,
+          description,
+          isOnline,
+        },
       };
     }
-  );
+
+    return {
+      ok: true,
+      errors: {},
+      values: result.data,
+      data: result.data,
+    };
+  },
+);
 ```
 
-***
+---
 
 # Step 2 Action
 
 ```tsx
-const locationAction =
-  createStepAction(
-    LocationSchema,
-    async (
-      prevState,
-      formData
-    ) => {
-      const address =
-        formData
-          .get("address")
-          ?.toString() ?? "";
+const locationAction = createStepAction(
+  LocationSchema,
+  async (prevState, formData) => {
+    const address = formData.get("address")?.toString() ?? "";
 
-      const city =
-        formData
-          .get("city")
-          ?.toString() ?? "";
+    const city = formData.get("city")?.toString() ?? "";
 
-      const postalCode =
-        formData
-          .get(
-            "postalCode"
-          )
-          ?.toString() ?? "";
+    const postalCode = formData.get("postalCode")?.toString() ?? "";
 
-      const result =
-        LocationSchema.safeParse(
-          {
-            address,
-            city,
-            postalCode,
-          }
-        );
+    const result = LocationSchema.safeParse({
+      address,
+      city,
+      postalCode,
+    });
 
-      if (
-        !result.success
-      ) {
-        return {
-          ok: false,
-          errors:
-            result.error
-              .flatten()
-              .fieldErrors,
-          values: {
-            address,
-            city,
-            postalCode,
-          },
-        };
-      }
-
+    if (!result.success) {
       return {
-        ok: true,
-        errors: {},
-        values:
-          result.data,
-        data: result.data,
+        ok: false,
+        errors: result.error.flatten().fieldErrors,
+        values: {
+          address,
+          city,
+          postalCode,
+        },
       };
     }
-  );
+
+    return {
+      ok: true,
+      errors: {},
+      values: result.data,
+      data: result.data,
+    };
+  },
+);
 ```
 
-***
+---
 
 # Step 3 Action
 
 ```tsx
-const settingsAction =
-  createStepAction(
-    DateAndSettingsSchema,
-    async (
-      prevState,
-      formData
-    ) => {
-      const date =
-        formData
-          .get("date")
-          ?.toString() ?? "";
+const settingsAction = createStepAction(
+  DateAndSettingsSchema,
+  async (prevState, formData) => {
+    const date = formData.get("date")?.toString() ?? "";
 
-      const capacity =
-        Number(
-          formData.get(
-            "capacity"
-          )
-        );
+    const capacity = Number(formData.get("capacity"));
 
-      const result =
-        DateAndSettingsSchema.safeParse(
-          {
-            date,
-            capacity,
-          }
-        );
+    const result = DateAndSettingsSchema.safeParse({
+      date,
+      capacity,
+    });
 
-      if (
-        !result.success
-      ) {
-        return {
-          ok: false,
-          errors:
-            result.error
-              .flatten()
-              .fieldErrors,
-          values: {
-            date,
-            capacity,
-          },
-        };
-      }
-
+    if (!result.success) {
       return {
-        ok: true,
-        errors: {},
-        values:
-          result.data,
-        data: result.data,
+        ok: false,
+        errors: result.error.flatten().fieldErrors,
+        values: {
+          date,
+          capacity,
+        },
       };
     }
-  );
+
+    return {
+      ok: true,
+      errors: {},
+      values: result.data,
+      data: result.data,
+    };
+  },
+);
 ```
 
-***
+---
 
 # Step Navigation Logic
 
@@ -271,14 +195,9 @@ const settingsAction =
 
 ```tsx
 if (eventState.ok) {
-  setEventData(
-    eventState.data
-  );
+  setEventData(eventState.data);
 
-  if (
-    eventState.data
-      .isOnline
-  ) {
+  if (eventState.data.isOnline) {
     setStep(3);
   } else {
     setStep(2);
@@ -294,35 +213,31 @@ Online  → Step 3
 Offline → Step 2
 ```
 
-***
+---
 
 ### Step 2 Submit
 
 ```tsx
 if (locationState.ok) {
-  setLocationData(
-    locationState.data
-  );
+  setLocationData(locationState.data);
 
   setStep(3);
 }
 ```
 
-***
+---
 
 ### Step 3 Submit
 
 ```tsx
 if (settingsState.ok) {
-  setSettingsData(
-    settingsState.data
-  );
+  setSettingsData(settingsState.data);
 
   setSuccess(true);
 }
 ```
 
-***
+---
 
 # Back Button Logic
 
@@ -330,9 +245,7 @@ if (settingsState.ok) {
 
 ```tsx
 function handleBack() {
-  if (
-    eventData.isOnline
-  ) {
+  if (eventData.isOnline) {
     setStep(1);
   } else {
     setStep(2);
@@ -350,7 +263,7 @@ Offline Event
 Step3 → Step2
 ```
 
-***
+---
 
 ### Step 2 Back
 
@@ -358,36 +271,36 @@ Step3 → Step2
 setStep(1);
 ```
 
-***
+---
 
 # Step Rendering
 
 ```tsx
-{step === 1 && (
-  <EventForm />
-)}
+{
+  step === 1 && <EventForm />;
+}
 
-{step === 2 && (
-  <LocationForm />
-)}
+{
+  step === 2 && <LocationForm />;
+}
 
-{step === 3 && (
-  <SettingsForm />
-)}
+{
+  step === 3 && <SettingsForm />;
+}
 ```
 
 Only one step visible.
 
-***
+---
 
 # Persist Values
 
 Values are stored separately:
 
 ```tsx
-eventData
-locationData
-settingsData
+eventData;
+locationData;
+settingsData;
 ```
 
 Used as:
@@ -416,47 +329,33 @@ Next
 previous values remain
 ```
 
-***
+---
 
 # Error Rendering
 
 ```tsx
-<input
-  aria-invalid={
-    !!state.errors.name
-  }
-/>
+<input aria-invalid={!!state.errors.name} />;
 
-{state.errors.name && (
-  <p
-    data-testid="name-error"
-  >
-    {
-      state.errors.name
-    }
-  </p>
-)}
+{
+  state.errors.name && <p data-testid="name-error">{state.errors.name}</p>;
+}
 ```
 
 Required for all fields.
 
-***
+---
 
 # Success Screen
 
 ```tsx
 {
   success && (
-    <div
-      data-testid="success-message"
-    >
-      Event created successfully
-    </div>
+    <div data-testid="success-message">Event created successfully</div>
   );
 }
 ```
 
-***
+---
 
 # Test Mapping
 
@@ -474,7 +373,7 @@ Required for all fields.
 | Step3 → Step2            | offline back               |
 | Persisted values         | stored state               |
 
-***
+---
 
 # Senior Interview Answer
 

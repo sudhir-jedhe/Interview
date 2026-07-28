@@ -6,7 +6,7 @@ The goal is to return the count of distinct Morse code transformations among all
 
 ### Solution Explanation:
 
-1. **Morse Code Table**: 
+1. **Morse Code Table**:
    The `codes` array defines the Morse code mapping for each letter from 'a' to 'z'. The position in this array corresponds to the letter's position in the alphabet (i.e., `codes[0]` is for 'a', `codes[1]` is for 'b', etc.).
 
 2. **Word Transformation**:
@@ -28,47 +28,47 @@ The goal is to return the count of distinct Morse code transformations among all
 
 ```typescript
 const codes = [
-    '.-',       // a
-    '-...',     // b
-    '-.-.',     // c
-    '-..',      // d
-    '.',        // e
-    '..-.',     // f
-    '--.',      // g
-    '....',     // h
-    '..',       // i
-    '.---',     // j
-    '-.-',      // k
-    '.-..',     // l
-    '--',       // m
-    '-.',       // n
-    '---',      // o
-    '.--.',     // p
-    '--.-',     // q
-    '.-.',      // r
-    '...',      // s
-    '-',        // t
-    '..-',      // u
-    '...-',     // v
-    '.--',      // w
-    '-..-',     // x
-    '-.--',     // y
-    '--..',     // z
+  ".-", // a
+  "-...", // b
+  "-.-.", // c
+  "-..", // d
+  ".", // e
+  "..-.", // f
+  "--.", // g
+  "....", // h
+  "..", // i
+  ".---", // j
+  "-.-", // k
+  ".-..", // l
+  "--", // m
+  "-.", // n
+  "---", // o
+  ".--.", // p
+  "--.-", // q
+  ".-.", // r
+  "...", // s
+  "-", // t
+  "..-", // u
+  "...-", // v
+  ".--", // w
+  "-..-", // x
+  "-.--", // y
+  "--..", // z
 ];
 
 function uniqueMorseRepresentations(words: string[]): number {
-    // Create a set to store unique Morse code transformations
-    const morseSet = new Set(
-        words.map(word => {
-            return word
-                .split('')                  // Split each word into individual characters
-                .map(c => codes[c.charCodeAt(0) - 'a'.charCodeAt(0)]) // Map each character to its Morse code
-                .join('');                  // Join the Morse codes to form the transformation
-        })
-    );
-    
-    // The size of the set will give the count of unique transformations
-    return morseSet.size;
+  // Create a set to store unique Morse code transformations
+  const morseSet = new Set(
+    words.map((word) => {
+      return word
+        .split("") // Split each word into individual characters
+        .map((c) => codes[c.charCodeAt(0) - "a".charCodeAt(0)]) // Map each character to its Morse code
+        .join(""); // Join the Morse codes to form the transformation
+    }),
+  );
+
+  // The size of the set will give the count of unique transformations
+  return morseSet.size;
 }
 
 // Example 1
@@ -98,8 +98,9 @@ console.log(uniqueMorseRepresentations(words2)); // Output: 1
 ### Example Walkthrough:
 
 #### Example 1:
+
 ```javascript
-words = ["gin", "zen", "gig", "msg"]
+words = ["gin", "zen", "gig", "msg"];
 ```
 
 - `"gin"`:
@@ -129,8 +130,9 @@ words = ["gin", "zen", "gig", "msg"]
 So, the unique Morse code transformations are `["--...-.", "--...--."]`, and thus the output is `2`.
 
 #### Example 2:
+
 ```javascript
-words = ["a"]
+words = ["a"];
 ```
 
 - `"a"`:
@@ -140,17 +142,20 @@ words = ["a"]
 Since there is only one word, the output is `1`.
 
 ### Time Complexity:
-- **O(n * m)** where:
+
+- **O(n \* m)** where:
   - `n` is the number of words in the array.
   - `m` is the average length of each word.
-  This is because:
+    This is because:
   - For each word, we are splitting it into characters (O(m)) and then mapping each character to its Morse code (O(1) operation per character).
   - We are also adding the result to a `Set`, which typically has O(1) complexity for insertion.
 
 ### Space Complexity:
-- **O(n * m)**, because:
+
+- **O(n \* m)**, because:
   - We store each word's transformation (up to `m` characters) in the `Set`.
   - In the worst case, all transformations could be unique, and thus the space used by the `Set` could grow proportionally to the size of the input.
 
 ### Conclusion:
-This solution efficiently computes the number of unique Morse code transformations by utilizing a `Set` to store and count distinct transformations. It performs well with a time complexity of **O(n * m)** and a space complexity of **O(n * m)**, where `n` is the number of words and `m` is the length of the longest word.
+
+This solution efficiently computes the number of unique Morse code transformations by utilizing a `Set` to store and count distinct transformations. It performs well with a time complexity of **O(n \* m)** and a space complexity of **O(n \* m)**, where `n` is the number of words and `m` is the length of the longest word.

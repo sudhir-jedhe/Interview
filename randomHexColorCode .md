@@ -2,7 +2,7 @@ The `randomHexColorCode` function generates a random hex color code, which can b
 
 ### How the Code Works:
 
-1. **Math.random()**: This generates a random floating-point number between `0` (inclusive) and `1` (exclusive). 
+1. **Math.random()**: This generates a random floating-point number between `0` (inclusive) and `1` (exclusive).
 2. **Multiplying by 0xfffff**: The value `0xfffff` is a hexadecimal representation of `1048575` (or `2^20 - 1`). This ensures that we generate a large enough random number, suitable for creating a 6-digit hex color code (as hex color codes range from `#000000` to `#ffffff`).
 3. **Multiplying by 1000000**: This step ensures that the random number is large enough to produce a variety of hex color codes by increasing the range.
 4. **toString(16)**: This converts the random number to its hexadecimal representation (base 16).
@@ -13,8 +13,8 @@ The `randomHexColorCode` function generates a random hex color code, which can b
 
 ```javascript
 const randomHexColorCode = () => {
-    let n = (Math.random() * 0xfffff * 1000000).toString(16);
-    return '#' + n.slice(0, 6);
+  let n = (Math.random() * 0xfffff * 1000000).toString(16);
+  return "#" + n.slice(0, 6);
 };
 
 console.log(randomHexColorCode()); // Example output: '#e34155'
@@ -31,6 +31,7 @@ console.log(randomHexColorCode()); // Example output: '#e34155'
     - Blue: `55`
 
 ### Notes:
+
 - **Range of Hexadecimal Values**: Hexadecimal values range from `0` to `f` (i.e., 0 to 15), so for 6 hex digits, it covers all colors from `#000000` to `#ffffff`.
 - **Random Color Variation**: Every time you call `randomHexColorCode()`, it will produce a different random color within the range of hex color codes.
 
@@ -45,14 +46,15 @@ for (let i = 0; i < 5; i++) {
 This will output 5 random hex color codes.
 
 ### Edge Case:
+
 - If the generated random number is very small, `slice(0, 6)` might sometimes return a string that's shorter than 6 characters. However, in most cases, this won't happen because of the large value multiplication (`0xfffff * 1000000`). If you wanted to handle such cases (like ensuring always a 6-character output), you could pad the string with leading zeros.
 
 For example:
 
 ```javascript
 const randomHexColorCode = () => {
-    let n = (Math.random() * 0xfffff * 1000000).toString(16);
-    return '#' + n.slice(0, 6).padStart(6, '0');
+  let n = (Math.random() * 0xfffff * 1000000).toString(16);
+  return "#" + n.slice(0, 6).padStart(6, "0");
 };
 ```
 

@@ -11,11 +11,13 @@ Let's break down the various methods for implementing static code analysis in yo
 Most Integrated Development Environments (IDEs) allow you to integrate linting and static analysis tools directly, providing real-time feedback as you write code.
 
 #### How to Integrate:
+
 - **Visual Studio Code (VSCode)**: Popular plugins like **ESLint**, **Prettier**, **SonarLint**, etc., can be installed from the VSCode marketplace.
 - **JetBrains IDEs** (WebStorm, IntelliJ, etc.): Most JetBrains IDEs come with linting support out-of-the-box. You can further configure them to run custom linting rules.
 - **Other IDEs**: Tools like **PyCharm**, **Eclipse**, **Atom**, etc., also support integrations with static analysis tools.
 
 #### Benefits:
+
 - Real-time feedback while coding, which helps maintain code quality.
 - Immediate identification of issues like styling inconsistencies, unused variables, etc.
 
@@ -26,6 +28,7 @@ Most Integrated Development Environments (IDEs) allow you to integrate linting a
 Before code is pushed to a remote repository, you can ensure that your code adheres to the set coding standards by using Git pre-hooks. This is typically done using tools like **Husky**.
 
 #### How to Integrate:
+
 - **Husky**: This tool allows you to set up Git hooks (like `pre-commit`, `pre-push`, etc.) to automatically run scripts before commits or pushes.
 - For example, you can run linting commands (e.g., `eslint .`) to ensure that code complies with standards before committing it.
 
@@ -41,6 +44,7 @@ npx husky add .husky/pre-commit "npm run lint"
 ```
 
 #### Benefits:
+
 - Ensures code quality is maintained **before** code is pushed to the remote repository.
 - Can automatically fix some issues (e.g., using `eslint --fix`) before committing.
 
@@ -51,6 +55,7 @@ npx husky add .husky/pre-commit "npm run lint"
 Integrating static analysis tools into your **CI/CD pipeline** ensures that all checks are automatically performed before merging pull requests or pushing code to production.
 
 #### How to Integrate:
+
 - **GitHub Actions**, **GitLab CI/CD**, **Jenkins**, **CircleCI**: You can add steps to your CI pipeline configuration to run linters, formatters, and other static analysis tools.
 
 Example configuration for a GitHub Action (`.github/workflows/lint.yml`):
@@ -75,6 +80,7 @@ jobs:
 ```
 
 #### Benefits:
+
 - **Automated enforcement** of coding standards without requiring manual intervention.
 - Ensures code quality at every stage of the development lifecycle.
 - Can fail the pipeline if the code doesn't meet quality standards, preventing bad code from getting merged.
@@ -86,6 +92,7 @@ jobs:
 Here are some of the most widely used static code analysis tools for different programming languages and tasks:
 
 #### **JavaScript/TypeScript**
+
 - **[ESLint](https://eslint.org/)**: The most widely used linting tool for JavaScript and TypeScript. It helps identify and fix problems related to code quality, consistency, and formatting.
   - Can be extended with plugins to support frameworks like React, Angular, etc.
   - Supports custom configurations and predefined coding standards.
@@ -98,10 +105,12 @@ Here are some of the most widely used static code analysis tools for different p
 - **[JSLint](https://www.jslint.com/)**: An earlier linting tool for JavaScript that helps ensure code quality but is less configurable than ESLint.
 
 #### **Python**
+
 - **[Pylint](https://pylint.pycqa.org/)**: One of the most popular static analysis tools for Python, Pylint checks for errors in Python code, enforces coding standards, and suggests improvements.
 - **[pytype](https://github.com/google/pytype)**: A type checker for Python that can check Python code for type-related errors.
 
 #### **Multi-Language Tools**
+
 - **[SonarLint](https://www.sonarlint.org/)**: A plugin for various IDEs that provides real-time static code analysis for multiple languages (JavaScript, Python, Java, C#, etc.). It’s part of the SonarQube suite.
 - **[SonarQube](https://www.sonarqube.org/)**: A comprehensive static code analysis platform that supports multiple languages. It can be self-hosted and integrated into CI/CD pipelines.
 - **[SonarCloud](https://sonarcloud.io/)**: A cloud-based version of SonarQube that integrates with GitHub, GitLab, Bitbucket, etc., for automated static code analysis.

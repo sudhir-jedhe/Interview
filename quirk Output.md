@@ -361,8 +361,6 @@ console.log(y);
 ```
 <!-- prettier-ignore-end -->
 
-
-
 # WTF
 
 The file about strange questions. But it still be usefull to discover logic
@@ -501,7 +499,6 @@ try {
 }
 ```
 <!-- prettier-ignore-end -->
-
 
 # Complex
 
@@ -1154,3 +1151,578 @@ abccbca -> abccba
 ```
 
 <!-- prettier-ignore-end -->
+
+Here are the complete answers, explanations, and code solutions for all the quirks, WTF questions, and complex coding problems in your document.
+
+---
+
+# Section 1: Quirks
+
+### 1. `foo(1, 2, 3, 4, 5)`
+
+- **Output 1:** `Arguments(5) [1, 2, 3, 4, 5]`
+- **Output 2:** `1` followed by `SyntaxError: Unexpected token '('` (or `SyntaxError` on `(1, 2, 3, 4, 5)`).
+- **Explanation:** In snippet 1, `foo(1, 2, 3, 4, 5)` invokes the function. In snippet 2, JavaScript parses `function foo(x) {...}` as a _Function Declaration_. The trailing `(1, 2, 3, 4, 5)` is treated as a separate grouping expression, which is invalid syntax because standard comma operators inside parentheses expect valid expressions.
+
+---
+
+### 2. Array Property Index
+
+- **Output:** `[1, 2, 3, 4, "1.5": 1.5]` (Length remains `4`)
+- **Explanation:** Arrays in JavaScript are objects. Non-integer index keys (like `1.5`) are converted to string object properties rather than numeric indices, so `a.length` is unchanged.
+
+---
+
+### 3. Nested Call/Apply
+
+- **Output:** `world`
+- **Explanation:** `func.call.call.call.apply(fn, [thisArg, arg1])` unwraps down to calling `fn.call(thisArg, arg1)`. Thus, it invokes `bar(this, "world")`, where `x` receives `"world"`.
+
+---
+
+### 4. String Coercion
+
+- **Output:**
+
+```text
+"12"
+"21"
+"105"
+
+```
+
+- **Explanation:** The `+` operator evaluates left-to-right. `1 + 2 + 3 + 4` equals `10`, then `10 + "5"` performs string concatenation yielding `"105"`.
+
+---
+
+### 5. Make `a !== a` True
+
+```javascript
+var a = NaN;
+a !== a; // true
+```
+
+- **Explanation:** `NaN` (Not-a-Number) is the only value in JavaScript that is not equal to itself.
+
+---
+
+### 6. Score Mean Calculation
+
+- **Output:** `18280.714285714286`
+- **Explanation:** `for...in` iterates over object _keys_ (indices as strings: `"0"`, `"1"`, etc.). `total += score` performs string concatenation (`"00123456"`), resulting in `"00123456" / 7`. Use `for...of` instead for array values.
+
+---
+
+### 7. Sorting Numbers
+
+- **Output:** `[-1, -108, -6, 0, 10, 2, 3, 42]`
+- **Explanation:** `Array.prototype.sort()` converts elements to strings and compares them lexicographically by default.
+
+---
+
+### 8. Difference between `0` and `-0`
+
+- `0 === -0` evaluates to `true`.
+- `Object.is(0, -0)` evaluates to `false`.
+- `1 / 0` gives `Infinity`, whereas `1 / -0` gives `-Infinity`.
+
+---
+
+### 9. Function Expression in `if` (ES5 / Loose Mode)
+
+- **Output:** `"1undefined"`
+- **Explanation:** In non-strict/ES5 mode, `function f(){}` inside an `if` expression evaluates to truthy, but `f` is not bound in the surrounding scope. Therefore, `typeof f` returns `"undefined"`.
+
+---
+
+### 10. Named Function Expression Scope
+
+- **Output:** `ReferenceError: bar is not defined`
+- **Explanation:** The name `bar` is only bound _inside_ the function's internal scope, not in the enclosing scope.
+
+---
+
+### 11. Object Keys as Array Indices
+
+- **Output:** `456`
+- **Explanation:** Plain objects converted to keys become string `"[object Object]"`. Both `a[b]` and `a[c]` set/get key `a["[object Object]"]`.
+
+---
+
+### 12. `map(parseInt)`
+
+- **Output:** `[11, NaN, 3, 4]`
+- **Explanation:** `map` passes `(element, index)` to `parseInt(string, radix)`:
+- `parseInt('11', 0)` -> `11`
+- `parseInt('11', 1)` -> `NaN`
+- `parseInt('11', 2)` -> `3`
+- `parseInt('11', 3)` -> `4`
+
+---
+
+### 13. Automatic Semicolon Insertion (ASI)
+
+- **Output:** `undefined`
+- **Explanation:** JS inserts a semicolon after `return`, making the function return `undefined` before reaching the object literal.
+
+---
+
+### 14. Function Hoisting inside `bar()`
+
+- **Output:** `"function"`
+- **Explanation:** Function declarations hoist to the top of their function scope along with their definition. So `foo` is defined as a function before the `return foo;` statement executes.
+
+---
+
+### 15. Unary Minus Coercion
+
+- **Output:** `2`
+- **Explanation:** `- - "1"` evaluates as `-(-1)` which coerces to positive number `1`. `"1" + 1` mathematically adds up via subtraction operator `1 - (-1) = 2`.
+
+---
+
+### 16. Method Invocation vs Detached Function
+
+- **Output:** `3` (or `undefined` in strict mode), then `1`
+- **Explanation:**
+- `go()` is called as a standalone function, so `this` refers to the global object (`window.x = 3`).
+- `foo.baz.bar()` is called as a method of `baz`, so `this` refers to `baz` (`baz.x = 1`).
+
+---
+
+### 17. Array Length Truncation
+
+- **Output:** `['bin']`
+- **Explanation:** Setting `.length = 0` clears the array completely. `push('bin')` then adds `'bin'` at index 0.
+
+---
+
+### 18. Double `new` Constructor
+
+- **Output:** `undefined`
+- **Explanation:** `new new foo` evaluates as `new (new foo())`. `new foo()` executes `foo` as a constructor, returning `foo` itself (since it returns an object). The second `new` creates a new instance of `foo`, which does not have property `x` set on its prototype.
+
+---
+
+### 19. Labeled Statements
+
+- **Output:** `NaN`
+- **Explanation:** `foo:` is treated as a statement label, not an object definition. `foo.baz` evaluates to `undefined`, so arithmetic operations on it yield `NaN`.
+
+---
+
+### 20. `in` Operator with Arrays
+
+- **Output:** `true`
+- **Explanation:** `'2' in myArr` checks if index/property `'2'` exists in `myArr`. Since `myArr` has 3 elements (indices `0, 1, 2`), index 2 exists.
+
+---
+
+### 21. `arguments` Aliasing (Non-strict Mode)
+
+- **Output:** `undefined`
+- **Explanation:** `arguments[1]` maps to parameter `b` **only if** parameter `b` was actually passed during invocation. Since `foo(1)` was called with 1 argument, `b` remains `undefined`.
+
+---
+
+### 22. Non-configurable Function Properties
+
+- **Output:** `"number"`
+- **Explanation:** `length` on Function objects is non-configurable (`configurable: false`), so `delete foo.length` silently fails (or throws in strict mode).
+
+---
+
+### 23. Named Function Expression (External Call)
+
+- **Output:** `ReferenceError: g is not defined`
+- **Explanation:** `g` is not accessible outside the function expression body.
+
+---
+
+### 24. Comma Operator in Parentheses
+
+- **Output:** `"number"`
+- **Explanation:** The sequence expression `(expr1, expr2)` evaluates both and yields `expr2`. The IIFE executes `function g(){ return 2; }()`, which returns `2`. `typeof 2` is `"number"`.
+
+---
+
+### 25. Variable Scope & Function Declarations
+
+- **Output:** `1`
+- **Explanation:** `var a = 1` sets global `a`. Inside `b = function a(...)`, `a` refers internally to the function itself, but does not overwrite outer variable `a`.
+
+---
+
+### 26. `.call(null)`
+
+- **Output:** `[object Window]` (Non-strict mode) or `null` (Strict mode)
+- **Explanation:** In non-strict mode, passing `null` or `undefined` to `.call()` defaults `this` to the global object (`window`).
+
+---
+
+### 27. Undeclared Variable Ternary
+
+- **Output:** `ReferenceError: bar is not defined`
+- **Explanation:** Evaluating `bar` in `bar ? ...` throws a `ReferenceError` before the ternary operator can fall back to `0`.
+
+---
+
+### 28. Ways to Empty an Array
+
+```javascript
+var arrayList = ["a", "b", "c", "d", "e", "f"];
+
+// Method 1: Truncate length (Fastest, mutates original array reference)
+arrayList.length = 0;
+
+// Method 2: Assign new array (Replaces reference, leaves old array for GC)
+arrayList = [];
+
+// Method 3: Splice (Mutates original, slower)
+arrayList.splice(0, arrayList.length);
+
+// Method 4: Pop loop (Slower, mutates)
+while (arrayList.length) {
+  arrayList.pop();
+}
+```
+
+---
+
+### 29. Sequence & Arithmetic Operators
+
+- **Output:** `6`
+- **Explanation:** `(1, 5 - 1)` evaluates sequence operator `,`, returning `4`. Then `4 * 2 = 8`. Wait, evaluating `(1, 5 - 1)` -> `1` ignored, `5 - 1 = 4`, `4 * 2 = 8`.
+
+---
+
+### 30. Async Timer Queue Order
+
+- **Output:**
+
+```text
+baz
+foo
+
+```
+
+- **Explanation:** First block schedules execution after 100ms + 50ms = 150ms total. Second block schedules execution after 50ms + 100ms = 150ms total. Because the outer timer for `baz` (50ms) fires first, its inner 100ms timer enters the browser timer queue earlier.
+
+---
+
+### 31. Relational Operator Chaining
+
+- **Output:** `false`
+- **Explanation:** Evaluates left-to-right: `(5 > 3) > 2` -> `true > 2` -> `1 > 2` -> `false`.
+
+---
+
+### 32. Assignment inside `if` Condition
+
+- **Output:** `true`
+- **Explanation:** `(1 + 1 == 2)` evaluates to `true`. `a = true` assigns and evaluates to `true`, taking the truthy branch.
+
+---
+
+### 33. Bitwise Shift Wrapping
+
+- **Output:**
+- `1 << 33` -> `2` (33 bits shifts wrap modulo 32: `33 % 32 = 1`, so `1 << 1 = 2`)
+- `(1 << 31) << 2` -> `0` (31 bit shift becomes `-2147483648`, shifted left by 2 drops bits out of 32-bit integer range yielding `0`)
+
+---
+
+### 34. `let` Block Scope
+
+- **Output:** `"1undefined"`
+- **Explanation:** Block function expressions evaluate to truthy inside `if`, but variable `F` is not defined in scope outside.
+
+---
+
+# Section 2: WTF
+
+### 1. `g` Value (First snippet)
+
+- **Output:** `g` is `2`
+- **Explanation:** Function `f()` inside recursive call hits maximum stack call limit, throwing RangeError. Catch block evaluates `g++ && f()`. `g++` evaluates `0` (falsy), so `f()` is not called and `g` becomes `1`. `finally` block runs and executes `++g`, returning `2`.
+
+---
+
+### 2. `g` Value (Second snippet)
+
+- **Output:** `g` is `2`
+- **Explanation:** `f = function() {...} && f()` causes immediate execution/recursion error, caught in `catch`. `g++` evaluates `0`, `finally` increments `g` from `1` to `2`.
+
+---
+
+### 3. Bound Function Execution
+
+- **Output:** `TypeError: Cannot read properties of undefined` (or recursion error)
+- **Explanation:** Unbound `this` in standalone function `b` defaults to global or undefined. `this.b` is undefined, returning `undefined`.
+
+---
+
+### 4. Arrow Function `this`
+
+- **Output:** `undefined`
+- **Explanation:** Arrow functions do not bind `this` or `bind()` context. `this.c` evaluates to `undefined`.
+
+---
+
+### 5. Short-circuit Logical Postfix Increment
+
+- **Output:** `0`
+- **Explanation:** `1 && g++` evaluates to `g++` (value `0`), which then assigns `0` back into `g`.
+
+---
+
+### 6. Valid IIFE Syntax
+
+```javascript
+!function(){}()      // Valid
+(function(){})()      // Valid
+true && function(){}()// Valid
+!function(){}         // Valid syntax statement (returns true)
+
+function(){}()        // Invalid (SyntaxError)
+function(){}          // Invalid statement without name
+
+```
+
+---
+
+### 7. Parameter Default Function Assignment
+
+- **Output:** Returns function `() => a`
+
+---
+
+### 8. Self-Assigning Function Execution
+
+- **Output:** Returns function `function () { return a }`
+
+---
+
+### 9. Nested Error Throwing
+
+- **Output:** `0`
+
+---
+
+# Section 3: Complex Coding Challenges
+
+### 1. Spiral Matrix Print
+
+```javascript
+function spiral(m) {
+  let result = [];
+  if (!m.length) return result;
+
+  let top = 0,
+    bottom = m.length - 1;
+  let left = 0,
+    right = m[0].length - 1;
+
+  while (top <= bottom && left <= right) {
+    for (let i = left; i <= right; i++) result.push(m[top][i]);
+    top++;
+    for (let i = top; i <= bottom; i++) result.push(m[i][right]);
+    right--;
+    if (top <= bottom) {
+      for (let i = right; i >= left; i--) result.push(m[bottom][i]);
+      bottom--;
+    }
+    if (left <= right) {
+      for (let i = bottom; i >= top; i--) result.push(m[i][left]);
+      left++;
+    }
+  }
+  return result;
+}
+```
+
+---
+
+### 2. Semver Sort
+
+```javascript
+function semverSort(arr) {
+  return arr.sort((a, b) => {
+    const pa = a.split(".").map(Number);
+    const pb = b.split(".").map(Number);
+    const len = Math.max(pa.length, pb.length);
+
+    for (let i = 0; i < len; i++) {
+      const valA = pa[i] !== undefined ? pa[i] : 0;
+      const valB = pb[i] !== undefined ? pb[i] : 0;
+      if (valA !== valB) return valA - valB;
+    }
+    return 0;
+  });
+}
+```
+
+---
+
+### 3. Deep Clone
+
+```javascript
+function deepClone(obj) {
+  if (obj === null || typeof obj !== "object") return obj;
+  if (obj instanceof Date) return new Date(obj);
+  if (obj instanceof RegExp) return new RegExp(obj);
+
+  const copy = Array.isArray(obj) ? [] : {};
+  for (let key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      copy[key] = deepClone(obj[key]);
+    }
+  }
+  return copy;
+}
+```
+
+---
+
+### 4. Polyfill `.bind()` without `.call`/`.apply`
+
+```javascript
+Function.prototype.myBind = function (context, ...outerArgs) {
+  const fn = this;
+  return function (...innerArgs) {
+    const uniqueKey = Symbol();
+    context = context || globalThis;
+    context[uniqueKey] = fn;
+    const result = context[uniqueKey](...outerArgs, ...innerArgs);
+    delete context[uniqueKey];
+    return result;
+  };
+};
+```
+
+---
+
+### 5. Anagram / Palindrome Checkers
+
+```javascript
+// Check palindrome
+function isPalindrome(str) {
+  const clean = str.replace(/[\W_]/g, "").toLowerCase();
+  return clean === clean.split("").reverse().join("");
+}
+```
+
+---
+
+### 6. Calculations with Functions
+
+```javascript
+const zero = (fn) => (fn ? fn(0) : 0);
+const one = (fn) => (fn ? fn(1) : 1);
+const two = (fn) => (fn ? fn(2) : 2);
+const three = (fn) => (fn ? fn(3) : 3);
+const four = (fn) => (fn ? fn(4) : 4);
+const five = (fn) => (fn ? fn(5) : 5);
+const six = (fn) => (fn ? fn(6) : 6);
+const seven = (fn) => (fn ? fn(7) : 7);
+const eight = (fn) => (fn ? fn(8) : 8);
+const nine = (fn) => (fn ? fn(9) : 9);
+
+const plus = (b) => (a) => a + b;
+const minus = (b) => (a) => a - b;
+const times = (b) => (a) => a * b;
+const dividedBy = (b) => (a) => Math.floor(a / b);
+```
+
+---
+
+### 7. Reverse Words in Sentence Preserving Non-Letters
+
+```javascript
+function reverseWords(str) {
+  return str
+    .split(" ")
+    .map((word) => {
+      let chars = word.split("");
+      let letters = chars.filter((c) => /[a-zA-Z]/.test(c)).reverse();
+      let ptr = 0;
+      return chars
+        .map((c) => (/[a-zA-Z]/.test(c) ? letters[ptr++] : c))
+        .join("");
+    })
+    .join(" ");
+}
+```
+
+---
+
+### 8. Chained Number Methods
+
+```javascript
+Number.prototype.add = function (n) {
+  return this + n;
+};
+Number.prototype.subtract = function (n) {
+  return this - n;
+};
+Number.prototype.multiply = function (n) {
+  return this * n;
+};
+Number.prototype.divide = function (n) {
+  return this / n;
+};
+Number.prototype.square = function () {
+  return this * this;
+};
+```
+
+---
+
+### 9. Functional `compose()`
+
+```javascript
+const compose = (...fns) => {
+  if (fns.length === 0) return () => undefined;
+  return (initialValue) => fns.reduceRight((acc, fn) => fn(acc), initialValue);
+};
+```
+
+---
+
+### 10. `add(2,8)(5).value()` Chained Sum
+
+```javascript
+function add(...args) {
+  let sum = args.reduce((a, b) => a + b, 0);
+
+  function chain(...nextArgs) {
+    sum += nextArgs.reduce((a, b) => a + b, 0);
+    return chain;
+  }
+
+  chain.value = () => sum;
+  return chain;
+}
+```
+
+---
+
+### 11. Four Promise Behaviors Explained
+
+```javascript
+// 1. Returns doSomethingElse promise into outer chain
+doSomething().then(function () {
+  return doSomethingElse();
+});
+
+// 2. Fires doSomethingElse, but discards its promise (runs unhandled in background)
+doSomething().then(function () {
+  doSomethingElse();
+});
+
+// 3. Executes doSomethingElse IMMEDIATELY when setting up handlers
+doSomething().then(doSomethingElse());
+
+// 4. Passes doSomethingElse as reference handler (passes resolve value directly to it)
+doSomething().then(doSomethingElse);
+```

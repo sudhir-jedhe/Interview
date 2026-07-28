@@ -3,7 +3,7 @@ To implement a cricket score functionality as per your requirements, we can crea
 Here’s how you can implement it:
 
 ```jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const CricketScore = () => {
   const [balls, setBalls] = useState([]); // Holds the ball number and runs
@@ -64,6 +64,7 @@ export default CricketScore;
 ```
 
 ### **Explanation:**
+
 1. **State Management:**
    - `balls`: Holds an array of objects representing each ball. Each object contains the `ballNumber` and the `runs` for that ball.
    - `totalScore`: Holds the accumulated score across all balls.
@@ -82,6 +83,7 @@ export default CricketScore;
    - After 6 balls (6 clicks), the total score is displayed.
 
 ### **Features:**
+
 - Clicking the "Update Score" button adds a row to the table.
 - After six clicks, it shows the total score.
 - The number of runs per ball is randomly generated.
@@ -89,7 +91,7 @@ export default CricketScore;
 ### **Sample Output:**
 
 | Ball Number | Runs |
-|-------------|------|
+| ----------- | ---- |
 | 1           | 4    |
 | 2           | 6    |
 | 3           | 1    |

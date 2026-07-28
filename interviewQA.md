@@ -1,6 +1,7 @@
 ### **Technical Managerial Round Interview Questions for a Senior Java React Developer (9-12 Years of Experience)**
 
 #### **1. System Design / Architecture Questions**
+
 These questions test your ability to architect scalable and maintainable solutions.
 
 - **How would you design a large-scale, high-performance web application in React?**
@@ -29,6 +30,7 @@ These questions test your ability to architect scalable and maintainable solutio
   - **Testing for Accessibility:** Discuss tools like **Lighthouse**, **axe-core**, or **react-axe** to audit and ensure accessibility compliance.
 
 #### **2. Advanced React Questions**
+
 These questions test your depth of understanding of React and its advanced concepts.
 
 - **Explain the concept of React’s Virtual DOM and how it works.**
@@ -52,6 +54,7 @@ These questions test your depth of understanding of React and its advanced conce
   - Discuss how **hooks** make it easier to share stateful logic across components. Explain the benefits of **useState**, **useEffect**, **useContext**, and custom hooks. Compare hooks to class components and their advantages (e.g., cleaner syntax, easier to test).
 
 #### **3. Leadership / Managerial Questions**
+
 These questions focus on your experience managing teams, mentoring, and fostering collaboration.
 
 - **How do you prioritize tasks and projects in a fast-paced development environment?**
@@ -73,6 +76,7 @@ These questions focus on your experience managing teams, mentoring, and fosterin
   - Share how you conduct **one-on-one meetings**, provide constructive feedback, and help team members set professional goals. Discuss how you foster a learning environment by encouraging **pair programming**, providing access to **training resources**, and organizing **technical workshops**.
 
 #### **4. JavaScript Knowledge**
+
 These questions test your deep understanding of JavaScript and its underlying mechanics.
 
 - **What are JavaScript closures, and how do they work?**
@@ -91,12 +95,13 @@ These questions test your deep understanding of JavaScript and its underlying me
   - Discuss how JavaScript objects inherit properties and methods from their **prototype**. Show how `Object.create()` and the `__proto__` property enable inheritance.
 
 #### **5. Code Review and Debugging**
+
 These questions assess your approach to quality control and problem-solving.
 
 - **How do you approach debugging a React application when you encounter performance issues or bugs?**
   - Explain how you would
 
- use **React DevTools** for profiling, investigating re-renders, and tracking component state. Discuss the use of **Chrome DevTools** for network and memory profiling.
+use **React DevTools** for profiling, investigating re-renders, and tracking component state. Discuss the use of **Chrome DevTools** for network and memory profiling.
 
 - **Can you describe a challenging bug you’ve faced in a React application and how you solved it?**
   - Provide a real-life example of a complex bug, how you diagnosed the root cause (e.g., through logging, isolating the problem), and the steps you took to resolve it.
@@ -105,6 +110,7 @@ These questions assess your approach to quality control and problem-solving.
   - Discuss your review process, focusing on **code readability**, **correctness**, **performance**, and **test coverage**. Highlight how you ensure the code adheres to team **coding standards**.
 
 #### **6. Testing and CI/CD**
+
 These questions test your experience with ensuring code reliability.
 
 - **How do you approach testing in React applications?**

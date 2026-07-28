@@ -2,12 +2,10 @@
 
 // Example
 
-
 Example
 Input:
 // API calls
 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-
 
 // [1, 2, 3, 4, 5] // first call after 5 seconds
 // [6, 7, 8, 9, 10] // second call
@@ -21,7 +19,7 @@ Copy
 // After the index will update useEffect hook will be invoked and the subsequent calls will be made, thus all the APIs will be executed recursively.
 // To make the API calls we will use a helper function that will execute all the promises in parallel and increment the index after the operation.
 
-
+```js
 import { useState, useEffect } from "react";
 
 // helper function to create promise task
@@ -119,9 +117,33 @@ const Example = () => {
 
 export default Example;
 
-
 // each after 5 seconds
-0 (5) ['Completing 1', 'Completing 2', 'Completing 3', 'Completing 4', 'Completing 5']
-1 (5) ['Completing 6', 'Completing 7', 'Completing 8', 'Completing 9', 'Completing 10']
-2 (5) ['Completing 11', 'Completing 12', 'Completing 13', 'Completing 14', 'Completing 15']
-3 (5) ['Completing 16', 'Completing 17', 'Completing 18', 'Completing 19', 'Completing 20']
+0(5)[
+  ("Completing 1",
+  "Completing 2",
+  "Completing 3",
+  "Completing 4",
+  "Completing 5")
+];
+1(5)[
+  ("Completing 6",
+  "Completing 7",
+  "Completing 8",
+  "Completing 9",
+  "Completing 10")
+];
+2(5)[
+  ("Completing 11",
+  "Completing 12",
+  "Completing 13",
+  "Completing 14",
+  "Completing 15")
+];
+3(5)[
+  ("Completing 16",
+  "Completing 17",
+  "Completing 18",
+  "Completing 19",
+  "Completing 20")
+];
+```

@@ -5,11 +5,11 @@ subtitle: How would you go about checking for any of these states?"
 
 ## TL;DR
 
-| Trait | `null` | `undefined` | Undeclared |
-| --- | --- | --- | --- |
-| Meaning | Explicitly set by the developer to indicate that a variable has no value | Variable has been declared but not assigned a value | Variable has not been declared at all |
-| Type | `object` | `undefined` | Throws a `ReferenceError` |
-| Equality Comparison | `null == undefined` is `true` | `undefined == null` is `true` | Throws a `ReferenceError` |
+| Trait               | `null`                                                                   | `undefined`                                         | Undeclared                            |
+| ------------------- | ------------------------------------------------------------------------ | --------------------------------------------------- | ------------------------------------- |
+| Meaning             | Explicitly set by the developer to indicate that a variable has no value | Variable has been declared but not assigned a value | Variable has not been declared at all |
+| Type                | `object`                                                                 | `undefined`                                         | Throws a `ReferenceError`             |
+| Equality Comparison | `null == undefined` is `true`                                            | `undefined == null` is `true`                       | Throws a `ReferenceError`             |
 
 ---
 
@@ -34,7 +34,7 @@ A variable that is `undefined` is a variable that has been declared, but not ass
 let foo;
 console.log(foo); // undefined
 console.log(foo === undefined); // true
-console.log(typeof foo === 'undefined'); // true
+console.log(typeof foo === "undefined"); // true
 
 console.log(foo == null); // true. Wrong, don't use this to check if a value is undefined!
 
@@ -50,7 +50,7 @@ A variable that is `null` will have been explicitly assigned to the `null` value
 ```js
 const foo = null;
 console.log(foo === null); // true
-console.log(typeof foo === 'object'); // true
+console.log(typeof foo === "object"); // true
 
 console.log(foo == undefined); // true. Wrong, don't use this to check if a value is null!
 ```
@@ -72,32 +72,45 @@ Practice implementing [type utilities that check for `null` and `undefined`](htt
 - [MDN Web Docs: ReferenceError](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError)
 
 They belong to JavaScript's 7 primitive types.
-```js
- let primitiveTypes = ['string','number','null','undefined','boolean','symbol', 'bigint'];
- ```
-They are falsy values. Values that evaluated to false when converting it to boolean using Boolean(value) or !!value.
-```js
-   console.log(!!null); //logs false
-   console.log(!!undefined); //logs false
 
-   console.log(Boolean(null)); //logs false
-   console.log(Boolean(undefined)); //logs false
+```js
+let primitiveTypes = [
+  "string",
+  "number",
+  "null",
+  "undefined",
+  "boolean",
+  "symbol",
+  "bigint",
+];
 ```
+
+They are falsy values. Values that evaluated to false when converting it to boolean using Boolean(value) or !!value.
+
+```js
+console.log(!!null); //logs false
+console.log(!!undefined); //logs false
+
+console.log(Boolean(null)); //logs false
+console.log(Boolean(undefined)); //logs false
+```
+
 Ok, let's talk about the differences.
 
 undefined is the default value of a variable that has not been assigned a specific value. Or a function that has no explicit return value ex. console.log(1). Or a property that does not exist in an object. The JavaScript engine does this for us the assigning of undefined value.
+
 ```js
-  let _thisIsUndefined;
-  const doNothing = () => {};
-  const someObj = {
-    a : "ay",
-    b : "bee",
-    c : "si"
-  };
+let _thisIsUndefined;
+const doNothing = () => {};
+const someObj = {
+  a: "ay",
+  b: "bee",
+  c: "si",
+};
 
-  console.log(_thisIsUndefined); //logs undefined
-  console.log(doNothing()); //logs undefined
-  console.log(someObj["d"]); //logs undefined
-
+console.log(_thisIsUndefined); //logs undefined
+console.log(doNothing()); //logs undefined
+console.log(someObj["d"]); //logs undefined
 ```
+
 null is "a value that represents no value". null is value that has been explicitly defined to a variable. In this example we get a value of null when the fs.readFile method does not throw an error.

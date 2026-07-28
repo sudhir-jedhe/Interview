@@ -3,7 +3,6 @@ The TypeScript types `any`, `unknown`, and `never` have different purposes and b
 ### **1. `any` Type**
 
 - **Purpose**: The `any` type is the most permissive type. It disables TypeScript's type-checking system, allowing any value to be assigned to a variable of type `any` without any checks.
-  
 - **Usage**: Use `any` when you don't know or don't care about the type of a value. It can be useful when working with dynamic content or third-party libraries that TypeScript cannot infer the type for. However, overusing `any` can lead to loss of type safety and negate the benefits of using TypeScript.
 
 - **Behavior**: The `any` type essentially allows anything—any value can be assigned to an `any` variable, and you can perform any operation on it without TypeScript throwing an error.
@@ -11,8 +10,8 @@ The TypeScript types `any`, `unknown`, and `never` have different purposes and b
 - **Example**:
   ```typescript
   let value: any = "Hello";
-  value = 42;  // No errors, even though value's type changed
-  value.toUpperCase();  // Works without error, even though value is now a number
+  value = 42; // No errors, even though value's type changed
+  value.toUpperCase(); // Works without error, even though value is now a number
   ```
 
 ### **2. `unknown` Type**
@@ -24,12 +23,13 @@ The TypeScript types `any`, `unknown`, and `never` have different purposes and b
 - **Behavior**: Unlike `any`, you **cannot** perform operations directly on a value of type `unknown` without first performing a type check (e.g., `typeof`, `instanceof`).
 
 - **Example**:
+
   ```typescript
   let value: unknown = "Hello";
   // value.toUpperCase();  // Error: Object is of type 'unknown'.
-  
+
   if (typeof value === "string") {
-    console.log(value.toUpperCase());  // Safe after the type check
+    console.log(value.toUpperCase()); // Safe after the type check
   }
   ```
 
@@ -44,11 +44,12 @@ The TypeScript types `any`, `unknown`, and `never` have different purposes and b
 - **Behavior**: A function or variable typed as `never` cannot return any value. In the case of functions, this could be because the function always throws an error or runs an infinite loop.
 
 - **Example**:
+
   ```typescript
   function throwError(message: string): never {
-    throw new Error(message);  // This function will never return
+    throw new Error(message); // This function will never return
   }
-  
+
   function infiniteLoop(): never {
     while (true) {
       // Runs forever, never exits
@@ -62,13 +63,13 @@ The TypeScript types `any`, `unknown`, and `never` have different purposes and b
 
 ### **Comparison Table**
 
-| **Feature**            | **`any`**                          | **`unknown`**                       | **`never`**                      |
-|------------------------|------------------------------------|-------------------------------------|----------------------------------|
-| **Description**         | Disables type checking.           | Forces type checking before usage.  | Represents values that never occur (e.g., infinite loop, errors). |
-| **Type Checking**       | No type checking; can assign anything to `any`. | Requires type checking before use (e.g., `typeof`, `instanceof`). | Used for functions that throw errors or run forever. |
-| **Can Perform Operations** | Yes, no restrictions on operations. | No, must check type first. | No operations, as it never produces a value. |
-| **Common Use Case**     | Dynamic content, third-party libraries, or unknown types. | When accepting any value but wanting to ensure safety with checks. | Functions that throw errors or have infinite loops. |
-| **Safety**              | Low (bypasses TypeScript's safety). | High (requires type checks before use). | High (ensures no return value). |
+| **Feature**                | **`any`**                                                 | **`unknown`**                                                      | **`never`**                                                       |
+| -------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| **Description**            | Disables type checking.                                   | Forces type checking before usage.                                 | Represents values that never occur (e.g., infinite loop, errors). |
+| **Type Checking**          | No type checking; can assign anything to `any`.           | Requires type checking before use (e.g., `typeof`, `instanceof`).  | Used for functions that throw errors or run forever.              |
+| **Can Perform Operations** | Yes, no restrictions on operations.                       | No, must check type first.                                         | No operations, as it never produces a value.                      |
+| **Common Use Case**        | Dynamic content, third-party libraries, or unknown types. | When accepting any value but wanting to ensure safety with checks. | Functions that throw errors or have infinite loops.               |
+| **Safety**                 | Low (bypasses TypeScript's safety).                       | High (requires type checks before use).                            | High (ensures no return value).                                   |
 
 ---
 

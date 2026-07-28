@@ -20,7 +20,7 @@ A **Dynamic Table Generator** is a very common Frontend interview problem that t
 
 Dynamic tables are typically generated from configuration and data rather than hardcoded rows/columns. Modern React table implementations often render columns dynamically from metadata and rows from data arrays. [\[dev.to\]](https://dev.to/labex/react-dynamic-table-programming-tutorial-558h), [\[material-r...-table.com\]](https://www.material-react-table.com/docs/examples/dynamic-columns)
 
-***
+---
 
 # Problem Statement
 
@@ -67,51 +67,28 @@ Generate:
 ------------------------------------
 ```
 
-***
+---
 
 # Basic React Component
 
 ```tsx
-function DynamicTable({
-  columns,
-  data,
-}) {
+function DynamicTable({ columns, data }) {
   return (
     <table>
       <thead>
         <tr>
-          {columns.map(
-            column => (
-              <th key={column.key}>
-                {
-                  column.label
-                }
-              </th>
-            )
-          )}
+          {columns.map((column) => (
+            <th key={column.key}>{column.label}</th>
+          ))}
         </tr>
       </thead>
 
       <tbody>
-        {data.map(row => (
-          <tr
-            key={row.id}
-          >
-            {columns.map(
-              column => (
-                <td
-                  key={
-                    column.key
-                  }
-                >
-                  {
-                    row[
-                      column.key
-                    ]
-                  }
-                </td>
-              )
-            )}
+        {data.map((row) => (
+          <tr key={row.id}>
+            {columns.map((column) => (
+              <td key={column.key}>{row[column.key]}</td>
+            ))}
           </tr>
         ))}
       </tbody>
@@ -122,18 +99,15 @@ function DynamicTable({
 
 Dynamic table rendering commonly uses column definitions and maps rows/columns to table elements. [\[dev.to\]](https://dev.to/labex/react-dynamic-table-programming-tutorial-558h), [\[hcoco1.github.io\]](https://hcoco1.github.io/hcoco1-blog/creating-a-dynamic-table-in-react/)
 
-***
+---
 
 # Usage
 
 ```tsx
-<DynamicTable
-  columns={columns}
-  data={data}
-/>
+<DynamicTable columns={columns} data={data} />
 ```
 
-***
+---
 
 # Config Driven Approach
 
@@ -148,8 +122,7 @@ const columns = [
     key: "salary",
     label: "Salary",
 
-    render: value =>
-      `₹${value}`,
+    render: (value) => `₹${value}`,
   },
 
   {
@@ -157,11 +130,7 @@ const columns = [
 
     label: "Status",
 
-    render: value => (
-      <span>
-        {value}
-      </span>
-    ),
+    render: (value) => <span>{value}</span>,
   },
 ];
 ```
@@ -169,20 +138,10 @@ const columns = [
 Table:
 
 ```tsx
-<td>
-  {column.render
-    ? column.render(
-        row[
-          column.key
-        ]
-      )
-    : row[
-        column.key
-      ]}
-</td>
+<td>{column.render ? column.render(row[column.key]) : row[column.key]}</td>
 ```
 
-***
+---
 
 # Dynamic Columns
 
@@ -194,88 +153,56 @@ Sometimes API returns:
     id: 1,
     name: "Sudhir",
     city: "Pune",
-  }
-]
+  },
+];
 ```
 
 Generate columns automatically:
 
 ```js
-const columns =
-  Object.keys(
-    data[0]
-  ).map(key => ({
-    key,
-    label: key,
-  }));
+const columns = Object.keys(data[0]).map((key) => ({
+  key,
+  label: key,
+}));
 ```
 
 Dynamic column generation from remote or unknown data structures is a common enterprise table pattern. [\[material-r...-table.com\]](https://www.material-react-table.com/docs/examples/dynamic-columns)
 
-***
+---
 
 # Sorting
 
 ```tsx
-const [sortKey,
-  setSortKey] =
-    useState("");
+const [sortKey, setSortKey] = useState("");
 
-const sortedData =
-  [...data].sort(
-    (a, b) =>
-      a[sortKey] >
-      b[sortKey]
-        ? 1
-        : -1
-  );
+const sortedData = [...data].sort((a, b) => (a[sortKey] > b[sortKey] ? 1 : -1));
 ```
 
 ```tsx
-<th
-  onClick={() =>
-    setSortKey(
-      column.key
-    )
-  }
->
-  {column.label}
-</th>
+<th onClick={() => setSortKey(column.key)}>{column.label}</th>
 ```
 
-***
+---
 
 # Search
 
 ```tsx
-const filteredData =
-  data.filter(row =>
-    JSON.stringify(
-      row
-    )
-      .toLowerCase()
-      .includes(
-        search.toLowerCase()
-      )
-  );
+const filteredData = data.filter((row) =>
+  JSON.stringify(row).toLowerCase().includes(search.toLowerCase()),
+);
 ```
 
-***
+---
 
 # Pagination
 
 ```tsx
 const pageSize = 10;
 
-const paginatedData =
-  data.slice(
-    page * pageSize,
-    (page + 1) *
-      pageSize
-  );
+const paginatedData = data.slice(page * pageSize, (page + 1) * pageSize);
 ```
 
-***
+---
 
 # Column Visibility
 
@@ -292,28 +219,20 @@ const paginatedData =
 }
 ```
 
-***
+---
 
 # Editable Table
 
 ```tsx
 <td>
   <input
-    value={
-      row.name
-    }
-    onChange={e =>
-      updateCell(
-        row.id,
-        "name",
-        e.target.value
-      )
-    }
+    value={row.name}
+    onChange={(e) => updateCell(row.id, "name", e.target.value)}
   />
 </td>
 ```
 
-***
+---
 
 # Generic TypeScript Version
 
@@ -322,10 +241,7 @@ interface Column<T> {
   key: keyof T;
   label: string;
 
-  render?: (
-    value: any,
-    row: T
-  ) => React.ReactNode;
+  render?: (value: any, row: T) => React.ReactNode;
 }
 ```
 
@@ -337,13 +253,10 @@ type User = {
 ```
 
 ```tsx
-<DynamicTable<User>
-  columns={columns}
-  data={users}
-/>
+<DynamicTable<User> columns={columns} data={users} />
 ```
 
-***
+---
 
 # Senior-Level Architecture
 
@@ -366,7 +279,7 @@ DynamicTable
  └── Cell Renderer
 ```
 
-***
+---
 
 # Complexity
 
@@ -392,7 +305,7 @@ O(N log N)
 O(N)
 ```
 
-***
+---
 
 # Interview Follow-Ups
 
@@ -433,7 +346,7 @@ Drag & Drop
 Export current table
 ```
 
-***
+---
 
 ## Senior Interview Answer
 

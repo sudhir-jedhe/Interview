@@ -18,11 +18,11 @@ class TimeLimitedCache {
 
   // Set a key-value pair with expiration duration
   set(key, value, duration) {
-    const currentTime = Date.now();  // Get current time in milliseconds
-    const expirationTime = currentTime + duration;  // Calculate expiration time
-    
+    const currentTime = Date.now(); // Get current time in milliseconds
+    const expirationTime = currentTime + duration; // Calculate expiration time
+
     let existed = false;
-    
+
     if (this.cache.has(key)) {
       // If the key exists, check if the old value is expired
       const [oldValue, oldExpirationTime] = this.cache.get(key);
@@ -34,14 +34,14 @@ class TimeLimitedCache {
 
     // Store the new key, value, and expiration time
     this.cache.set(key, [value, expirationTime]);
-    
-    return existed;  // Return whether the key was overwritten with an unexpired value
+
+    return existed; // Return whether the key was overwritten with an unexpired value
   }
 
   // Get the value of a key if it is not expired
   get(key) {
-    const currentTime = Date.now();  // Get current time
-    
+    const currentTime = Date.now(); // Get current time
+
     if (this.cache.has(key)) {
       const [value, expirationTime] = this.cache.get(key);
       if (expirationTime > currentTime) {
@@ -51,15 +51,15 @@ class TimeLimitedCache {
       // If the key is expired, delete it from the cache
       this.cache.delete(key);
     }
-    
-    return -1;  // Return -1 if the key doesn't exist or is expired
+
+    return -1; // Return -1 if the key doesn't exist or is expired
   }
 
   // Count how many keys are unexpired
   count() {
-    const currentTime = Date.now();  // Get current time
+    const currentTime = Date.now(); // Get current time
     let count = 0;
-    
+
     // Iterate through all keys to count unexpired ones
     for (let [key, [value, expirationTime]] of this.cache.entries()) {
       if (expirationTime > currentTime) {
@@ -69,7 +69,7 @@ class TimeLimitedCache {
         this.cache.delete(key);
       }
     }
-    
+
     return count;
   }
 }
@@ -98,32 +98,32 @@ class TimeLimitedCache {
 
 ```javascript
 const cache = new TimeLimitedCache();
-console.log(cache.set(1, 42, 1000));  // returns false (new key)
-console.log(cache.get(1));            // returns 42
-console.log(cache.count());           // returns 1
+console.log(cache.set(1, 42, 1000)); // returns false (new key)
+console.log(cache.get(1)); // returns 42
+console.log(cache.count()); // returns 1
 
 setTimeout(() => {
-  console.log(cache.get(1));          // returns -1 (expired after 1000ms)
+  console.log(cache.get(1)); // returns -1 (expired after 1000ms)
 }, 1500);
 
 const cache2 = new TimeLimitedCache();
-console.log(cache2.set(1, 42, 500));  // returns false
+console.log(cache2.set(1, 42, 500)); // returns false
 console.log(cache2.set(2, 84, 1000)); // returns false
-console.log(cache2.count());          // returns 2
+console.log(cache2.count()); // returns 2
 
 setTimeout(() => {
-  console.log(cache2.count());        // returns 1 (only key 2 remains)
-  console.log(cache2.get(1));         // returns -1 (expired after 500ms)
-  console.log(cache2.get(2));         // returns 84
+  console.log(cache2.count()); // returns 1 (only key 2 remains)
+  console.log(cache2.get(1)); // returns -1 (expired after 500ms)
+  console.log(cache2.get(2)); // returns 84
 }, 700);
 
 const cache3 = new TimeLimitedCache();
-console.log(cache3.set(1, 42, 500));  // returns false
+console.log(cache3.set(1, 42, 500)); // returns false
 console.log(cache3.set(1, 24, 1500)); // returns true (overwritten with new value and duration)
-console.log(cache3.get(1));           // returns 24
+console.log(cache3.get(1)); // returns 24
 
 setTimeout(() => {
-  console.log(cache3.get(1));         // returns 24 (still valid with new duration)
+  console.log(cache3.get(1)); // returns 24 (still valid with new duration)
 }, 700);
 ```
 
@@ -132,7 +132,15 @@ setTimeout(() => {
 Here’s how actions like `set`, `get`, and `count` work over time. We'll simulate the actions with a delay between each to see how the cache behaves with time constraints.
 
 ```javascript
-const actions2 = ["TimeLimitedCache", "set", "set", "get", "get", "get", "count"];
+const actions2 = [
+  "TimeLimitedCache",
+  "set",
+  "set",
+  "get",
+  "get",
+  "get",
+  "count",
+];
 const values2 = [[], [1, 42, 50], [1, 50, 100], [1], [1], [1], []];
 const timeDelays2 = [0, 0, 40, 50, 120, 200, 250];
 
@@ -154,10 +162,11 @@ actions2.forEach((action, index) => {
   }
 });
 
-console.log(results2);  // Output: [null, false, true, 50, 50, -1, 0]
+console.log(results2); // Output: [null, false, true, 50, 50, -1, 0]
 ```
 
 ### Output Explanation:
+
 - **Step 1**: Create a new cache instance (`null`).
 - **Step 2**: Set key `1` with value `42` and duration `50ms` (`false` because it's a new key).
 - **Step 3**: Update key `1` with value `50` and duration `100ms` (`true` because key `1` already existed).

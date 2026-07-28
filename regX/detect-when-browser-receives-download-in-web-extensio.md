@@ -9,14 +9,14 @@ The HTML part is a simple web page containing an anchor (`<a>`) tag with a `down
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Download</title>
-</head>
-<body>
-  <h1 style="color:green">GeekForGeeks</h1>
-  <h3>How to detect when browser receives download in web extension ?</h3>
-  <a href="http://127.0.0.1:5501/base.html" download>Download</a>
-</body>
+  <head>
+    <title>Download</title>
+  </head>
+  <body>
+    <h1 style="color:green">GeekForGeeks</h1>
+    <h3>How to detect when browser receives download in web extension ?</h3>
+    <a href="http://127.0.0.1:5501/base.html" download>Download</a>
+  </body>
 </html>
 ```
 
@@ -34,9 +34,8 @@ function handleCreated(downloadItem) {
 browser.downloads.onCreated.addListener(handleCreated);
 ```
 
-- **`browser.downloads.onCreated.addListener(handleCreated)`**: 
+- **`browser.downloads.onCreated.addListener(handleCreated)`**:
   This line adds an event listener for the `onCreated` event, which is triggered every time a download is initiated in the browser. The event listener function, `handleCreated`, receives a `downloadItem` object that contains information about the download.
-  
 - **`downloadItem`**: This object provides various details about the download, such as:
   - `id`: The unique ID of the download.
   - `url`: The URL of the resource being downloaded.
@@ -64,12 +63,13 @@ The `downloadItem` object might look something like this:
   "danger": "safe",
   "mime": "text/html",
   "startTime": "2022-10-06T08:10:17.599Z",
-  "endTime": null,
+  "endTime": null
   // Other possible properties related to the download item
 }
 ```
 
 #### Explanation of the Fields in `downloadItem`:
+
 - **`id`**: A unique identifier for the download (useful if you want to track or manipulate specific downloads).
 - **`url`**: The URL from which the file is being downloaded.
 - **`referrer`**: The URL that initiated the download.
@@ -88,12 +88,15 @@ The `downloadItem` object might look something like this:
 3. **Logging the Download Item**: When the download starts, the `handleCreated` function is invoked and logs the details of the download to the console.
 
 ### Use Case:
+
 This type of detection is particularly useful for monitoring downloads in a browser extension. You might want to:
+
 - Track downloads initiated by the user.
 - Modify or inspect the download (e.g., change the filename, block certain types of files).
 - Show notifications or update the UI based on download events.
 
 ### Important Notes:
+
 - The `browser.downloads` API is specific to Firefox (and other browsers that use WebExtensions APIs, such as Chrome with slight modifications).
 - The `onCreated` event fires as soon as the download is initiated, not when it is completed. If you need to track when the download is completed, you might also use the `onChanged` event, which provides updates as the download progresses.
 

@@ -10,9 +10,10 @@ Here are some techniques to reduce the size of your JavaScript bundle:
 - **React Lazy Loading**: If you’re using React, you can use `React.lazy()` to split components.
 
 Example:
+
 ```javascript
 // Using dynamic imports for code splitting
-const Component = React.lazy(() => import('./Component'));
+const Component = React.lazy(() => import("./Component"));
 ```
 
 In Webpack, the `optimization.splitChunks` configuration automatically splits your code into smaller bundles based on usage patterns.
@@ -27,9 +28,10 @@ In Webpack, the `optimization.splitChunks` configuration automatically splits yo
 In Webpack, tree shaking is enabled by default when you set `mode: 'production'`.
 
 Example:
+
 ```javascript
 // Only the used parts of lodash will be imported
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
 ```
 
 ### 3. **Minification and Uglification**
@@ -67,13 +69,16 @@ Unused dependencies can bloat your bundle size. Tools like **Webpack Bundle Anal
 - **Webpack Bundle Analyzer**: This tool provides a visual representation of the content of your Webpack output, helping you identify large or unnecessary modules.
 
 Install it:
+
 ```bash
 npm install --save-dev webpack-bundle-analyzer
 ```
 
 Use it in your Webpack config:
+
 ```javascript
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
   plugins: [new BundleAnalyzerPlugin()],
@@ -88,8 +93,9 @@ Instead of using large libraries, look for smaller, more optimized alternatives.
 - **Moment.js** → `date-fns` or `day.js` (which are smaller alternatives).
 
 Use `lodash-es` (which supports tree shaking) instead of the default `lodash`:
+
 ```javascript
-import { debounce } from 'lodash-es';
+import { debounce } from "lodash-es";
 ```
 
 ### 7. **Optimize Images and Assets**
@@ -100,6 +106,7 @@ Though not strictly JavaScript, images and other static assets can significantly
 - **Lazy Loading**: Lazy load images to only load them when they are in the viewport using the `loading="lazy"` attribute or JavaScript libraries like `lazysizes`.
 
 Example:
+
 ```html
 <img src="image.jpg" loading="lazy" alt="Description" />
 ```
@@ -131,11 +138,12 @@ If you're using **Webpack**, here are some tips for optimizing your bundles:
 - **Optimize `node_modules`**: Use `webpack.optimize.ModuleConcatenationPlugin` and `webpack.optimize.SplitChunksPlugin` to reduce the size of `node_modules` in your final bundle.
 
 Example of splitting the vendor code in Webpack:
+
 ```javascript
 module.exports = {
   optimization: {
     splitChunks: {
-      chunks: 'all', // This will extract vendor code into separate bundles
+      chunks: "all", // This will extract vendor code into separate bundles
     },
   },
 };
@@ -146,13 +154,14 @@ module.exports = {
 For large React applications, you can **lazy load routes** using React Router and `React.lazy()`.
 
 Example:
+
 ```javascript
-import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { Suspense } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // Lazy-loaded component
-const Home = React.lazy(() => import('./Home'));
-const About = React.lazy(() => import('./About'));
+const Home = React.lazy(() => import("./Home"));
+const About = React.lazy(() => import("./About"));
 
 function App() {
   return (

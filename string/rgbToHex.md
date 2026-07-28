@@ -1,3 +1,4 @@
+```js
 function rgbToHex(r, g, b) {
   // DO NOT REMOVE
   "use strict";
@@ -14,3 +15,4 @@ function rgbToHex(r, g, b) {
 
   return `#${getHexCode(r)}${getHexCode(g)}${getHexCode(b)}`;
 }
+```

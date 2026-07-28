@@ -37,6 +37,7 @@ console.log([...gen()]);
 ```
 
 **Key Points:**
+
 - The `finally` block is executed after the `return` in the `try` block.
 - A `return` in the generator stops further execution and yields the value from the return.
 - Even after a `return` in `finally`, no further yields are processed.
@@ -79,6 +80,7 @@ obj.return();
 ```
 
 **Key Points:**
+
 - Calling `return()` on a generator exits it immediately.
 - Any code in the `finally` block executes when `return()` is called.
 
@@ -99,11 +101,11 @@ function* gen() {
 }
 
 const g = gen();
-console.log(g.next().value);  // 1
-console.log(g.next().value);  // 2
-console.log(g.return(6).value);  // 6
-console.log(g.next().value);  // 4
-console.log(g.next().value);  // undefined
+console.log(g.next().value); // 1
+console.log(g.next().value); // 2
+console.log(g.return(6).value); // 6
+console.log(g.next().value); // 4
+console.log(g.next().value); // undefined
 ```
 
 **Explanation:**
@@ -124,6 +126,7 @@ undefined
 ```
 
 **Key Points:**
+
 - Calling `return()` immediately halts the generator and can provide a return value.
 - Code after `return()` won't be executed unless it's in the `finally` block.
 
@@ -158,6 +161,7 @@ console.log(genB().next().value);
 ```
 
 **Key Points:**
+
 - `yield*` allows one generator to delegate its yielding to another iterable, such as an array or another generator.
 
 ---
@@ -170,7 +174,7 @@ function* gen() {
 }
 
 const generator = gen();
-console.log(generator.next().value);  // 100
+console.log(generator.next().value); // 100
 console.log(generator.next(1).value); // 2
 console.log(generator.next(1).value); // undefined
 ```
@@ -190,6 +194,7 @@ undefined
 ```
 
 **Key Points:**
+
 - `yield` can take an expression, and values can be passed back into the generator via `next(value)`.
 - The second `next()` call passes `1` back into the generator and continues execution.
 

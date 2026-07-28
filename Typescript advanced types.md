@@ -3,14 +3,16 @@ Here’s an in-depth explanation and examples for each type operator in TypeScri
 ---
 
 ### **1. Generics - Types that Take Parameters**
+
 Generics allow creating reusable components that work with a variety of types, enabling flexibility and type safety.
 
 #### **Examples**:
 
 1. **Generic Function**:
+
    ```typescript
    function identity<T>(value: T): T {
-       return value;
+     return value;
    }
 
    const num = identity<number>(5); // 5
@@ -18,28 +20,31 @@ Generics allow creating reusable components that work with a variety of types, e
    ```
 
 2. **Generic Array**:
+
    ```typescript
    function createArray<T>(length: number, value: T): T[] {
-       return Array(length).fill(value);
+     return Array(length).fill(value);
    }
 
    const numbers = createArray<number>(3, 5); // [5, 5, 5]
    ```
 
 3. **Generic Interface**:
+
    ```typescript
    interface Pair<T, U> {
-       first: T;
-       second: U;
+     first: T;
+     second: U;
    }
 
    const pair: Pair<string, number> = { first: "Hello", second: 42 };
    ```
 
 4. **Generic Constraints**:
+
    ```typescript
    function getLength<T extends { length: number }>(item: T): number {
-       return item.length;
+     return item.length;
    }
 
    getLength("hello"); // 5
@@ -47,12 +52,13 @@ Generics allow creating reusable components that work with a variety of types, e
    ```
 
 5. **Generic Class**:
+
    ```typescript
    class Box<T> {
-       content: T;
-       constructor(content: T) {
-           this.content = content;
-       }
+     content: T;
+     constructor(content: T) {
+       this.content = content;
+     }
    }
 
    const stringBox = new Box<string>("TypeScript");
@@ -61,20 +67,23 @@ Generics allow creating reusable components that work with a variety of types, e
 ---
 
 ### **2. Keyof Type Operator**
+
 The `keyof` operator generates a union of the keys of a given type.
 
 #### **Examples**:
 
 1. **Extracting Keys**:
+
    ```typescript
    type User = { id: number; name: string };
    type UserKeys = keyof User; // "id" | "name"
    ```
 
 2. **Keyof in a Function**:
+
    ```typescript
    function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
-       return obj[key];
+     return obj[key];
    }
 
    const user = { id: 1, name: "Alice" };
@@ -82,21 +91,24 @@ The `keyof` operator generates a union of the keys of a given type.
    ```
 
 3. **Dynamic Lookup**:
+
    ```typescript
    type Car = { make: string; model: string; year: number };
    type CarKeys = keyof Car; // "make" | "model" | "year"
    ```
 
 4. **Keyof in Classes**:
+
    ```typescript
    class Animal {
-       species: string;
-       age: number;
+     species: string;
+     age: number;
    }
    type AnimalKeys = keyof Animal; // "species" | "age"
    ```
 
 5. **Use in Conditional Types**:
+
    ```typescript
    type IsString<T> = T extends keyof string ? true : false;
 
@@ -106,46 +118,52 @@ The `keyof` operator generates a union of the keys of a given type.
 ---
 
 ### **3. Typeof Type Operator**
+
 The `typeof` operator allows creating a type from the runtime value of a variable or function.
 
 #### **Examples**:
 
 1. **Type Based on Variable**:
+
    ```typescript
    const user = { id: 1, name: "Alice" };
    type UserType = typeof user; // { id: number; name: string }
    ```
 
 2. **Type Based on Function**:
+
    ```typescript
    function add(a: number, b: number): number {
-       return a + b;
+     return a + b;
    }
    type AddType = typeof add; // (a: number, b: number) => number
    ```
 
 3. **Dynamic Constants**:
+
    ```typescript
    const roles = {
-       admin: "ADMIN",
-       user: "USER",
+     admin: "ADMIN",
+     user: "USER",
    };
 
    type Roles = typeof roles; // { admin: string; user: string }
    ```
 
 4. **Combining with Keyof**:
+
    ```typescript
    const colors = {
-       red: "#FF0000",
-       green: "#00FF00",
-       blue: "#0000FF",
+     red: "#FF0000",
+     green: "#00FF00",
+     blue: "#0000FF",
    };
 
    type ColorKeys = keyof typeof colors; // "red" | "green" | "blue"
    ```
 
 5. **Use in Guards**:
+
    ```typescript
    const getType = (value: unknown) => typeof value;
 
@@ -155,29 +173,34 @@ The `typeof` operator allows creating a type from the runtime value of a variabl
 ---
 
 ### **4. Indexed Access Types**
+
 Access a specific property type using `Type['key']` syntax.
 
 #### **Examples**:
 
 1. **Access Property Type**:
+
    ```typescript
    type User = { id: number; name: string };
    type UserName = User["name"]; // string
    ```
 
 2. **Dynamic Access**:
+
    ```typescript
    type Options = { darkMode: boolean; fontSize: number };
    type ValueType = Options[keyof Options]; // boolean | number
    ```
 
 3. **Nested Types**:
+
    ```typescript
    type Nested = { user: { id: number; name: string } };
    type UserId = Nested["user"]["id"]; // number
    ```
 
 4. **Index with Union**:
+
    ```typescript
    type Config = { optionA: string; optionB: number };
    type ConfigValues = Config["optionA" | "optionB"]; // string | number
@@ -192,11 +215,13 @@ Access a specific property type using `Type['key']` syntax.
 ---
 
 ### **5. Conditional Types**
+
 Conditional types act like `if` statements for types.
 
 #### **Examples**:
 
 1. **Basic Conditional Type**:
+
    ```typescript
    type IsString<T> = T extends string ? true : false;
 
@@ -205,6 +230,7 @@ Conditional types act like `if` statements for types.
    ```
 
 2. **Exclude Utility**:
+
    ```typescript
    type Exclude<T, U> = T extends U ? never : T;
 
@@ -212,6 +238,7 @@ Conditional types act like `if` statements for types.
    ```
 
 3. **Infer Keyword**:
+
    ```typescript
    type GetReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
 
@@ -219,15 +246,17 @@ Conditional types act like `if` statements for types.
    ```
 
 4. **Filter Properties**:
+
    ```typescript
    type Filter<T, U> = {
-       [K in keyof T]: T[K] extends U ? K : never;
+     [K in keyof T]: T[K] extends U ? K : never;
    }[keyof T];
 
    type StringKeys = Filter<{ a: string; b: number; c: string }, string>; // "a" | "c"
    ```
 
 5. **Distributive Conditional**:
+
    ```typescript
    type Flatten<T> = T extends any[] ? T[number] : T;
 
@@ -237,14 +266,16 @@ Conditional types act like `if` statements for types.
 ---
 
 ### **6. Mapped Types**
+
 Mapped types allow creating new types by transforming existing types.
 
 #### **Examples**:
 
 1. **Readonly**:
+
    ```typescript
    type Readonly<T> = {
-       readonly [K in keyof T]: T[K];
+     readonly [K in keyof T]: T[K];
    };
 
    type User = { id: number; name: string };
@@ -252,9 +283,10 @@ Mapped types allow creating new types by transforming existing types.
    ```
 
 2. **Optional**:
+
    ```typescript
    type Optional<T> = {
-       [K in keyof T]?: T[K];
+     [K in keyof T]?: T[K];
    };
 
    type User = { id: number; name: string };
@@ -262,9 +294,10 @@ Mapped types allow creating new types by transforming existing types.
    ```
 
 3. **Pick**:
+
    ```typescript
    type Pick<T, K extends keyof T> = {
-       [P in K]: T[P];
+     [P in K]: T[P];
    };
 
    type User = { id: number; name: string; email: string };
@@ -272,18 +305,20 @@ Mapped types allow creating new types by transforming existing types.
    ```
 
 4. **Record**:
+
    ```typescript
    type Record<K extends keyof any, T> = {
-       [P in K]: T;
+     [P in K]: T;
    };
 
    type UserRoles = Record<"admin" | "user", boolean>; // { admin: boolean; user: boolean }
    ```
 
 5. **Transform Properties**:
+
    ```typescript
    type CapitalizedKeys<T> = {
-       [K in keyof T as Capitalize<string & K>]: T[K];
+     [K in keyof T as Capitalize<string & K>]: T[K];
    };
 
    type User = { id: number; name: string };
@@ -293,11 +328,13 @@ Mapped types allow creating new types by transforming existing types.
 ---
 
 ### **7. Template Literal Types**
+
 Template literal types allow creating types using string templates.
 
 #### **Examples**:
 
 1. **Simple Template**:
+
    ```typescript
    type ID<T extends string> = `${T}-ID`;
 
@@ -305,6 +342,7 @@ Template literal types allow creating types using string templates.
    ```
 
 2. **Dynamic Keys**:
+
    ```typescript
    type Prefix<T extends string, P extends string> = `${P}-${T}`;
 
@@ -312,6 +350,7 @@ Template literal types allow creating types using string templates.
    ```
 
 3. **Case Transformations**:
+
    ```typescript
    type Capitalized<T extends string> = Capitalize<T>;
 
@@ -319,6 +358,7 @@ Template literal types allow creating types using string templates.
    ```
 
 4. **Union with Templates**:
+
    ```typescript
    type Role = "admin" | "user";
    type RoleMessage = `${Role}-message`;
@@ -332,6 +372,6 @@ Template literal types allow creating types using string templates.
    type Result = Nested<"item">; // "item-item"
    ```
 
---- 
+---
 
 Let me know if you'd like to dive deeper into any specific operator or concept!

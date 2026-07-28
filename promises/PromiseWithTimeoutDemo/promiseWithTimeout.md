@@ -1,5 +1,5 @@
 Implement a function that resolves a promise if it is fulfilled within a timeout period and rejects otherwise
-
+```js
 function promiseWithTimeout(promise, timeoutMs) {
     return new Promise((resolve, reject) => {
       // Create a timeout to reject the promise if not resolved quickly enough

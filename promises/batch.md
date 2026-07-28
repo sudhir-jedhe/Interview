@@ -1,5 +1,5 @@
 Processing promises in Batch
-
+```js
 
 export async function processPromisesBatch(
     items: Array<any>,

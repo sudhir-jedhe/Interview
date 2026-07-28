@@ -1,6 +1,7 @@
 Here's a collection of JavaScript functions implementing each of the tasks:
 
 ### 1. Extract Keys and Values from an Object
+
 ```javascript
 function extractKeysAndValues(obj) {
   const keys = Object.keys(obj);
@@ -12,45 +13,58 @@ function extractKeysAndValues(obj) {
 ---
 
 ### 2. Deeply Compare Two Objects
+
 ```javascript
 function deepEqual(obj1, obj2) {
   if (obj1 === obj2) return true;
-  if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 == null || obj2 == null) {
+  if (
+    typeof obj1 !== "object" ||
+    typeof obj2 !== "object" ||
+    obj1 == null ||
+    obj2 == null
+  ) {
     return false;
   }
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
   if (keys1.length !== keys2.length) return false;
-  return keys1.every(key => deepEqual(obj1[key], obj2[key]));
+  return keys1.every((key) => deepEqual(obj1[key], obj2[key]));
 }
 ```
 
 ---
 
 ### 3. Add a Prefix to All Object Keys
+
 ```javascript
 function addPrefixToKeys(obj, prefix) {
-  return Object.fromEntries(Object.entries(obj).map(([key, value]) => [`${prefix}${key}`, value]));
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [`${prefix}${key}`, value]),
+  );
 }
 ```
 
 ---
 
 ### 4. Filter an Object Based on a Condition
+
 ```javascript
 function filterObject(obj, callback) {
-  return Object.fromEntries(Object.entries(obj).filter(([key, value]) => callback(key, value)));
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key, value]) => callback(key, value)),
+  );
 }
 ```
 
 ---
 
 ### 5. Flatten a Nested Object
+
 ```javascript
-function flattenObject(obj, parentKey = '', result = {}) {
+function flattenObject(obj, parentKey = "", result = {}) {
   for (const [key, value] of Object.entries(obj)) {
     const newKey = parentKey ? `${parentKey}.${key}` : key;
-    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+    if (typeof value === "object" && value !== null && !Array.isArray(value)) {
       flattenObject(value, newKey, result);
     } else {
       result[newKey] = value;
@@ -63,6 +77,7 @@ function flattenObject(obj, parentKey = '', result = {}) {
 ---
 
 ### 6. Merge Two Objects (Second Object Takes Precedence)
+
 ```javascript
 function mergeObjects(obj1, obj2) {
   return { ...obj1, ...obj2 };
@@ -72,6 +87,7 @@ function mergeObjects(obj1, obj2) {
 ---
 
 ### 7. Convert an Object into a JSON String
+
 ```javascript
 function objectToJSONString(obj) {
   return JSON.stringify(obj);
@@ -81,6 +97,7 @@ function objectToJSONString(obj) {
 ---
 
 ### 8. Create a Deep Copy of an Object
+
 ```javascript
 function deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj));
@@ -90,6 +107,7 @@ function deepCopy(obj) {
 ---
 
 ### 9. Check if a Specific Key Exists in an Object
+
 ```javascript
 function keyExists(obj, key) {
   return key in obj;
@@ -99,6 +117,7 @@ function keyExists(obj, key) {
 ---
 
 ### 10. Convert an Array of Objects into an Object (Using a Specified Key)
+
 ```javascript
 function arrayToObject(array, keyProperty) {
   return array.reduce((acc, obj) => {

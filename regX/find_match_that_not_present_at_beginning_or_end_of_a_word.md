@@ -7,7 +7,7 @@ Let's break down each of your examples, where you're using the **`\B`** regular 
 ```javascript
 function geek() {
   let str1 = "GeeksforGeeks@_123_$";
-  let regex4 = /\Bfor/gi;  // Match 'for' not at a word boundary
+  let regex4 = /\Bfor/gi; // Match 'for' not at a word boundary
   let match4 = str1.match(regex4);
 
   console.log("Found " + match4.length + " match: " + match4);
@@ -42,10 +42,10 @@ geek();
 ```javascript
 function geek() {
   let str1 = "123geeky456";
-  let regex4 = new RegExp("\\Bgeeky", "gi");  // Match 'geeky' not at a word boundary
-  let replace = "GEEKY";  // Replacement string
-  let match4 = str1.replace(regex4, replace);  // Replace the match with "GEEKY"
-  
+  let regex4 = new RegExp("\\Bgeeky", "gi"); // Match 'geeky' not at a word boundary
+  let replace = "GEEKY"; // Replacement string
+  let match4 = str1.replace(regex4, replace); // Replace the match with "GEEKY"
+
   console.log("New string: " + match4);
 }
 geek();
@@ -88,6 +88,7 @@ geek();
 ### Outputs:
 
 1. **For the first example**:
+
    ```
    Found 1 match: for
    ```

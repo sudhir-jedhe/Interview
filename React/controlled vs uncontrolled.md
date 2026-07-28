@@ -23,8 +23,8 @@ function ControlledComponent() {
     <div>
       <input
         type="text"
-        value={value}  // The value is tied to React state
-        onChange={handleChange}  // Updates state on change
+        value={value} // The value is tied to React state
+        onChange={handleChange} // Updates state on change
       />
       <p>The input value is: {value}</p>
     </div>
@@ -89,14 +89,14 @@ export default UncontrolledComponent;
 
 ### Key Differences Between Controlled and Uncontrolled Components
 
-| **Aspect**              | **Controlled Components**                                 | **Uncontrolled Components**                               |
-|-------------------------|------------------------------------------------------------|-----------------------------------------------------------|
-| **State Management**     | Form data is managed by React state.                       | Form data is managed by the DOM (using `ref` to access).  |
-| **Value Binding**        | The value of the input is tied to React state via `value` prop. | No `value` prop, the input maintains its internal state.  |
-| **Data Access**          | Data is accessed from state.                              | Data is accessed using `ref`.                             |
-| **Re-rendering**         | React re-renders the component when the state changes.     | No re-renders when input values change.                   |
-| **Usage Scenario**       | Ideal for forms where you need to validate, modify, or format data before submitting. | Ideal for simple forms or when you don’t need React to manage the state. |
-| **Performance**          | Potential for performance hit due to state updates.        | Can be more performant as React doesn't manage the state. |
+| **Aspect**           | **Controlled Components**                                                             | **Uncontrolled Components**                                              |
+| -------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **State Management** | Form data is managed by React state.                                                  | Form data is managed by the DOM (using `ref` to access).                 |
+| **Value Binding**    | The value of the input is tied to React state via `value` prop.                       | No `value` prop, the input maintains its internal state.                 |
+| **Data Access**      | Data is accessed from state.                                                          | Data is accessed using `ref`.                                            |
+| **Re-rendering**     | React re-renders the component when the state changes.                                | No re-renders when input values change.                                  |
+| **Usage Scenario**   | Ideal for forms where you need to validate, modify, or format data before submitting. | Ideal for simple forms or when you don’t need React to manage the state. |
+| **Performance**      | Potential for performance hit due to state updates.                                   | Can be more performant as React doesn't manage the state.                |
 
 ---
 

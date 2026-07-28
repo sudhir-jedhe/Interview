@@ -7,21 +7,23 @@ Since JavaScript is single-threaded but asynchronous, race conditions typically 
 Here are some strategies to handle race conditions in JavaScript:
 
 ### **1. Use `async`/`await` Properly**
+
 One of the most common ways to manage asynchronous operations and avoid race conditions is to use **`async`** and **`await`** in combination with **Promises**. This helps you to control the flow of asynchronous operations and avoid concurrent changes to shared resources.
 
 #### Example (Without race condition):
+
 ```javascript
 async function fetchData() {
-  const userData = await fetch('https://api.example.com/user');  // Wait for the API call
-  const postsData = await fetch('https://api.example.com/posts'); // Wait for the second API call
-  
+  const userData = await fetch("https://api.example.com/user"); // Wait for the API call
+  const postsData = await fetch("https://api.example.com/posts"); // Wait for the second API call
+
   const user = await userData.json();
   const posts = await postsData.json();
-  
+
   return { user, posts };
 }
 
-fetchData().then(result => {
+fetchData().then((result) => {
   console.log(result);
 });
 ```
@@ -31,15 +33,20 @@ In the example above, `await` ensures that the first API call (`fetch('https://a
 ---
 
 ### **2. Use `Promise.all()` for Parallel Execution**
+
 When you want to run multiple asynchronous operations in parallel, you can use `Promise.all()` to ensure that all promises are resolved before continuing. However, the operations will run concurrently, so this approach doesn't introduce a race condition as long as they don't depend on each other.
 
 #### Example (Parallel without race condition):
+
 ```javascript
 async function fetchAllData() {
-  const userDataPromise = fetch('https://api.example.com/user');
-  const postsDataPromise = fetch('https://api.example.com/posts');
+  const userDataPromise = fetch("https://api.example.com/user");
+  const postsDataPromise = fetch("https://api.example.com/posts");
 
-  const [userData, postsData] = await Promise.all([userDataPromise, postsDataPromise]);
+  const [userData, postsData] = await Promise.all([
+    userDataPromise,
+    postsDataPromise,
+  ]);
 
   const user = await userData.json();
   const posts = await postsData.json();
@@ -47,7 +54,7 @@ async function fetchAllData() {
   return { user, posts };
 }
 
-fetchAllData().then(result => {
+fetchAllData().then((result) => {
   console.log(result);
 });
 ```
@@ -57,11 +64,13 @@ In this example, both API calls happen concurrently, but the result is only retu
 ---
 
 ### **3. Use Mutex or Locking Mechanisms**
+
 If you have a shared resource or piece of data that multiple asynchronous operations are accessing, you can use a **mutex** or **locking** mechanism to ensure that only one operation can access the resource at a time.
 
 JavaScript doesn't have built-in mutex support, but you can implement one manually using Promises or external libraries.
 
 #### Example (Manual Mutex with a simple lock):
+
 ```javascript
 class Mutex {
   constructor() {
@@ -70,7 +79,7 @@ class Mutex {
   }
 
   acquire() {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (this.locked) {
         this.queue.push(resolve);
       } else {
@@ -93,12 +102,12 @@ class Mutex {
 const mutex = new Mutex();
 
 async function safeAccessSharedResource() {
-  await mutex.acquire();  // Acquire the lock
-  
-  // Critical section (work with shared resource)
-  console.log('Resource is being used');
+  await mutex.acquire(); // Acquire the lock
 
-  mutex.release();  // Release the lock
+  // Critical section (work with shared resource)
+  console.log("Resource is being used");
+
+  mutex.release(); // Release the lock
 }
 
 safeAccessSharedResource();
@@ -110,6 +119,7 @@ In this example, the `Mutex` class ensures that the `safeAccessSharedResource` f
 ---
 
 ### **4. Use Atomic Operations**
+
 If you're working with shared state (e.g., variables), atomic operations ensure that one operation completes before another starts. While JavaScript doesn't provide built-in atomic operations for primitive types, libraries like **`Atomic`** for worker threads or **`Web Workers`** can be used for atomic operations on shared memory.
 
 If you are working with databases or external APIs, many of them provide atomic operations or transaction-based approaches to manage concurrency. This is useful for avoiding race conditions when multiple users or systems might be modifying the same data.
@@ -117,9 +127,11 @@ If you are working with databases or external APIs, many of them provide atomic 
 ---
 
 ### **5. Use `setTimeout()` or `setImmediate()` to Schedule Tasks**
+
 Sometimes, you may want to schedule tasks to run in a certain order to avoid race conditions. `setTimeout()` and `setImmediate()` can be used to defer certain operations until the event loop has completed, allowing other operations to finish first.
 
 #### Example (Defer execution):
+
 ```javascript
 let counter = 0;
 
@@ -139,9 +151,11 @@ In this example, `setTimeout` with `0` delay ensures that each increment is defe
 ---
 
 ### **6. Use Queues to Serialize Operations**
+
 When dealing with multiple tasks that need to execute in a specific order, implementing a queue can ensure that each operation happens in sequence, thus avoiding race conditions.
 
 #### Example (Queue for serial operations):
+
 ```javascript
 class Queue {
   constructor() {
@@ -155,12 +169,12 @@ class Queue {
   }
 
   async processQueue() {
-    if (this.processing) return;  // If already processing, exit
+    if (this.processing) return; // If already processing, exit
     this.processing = true;
 
     while (this.queue.length > 0) {
-      const task = this.queue.shift();  // Get the next task
-      await task();  // Run the task
+      const task = this.queue.shift(); // Get the next task
+      await task(); // Run the task
     }
 
     this.processing = false;
@@ -170,12 +184,12 @@ class Queue {
 const queue = new Queue();
 
 queue.enqueue(async () => {
-  console.log('Task 1');
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate async task
+  console.log("Task 1");
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate async task
 });
 
 queue.enqueue(async () => {
-  console.log('Task 2');
+  console.log("Task 2");
 });
 ```
 
@@ -184,19 +198,21 @@ In this example, the queue ensures that each task is processed sequentially, pre
 ---
 
 ### **7. Handle Promises with `.finally()` to Ensure Cleanup**
+
 If you have a series of asynchronous operations that might result in errors, it's important to ensure proper cleanup to avoid unpredictable results. The `.finally()` method ensures that cleanup happens regardless of whether the promise resolves or rejects.
 
 #### Example (Using `finally` for cleanup):
+
 ```javascript
 async function fetchData() {
   try {
-    const response = await fetch('https://api.example.com/data');
+    const response = await fetch("https://api.example.com/data");
     const data = await response.json();
     console.log(data);
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error("Error fetching data:", error);
   } finally {
-    console.log('Cleanup tasks or reset states');
+    console.log("Cleanup tasks or reset states");
   }
 }
 

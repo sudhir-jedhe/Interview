@@ -8,9 +8,8 @@ You start with your finger at the first key (index `0`), and to type a string `w
 
 1. **Mapping Keyboard Positions**:
    - First, we create an array `pos` where each entry corresponds to the index of a character in the `keyboard` string. This helps us quickly find the index of any character in `keyboard`.
-   
 2. **Finger Movement**:
-   - We start at index `0` (the starting position of your finger). 
+   - We start at index `0` (the starting position of your finger).
    - For each character in the `word`, we calculate the difference in position (absolute difference) between the current finger position and the desired character's position on the keyboard.
 
 3. **Sum of Movements**:
@@ -23,23 +22,23 @@ You start with your finger at the first key (index `0`), and to type a string `w
 
 ```typescript
 function calculateTime(keyboard: string, word: string): number {
-    // Step 1: Create a mapping of character positions from 'a' to 'z'
-    const pos: number[] = Array(26).fill(0);
-    for (let i = 0; i < 26; ++i) {
-        pos[keyboard.charCodeAt(i) - 97] = i;
-    }
+  // Step 1: Create a mapping of character positions from 'a' to 'z'
+  const pos: number[] = Array(26).fill(0);
+  for (let i = 0; i < 26; ++i) {
+    pos[keyboard.charCodeAt(i) - 97] = i;
+  }
 
-    let ans = 0;  // This will store the total time
-    let i = 0;    // Starting position is index 0 of the keyboard
-    
-    // Step 2: Iterate through the word and calculate the time
-    for (const c of word) {
-        const j = pos[c.charCodeAt(0) - 97];  // Find the position of the character `c`
-        ans += Math.abs(i - j);  // Add the time taken to move the finger
-        i = j;  // Update the current position to the new character's position
-    }
+  let ans = 0; // This will store the total time
+  let i = 0; // Starting position is index 0 of the keyboard
 
-    return ans;  // Return the total time
+  // Step 2: Iterate through the word and calculate the time
+  for (const c of word) {
+    const j = pos[c.charCodeAt(0) - 97]; // Find the position of the character `c`
+    ans += Math.abs(i - j); // Add the time taken to move the finger
+    i = j; // Update the current position to the new character's position
+  }
+
+  return ans; // Return the total time
 }
 ```
 
@@ -64,11 +63,16 @@ function calculateTime(keyboard: string, word: string): number {
 ### Example Walkthrough:
 
 #### Example 1:
+
 **Input**: `keyboard = "abcdefghijklmnopqrstuvwxyz", word = "cba"`
 
 - **Step 1**: Create `pos` array:
+
   ```typescript
-  pos = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+  pos = [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    21, 22, 23, 24, 25,
+  ];
   ```
 
 - **Step 2**: Start typing the word "cba":
@@ -79,11 +83,16 @@ function calculateTime(keyboard: string, word: string): number {
 **Output**: `4`
 
 #### Example 2:
+
 **Input**: `keyboard = "pqrstuvwxyzabcdefghijklmno", word = "leetcode"`
 
 - **Step 1**: Create `pos` array for the new keyboard:
+
   ```typescript
-  pos = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+  pos = [
+    15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    10, 11, 12, 13, 14,
+  ];
   ```
 
 - **Step 2**: Start typing the word "leetcode":
@@ -107,7 +116,8 @@ function calculateTime(keyboard: string, word: string): number {
 - The total time complexity is \(O(w)\), where `w` is the length of the word. Since \(w \leq 10^4\), this is efficient enough.
 
 ### Space Complexity:
+
 - **Space for the `pos` array**: \(O(26)\) or \(O(1)\), as it's a fixed-size array of length 26.
 - **Space for the result**: \(O(1)\) additional space.
-  
+
 So the space complexity is \(O(1)\) overall.

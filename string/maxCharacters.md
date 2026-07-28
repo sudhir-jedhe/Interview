@@ -1,3 +1,4 @@
+```js
 maxCharacters("hello"); // Output: 'l'
 maxCharacters("Mississippi"); // Output: 'i'
 maxCharacters(""); // Output: null
@@ -18,3 +19,4 @@ export const maxCharacters = (str) => {
   }
   return maxChar;
 };
+```

@@ -2,6 +2,7 @@ In React, data normally flows from Parent → Child using props. To send data fr
 
 A recent React bootcamp discussion in your enterprise content specifically mentions component communication patterns such as parent-to-child and child-to-parent communication.
 
+```js
 Method 1: Parent Callback Function (Most Common)
 Parent Component
 import { useState } from "react";
@@ -42,7 +43,7 @@ return (
 
 export default Parent;
 
-Child Component
+// Child Component
 function Child({ sendData }) {
 
 const handleClick = () => {
@@ -64,6 +65,8 @@ Send Data
 
 export default Child;
 
+```
+
 Flow
 Parent
 ↓
@@ -79,45 +82,28 @@ Example: Input Box
 
 A common interview question.
 
-Parent
+```js
+// Parent
 function Parent() {
+  const [name, setName] = useState("");
 
-const [name, setName] =
-useState("");
+  return (
+    <>
+      <h3>
+        Name:
+        {name}
+      </h3>
 
-return (
-<>
-
-<h3>
-Name:
-{name}
-</h3>
-
-      <Child
-        onNameChange={
-          setName
-        }
-      />
+      <Child onNameChange={setName} />
     </>
-
-);
+  );
 }
 
-Child
-function Child({
-onNameChange
-}) {
-
-return (
-<input
-onChange={(e) =>
-onNameChange(
-e.target.value
-)
+// Child
+function Child({ onNameChange }) {
+  return <input onChange={(e) => onNameChange(e.target.value)} />;
 }
-/>
-);
-}
+```
 
 Typing:
 
@@ -126,70 +112,52 @@ Sudhir
 Updates the parent state.
 
 Method 2: Child Sends Object
-Child
+// Child
+
+```js
 sendData({
-id: 1,
-name: "Sudhir",
-role: "Lead"
+  id: 1,
+  name: "Sudhir",
+  role: "Lead",
 });
 
-Parent
-const handleData = (
-user
-) => {
-
-console.log(user.name);
+// Parent
+const handleData = (user) => {
+  console.log(user.name);
 };
+```
 
 Output:
 
 Sudhir
 
 Method 3: Child Sends Form Data
-Child
-function Child({
-onSubmit
-}) {
+// Child
 
-const [email, setEmail] =
-useState("");
+```js
+function Child({ onSubmit }) {
+  const [email, setEmail] = useState("");
 
-const submit = () => {
-
+  const submit = () => {
     onSubmit({
-      email
+      email,
     });
+  };
 
-};
+  return (
+    <>
+      <input value={email} onChange={(e) => setEmail(e.target.value)} />
 
-return (
-<>
-<input
-value={email}
-onChange={(e) =>
-setEmail(
-e.target.value
-)
-}
-/>
-
-      <button
-        onClick={submit}
-      >
-        Submit
-      </button>
+      <button onClick={submit}>Submit</button>
     </>
-
-);
+  );
 }
 
-Parent
-const handleSubmit =
-(data) => {
-
-    console.log(data);
-
+// Parent
+const handleSubmit = (data) => {
+  console.log(data);
 };
+```
 
 Output:
 
@@ -198,40 +166,22 @@ email: "sudhir@test.com"
 }
 
 Method 4: Child Triggering Parent Action
-Parent
+// Parent
+
+```js
 function Parent() {
+  const openModal = () => {
+    console.log("Modal Opened");
+  };
 
-const openModal = () => {
-
-    console.log(
-      "Modal Opened"
-    );
-
-};
-
-return (
-<Child
-onOpenModal={
-openModal
-}
-/>
-);
+  return <Child onOpenModal={openModal} />;
 }
 
-Child
-function Child({
-onOpenModal
-}) {
-
-return (
-<button
-onClick={
-onOpenModal
-} >
-Open
-</button>
-);
+// Child
+function Child({ onOpenModal }) {
+  return <button onClick={onOpenModal}>Open</button>;
 }
+```
 
 Method 5: Multiple Children Update Parent
 Parent
@@ -240,6 +190,7 @@ Parent
 
 Both update shared parent state.
 
+```js
 const updateCount =
 (value) => {
 
@@ -256,6 +207,8 @@ updateCount(1);
 Child B:
 
 updateCount(5);
+
+```
 
 Interview Answer
 
@@ -277,6 +230,8 @@ A React bootcamp recording in your enterprise content discusses parent-to-child 
 Props are the standard mechanism for sending data from a parent component to a child component.
 
 Parent Component
+
+```js
 import Child from "./Child";
 
 function Parent() {
@@ -300,7 +255,7 @@ return (
 
 export default Parent;
 
-Child Component
+// Child Component
 function Child({ user }) {
 
 return (
@@ -316,6 +271,8 @@ return (
 }
 
 export default Child;
+
+```
 
 Data Flow
 Parent
@@ -341,6 +298,7 @@ Both children need access to the same value.
 
 ✅ Move the state to the parent.
 
+```js
 Before (Wrong)
 function ChildA() {
 const [count] = useState(0);
@@ -408,6 +366,8 @@ Count:
 );
 }
 
+```
+
 Data Flow
 Parent (Owns State)
 |
@@ -421,7 +381,9 @@ This is called lifting state up because the shared state is moved to the nearest
 
 Callback props are the most common way to send data from a child back to a parent.
 
-Parent Component
+// Parent Component
+
+```js
 import { useState } from "react";
 import Child from "./Child";
 
@@ -456,7 +418,7 @@ Message:
 
 export default Parent;
 
-Child Component
+// Child Component
 function Child({
 onSendMessage
 }) {
@@ -480,6 +442,8 @@ Send Data
 
 export default Child;
 
+```
+
 Flow
 Parent
 |
@@ -495,46 +459,27 @@ This pattern is commonly used for child-to-parent communication and component in
 
 Real Interview Example – Search Box
 Parent
+
+```js
 function Parent() {
+  const [searchText, setSearchText] = useState("");
 
-const [searchText,
-setSearchText
-] = useState("");
+  return (
+    <>
+      <Search onSearch={setSearchText} />
 
-return (
-<>
-<Search
-onSearch={
-setSearchText
-}
-/>
-
-      <ProductList
-        searchText={
-          searchText
-        }
-      />
+      <ProductList searchText={searchText} />
     </>
-
-);
+  );
 }
 
-Child
-function Search({
-onSearch
-}) {
-
-return (
-<input
-placeholder="Search"
-onChange={(e) =>
-onSearch(
-e.target.value
-)
+// Child;
+function Search({ onSearch }) {
+  return (
+    <input placeholder="Search" onChange={(e) => onSearch(e.target.value)} />
+  );
 }
-/>
-);
-}
+```
 
 This is a practical example of lifting state up and using callback props together.
 

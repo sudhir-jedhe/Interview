@@ -40,6 +40,10 @@ At t=110ms, queryMultiple(['a', 'b']) is called and the results are immediately 
 
 
 Input: 
+
+
+
+```js
 queryMultiple = async function(keys) {
   await new Promise(res => setTimeout(res, 100));
   return keys.map(key => key + '!');
@@ -55,10 +59,12 @@ Output: [
   {"resolved": "b!", "time": 210},
   {"resolved": "c!", "time": 210}
 ]
+
+```
 Explanation:
 This example is the same as example 1 except there is a 100ms delay in queryMultiple. The results are the same except the promises resolve 100ms later.
 
-
+```js
 Input: 
 queryMultiple = async function(keys) { 
   await new Promise(res => setTimeout(res, keys.length * 100)); 
@@ -86,3 +92,5 @@ queryMultiple(['a']) is called at t=10ms, it is resolved at t=110ms
 queryMultiple(['b', 'c', 'd']) is called at t=110ms, it is resolved at 410ms
 queryMultiple(['e']) is called at t=250ms, it is resolved at 350ms
 queryMultiple(['f']) is called at t=350ms, it is resolved at 450ms
+
+```

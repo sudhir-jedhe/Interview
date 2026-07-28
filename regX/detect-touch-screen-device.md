@@ -5,9 +5,9 @@ The function `is_touch_enabled()` that you've provided is a way to detect if the
 ```js
 function is_touch_enabled() {
   return (
-    "ontouchstart" in window ||  // Checks if "ontouchstart" event is supported in the window object
-    navigator.maxTouchPoints > 0 ||  // Checks if the device supports touch points
-    navigator.msMaxTouchPoints > 0  // Checks for the presence of msMaxTouchPoints for older IE browsers
+    "ontouchstart" in window || // Checks if "ontouchstart" event is supported in the window object
+    navigator.maxTouchPoints > 0 || // Checks if the device supports touch points
+    navigator.msMaxTouchPoints > 0 // Checks for the presence of msMaxTouchPoints for older IE browsers
   );
 }
 ```

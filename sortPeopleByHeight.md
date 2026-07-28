@@ -25,20 +25,22 @@ console.log(sortPeople(names, heights)); // Output: ['John', 'Bob', 'Alice']
 ```
 
 #### **Steps Taken:**
-1. **Mapping Names to Heights**: 
+
+1. **Mapping Names to Heights**:
    - The `map` function is used to pair each name with its corresponding height by creating an array of objects, each containing a `name` and a `height`. This allows us to work with the `heights` array directly alongside the `names` array.
 
-2. **Sorting the Pairs**: 
+2. **Sorting the Pairs**:
    - The `sort` function is used to sort these pairs in descending order based on the `height` property.
 
-3. **Extracting Sorted Names**: 
+3. **Extracting Sorted Names**:
    - After sorting, the `map` function is used again to extract just the `name` values from the sorted objects. This gives us an array of names sorted according to their corresponding heights.
 
 #### **Result**:
+
 For the input `names = ["John", "Alice", "Bob"]` and `heights = [180, 160, 170]`, the output is:
 
 ```javascript
-['John', 'Bob', 'Alice']
+["John", "Bob", "Alice"];
 ```
 
 ---
@@ -65,20 +67,22 @@ console.log(sortedNames); // Output: ["Bob", "Alice", "Charlie"]
 ```
 
 #### **Steps Taken:**
-1. **Generating Indices**: 
+
+1. **Generating Indices**:
    - The `map` function creates an array of indices corresponding to the heights array. Each element of the `heights` array is represented by its index in this array (i.e., `0`, `1`, `2`, ...).
 
-2. **Sorting the Indices**: 
+2. **Sorting the Indices**:
    - The `sort` function sorts these indices based on the height at those indices (from the `heights` array). This sorting is done in descending order by comparing `heights[b]` with `heights[a]`.
 
-3. **Using Sorted Indices**: 
+3. **Using Sorted Indices**:
    - After sorting the indices, `map` is used to fetch the names from the `names` array at the positions indicated by the sorted indices.
 
 #### **Result**:
+
 For the input `names = ["Alice", "Bob", "Charlie"]` and `heights = [175, 180, 170]`, the output is:
 
 ```javascript
-["Bob", "Alice", "Charlie"]
+["Bob", "Alice", "Charlie"];
 ```
 
 ---
@@ -105,6 +109,6 @@ For the input `names = ["Alice", "Bob", "Charlie"]` and `heights = [175, 180, 17
 
 ### **Conclusion:**
 
-Both approaches achieve the same result, but the **first approach** is generally more intuitive and easier to understand for most developers. It directly maps the names to their heights, sorts them, and then extracts the names. The **second approach** is more optimized in terms of memory, but it might be harder to follow due to its indirect use of indices for sorting. 
+Both approaches achieve the same result, but the **first approach** is generally more intuitive and easier to understand for most developers. It directly maps the names to their heights, sorts them, and then extracts the names. The **second approach** is more optimized in terms of memory, but it might be harder to follow due to its indirect use of indices for sorting.
 
 For small to medium-sized arrays, either approach will work fine, but the first approach might be preferred for clarity and ease of maintenance.

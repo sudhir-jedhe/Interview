@@ -35,6 +35,7 @@ If the URL uses HTTPS (secure connection), the browser will also perform a TLS/S
 **4. Sending an HTTP Request**
 After the connection is established, the browser sends an HTTP request to the web server for the specified resource (e.g., the HTML page).
 Example of a typical HTTP request:
+
 ```js
 GET /path/to/resource?id=123 HTTP/1.1
 Host: www.example.com
@@ -42,27 +43,33 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 Connection: keep-alive
 ```
+
 GET: The HTTP method used to request data from the server (other methods include POST, PUT, DELETE, etc.).
 
 The request contains various headers with metadata (such as browser type, supported content types, cookies, etc.).
 `1. Server Processing and HTTP Response`
 The web server receives the HTTP request and processes it. If the requested resource exists and is accessible, the server sends an HTTP response back to the browser.
 Example of an HTTP response:
+
 ```js
 HTTP/1.1 200 OK
 Content-Type: text/html; charset=UTF-8
 Content-Length: 1234
 Date: Mon, 18 Dec 2024 14:23:00 GMT
 ```
+
 ```js
 <html>
-  <head><title>Example Page</title></head>
+  <head>
+    <title>Example Page</title>
+  </head>
   <body>
     <h1>Welcome to Example.com</h1>
     <p>This is the home page.</p>
   </body>
 </html>
 ```
+
 The response includes:
 `Status code: 200 OK` (successful request). Other codes could be 404 (Not Found), 500 (Internal Server Error), etc.
 `Headers:` These provide additional information, such as content type and length.
@@ -80,11 +87,12 @@ Once the HTTP response is received:
 
 **7. Additional Network Requests (e.g., Images, CSS, JS Files)**
 While the initial HTML is being rendered, the browser may initiate additional HTTP requests to fetch resources such as:
+
 - Images (`<img>`)
 - External CSS files (`<link rel="stylesheet">`)
 - JavaScript files (`<script src="...">`)
 - Fonts and other assets
-These resources are fetched, parsed, and rendered in sequence to complete the page.
+  These resources are fetched, parsed, and rendered in sequence to complete the page.
 
 **8. Displaying the Web Page**
 After all resources are loaded and rendered, the web page appears on your browser.
@@ -103,7 +111,7 @@ This process happens quickly (often within milliseconds) so that users can exper
 
 ## **Critical Rendering Path (CRP)**
 
-The` Critical Rendering Path (CRP) `refers to the sequence of steps that a browser follows to render a web page. Understanding the CRP helps optimize a webpage's load time, as it focuses on rendering only the critical resources necessary for displaying the page.
+The`Critical Rendering Path (CRP)`refers to the sequence of steps that a browser follows to render a web page. Understanding the CRP helps optimize a webpage's load time, as it focuses on rendering only the critical resources necessary for displaying the page.
 
 **Critical Rendering Path: Step-by-Step Overview**
 The browser follows a specific sequence of steps to display a webpage. This process includes downloading resources, parsing, and rendering, and it happens in an optimized order to minimize the time it takes to show the content to the user. Let's break down the critical rendering path into key stages:
@@ -188,6 +196,7 @@ If the page has complex elements (e.g., overlapping layers, animations), composi
 After the final image is composed, the browser renders the page on the screen. The user can now see and interact with the webpage.
 
 ### **Optimizing the Critical Rendering Path**
+
 To optimize the CRP and improve page load performance, the following best practices are often used:
 
 - `Minimize Critical Resources:` Only include the most necessary resources (HTML, CSS, JS) during the initial page load.
@@ -199,20 +208,141 @@ To optimize the CRP and improve page load performance, the following best practi
 - `Load CSS Early:` Place CSS `<link>` tags in the `<head>` to ensure the page is styled before it's displayed.
 - `Minimize Render-Blocking Resources`: Avoid inline CSS or JavaScript that could block the rendering process. Use tools like Preload and Prefetch to prioritize the loading of critical resources.
 - `Lazy Load Non-Essential Resources`: Use lazy loading for images or other media content that are not immediately needed, especially if they are below the fold.
-- 
-Summary of the Critical Rendering Path
-Step	Action
-1. DNS Lookup	Resolves the domain name into an IP address.
-2. TCP Connection	Establishes a connection to the server (and performs TLS handshake if using HTTPS).
-3. HTML Parsing (DOM)	Parses the HTML document and builds the DOM tree.
-4. CSS Parsing (CSSOM)	Parses external or internal CSS files and builds the CSSOM.
-5. JavaScript Execution	Executes JavaScript, which can block or delay rendering if not handled asynchronously.
-6. Render Tree Construction	Combines the DOM and CSSOM into the render tree, representing the visual structure of the page.
-7. Layout	Calculates the exact positions and sizes of elements in the render tree (reflow).
-8. Painting	Applies styles to the elements in the render tree, such as color, borders, and shadows.
-9. Compositing	Combines painted layers into the final display, making the page visible to the user.
-10. Page Displayed	The browser renders and displays the page on the screen.
-By optimizing these steps, web developers can improve the performance of web pages, reduce load times, and enhance user experience.
+- Summary of the Critical Rendering Path
+  Step Action
 
+1. DNS Lookup Resolves the domain name into an IP address.
+2. TCP Connection Establishes a connection to the server (and performs TLS handshake if using HTTPS).
+3. HTML Parsing (DOM) Parses the HTML document and builds the DOM tree.
+4. CSS Parsing (CSSOM) Parses external or internal CSS files and builds the CSSOM.
+5. JavaScript Execution Executes JavaScript, which can block or delay rendering if not handled asynchronously.
+6. Render Tree Construction Combines the DOM and CSSOM into the render tree, representing the visual structure of the page.
+7. Layout Calculates the exact positions and sizes of elements in the render tree (reflow).
+8. Painting Applies styles to the elements in the render tree, such as color, borders, and shadows.
+9. Compositing Combines painted layers into the final display, making the page visible to the user.
+10. Page Displayed The browser renders and displays the page on the screen.
+    By optimizing these steps, web developers can improve the performance of web pages, reduce load times, and enhance user experience.
 
+Here is a detailed, step-by-step breakdown of what happens under the hood when you type a URL (like `[https://www.google.com](https://www.google.com)`) into your browser and press **Enter**:
 
+---
+
+## 1. URL Parsing & HSTS Check
+
+- **URL Parsing:** The browser breaks down the typed string into distinct parts:
+- **Protocol:** `https://`
+- **Domain Name:** `[www.google.com](https://www.google.com)`
+- **Port:** Default is `443` for HTTPS (`80` for HTTP)
+- **Path/Query:** `/` (or `/search?q=...`)
+
+- **HSTS Check:** The browser checks its **HSTS (HTTP Strict Transport Security)** list to see if the site requires an encrypted HTTPS connection, automatically redirecting any HTTP request to HTTPS locally.
+
+---
+
+## 2. DNS Lookup (Translating Domain to IP Address)
+
+Computers communicate using IP addresses (like `142.250.190.46`), not human-readable domain names. The browser resolves the domain through a hierarchy of caches and servers:
+
+1. **Browser Cache:** Checks if it resolved this domain recently.
+2. **OS / Hosts File Cache:** Checks the local operating system's DNS cache and `hosts` file.
+3. **Router Cache:** Queries your home Wi-Fi router's cache.
+4. **ISP DNS Resolver:** Queries your Internet Service Provider's DNS server.
+5. **Recursive DNS Hierarchy:** If not cached anywhere, the resolver queries:
+
+- **Root Name Server** $\rightarrow$ Points to the `.com` TLD Name Server.
+- **TLD Name Server** $\rightarrow$ Points to `google.com` Authoritative Name Server.
+- **Authoritative Name Server** $\rightarrow$ Returns the exact IP address for `[www.google.com](https://www.google.com)`.
+
+---
+
+## 3. TCP Connection Establishment (The 3-Way Handshake)
+
+Once the IP address is known, the browser opens a TCP connection with the target server via a **3-Way Handshake**:
+
+```
+[ Client ]  ─── SYN ───►  [ Server ]   ("Can we talk?")
+[ Client ]  ◄─ SYN-ACK ── [ Server ]   ("Yes, I'm ready!")
+[ Client ]  ─── ACK ───►  [ Server ]   ("Great, connection established.")
+
+```
+
+---
+
+## 4. TLS/SSL Handshake (Security Layer for HTTPS)
+
+Because the request uses HTTPS, an encrypted TLS session must be established before sending data:
+
+1. **ClientHello:** Browser sends supported TLS versions, cipher suites, and random bytes.
+2. **ServerHello & Certificate:** Server responds with chosen cipher suite and its **SSL/TLS Certificate**.
+3. **Verification:** The browser verifies the certificate against trusted Certificate Authorities (CAs).
+4. **Key Exchange:** Both parties generate a shared asymmetric session key to encrypt all subsequent communication.
+
+---
+
+## 5. HTTP Request Sent
+
+The browser constructs and sends the HTTP `GET` request over the encrypted connection:
+
+```http
+GET / HTTP/1.1
+Host: www.google.com
+User-Agent: Mozilla/5.0 ...
+Accept: text/html,application/xhtml+xml
+Cookie: session_id=xyz...
+
+```
+
+---
+
+## 6. Server Processing & Response
+
+1. The request hits a load balancer / reverse proxy (like Nginx or Cloudflare CDN).
+2. It routes to a backend application server to execute database queries or application logic.
+3. The server constructs an HTTP response containing headers and the HTML body payload:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=UTF-8
+Cache-Control: max-age=3600
+Set-Cookie: tracking_id=123...
+
+<!DOCTYPE html>
+<html>...</html>
+
+```
+
+---
+
+## 7. Critical Rendering Path (Browser Renders the Page)
+
+Once the browser receives the raw HTML byte stream, its layout engine (like Blink or Gecko) parses and displays the UI:
+
+1. **DOM Construction:** Parses HTML markup into the **Document Object Model (DOM)** tree.
+2. **CSSOM Construction:** Downloads and parses linked CSS files into the **CSS Object Model (CSSOM)** tree.
+3. **Render Tree:** Combines DOM and CSSOM to create a render tree containing only visible elements.
+4. **Layout (Reflow):** Computes exact pixel dimensions and spatial positions for every visible node on the screen.
+5. **Paint & Composite:** Draws pixels onto screen layers, composite layers together, and displays the fully rendered webpage to the user.
+
+---
+
+## Summary Overview
+
+```
+[ User Presses Enter ]
+          │
+          ▼
+    [ DNS Lookup ] ──► (Converts domain to IP address)
+          │
+          ▼
+ [ TCP/TLS Handshake ] ──► (Establishes secure, encrypted socket connection)
+          │
+          ▼
+   [ HTTP GET Req ] ──► (Requests web assets from server)
+          │
+          ▼
+  [ Server Response ] ──► (Sends HTML, CSS, JS payloads back)
+          │
+          ▼
+   [ Browser Render ] ──► (Constructs DOM + CSSOM, Paints layout on screen)
+
+```

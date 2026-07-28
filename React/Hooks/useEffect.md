@@ -31,10 +31,11 @@ useEffect(() => {
    If you need to fetch data from an API or a database when a component mounts, `useEffect` is ideal.
 
    Example:
+
    ```jsx
    useEffect(() => {
      const fetchData = async () => {
-       const response = await fetch('https://api.example.com/data');
+       const response = await fetch("https://api.example.com/data");
        const data = await response.json();
        setData(data);
      };
@@ -46,6 +47,7 @@ useEffect(() => {
    If you need to manipulate the DOM after the render (e.g., focusing an input field), you can use `useEffect`.
 
    Example:
+
    ```jsx
    useEffect(() => {
      document.title = `You clicked ${count} times`;
@@ -56,15 +58,16 @@ useEffect(() => {
    When you need to set up event listeners (like window resize, key presses, or other external events), `useEffect` can handle these and clean up afterward.
 
    Example:
+
    ```jsx
    useEffect(() => {
      const handleResize = () => {
-       console.log('Window resized');
+       console.log("Window resized");
      };
-     window.addEventListener('resize', handleResize);
+     window.addEventListener("resize", handleResize);
 
      return () => {
-       window.removeEventListener('resize', handleResize); // Clean-up
+       window.removeEventListener("resize", handleResize); // Clean-up
      };
    }, []); // Runs once on mount and cleans up on unmount
    ```
@@ -73,10 +76,11 @@ useEffect(() => {
    For setting up timers like `setTimeout` or `setInterval`, `useEffect` is useful to clear them when the component unmounts or when dependencies change.
 
    Example:
+
    ```jsx
    useEffect(() => {
      const timer = setTimeout(() => {
-       console.log('This will run after 3 seconds');
+       console.log("This will run after 3 seconds");
      }, 3000);
 
      return () => clearTimeout(timer); // Clean-up the timer
@@ -87,11 +91,12 @@ useEffect(() => {
    You may need to perform validation or call an API when an input field changes. This is also a good use case for `useEffect`.
 
    Example:
+
    ```jsx
    useEffect(() => {
      if (email) {
        // Perform email validation or API call
-       console.log('Validating email:', email);
+       console.log("Validating email:", email);
      }
    }, [email]); // Runs every time 'email' changes
    ```
@@ -103,11 +108,11 @@ The second argument to `useEffect` (the **dependency array**) controls when the 
 - **Empty Array (`[]`)**: The effect will run only once when the component mounts (similar to `componentDidMount`).
 - **No Dependency Array**: The effect will run after every render (like `componentDidUpdate`).
 - **With Dependencies (`[dep1, dep2, ...]`)**: The effect will run when any of the dependencies change. If the dependencies are unchanged between renders, React skips the effect.
-  
+
 ### Example with Dependency Array:
 
 ```jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function Counter() {
   const [count, setCount] = useState(0);
@@ -118,7 +123,7 @@ function Counter() {
 
     // Optionally return a clean-up function
     return () => {
-      console.log('Cleanup on count change');
+      console.log("Cleanup on count change");
     };
   }, [count]); // Effect depends on 'count'
 
@@ -140,13 +145,13 @@ Example:
 ```jsx
 useEffect(() => {
   const intervalId = setInterval(() => {
-    console.log('Interval running...');
+    console.log("Interval running...");
   }, 1000);
 
   // Cleanup function to clear the interval when the component unmounts
   return () => {
     clearInterval(intervalId);
-    console.log('Interval cleared');
+    console.log("Interval cleared");
   };
 }, []); // The effect runs once, and the interval is cleaned up on unmount
 ```

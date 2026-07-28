@@ -1,3 +1,4 @@
+```js
 //Promise.reject
 let promise = new Promise((resolve, reject) => {
   let b = Math.random() < 0.3;

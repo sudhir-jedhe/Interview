@@ -1,16 +1,13 @@
 `useDidUpdate` is a custom hook that behaves like `useEffect`, **but skips the initial render** and only runs on updates.
 
-***
+---
 
 # Basic Implementation
 
 ```tsx
 import { useEffect, useRef } from "react";
 
-export function useDidUpdate(
-  callback: () => void,
-  dependencies: any[]
-) {
+export function useDidUpdate(callback: () => void, dependencies: any[]) {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
@@ -24,7 +21,7 @@ export function useDidUpdate(
 }
 ```
 
-***
+---
 
 # Usage
 
@@ -45,7 +42,7 @@ Initial Render ✅
 Subsequent Updates ✅
 ```
 
-***
+---
 
 ### `useDidUpdate`
 
@@ -64,7 +61,7 @@ Initial Render ❌
 Subsequent Updates ✅
 ```
 
-***
+---
 
 # Example: Search Component
 
@@ -105,7 +102,7 @@ Type "reactjs"
 ✅ API called
 ```
 
-***
+---
 
 # Production Version (Supports Cleanup)
 
@@ -116,7 +113,7 @@ type EffectCallback = () => void | (() => void);
 
 export function useDidUpdate(
   callback: EffectCallback,
-  deps: React.DependencyList
+  deps: React.DependencyList,
 ) {
   const mounted = useRef(false);
 
@@ -131,22 +128,14 @@ export function useDidUpdate(
 }
 ```
 
-***
+---
 
 # TypeScript Generic Version
 
 ```tsx
-import {
-  DependencyList,
-  EffectCallback,
-  useEffect,
-  useRef,
-} from "react";
+import { DependencyList, EffectCallback, useEffect, useRef } from "react";
 
-export const useDidUpdate = (
-  effect: EffectCallback,
-  deps?: DependencyList
-) => {
+export const useDidUpdate = (effect: EffectCallback, deps?: DependencyList) => {
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -159,7 +148,7 @@ export const useDidUpdate = (
 };
 ```
 
-***
+---
 
 # Real Interview Scenarios
 
@@ -173,7 +162,7 @@ useDidUpdate(() => {
 
 Avoids unnecessary API call on page load.
 
-***
+---
 
 ### 2. Form Autosave
 
@@ -185,7 +174,7 @@ useDidUpdate(() => {
 
 Only save after user changes something.
 
-***
+---
 
 ### 3. Analytics Tracking
 
@@ -197,7 +186,7 @@ useDidUpdate(() => {
 
 Don't fire analytics on initial render.
 
-***
+---
 
 # Advanced Version Using Previous Values
 
@@ -206,10 +195,7 @@ import { useEffect, useRef } from "react";
 
 export function useDidUpdate<T>(
   value: T,
-  callback: (
-    previous: T | undefined,
-    current: T
-  ) => void
+  callback: (previous: T | undefined, current: T) => void,
 ) {
   const isMounted = useRef(false);
   const previousValue = useRef<T>();
@@ -230,13 +216,11 @@ export function useDidUpdate<T>(
 
 ```tsx
 useDidUpdate(count, (prev, current) => {
-  console.log(
-    `Count changed from ${prev} to ${current}`
-  );
+  console.log(`Count changed from ${prev} to ${current}`);
 });
 ```
 
-***
+---
 
 # Senior React Interview Follow-up
 
@@ -244,14 +228,14 @@ When asked **"Why not use useEffect?"**, explain:
 
 | Hook           | Initial Render | Updates |
 | -------------- | -------------- | ------- |
-| `useEffect`    | ✅              | ✅       |
-| `useDidUpdate` | ❌              | ✅       |
+| `useEffect`    | ✅             | ✅      |
+| `useDidUpdate` | ❌             | ✅      |
 
 `useDidUpdate` is useful when:
 
-* API calls should happen only after user interaction
-* Form auto-save shouldn't run on page load
-* Analytics events shouldn't fire on initial mount
-* Expensive computations should be skipped on first render
+- API calls should happen only after user interaction
+- Form auto-save shouldn't run on page load
+- Analytics events shouldn't fire on initial mount
+- Expensive computations should be skipped on first render
 
 This is a common custom hook question in Senior React/Frontend Lead interviews because it demonstrates understanding of `useEffect`, refs, component lifecycle, and reusable hook design.

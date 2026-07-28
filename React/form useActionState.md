@@ -16,8 +16,6 @@ Use the returned state object to show errors or success messages dynamically.
 Always use defaultValue for form inputs when controlled by useActionState.
 The action prop on <form> should point to the function returned by useActionState
 
-
-
 ## React 19 `useActionState` – Complete Solution
 
 ### Requirements Covered
@@ -42,7 +40,7 @@ The action prop on <form> should point to the function returned by useActionStat
 
 ✅ Accessible Form
 
-***
+---
 
 ## App.jsx
 
@@ -273,50 +271,31 @@ export default function App() {
 }
 ```
 
-***
+---
 
 # Production Version with Reusable Validation
 
 ```jsx
 const validators = {
-  name: value =>
-    value
-      ? ""
-      : "Name is required",
+  name: (value) => (value ? "" : "Name is required"),
 
-  email: value => {
-    if (!value)
-      return "Email is required";
+  email: (value) => {
+    if (!value) return "Email is required";
 
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-      value
-    )
-      ? ""
-      : "Invalid email";
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? "" : "Invalid email";
   },
 
-  country: value =>
-    value
-      ? ""
-      : "Country is required",
+  country: (value) => (value ? "" : "Country is required"),
 };
 
 function validate(formData) {
   const errors = {};
 
-  Object.keys(
-    validators
-  ).forEach(field => {
-    const error =
-      validators[
-        field
-      ](
-        formData.get(field)
-      );
+  Object.keys(validators).forEach((field) => {
+    const error = validators[field](formData.get(field));
 
     if (error) {
-      errors[field] =
-        error;
+      errors[field] = error;
     }
   });
 
@@ -324,7 +303,7 @@ function validate(formData) {
 }
 ```
 
-***
+---
 
 # Interview Talking Points
 
@@ -342,7 +321,7 @@ Works with Server Actions
 Reduces form boilerplate
 ```
 
-***
+---
 
 ### Why `defaultValue`?
 
@@ -354,12 +333,12 @@ Inputs should use defaultValue
 Prevents re-rendering every keystroke
 ```
 
-***
+---
 
 ### Why disable button?
 
 ```jsx
-disabled={isPending}
+disabled = { isPending };
 ```
 
 Prevents:
@@ -372,7 +351,7 @@ Duplicate API Calls
 Race Conditions
 ```
 
-***
+---
 
 ### Common Interview Follow-Up
 
@@ -394,19 +373,11 @@ Render:
 
 ```jsx
 {
-  state.errors
-    ?.name && (
-      <span>
-        {
-          state.errors
-            .name
-        }
-      </span>
-    );
+  state.errors?.name && <span>{state.errors.name}</span>;
 }
 ```
 
-***
+---
 
 ### Senior-Level Improvements
 

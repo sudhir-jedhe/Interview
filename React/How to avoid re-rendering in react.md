@@ -5,27 +5,29 @@ Preventing unnecessary re-renders in React is crucial for optimizing the perform
 `React.memo()` is a higher-order component (HOC) that prevents a component from re-rendering unless its props have changed. This is particularly useful for functional components.
 
 #### Example:
+
 ```jsx
 const MyComponent = React.memo((props) => {
-  console.log('Rendering MyComponent');
+  console.log("Rendering MyComponent");
   return <div>{props.value}</div>;
 });
 
 // Only re-renders if props.value changes
 ```
 
-- **How it works**: 
+- **How it works**:
   - `React.memo()` compares the previous and current props of the component, and if they are the same, it prevents re-rendering.
   - You can pass a custom comparison function as the second argument to `React.memo()` to fine-tune when the component should re-render.
 
 #### Example with custom comparison function:
+
 ```jsx
 const MyComponent = React.memo(
   (props) => {
-    console.log('Rendering MyComponent');
+    console.log("Rendering MyComponent");
     return <div>{props.value}</div>;
   },
-  (prevProps, nextProps) => prevProps.value === nextProps.value
+  (prevProps, nextProps) => prevProps.value === nextProps.value,
 );
 
 // Only re-renders if the "value" prop changes
@@ -36,12 +38,13 @@ const MyComponent = React.memo(
 `useMemo()` is a hook that allows you to memoize expensive calculations or values so they don't get recomputed on every render unless their dependencies change.
 
 #### Example:
+
 ```jsx
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
 
 function ExpensiveComponent({ num }) {
   const computedValue = useMemo(() => {
-    console.log('Computing value...');
+    console.log("Computing value...");
     return num * 2;
   }, [num]); // Only re-compute when "num" changes
 
@@ -58,8 +61,9 @@ function ExpensiveComponent({ num }) {
 `useCallback()` is a hook used to memoize functions to prevent them from being re-created on each render, especially if they are passed as props to child components.
 
 #### Example:
+
 ```jsx
-import React, { useCallback } from 'react';
+import React, { useCallback } from "react";
 
 function Parent() {
   const [count, setCount] = useState(0);
@@ -72,7 +76,7 @@ function Parent() {
 }
 
 function Child({ onClick }) {
-  console.log('Rendering Child');
+  console.log("Rendering Child");
   return <button onClick={onClick}>Increment</button>;
 }
 ```
@@ -86,20 +90,23 @@ function Child({ onClick }) {
 In React, defining functions inline in JSX can cause unnecessary re-renders because the function is re-created on every render.
 
 #### Example (Inefficient):
+
 ```jsx
 function Parent() {
-  return <Child onClick={() => console.log('Clicked')} />;
+  return <Child onClick={() => console.log("Clicked")} />;
 }
 ```
 
 - **Problem**: The anonymous function inside the `onClick` prop is re-created on every render, which could cause unnecessary re-renders for the `Child` component.
 
 #### Solution:
+
 Instead, define the function outside the JSX:
+
 ```jsx
 function Parent() {
   const handleClick = () => {
-    console.log('Clicked');
+    console.log("Clicked");
   };
 
   return <Child onClick={handleClick} />;
@@ -113,21 +120,22 @@ This ensures that the same function reference is passed as a prop to the `Child`
 When rendering lists of components in React, always provide a stable and unique `key` prop to help React efficiently manage re-renders and updates to the list.
 
 #### Example:
+
 ```jsx
-const items = ['apple', 'banana', 'orange'];
+const items = ["apple", "banana", "orange"];
 
 function List() {
   return (
     <ul>
       {items.map((item, index) => (
-        <li key={item}>{item}</li>  // Using a unique identifier for the key
+        <li key={item}>{item}</li> // Using a unique identifier for the key
       ))}
     </ul>
   );
 }
 ```
 
-- **How it works**: 
+- **How it works**:
   - The `key` prop is crucial for React to track each item in the list and optimize the update process. If the `key` doesn't change, React can efficiently update the DOM.
 
 ### 6. **Splitting Components (Lazy Loading)**
@@ -135,10 +143,11 @@ function List() {
 React supports **lazy loading** of components via `React.lazy()` and `Suspense`. This allows you to load components only when they are needed, which helps in reducing the initial render time and prevents unnecessary re-renders.
 
 #### Example:
-```jsx
-import React, { Suspense, lazy } from 'react';
 
-const LazyComponent = lazy(() => import('./LazyComponent'));
+```jsx
+import React, { Suspense, lazy } from "react";
+
+const LazyComponent = lazy(() => import("./LazyComponent"));
 
 function App() {
   return (
@@ -158,6 +167,7 @@ function App() {
 In class components, you can use the `shouldComponentUpdate()` lifecycle method to prevent unnecessary re-renders.
 
 #### Example:
+
 ```jsx
 class MyComponent extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -182,6 +192,7 @@ class MyComponent extends React.Component {
 `React.PureComponent` is a base class for class components that implements a shallow comparison of `props` and `state` by default. This prevents unnecessary re-renders if the `props` and `state` haven't changed.
 
 #### Example:
+
 ```jsx
 class MyComponent extends React.PureComponent {
   render() {
@@ -198,6 +209,7 @@ class MyComponent extends React.PureComponent {
 When using the **Context API**, React re-renders all consumers whenever the context value changes, even if only a part of the value has changed. To optimize this, you can use `React.memo()` and `useMemo()`.
 
 #### Example:
+
 ```jsx
 const MyContext = React.createContext();
 
@@ -213,7 +225,7 @@ const Parent = () => {
 };
 
 const Child = React.memo(() => {
-  console.log('Child render');
+  console.log("Child render");
   return <div>Child Component</div>;
 });
 ```

@@ -1,3 +1,4 @@
+```js
 //This will be resolved with undefined
 Promise.resolve(2)
   .then(

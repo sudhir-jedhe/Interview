@@ -17,11 +17,11 @@ Here is the improved code:
 ```javascript
 export function findSpecialElement(arr) {
   const threshold = arr.length / 4;
-  
+
   // Sort the array to group identical elements together
   arr.sort((a, b) => a - b);
-  
-  let count = 1;  // Initialize the count of the first element
+
+  let count = 1; // Initialize the count of the first element
   for (let i = 1; i < arr.length; i++) {
     if (arr[i] === arr[i - 1]) {
       count++; // Increment count if the same element is repeated
@@ -30,16 +30,16 @@ export function findSpecialElement(arr) {
       if (count > threshold) {
         return arr[i - 1];
       }
-      count = 1;  // Reset count for the new element
+      count = 1; // Reset count for the new element
     }
   }
-  
+
   // Final check for the last element in the array
   if (count > threshold) {
     return arr[arr.length - 1];
   }
 
-  return null;  // No element found that meets the threshold
+  return null; // No element found that meets the threshold
 }
 
 import { findSpecialElement } from "./findSpecialElement.js";
@@ -65,6 +65,7 @@ console.log(findSpecialElement(arr3)); // Output: 1 (appears more than 25%)
 4. **Edge Case**: If no element appears more than `arr.length / 4` times, the function will return `null`.
 
 ### Time Complexity:
+
 - **Sorting**: The sorting step takes O(n log n) time, where `n` is the length of the array.
 - **Counting**: The iteration to count occurrences takes O(n) time.
 - **Overall Complexity**: O(n log n), dominated by the sorting step.
@@ -72,7 +73,9 @@ console.log(findSpecialElement(arr3)); // Output: 1 (appears more than 25%)
 ### Example Walkthrough:
 
 #### Example 1:
+
 For `arr = [1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 4]`:
+
 - Sorted array: `[1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 4]`
 - Count occurrences:
   - `1` appears 3 times (threshold is `11 / 4 = 2.75`).
@@ -82,7 +85,9 @@ For `arr = [1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 4]`:
 - Output: `4` is returned because it appears more than 25%.
 
 #### Example 2:
+
 For `arr = [1, 2, 2, 6, 6, 6, 6, 7, 10]`:
+
 - Sorted array: `[1, 2, 2, 6, 6, 6, 6, 7, 10]`
 - Count occurrences:
   - `1` appears 1 time.
@@ -91,11 +96,14 @@ For `arr = [1, 2, 2, 6, 6, 6, 6, 7, 10]`:
 - Output: `6` is returned because it appears more than 25%.
 
 #### Example 3:
+
 For `arr = [1, 1]`:
+
 - Sorted array: `[1, 1]`
 - Count occurrences:
   - `1` appears 2 times (threshold is `2 / 4 = 0.5`).
 - Output: `1` is returned because it appears more than 25%.
 
 ### Conclusion:
+
 This solution efficiently solves the problem by sorting the array and counting the frequencies of elements in a straightforward way. It ensures that we return the element that appears more than 25% of the time or `null` if no such element exists.

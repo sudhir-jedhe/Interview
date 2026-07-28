@@ -46,28 +46,28 @@ function parse(code: string): JSXElement {
   // Parse opening elements
   const parseOpeningElement = (): JSXOpeningElement => {
     goUntilNonWhitespace();
-    expect('<');
+    expect("<");
     goToNext();
     goUntilNonWhitespace();
     const tag = goUntil(disabledCharactersInTagName);
 
-    const isSelfClosing = code[currentIndex - 1] === '/';
+    const isSelfClosing = code[currentIndex - 1] === "/";
     const element = {
       tag,
       selfClosing: isSelfClosing,
     };
     goUntilNonWhitespace();
-    expect('>');
+    expect(">");
     goToNext();
     return element;
   };
 
   // Parse closing elements
   const parseClosingElement = (): JSXClosingElement => {
-    expect('<');
+    expect("<");
     goToNext();
     goUntilNonWhitespace();
-    expect('/');
+    expect("/");
     goToNext();
     goUntilNonWhitespace();
     const tag = goUntil(disabledCharactersInTagName);
@@ -75,7 +75,7 @@ function parse(code: string): JSXElement {
       tag,
     };
     goUntilNonWhitespace();
-    expect('>');
+    expect(">");
     goToNext();
     return element;
   };
@@ -114,7 +114,7 @@ function parse(code: string): JSXElement {
     const closingElement = parseClosingElement();
 
     if (openingElement.tag !== closingElement.tag) {
-      throw new Error('Mismatched opening and closing tags');
+      throw new Error("Mismatched opening and closing tags");
     }
 
     return {
@@ -128,7 +128,7 @@ function parse(code: string): JSXElement {
   // There should be no extra characters after parsing the element
   goUntilNonWhitespace();
   if (currentIndex !== code.length) {
-    throw new Error('Unexpected extra characters after parsing');
+    throw new Error("Unexpected extra characters after parsing");
   }
 
   return element;
@@ -144,13 +144,13 @@ function generate(ast: JSXElement): string {
     return `h(${finalTag}, null, ${children
       .map((child) => {
         // If string
-        if (typeof child === 'string') {
+        if (typeof child === "string") {
           return `"${child}"`;
         }
         // If JSXElement
         return generate(child);
       })
-      .join(',')})`;
+      .join(",")})`;
   } else {
     return `h(${finalTag}, null)`;
   }
@@ -158,12 +158,12 @@ function generate(ast: JSXElement): string {
 
 /* --------------------------------- Helpers --------------------------------- */
 function extractTagName(tag: string): string {
-  return tag.replace(/[^a-zA-Z0-9]/gi, '');
+  return tag.replace(/[^a-zA-Z0-9]/gi, "");
 }
 
 function matches(openTag: string, closeTag: string): boolean {
   return (
-    !openTag.includes('/') &&
+    !openTag.includes("/") &&
     closeTag.length - openTag.length === 1 &&
     extractTagName(openTag) === extractTagName(closeTag)
   );
@@ -172,30 +172,33 @@ function matches(openTag: string, closeTag: string): boolean {
 function handleSpecificError(
   code: string,
   openTagEnd: number,
-  closeTagStart: number
+  closeTagStart: number,
 ): void {
-  if (code[openTagEnd + 1] !== '>' && code[closeTagStart - 1] !== '<') return;
-  throw new Error('Error: Invalid tag structure');
+  if (code[openTagEnd + 1] !== ">" && code[closeTagStart - 1] !== "<") return;
+  throw new Error("Error: Invalid tag structure");
 }
 
 function isOpenTag(html: string, cursor: number): boolean {
-  return html[cursor] === '<' && html[cursor + 1].match(/[a-zA-Z0-9]/);
+  return html[cursor] === "<" && html[cursor + 1].match(/[a-zA-Z0-9]/);
 }
 
 function isCloseTag(html: string, cursor: number): boolean {
   return (
-    html[cursor] === '<' &&
-    html[cursor + 1] === '/' &&
+    html[cursor] === "<" &&
+    html[cursor + 1] === "/" &&
     html[cursor + 2].match(/[a-zA-Z0-9]/)
   );
 }
 
-function getFullTag(html: string, statIndex: number): { tag: string | null; endIndex: number } {
-  let tag = '';
+function getFullTag(
+  html: string,
+  statIndex: number,
+): { tag: string | null; endIndex: number } {
+  let tag = "";
   while (statIndex < html.length) {
     const char = html[statIndex];
     tag += char;
-    if (char === '>') return { tag, endIndex: statIndex };
+    if (char === ">") return { tag, endIndex: statIndex };
     statIndex++;
   }
   return { tag: null, endIndex: statIndex };
@@ -205,23 +208,27 @@ function getChildrenFromHTML(html: string): string[] {
   const children = [];
   let cursor = 0;
   let isTagStarted = false;
-  let openTagName = '';
+  let openTagName = "";
   let repeatedOpenTagCount = 0;
-  let runningTag = '';
-  let runningText = '';
+  let runningTag = "";
+  let runningText = "";
   while (cursor < html.length) {
-    if (isTagStarted && isCloseTag(html, cursor) && extractTagName(getFullTag(html, cursor).tag) === openTagName) {
+    if (
+      isTagStarted &&
+      isCloseTag(html, cursor) &&
+      extractTagName(getFullTag(html, cursor).tag) === openTagName
+    ) {
       if (repeatedOpenTagCount === 0) {
         if (runningText.length) {
           children.push(runningText);
-          runningText = '';
+          runningText = "";
         }
         isTagStarted = false;
-        openTagName = '';
+        openTagName = "";
         runningTag += getFullTag(html, cursor).tag;
         children.push(runningTag);
         cursor = getFullTag(html, cursor).endIndex + 1;
-        runningTag = '';
+        runningTag = "";
       } else {
         repeatedOpenTagCount--;
         runningTag += html[cursor];
@@ -234,7 +241,7 @@ function getChildrenFromHTML(html: string): string[] {
       if (!isTagStarted) {
         if (runningText.length) {
           children.push(runningText);
-          runningText = '';
+          runningText = "";
         }
         openTagName = extractTagName(getFullTag(html, cursor).tag);
         isTagStarted = true;
@@ -273,8 +280,9 @@ export { parse, generate };
 ### Example Usage:
 
 **Input:**
+
 ```javascript
-const input = '<div><p>Hello, World!</p><span>Goodbye!</span></div>';
+const input = "<div><p>Hello, World!</p><span>Goodbye!</span></div>";
 const ast = parse(input);
 console.log(ast);
 
@@ -283,6 +291,7 @@ console.log(jsx);
 ```
 
 **Output AST:**
+
 ```javascript
 {
   openingElement: { tag: 'div' },
@@ -295,8 +304,9 @@ console.log(jsx);
 ```
 
 **Generated JSX:**
+
 ```javascript
-h("div", null, h("p", null, "Hello, World!"), h("span", null, "Goodbye!"))
+h("div", null, h("p", null, "Hello, World!"), h("span", null, "Goodbye!"));
 ```
 
 This code provides a full implementation of parsing and generating JSX elements, handling self-closing tags, deeply nested elements, and edge cases effectively.

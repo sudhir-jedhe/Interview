@@ -1,3 +1,4 @@
+```js
 formatMoney(123); // Output: $123.00
 formatMoney(0); // Output: $0.00
 formatMoney(12.23); // Output: $12.23
@@ -13,3 +14,4 @@ export const formatMoney = (amount) => {
     })
   );
 };
+```

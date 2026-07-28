@@ -1,15 +1,17 @@
 ### **Higher-Order Components (HOCs) in React**
 
-A **Higher-Order Component (HOC)** is a pattern in React used to enhance or modify the functionality of a component by **wrapping** it inside another component. The main purpose of HOCs is to share logic between components in a reusable and composable manner. 
+A **Higher-Order Component (HOC)** is a pattern in React used to enhance or modify the functionality of a component by **wrapping** it inside another component. The main purpose of HOCs is to share logic between components in a reusable and composable manner.
 
 An HOC is a function that takes a component as an argument and returns a new component with additional props or behavior.
 
 #### **Key Characteristics of HOCs:**
+
 - They don’t modify the original component, but return a new component with added functionality.
 - HOCs are commonly used for cross-cutting concerns like authentication, logging, data fetching, or injecting additional state into components.
 - HOCs are used to **reusable logic** across different components, thus promoting code reuse.
 
 #### **Basic Syntax:**
+
 ```javascript
 const MyHOC = (WrappedComponent) => {
   return class extends React.Component {
@@ -32,14 +34,14 @@ Let's start with a simple HOC that logs the props passed to the wrapped componen
 #### **Example: `withLogging` HOC**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Higher-Order Component to log props
 const withLogging = (WrappedComponent) => {
   return class extends React.Component {
     componentDidUpdate(prevProps) {
-      console.log('Previous Props:', prevProps);
-      console.log('Current Props:', this.props);
+      console.log("Previous Props:", prevProps);
+      console.log("Current Props:", this.props);
     }
 
     render() {
@@ -66,6 +68,7 @@ export default MyComponentWithLogging;
 ```
 
 **Explanation:**
+
 - `withLogging` logs the previous and current props whenever the component receives new props.
 - `MyComponent` is wrapped by `withLogging` to add logging functionality.
 
@@ -78,13 +81,13 @@ A more practical use case is creating a Higher-Order Component for authenticatio
 #### **Example: `withAuth` HOC**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Higher-Order Component for checking authentication
 const withAuth = (WrappedComponent) => {
   return class extends React.Component {
     render() {
-      const isAuthenticated = localStorage.getItem('auth_token');
+      const isAuthenticated = localStorage.getItem("auth_token");
       if (!isAuthenticated) {
         return <div>Please log in to view this content</div>;
       }
@@ -111,6 +114,7 @@ export default DashboardWithAuth;
 ```
 
 **Explanation:**
+
 - `withAuth` checks whether a user is authenticated by checking if the `auth_token` exists in `localStorage`.
 - If the user is not authenticated, it shows a message asking them to log in. Otherwise, it renders the wrapped `Dashboard` component.
 
@@ -123,7 +127,7 @@ Another common use case is for fetching data from an API. You can create an HOC 
 #### **Example: `withDataFetching` HOC**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Higher-Order Component for data fetching
 const withDataFetching = (WrappedComponent, dataSource) => {
@@ -172,7 +176,10 @@ const UserList = ({ data }) => {
 };
 
 // Wrap UserList component with HOC for data fetching
-const UserListWithData = withDataFetching(UserList, 'https://jsonplaceholder.typicode.com/users');
+const UserListWithData = withDataFetching(
+  UserList,
+  "https://jsonplaceholder.typicode.com/users",
+);
 
 export default UserListWithData;
 ```
@@ -184,6 +191,7 @@ export default UserListWithData;
 ```
 
 **Explanation:**
+
 - `withDataFetching` handles the logic for fetching data from an API (`dataSource`).
 - The `UserList` component is wrapped by the HOC to receive fetched data via props.
 
@@ -196,7 +204,7 @@ HOCs can also be used to inject state management logic into components, similar 
 #### **Example: `withState` HOC**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Higher-Order Component to add local state
 const withState = (WrappedComponent, initialState) => {
@@ -224,7 +232,9 @@ const Counter = ({ state, setStateValue }) => {
   return (
     <div>
       <h1>Counter: {state.count}</h1>
-      <button onClick={() => setStateValue('count', state.count + 1)}>Increment</button>
+      <button onClick={() => setStateValue("count", state.count + 1)}>
+        Increment
+      </button>
     </div>
   );
 };
@@ -242,6 +252,7 @@ export default CounterWithState;
 ```
 
 **Explanation:**
+
 - `withState` HOC manages local state for the wrapped component (`Counter` in this case).
 - The `Counter` component receives the state and a `setStateValue` function via props, which allows it to update the `count` state.
 
@@ -254,7 +265,7 @@ You can use an HOC to conditionally render different UI elements based on certai
 #### **Example: `withConditionalRendering` HOC**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Higher-Order Component for conditional rendering
 const withConditionalRendering = (WrappedComponent, condition) => {
@@ -286,6 +297,7 @@ export default ContentWithLoading;
 ```
 
 **Explanation:**
+
 - `withConditionalRendering` takes a `condition` and shows a loading message or the wrapped component (`Content`) based on that condition.
 
 ---
@@ -300,8 +312,6 @@ Higher-Order Components (HOCs) are an essential pattern in React for code reuse 
 
 HOCs are a powerful tool in React, especially when building complex applications with common behaviors that need to be shared between different components.
 
-
-
 Sure! Here's a complete example of how **Higher-Order Components (HOCs)** work in React, with multiple real-world examples that you can try in your React project.
 
 ---
@@ -313,14 +323,14 @@ This HOC logs the props passed to the component whenever it re-renders.
 #### **Example: `withLogging` HOC**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Higher-Order Component that logs props
 const withLogging = (WrappedComponent) => {
   return class extends React.Component {
     componentDidUpdate(prevProps) {
-      console.log('Previous Props:', prevProps);
-      console.log('Current Props:', this.props);
+      console.log("Previous Props:", prevProps);
+      console.log("Current Props:", this.props);
     }
 
     render() {
@@ -347,6 +357,7 @@ export default MyComponentWithLogging;
 ```
 
 **Explanation**:
+
 - `withLogging` is a Higher-Order Component that wraps `MyComponent`.
 - Whenever `MyComponent` receives new props, it logs the previous and current props to the console.
 
@@ -359,19 +370,19 @@ This HOC checks if the user is authenticated and either allows access to a prote
 #### **Example: `withAuth` HOC**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Higher-Order Component for authentication
 const withAuth = (WrappedComponent) => {
   return class extends React.Component {
     render() {
-      const isAuthenticated = localStorage.getItem('auth_token');
-      
+      const isAuthenticated = localStorage.getItem("auth_token");
+
       // If not authenticated, show login prompt
       if (!isAuthenticated) {
         return <div>Please log in to view this content.</div>;
       }
-      
+
       // If authenticated, render the wrapped component
       return <WrappedComponent {...this.props} />;
     }
@@ -396,6 +407,7 @@ export default ProtectedDashboard;
 ```
 
 **Explanation**:
+
 - `withAuth` checks if a user is authenticated by checking for an `auth_token` in `localStorage`.
 - If not authenticated, it displays a message prompting the user to log in. If authenticated, it renders the `Dashboard` component.
 
@@ -408,7 +420,7 @@ This HOC handles data fetching and passes the fetched data as props to the wrapp
 #### **Example: `withDataFetching` HOC**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Higher-Order Component for data fetching
 const withDataFetching = (WrappedComponent, dataSource) => {
@@ -457,7 +469,10 @@ const UserList = ({ data }) => {
 };
 
 // Wrap UserList with data fetching HOC
-const UserListWithData = withDataFetching(UserList, 'https://jsonplaceholder.typicode.com/users');
+const UserListWithData = withDataFetching(
+  UserList,
+  "https://jsonplaceholder.typicode.com/users",
+);
 
 export default UserListWithData;
 ```
@@ -469,6 +484,7 @@ export default UserListWithData;
 ```
 
 **Explanation**:
+
 - `withDataFetching` is an HOC that fetches data from an API (in this case, a list of users) and passes the fetched data to the `UserList` component.
 - The `UserList` component renders the list of user names once the data is successfully fetched.
 
@@ -481,7 +497,7 @@ This HOC injects local state management into a wrapped component.
 #### **Example: `withState` HOC**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Higher-Order Component to manage state
 const withState = (WrappedComponent, initialState) => {
@@ -509,7 +525,9 @@ const Counter = ({ state, setStateValue }) => {
   return (
     <div>
       <h1>Counter: {state.count}</h1>
-      <button onClick={() => setStateValue('count', state.count + 1)}>Increment</button>
+      <button onClick={() => setStateValue("count", state.count + 1)}>
+        Increment
+      </button>
     </div>
   );
 };
@@ -527,6 +545,7 @@ export default CounterWithState;
 ```
 
 **Explanation**:
+
 - `withState` is an HOC that manages the local state (`count`) for the wrapped component (`Counter`).
 - The `Counter` component receives the state and a `setStateValue` function via props to update the state.
 
@@ -539,7 +558,7 @@ This HOC conditionally renders either a loading spinner or the wrapped component
 #### **Example: `withConditionalRendering` HOC**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Higher-Order Component for conditional rendering
 const withConditionalRendering = (WrappedComponent, condition) => {
@@ -571,6 +590,7 @@ export default ContentWithLoading;
 ```
 
 **Explanation**:
+
 - `withConditionalRendering` checks a `condition` and displays a loading message if `condition` is true, otherwise it renders the wrapped `Content` component.
 
 ---
@@ -582,7 +602,6 @@ export default ContentWithLoading;
 - **Abstraction**: HOCs allow you to abstract out complex logic such as data fetching, authentication, or state management, making your components cleaner and more focused on rendering UI.
 
 These examples show how HOCs can be used to wrap your components with additional functionality in a reusable and composable manner. You can modify the logic in each HOC as per your needs to handle different concerns in your application.
-
 
 ### Higher-Order Components (HOCs) in React
 
@@ -597,21 +616,21 @@ Here's a breakdown of multiple **examples of Higher-Order Components**:
 This HOC logs component lifecycle events (rendering, mounting, unmounting) and logs the props.
 
 ```jsx
-import React from 'react';
+import React from "react";
 
 // HOC that logs props and component lifecycle
 function withLogging(WrappedComponent) {
   return class extends React.Component {
     componentDidMount() {
-      console.log('Component mounted:', WrappedComponent.name);
+      console.log("Component mounted:", WrappedComponent.name);
     }
 
     componentWillUnmount() {
-      console.log('Component will unmount:', WrappedComponent.name);
+      console.log("Component will unmount:", WrappedComponent.name);
     }
 
     render() {
-      console.log('Current props:', this.props);
+      console.log("Current props:", this.props);
       return <WrappedComponent {...this.props} />;
     }
   };
@@ -621,9 +640,10 @@ export default withLogging;
 ```
 
 **Usage**:
+
 ```jsx
-import React from 'react';
-import withLogging from './withLogging';
+import React from "react";
+import withLogging from "./withLogging";
 
 function HelloWorld({ name }) {
   return <h1>Hello, {name}!</h1>;
@@ -641,12 +661,12 @@ export default withLogging(HelloWorld);
 This HOC can be used to wrap a component and check if the user is authenticated before rendering the wrapped component.
 
 ```jsx
-import React from 'react';
-import { Redirect } from 'react-router-dom';
+import React from "react";
+import { Redirect } from "react-router-dom";
 
 function withAuthProtection(WrappedComponent) {
-  return function(props) {
-    const isAuthenticated = localStorage.getItem('authToken'); // Example check
+  return function (props) {
+    const isAuthenticated = localStorage.getItem("authToken"); // Example check
 
     if (!isAuthenticated) {
       return <Redirect to="/login" />;
@@ -660,9 +680,10 @@ export default withAuthProtection;
 ```
 
 **Usage**:
+
 ```jsx
-import React from 'react';
-import withAuthProtection from './withAuthProtection';
+import React from "react";
+import withAuthProtection from "./withAuthProtection";
 
 function Dashboard() {
   return <h1>Welcome to the Dashboard</h1>;
@@ -680,7 +701,7 @@ export default withAuthProtection(Dashboard);
 This HOC wraps a component and catches any errors during rendering, in lifecycle methods, or in constructors of the wrapped component tree.
 
 ```jsx
-import React from 'react';
+import React from "react";
 
 function withErrorBoundary(WrappedComponent) {
   return class extends React.Component {
@@ -694,7 +715,7 @@ function withErrorBoundary(WrappedComponent) {
     }
 
     componentDidCatch(error, info) {
-      console.error('Error caught:', error, info);
+      console.error("Error caught:", error, info);
     }
 
     render() {
@@ -711,12 +732,13 @@ export default withErrorBoundary;
 ```
 
 **Usage**:
+
 ```jsx
-import React from 'react';
-import withErrorBoundary from './withErrorBoundary';
+import React from "react";
+import withErrorBoundary from "./withErrorBoundary";
 
 function BrokenComponent() {
-  throw new Error('This is a broken component!');
+  throw new Error("This is a broken component!");
   return <h1>Normal Component</h1>;
 }
 
@@ -732,10 +754,10 @@ export default withErrorBoundary(BrokenComponent);
 A HOC that adds data fetching logic to a component. It can take a URL or an API call and inject the data into the wrapped component as props.
 
 ```jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 function withDataFetching(WrappedComponent, dataSource) {
-  return function(props) {
+  return function (props) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -764,9 +786,10 @@ export default withDataFetching;
 ```
 
 **Usage**:
+
 ```jsx
-import React from 'react';
-import withDataFetching from './withDataFetching';
+import React from "react";
+import withDataFetching from "./withDataFetching";
 
 function UserList({ data }) {
   return (
@@ -778,7 +801,10 @@ function UserList({ data }) {
   );
 }
 
-export default withDataFetching(UserList, 'https://jsonplaceholder.typicode.com/users');
+export default withDataFetching(
+  UserList,
+  "https://jsonplaceholder.typicode.com/users",
+);
 ```
 
 - **Explanation**: The `withDataFetching` HOC fetches data from the provided URL and passes it as a `data` prop to the `UserList` component. If the data is still loading, it shows a loading message, and if there’s an error, it displays the error.
@@ -790,11 +816,11 @@ export default withDataFetching(UserList, 'https://jsonplaceholder.typicode.com/
 This HOC provides theme-related styling or class names to the wrapped component, based on the current theme.
 
 ```jsx
-import React from 'react';
+import React from "react";
 
 function withTheme(WrappedComponent) {
-  return function(props) {
-    const theme = 'dark'; // Example theme logic
+  return function (props) {
+    const theme = "dark"; // Example theme logic
 
     return (
       <div className={theme}>
@@ -808,9 +834,10 @@ export default withTheme;
 ```
 
 **Usage**:
+
 ```jsx
-import React from 'react';
-import withTheme from './withTheme';
+import React from "react";
+import withTheme from "./withTheme";
 
 function ThemedButton({ theme }) {
   return <button className={`btn-${theme}`}>Click me</button>;
@@ -828,10 +855,10 @@ export default withTheme(ThemedButton);
 This HOC adds a timer functionality to the wrapped component and injects time as a prop.
 
 ```jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function withTimer(WrappedComponent) {
-  return function(props) {
+  return function (props) {
     const [time, setTime] = useState(0);
 
     useEffect(() => {
@@ -850,9 +877,10 @@ export default withTimer;
 ```
 
 **Usage**:
+
 ```jsx
-import React from 'react';
-import withTimer from './withTimer';
+import React from "react";
+import withTimer from "./withTimer";
 
 function TimerDisplay({ time }) {
   return <h1>Time passed: {time}s</h1>;
@@ -866,6 +894,7 @@ export default withTimer(TimerDisplay);
 ---
 
 ### Summary of Benefits of HOCs:
+
 - **Code Reusability**: HOCs allow you to reuse logic across multiple components without duplicating code.
 - **Separation of Concerns**: They help separate the concerns of components (e.g., authentication, error handling) from the core functionality.
 - **Enhancement of Components**: You can add additional functionality to existing components without modifying their internal code.
@@ -873,4 +902,5 @@ export default withTimer(TimerDisplay);
 ---
 
 ### Conclusion:
+
 Higher-Order Components (HOCs) are a powerful way to enhance React components by adding reusable logic and behaviors. From logging and data fetching to authentication and error handling, HOCs allow you to add cross-cutting concerns to your components in a clean, reusable way.

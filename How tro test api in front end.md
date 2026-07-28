@@ -18,14 +18,14 @@ Assume you have a function that makes an API request using `axios`:
 
 ```javascript
 // api.js
-import axios from 'axios';
+import axios from "axios";
 
 export const fetchUserData = async (userId) => {
   try {
     const response = await axios.get(`https://api.example.com/users/${userId}`);
     return response.data;
   } catch (error) {
-    throw new Error('Failed to fetch data');
+    throw new Error("Failed to fetch data");
   }
 };
 ```
@@ -36,25 +36,25 @@ To unit test this function, you would mock `axios` to avoid making real HTTP req
 
 ```javascript
 // api.test.js
-import axios from 'axios';
-import { fetchUserData } from './api';
+import axios from "axios";
+import { fetchUserData } from "./api";
 
-jest.mock('axios');  // Mocking Axios
+jest.mock("axios"); // Mocking Axios
 
-describe('fetchUserData', () => {
-  it('fetches user data successfully', async () => {
-    const mockData = { id: 1, name: 'John Doe' };
+describe("fetchUserData", () => {
+  it("fetches user data successfully", async () => {
+    const mockData = { id: 1, name: "John Doe" };
     axios.get.mockResolvedValue({ data: mockData });
 
     const result = await fetchUserData(1);
 
-    expect(result).toEqual(mockData);  // Check if the result matches the mock data
+    expect(result).toEqual(mockData); // Check if the result matches the mock data
   });
 
-  it('throws an error when the API fails', async () => {
-    axios.get.mockRejectedValue(new Error('Failed to fetch data'));
+  it("throws an error when the API fails", async () => {
+    axios.get.mockRejectedValue(new Error("Failed to fetch data"));
 
-    await expect(fetchUserData(1)).rejects.toThrow('Failed to fetch data');  // Ensure the error is thrown
+    await expect(fetchUserData(1)).rejects.toThrow("Failed to fetch data"); // Ensure the error is thrown
   });
 });
 ```
@@ -77,8 +77,8 @@ Let’s say you have a component that fetches user data and displays it:
 
 ```javascript
 // UserProfile.js
-import React, { useEffect, useState } from 'react';
-import { fetchUserData } from './api';
+import React, { useEffect, useState } from "react";
+import { fetchUserData } from "./api";
 
 const UserProfile = ({ userId }) => {
   const [user, setUser] = useState(null);
@@ -90,7 +90,7 @@ const UserProfile = ({ userId }) => {
         const data = await fetchUserData(userId);
         setUser(data);
       } catch (err) {
-        setError('Error loading user data');
+        setError("Error loading user data");
       }
     };
 
@@ -112,34 +112,34 @@ To test this component, you can mock the `fetchUserData` function and verify tha
 
 ```javascript
 // UserProfile.test.js
-import { render, screen, waitFor } from '@testing-library/react';
-import UserProfile from './UserProfile';
-import { fetchUserData } from './api';
+import { render, screen, waitFor } from "@testing-library/react";
+import UserProfile from "./UserProfile";
+import { fetchUserData } from "./api";
 
 // Mock the API function
-jest.mock('./api');
+jest.mock("./api");
 
-describe('UserProfile', () => {
-  it('displays user data on successful API call', async () => {
-    const mockData = { name: 'John Doe' };
+describe("UserProfile", () => {
+  it("displays user data on successful API call", async () => {
+    const mockData = { name: "John Doe" };
     fetchUserData.mockResolvedValue(mockData);
 
     render(<UserProfile userId={1} />);
 
     // Wait for the user data to be displayed
-    await waitFor(() => screen.getByText('John Doe'));
+    await waitFor(() => screen.getByText("John Doe"));
 
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText("John Doe")).toBeInTheDocument();
   });
 
-  it('displays an error message on API failure', async () => {
-    fetchUserData.mockRejectedValue(new Error('Error loading user data'));
+  it("displays an error message on API failure", async () => {
+    fetchUserData.mockRejectedValue(new Error("Error loading user data"));
 
     render(<UserProfile userId={1} />);
 
-    await waitFor(() => screen.getByText('Error loading user data'));
+    await waitFor(() => screen.getByText("Error loading user data"));
 
-    expect(screen.getByText('Error loading user data')).toBeInTheDocument();
+    expect(screen.getByText("Error loading user data")).toBeInTheDocument();
   });
 });
 ```
@@ -165,33 +165,33 @@ Here’s an example of using Cypress to test an API call:
 
 ```javascript
 // cypress/integration/user_profile_spec.js
-describe('User Profile', () => {
-  it('fetches user data and displays it', () => {
+describe("User Profile", () => {
+  it("fetches user data and displays it", () => {
     // Stub the API response
-    cy.intercept('GET', 'https://api.example.com/users/1', {
+    cy.intercept("GET", "https://api.example.com/users/1", {
       statusCode: 200,
-      body: { id: 1, name: 'John Doe' },
-    }).as('getUser');
+      body: { id: 1, name: "John Doe" },
+    }).as("getUser");
 
-    cy.visit('/user-profile/1');
+    cy.visit("/user-profile/1");
 
     // Wait for the API call to complete and check if the UI is updated
-    cy.wait('@getUser');
-    cy.get('div').contains('John Doe').should('be.visible');
+    cy.wait("@getUser");
+    cy.get("div").contains("John Doe").should("be.visible");
   });
 
-  it('displays an error message when the API fails', () => {
+  it("displays an error message when the API fails", () => {
     // Stub the API response to simulate failure
-    cy.intercept('GET', 'https://api.example.com/users/1', {
+    cy.intercept("GET", "https://api.example.com/users/1", {
       statusCode: 500,
-      body: { message: 'Internal Server Error' },
-    }).as('getUserError');
+      body: { message: "Internal Server Error" },
+    }).as("getUserError");
 
-    cy.visit('/user-profile/1');
+    cy.visit("/user-profile/1");
 
     // Wait for the error and check if the UI is updated
-    cy.wait('@getUserError');
-    cy.get('div').contains('Error loading user data').should('be.visible');
+    cy.wait("@getUserError");
+    cy.get("div").contains("Error loading user data").should("be.visible");
   });
 });
 ```

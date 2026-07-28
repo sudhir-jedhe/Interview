@@ -2,7 +2,7 @@
 
 A **Domain Operation Simulator** is a frequently discussed JavaScript machine-coding problem that simulates how a DNS system stores, updates, and resolves domain-to-IP mappings. Public interview-prep references describe it as a "Mini DNS System" involving storing, updating, and querying domain/IP relationships. [\[youtube.com\]](https://www.youtube.com/watch?v=MB48etDKQmY), [\[linkedin.com\]](https://www.linkedin.com/posts/subham-rohilla-50191096_day-12-domain-operation-simulator-flipkart-activity-7372175146679271424-g2xJ)
 
-***
+---
 
 # Requirements
 
@@ -30,7 +30,7 @@ google.com -> 142.250.183.14
 github.com -> 140.82.121.4
 ```
 
-***
+---
 
 # Solution Using Map
 
@@ -44,51 +44,32 @@ class DomainSimulator {
     this.domainMap = new Map();
   }
 
-  addDomain(
-    domain: string,
-    ip: string
-  ): void {
+  addDomain(domain: string, ip: string): void {
     if (this.domainMap.has(domain)) {
-      throw new Error(
-        `${domain} already exists`
-      );
+      throw new Error(`${domain} already exists`);
     }
 
     this.domainMap.set(domain, ip);
   }
 
-  updateDomain(
-    domain: string,
-    newIp: string
-  ): void {
+  updateDomain(domain: string, newIp: string): void {
     if (!this.domainMap.has(domain)) {
-      throw new Error(
-        `${domain} does not exist`
-      );
+      throw new Error(`${domain} does not exist`);
     }
 
-    this.domainMap.set(
-      domain,
-      newIp
-    );
+    this.domainMap.set(domain, newIp);
   }
 
-  lookup(
-    domain: string
-  ): string | undefined {
+  lookup(domain: string): string | undefined {
     return this.domainMap.get(domain);
   }
 
-  deleteDomain(
-    domain: string
-  ): boolean {
+  deleteDomain(domain: string): boolean {
     return this.domainMap.delete(domain);
   }
 
   listDomains() {
-    return Array.from(
-      this.domainMap.entries()
-    ).map(([domain, ip]) => ({
+    return Array.from(this.domainMap.entries()).map(([domain, ip]) => ({
       domain,
       ip,
     }));
@@ -96,44 +77,26 @@ class DomainSimulator {
 }
 ```
 
-***
+---
 
 # Usage
 
 ```ts
-const dns =
-  new DomainSimulator();
+const dns = new DomainSimulator();
 
-dns.addDomain(
-  "google.com",
-  "142.250.183.14"
-);
+dns.addDomain("google.com", "142.250.183.14");
 
-dns.addDomain(
-  "github.com",
-  "140.82.121.3"
-);
+dns.addDomain("github.com", "140.82.121.3");
 
-console.log(
-  dns.lookup("google.com")
-);
+console.log(dns.lookup("google.com"));
 
-dns.updateDomain(
-  "github.com",
-  "140.82.121.4"
-);
+dns.updateDomain("github.com", "140.82.121.4");
 
-console.log(
-  dns.listDomains()
-);
+console.log(dns.listDomains());
 
-dns.deleteDomain(
-  "google.com"
-);
+dns.deleteDomain("google.com");
 
-console.log(
-  dns.listDomains()
-);
+console.log(dns.listDomains());
 ```
 
 Output
@@ -149,7 +112,7 @@ Output
 ]
 ```
 
-***
+---
 
 # Advanced Version: Reverse Lookup
 
@@ -171,50 +134,33 @@ Output:
 github.com
 ```
 
-***
+---
 
 ## Dual Map Design
 
 ```ts
 class DomainSimulator {
-  private domainToIp =
-    new Map<string, string>();
+  private domainToIp = new Map<string, string>();
 
-  private ipToDomain =
-    new Map<string, string>();
+  private ipToDomain = new Map<string, string>();
 
-  add(
-    domain: string,
-    ip: string
-  ) {
-    this.domainToIp.set(
-      domain,
-      ip
-    );
+  add(domain: string, ip: string) {
+    this.domainToIp.set(domain, ip);
 
-    this.ipToDomain.set(
-      ip,
-      domain
-    );
+    this.ipToDomain.set(ip, domain);
   }
 
-  resolve(
-    domain: string
-  ) {
-    return this.domainToIp.get(
-      domain
-    );
+  resolve(domain: string) {
+    return this.domainToIp.get(domain);
   }
 
-  reverseResolve(
-    ip: string
-  ) {
+  reverseResolve(ip: string) {
     return this.ipToDomain.get(ip);
   }
 }
 ```
 
-***
+---
 
 # Support Wildcard Domains
 
@@ -225,10 +171,7 @@ class DomainSimulator {
 Example:
 
 ```js
-dns.addWildcard(
-  "*.company.com",
-  "10.0.0.1"
-);
+dns.addWildcard("*.company.com", "10.0.0.1");
 ```
 
 Requests:
@@ -245,7 +188,7 @@ All resolve to:
 10.0.0.1
 ```
 
-***
+---
 
 # React Machine Coding Version
 
@@ -273,26 +216,23 @@ github.com
 140.82.121.3
 ```
 
-***
+---
 
 ## React Component
 
 ```tsx
-const [domain, setDomain] =
-  useState("");
+const [domain, setDomain] = useState("");
 
-const [ip, setIp] =
-  useState("");
+const [ip, setIp] = useState("");
 
-const [records, setRecords] =
-  useState([]);
+const [records, setRecords] = useState([]);
 ```
 
 Add:
 
 ```tsx
 const addDomain = () => {
-  setRecords(prev => [
+  setRecords((prev) => [
     ...prev,
     {
       domain,
@@ -305,16 +245,18 @@ const addDomain = () => {
 Render:
 
 ```tsx
-{records.map(record => (
-  <div key={record.domain}>
-    {record.domain}
-    {" -> "}
-    {record.ip}
-  </div>
-))}
+{
+  records.map((record) => (
+    <div key={record.domain}>
+      {record.domain}
+      {" -> "}
+      {record.ip}
+    </div>
+  ));
+}
 ```
 
-***
+---
 
 # Trie-Based DNS Resolver (Senior Level)
 
@@ -347,7 +289,7 @@ Benefits:
 
 ✅ Better scalability
 
-***
+---
 
 # Complexity
 
@@ -361,7 +303,7 @@ Benefits:
 | Delete    | O(1)       |
 | List      | O(n)       |
 
-***
+---
 
 # Senior Interview Discussion
 
@@ -371,11 +313,11 @@ Explain:
 
 ### Follow-up Features Often Asked
 
-* DNS cache with TTL
-* Wildcard domains (`*.company.com`)
-* Reverse DNS lookup
-* Domain expiry management
-* Bulk import/export
-* Trie-based resolver
-* React UI for domain operations
-* LRU cache for frequent lookups
+- DNS cache with TTL
+- Wildcard domains (`*.company.com`)
+- Reverse DNS lookup
+- Domain expiry management
+- Bulk import/export
+- Trie-based resolver
+- React UI for domain operations
+- LRU cache for frequent lookups

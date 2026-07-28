@@ -1,36 +1,38 @@
 Creating a digital clock that renders the current time in the `HH:MM:SS` format using a 7-segment digital display requires rendering each individual digit as a set of 7 segments. Here's how you can implement a simple version of this using HTML, CSS, and JavaScript.
 
 ### Steps:
+
 1. **HTML**: Create the basic structure for the clock.
 2. **CSS**: Style each digit using a grid layout to simulate the 7-segment display.
 3. **JavaScript**: Implement the logic to update the clock every second and render the digits using the appropriate segments.
 
 ### 1. HTML Structure
+
 We'll create a `div` for each digit and then use JavaScript to update them every second.
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>7-Segment Digital Clock</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div id="clock">
-    <div class="digit" id="digit1"></div>
-    <div class="digit" id="digit2"></div>
-    <div class="separator">:</div>
-    <div class="digit" id="digit3"></div>
-    <div class="digit" id="digit4"></div>
-    <div class="separator">:</div>
-    <div class="digit" id="digit5"></div>
-    <div class="digit" id="digit6"></div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>7-Segment Digital Clock</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="clock">
+      <div class="digit" id="digit1"></div>
+      <div class="digit" id="digit2"></div>
+      <div class="separator">:</div>
+      <div class="digit" id="digit3"></div>
+      <div class="digit" id="digit4"></div>
+      <div class="separator">:</div>
+      <div class="digit" id="digit5"></div>
+      <div class="digit" id="digit6"></div>
+    </div>
 
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
 ```
 
@@ -101,7 +103,7 @@ const segmentMap = {
   6: [1, 1, 0, 1, 1, 1, 1],
   7: [1, 0, 1, 0, 0, 1, 0],
   8: [1, 1, 1, 1, 1, 1, 1],
-  9: [1, 1, 1, 1, 0, 1, 1]
+  9: [1, 1, 1, 1, 0, 1, 1],
 };
 
 // Update the display with a digit
@@ -109,23 +111,23 @@ function updateSegmentDisplay(digitElement, number) {
   const segments = segmentMap[number];
 
   // Create an array of the segment divs
-  const segmentDivs = digitElement.querySelectorAll('div');
-  
+  const segmentDivs = digitElement.querySelectorAll("div");
+
   // Map the segments on
   segments.forEach((on, index) => {
     if (on) {
-      segmentDivs[index].classList.add('on');
-      segmentDivs[index].classList.remove('off');
+      segmentDivs[index].classList.add("on");
+      segmentDivs[index].classList.remove("off");
     } else {
-      segmentDivs[index].classList.add('off');
-      segmentDivs[index].classList.remove('on');
+      segmentDivs[index].classList.add("off");
+      segmentDivs[index].classList.remove("on");
     }
   });
 }
 
 // Create the 7-segment digit layout
 function createDigitLayout(digitElement) {
-  const segmentIds = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+  const segmentIds = ["a", "b", "c", "d", "e", "f", "g"];
   const positions = [
     [0, 1, 2], // Top
     [3, 0, 4], // Top left and right
@@ -133,9 +135,9 @@ function createDigitLayout(digitElement) {
     [6, 1, 5], // Bottom left and right
   ];
 
-  segmentIds.forEach(id => {
-    const segmentDiv = document.createElement('div');
-    segmentDiv.classList.add('off'); // Initially off
+  segmentIds.forEach((id) => {
+    const segmentDiv = document.createElement("div");
+    segmentDiv.classList.add("off"); // Initially off
     digitElement.appendChild(segmentDiv);
   });
 }
@@ -148,9 +150,12 @@ function updateClock() {
   const seconds = now.getSeconds();
 
   const timeArray = [
-    Math.floor(hours / 10), hours % 10, // Hours
-    Math.floor(minutes / 10), minutes % 10, // Minutes
-    Math.floor(seconds / 10), seconds % 10 // Seconds
+    Math.floor(hours / 10),
+    hours % 10, // Hours
+    Math.floor(minutes / 10),
+    minutes % 10, // Minutes
+    Math.floor(seconds / 10),
+    seconds % 10, // Seconds
   ];
 
   // Update each digit with the corresponding number
@@ -164,7 +169,7 @@ function updateClock() {
 // Initialize the clock
 function initClock() {
   // Create digit layouts
-  document.querySelectorAll('.digit').forEach(digitElement => {
+  document.querySelectorAll(".digit").forEach((digitElement) => {
     createDigitLayout(digitElement);
   });
 
@@ -195,4 +200,5 @@ window.onload = initClock;
    - The `initClock` function initializes the layout and sets the clock to update every second.
 
 ### Final Thoughts:
+
 This implementation uses a simple 7-segment style design, but you can easily customize it by modifying the CSS (e.g., using different colors, adding shadows, etc.). Each digit is updated every second to reflect the current time in `HH:MM:SS` format.

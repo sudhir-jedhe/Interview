@@ -1,3 +1,4 @@
+```js
 const sameStrings = (inputString1, inputString2) => {
   return inputString1.localeCompare(inputString2) === 0;
 };
@@ -36,3 +37,4 @@ console.log(a.localeCompare(c));
 0: If both the strings are equal.
 1: If first string is smaller than second string in sorted order.
 -1: It it is greater than second string.
+```

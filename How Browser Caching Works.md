@@ -30,6 +30,7 @@ Example:
 Cache-Control: max-age=3600, public
 Expires
 ```
+
 The Expires header specifies an absolute date/time after which the resource is considered stale. This header is less flexible than Cache-Control and is typically used for backward compatibility with HTTP/1.0.
 
 Example:
@@ -38,6 +39,7 @@ Example:
 Expires: Thu, 01 Dec 2024 16:00:00 GMT
 ETag
 ```
+
 The ETag (Entity Tag) header provides a unique identifier for a resource, typically a hash value. It is used for conditional requests:
 
 When a resource is cached, the browser sends the ETag value in the next request to check if the resource has changed.
@@ -56,6 +58,7 @@ Example:
 ```http
 Last-Modified: Tue, 28 Nov 2024 15:10:00 GMT
 ```
+
 **3. Revalidation of Cached Resources**
 When a cached resource has expired or the browser isn’t sure if it's up to date, it sends a request to the server with a conditional header:
 
@@ -80,6 +83,7 @@ These resources typically don't change often, so you can cache them for a long p
 ```http
 Cache-Control: max-age=31536000, immutable
 ```
+
 This tells the browser to cache the resource for one year (31,536,000 seconds) and marks it as immutable, meaning the resource should not be revalidated during that period.
 
 **2. Dynamic Content (HTML)**
@@ -88,6 +92,7 @@ HTML files tend to change frequently, so they are usually not cached for long. Y
 ```http
 Cache-Control: no-cache
 ```
+
 **3. API Responses**
 API responses can use cache-control headers to specify whether they should be cached or not. The headers can vary based on the type of data returned (e.g., personal data might not be cached, while general information can be).
 

@@ -8,18 +8,18 @@ A **Flipping Card** is a popular React machine-coding interview question that te
 ✅ Reusable Components  
 ✅ Accessibility
 
-***
+---
 
 ## Features
 
-* Click to Flip
-* Hover to Flip (optional)
-* Front and Back Content
-* Smooth 3D Animation
-* Reusable API
-* Keyboard Accessibility
+- Click to Flip
+- Hover to Flip (optional)
+- Front and Back Content
+- Smooth 3D Animation
+- Reusable API
+- Keyboard Accessibility
 
-***
+---
 
 # Folder Structure
 
@@ -32,7 +32,7 @@ src/
 └── main.tsx
 ```
 
-***
+---
 
 # FlipCard.tsx
 
@@ -55,20 +55,17 @@ export default function FlipCard({
   height = "220px",
   flipOnHover = false,
 }: FlipCardProps) {
-  const [isFlipped, setIsFlipped] =
-    useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const handleFlip = () => {
     if (!flipOnHover) {
-      setIsFlipped(prev => !prev);
+      setIsFlipped((prev) => !prev);
     }
   };
 
   return (
     <div
-      className={`flip-card ${
-        flipOnHover ? "hover-flip" : ""
-      }`}
+      className={`flip-card ${flipOnHover ? "hover-flip" : ""}`}
       style={{
         width,
         height,
@@ -76,34 +73,23 @@ export default function FlipCard({
       onClick={handleFlip}
       tabIndex={0}
       role="button"
-      onKeyDown={event => {
-        if (
-          event.key === "Enter" ||
-          event.key === " "
-        ) {
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
           handleFlip();
         }
       }}
     >
-      <div
-        className={`flip-card-inner ${
-          isFlipped ? "flipped" : ""
-        }`}
-      >
-        <div className="flip-card-front">
-          {front}
-        </div>
+      <div className={`flip-card-inner ${isFlipped ? "flipped" : ""}`}>
+        <div className="flip-card-front">{front}</div>
 
-        <div className="flip-card-back">
-          {back}
-        </div>
+        <div className="flip-card-back">{back}</div>
       </div>
     </div>
   );
 }
 ```
 
-***
+---
 
 # FlipCard.css
 
@@ -151,8 +137,7 @@ export default function FlipCard({
   font-size: 20px;
   font-weight: bold;
 
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .flip-card-front {
@@ -168,7 +153,7 @@ export default function FlipCard({
 }
 ```
 
-***
+---
 
 # App.tsx
 
@@ -193,10 +178,7 @@ export default function App() {
         }
         back={
           <div>
-            <p>
-              React is a JavaScript
-              library for building UI.
-            </p>
+            <p>React is a JavaScript library for building UI.</p>
           </div>
         }
       />
@@ -210,9 +192,7 @@ export default function App() {
         }
         back={
           <div>
-            <p>
-              Strongly typed JavaScript.
-            </p>
+            <p>Strongly typed JavaScript.</p>
           </div>
         }
       />
@@ -221,7 +201,7 @@ export default function App() {
 }
 ```
 
-***
+---
 
 # Vertical Flip Version
 
@@ -259,14 +239,14 @@ Left
 Right
 ```
 
-***
+---
 
 # Advanced Version (Auto Flip)
 
 ```tsx
 useEffect(() => {
   const timer = setInterval(() => {
-    setIsFlipped(prev => !prev);
+    setIsFlipped((prev) => !prev);
   }, 3000);
 
   return () => clearInterval(timer);
@@ -275,17 +255,14 @@ useEffect(() => {
 
 Card flips every 3 seconds.
 
-***
+---
 
 # Flash Card Version
 
 Useful for interview questions.
 
 ```tsx
-<FlipCard
-  front="What is React?"
-  back="React is a UI library."
-/>
+<FlipCard front="What is React?" back="React is a UI library." />
 ```
 
 Perfect for:
@@ -296,7 +273,7 @@ Quiz Applications
 Interview Preparation Apps
 ```
 
-***
+---
 
 # Multiple Cards Grid
 
@@ -314,18 +291,14 @@ const cards = [
 
 return (
   <div className="grid">
-    {cards.map(card => (
-      <FlipCard
-        key={card.question}
-        front={card.question}
-        back={card.answer}
-      />
+    {cards.map((card) => (
+      <FlipCard key={card.question} front={card.question} back={card.answer} />
     ))}
   </div>
 );
 ```
 
-***
+---
 
 # Interview Discussion Points
 
@@ -374,7 +347,7 @@ Space
 
 for keyboard users.
 
-***
+---
 
 # Design System API
 
@@ -395,15 +368,13 @@ interface FlipCardProps {
 
   trigger?: "click" | "hover";
 
-  direction?:
-    | "horizontal"
-    | "vertical";
+  direction?: "horizontal" | "vertical";
 
   duration?: number;
 }
 ```
 
-***
+---
 
 # Senior-Level Enhancements
 

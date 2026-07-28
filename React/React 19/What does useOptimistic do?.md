@@ -15,7 +15,7 @@ It allows your user interface to instantly reflect the expected result of an act
 ### Basic Code Example
 
 ```jsx
-import { useOptimistic, useTransition } from "react";
+import { useOptimistisc, useTransition } from "react";
 
 export default function LikeButton({ likes, tweetId }) {
   const [isPending, startTransition] = useTransition();

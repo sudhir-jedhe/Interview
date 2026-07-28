@@ -1,3 +1,4 @@
+```js
 class RateLimiter {
   constructor(limit, interval) {
     this.limit = limit; // Maximum number of requests allowed
@@ -10,7 +11,7 @@ class RateLimiter {
 
     // Remove timestamps that are older than the interval
     this.requests = this.requests.filter(
-      (timestamp) => now - timestamp <= this.interval
+      (timestamp) => now - timestamp <= this.interval,
     );
 
     // Check if the number of requests exceeds the limit
@@ -49,7 +50,7 @@ class RateLimiter {
     const now = Date.now();
     // Remove timestamps older than the interval
     this.requests = this.requests.filter(
-      (timestamp) => timestamp > now - this.interval
+      (timestamp) => timestamp > now - this.interval,
     );
     // Check if the number of requests is less than the limit
     return this.requests.length < this.limit;
@@ -71,11 +72,9 @@ const rateLimiter = new RateLimiter(10, 60000); // Allow up to 10 requests per m
 for (let i = 0; i < 15; i++) {
   const allowed = rateLimiter.makeRequest();
   console.log(
-    `Request ${i + 1}: ${allowed ? "Allowed" : "Rate limit reached"}`
+    `Request ${i + 1}: ${allowed ? "Allowed" : "Rate limit reached"}`,
   );
 }
-
-
 
 /****************************************** */
 
@@ -126,3 +125,4 @@ class RateLimiter {
 // console.log(rateLimiter.allowRequest()); // Output: false (request not allowed, bucket empty)
 // After 1 second:
 // console.log(rateLimiter.allowRequest()); // Output: true (request allowed, bucket refilled)
+```

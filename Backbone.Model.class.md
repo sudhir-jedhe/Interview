@@ -53,13 +53,13 @@ class Model {
   off(event, callback) {
     if (!this._events[event]) return;
 
-    this._events[event] = this._events[event].filter(fn => fn !== callback);
+    this._events[event] = this._events[event].filter((fn) => fn !== callback);
   }
 
   // Trigger an event and notify all listeners
   trigger(event, ...args) {
     if (this._events[event]) {
-      this._events[event].forEach(callback => callback({ detail: args }));
+      this._events[event].forEach((callback) => callback({ detail: args }));
     }
   }
 }
@@ -107,7 +107,6 @@ model.set("name", "Jane Doe");
 
 1. **Create Model:**
    - We create an instance of `Model` with initial attributes (`name` and `age`).
-   
 2. **Listen for Events:**
    - We register listeners for `change:name` (specific change to the `name` attribute) and `change` (generic change event).
 

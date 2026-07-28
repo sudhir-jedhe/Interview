@@ -1,3 +1,4 @@
+```js
 function strongPasswordCheckerII(password: string): boolean {
     if (password.length < 8) {
         return false;
@@ -31,7 +32,7 @@ It contains at least one special character. The special characters are the chara
 It does not contain 2 of the same character in adjacent positions (i.e., "aab" violates this condition, but "aba" does not).
 Given a string password, return true if it is a strong password. Otherwise, return false.
 
- 
+
 
 Example 1:
 
@@ -42,7 +43,7 @@ Example 2:
 
 Input: password = "Me+You--IsMyDream"
 Output: false
-Explanation: The password does not contain a digit and also contains 2 of the same character in 
+Explanation: The password does not contain a digit and also contains 2 of the same character in
 
 
 
@@ -70,7 +71,7 @@ In one step, you can:
 Insert one character to password,
 Delete one character from password, or
 Replace one character of password with another character.
- 
+
 
 Example 1:
 
@@ -84,7 +85,7 @@ Example 3:
 
 Input: password = "1337C0d3"
 Output: 0
- 
+
 
 
 class Solution {
@@ -177,3 +178,4 @@ class Solution {
 
 const solution = new Solution();
 console.log(solution.strongPasswordChecker("aA1")); // Example usage
+```

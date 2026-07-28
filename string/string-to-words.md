@@ -6,17 +6,20 @@ A segment is an object with a handful of properties. The ones that are interesti
 
 Putting everything together, we can create a function that splits a string into words, using the Intl.Segmenter API.
 
+```js
 const splitIntoWords = (str, locale) =>
-  [...new Intl.Segmenter(locale, { granularity: 'word' }).segment(str)].reduce(
+  [...new Intl.Segmenter(locale, { granularity: "word" }).segment(str)].reduce(
     (acc, { segment, isWordLike }) => {
       if (isWordLike) acc.push(segment);
       return acc;
     },
-    []
+    [],
   );
 
-splitIntoWords('I love javaScript!!', 'en-US');
+splitIntoWords("I love javaScript!!", "en-US");
 // ['I', 'love', 'javaScript']
-splitIntoWords('python, javaScript & coffee', 'en-US');
+splitIntoWords("python, javaScript & coffee", "en-US");
 // ['python', 'javaScript', 'coffee']
+```
+
 At the time of writing (January, 2024), Intl.Segmenter doesn't have perfect support across all browsers. Most notably, it's not yet supported in Firefox, although support seems to be just around the corner. Make sure to double check compatibility before using it in production.

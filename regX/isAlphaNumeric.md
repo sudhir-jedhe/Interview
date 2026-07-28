@@ -14,12 +14,12 @@ To check if a string contains only alphabetic characters (letters), you can use 
 #### Example:
 
 ```javascript
-const isAlpha = str => /^[a-zA-Z]*$/.test(str);
+const isAlpha = (str) => /^[a-zA-Z]*$/.test(str);
 
-console.log(isAlpha('sampleInput')); // true
-console.log(isAlpha('this Will fail')); // false (because of space)
-console.log(isAlpha('123')); // false (because of digits)
-console.log(isAlpha('')); // true (empty string is allowed)
+console.log(isAlpha("sampleInput")); // true
+console.log(isAlpha("this Will fail")); // false (because of space)
+console.log(isAlpha("123")); // false (because of digits)
+console.log(isAlpha("")); // true (empty string is allowed)
 ```
 
 ### 2. **Check if a String Contains Only Alphanumeric Characters (a-zA-Z0-9)**
@@ -35,13 +35,13 @@ For strings containing **only alphanumeric characters** (letters and digits), yo
 #### Example:
 
 ```javascript
-const isAlphaNumeric = str => /^[a-z0-9]*$/gi.test(str);
+const isAlphaNumeric = (str) => /^[a-z0-9]*$/gi.test(str);
 
-console.log(isAlphaNumeric('hello123')); // true
-console.log(isAlphaNumeric('123')); // true
-console.log(isAlphaNumeric('hello 123')); // false (space is not allowed)
-console.log(isAlphaNumeric('#$hello')); // false (special characters are not allowed)
-console.log(isAlphaNumeric('')); // true (empty string is allowed)
+console.log(isAlphaNumeric("hello123")); // true
+console.log(isAlphaNumeric("123")); // true
+console.log(isAlphaNumeric("hello 123")); // false (space is not allowed)
+console.log(isAlphaNumeric("#$hello")); // false (special characters are not allowed)
+console.log(isAlphaNumeric("")); // true (empty string is allowed)
 ```
 
 ### 3. **Customizing the Validation**
@@ -53,10 +53,10 @@ You can easily customize these regular expressions to accommodate other characte
 To allow spaces in alphanumeric validation, you can modify the regex to include the space character (`\s`):
 
 ```javascript
-const isAlphaNumericWithSpace = str => /^[a-z0-9\s]*$/gi.test(str);
+const isAlphaNumericWithSpace = (str) => /^[a-z0-9\s]*$/gi.test(str);
 
-console.log(isAlphaNumericWithSpace('hello world 123')); // true
-console.log(isAlphaNumericWithSpace('hello@world')); // false (contains `@`)
+console.log(isAlphaNumericWithSpace("hello world 123")); // true
+console.log(isAlphaNumericWithSpace("hello@world")); // false (contains `@`)
 ```
 
 #### Allow hyphens or underscores:
@@ -64,15 +64,16 @@ console.log(isAlphaNumericWithSpace('hello@world')); // false (contains `@`)
 To allow hyphens (`-`) or underscores (`_`), you just need to add those to the character class:
 
 ```javascript
-const isAlphaNumericWithSpecialChars = str => /^[a-z0-9-_]*$/gi.test(str);
+const isAlphaNumericWithSpecialChars = (str) => /^[a-z0-9-_]*$/gi.test(str);
 
-console.log(isAlphaNumericWithSpecialChars('hello_world-123')); // true
-console.log(isAlphaNumericWithSpecialChars('hello world-123')); // false (contains space)
+console.log(isAlphaNumericWithSpecialChars("hello_world-123")); // true
+console.log(isAlphaNumericWithSpecialChars("hello world-123")); // false (contains space)
 ```
 
 ### 4. **Validating a Username (Example)**
 
 Let’s say you want to validate a **username** that:
+
 - Contains only letters, digits, hyphens, or underscores.
 - Should not start or end with a hyphen or underscore.
 - Should be between 3 to 15 characters long.
@@ -80,17 +81,19 @@ Let’s say you want to validate a **username** that:
 Here's a regular expression for that:
 
 ```javascript
-const isValidUsername = str => /^[a-z0-9](?:[a-z0-9-_]{1,13}[a-z0-9])?$/i.test(str);
+const isValidUsername = (str) =>
+  /^[a-z0-9](?:[a-z0-9-_]{1,13}[a-z0-9])?$/i.test(str);
 
-console.log(isValidUsername('user_name-123')); // true
-console.log(isValidUsername('user-123_')); // true
-console.log(isValidUsername('user__123')); // false (double underscore)
-console.log(isValidUsername('-username123')); // false (starts with a hyphen)
-console.log(isValidUsername('u')); // false (too short)
-console.log(isValidUsername('username1234567890')); // false (too long)
+console.log(isValidUsername("user_name-123")); // true
+console.log(isValidUsername("user-123_")); // true
+console.log(isValidUsername("user__123")); // false (double underscore)
+console.log(isValidUsername("-username123")); // false (starts with a hyphen)
+console.log(isValidUsername("u")); // false (too short)
+console.log(isValidUsername("username1234567890")); // false (too long)
 ```
 
 #### Explanation:
+
 - **`^[a-z0-9]`**: The string must start with an alphanumeric character.
 - **`(?:[a-z0-9-_]{1,13}[a-z0-9])?`**: The string can contain up to 13 more alphanumeric characters, hyphens, or underscores, but it must end with an alphanumeric character.
 - **`i` flag**: Makes the regex case-insensitive.

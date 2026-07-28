@@ -60,18 +60,18 @@ Using a **Content Delivery Network (CDN)** provides a range of benefits, especia
 
 ### **Summary of CDN Benefits**
 
-| Benefit                     | Explanation |
-|-----------------------------|-------------|
-| **Improved Performance**     | Faster load times by serving content from the closest server. |
-| **Scalability**              | Handles high traffic and distributes load efficiently. |
-| **Reduced Bandwidth Costs**  | Caching reduces bandwidth usage and costs. |
-| **Improved Reliability**     | Multiple server locations ensure high availability. |
-| **Enhanced Security**        | Protects against DDoS, provides secure data transfer. |
-| **SEO Benefits**             | Faster sites rank better in search engines. |
-| **Better User Experience**   | Consistent and faster content delivery worldwide. |
-| **Analytics and Reporting**  | Provides insights into performance and user behavior. |
-| **Simplified Content Delivery** | Optimizes delivery for different devices and browsers. |
-| **Cost-Effective for Static Assets** | Reduces costs for serving static content. |
+| Benefit                              | Explanation                                                   |
+| ------------------------------------ | ------------------------------------------------------------- |
+| **Improved Performance**             | Faster load times by serving content from the closest server. |
+| **Scalability**                      | Handles high traffic and distributes load efficiently.        |
+| **Reduced Bandwidth Costs**          | Caching reduces bandwidth usage and costs.                    |
+| **Improved Reliability**             | Multiple server locations ensure high availability.           |
+| **Enhanced Security**                | Protects against DDoS, provides secure data transfer.         |
+| **SEO Benefits**                     | Faster sites rank better in search engines.                   |
+| **Better User Experience**           | Consistent and faster content delivery worldwide.             |
+| **Analytics and Reporting**          | Provides insights into performance and user behavior.         |
+| **Simplified Content Delivery**      | Optimizes delivery for different devices and browsers.        |
+| **Cost-Effective for Static Assets** | Reduces costs for serving static content.                     |
 
 ### Conclusion
 

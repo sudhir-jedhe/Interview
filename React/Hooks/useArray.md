@@ -1,3 +1,4 @@
+```js
 import { useCallback, useMemo, useState } from "react";
 
 type UseArrayActions<T> = {
@@ -14,3 +15,4 @@ export function useArray<T>(initialValue: T[]): { value: T[] } & UseArrayActions
   }), []);
   return useMemo(() => ({ value, push, removeByIndex }), [value, push, removeByIndex]);
 }
+```

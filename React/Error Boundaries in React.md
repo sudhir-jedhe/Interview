@@ -27,7 +27,7 @@ Here's an example of how to create an **Error Boundary** component:
 #### **Step 1: Create the Error Boundary Component**
 
 ```js
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -69,7 +69,6 @@ export default ErrorBoundary;
 #### **Explanation:**
 
 - **`getDerivedStateFromError`**: This method updates the state to indicate an error has occurred. It returns an object that contains `hasError: true`, which can be used to conditionally render the fallback UI.
-  
 - **`componentDidCatch`**: This method is called after an error is caught. It receives two arguments: `error` (the error thrown) and `info` (an object with the component stack trace). You can use this to log the error, send it to an external service, or perform other actions.
 
 ---
@@ -79,9 +78,9 @@ export default ErrorBoundary;
 To use the error boundary, you can wrap your components with it:
 
 ```js
-import React from 'react';
-import ErrorBoundary from './ErrorBoundary';
-import MyComponent from './MyComponent';
+import React from "react";
+import ErrorBoundary from "./ErrorBoundary";
+import MyComponent from "./MyComponent";
 
 function App() {
   return (
@@ -95,6 +94,7 @@ export default App;
 ```
 
 In this example:
+
 - If any error occurs in the `MyComponent` component (or any of its children), it will be caught by the `ErrorBoundary`, and the fallback UI will be displayed.
 
 ---
@@ -104,10 +104,10 @@ In this example:
 If you want to handle errors in specific parts of the app (instead of wrapping the entire app in a single error boundary), you can wrap individual components or sections:
 
 ```js
-import React from 'react';
-import ErrorBoundary from './ErrorBoundary';
-import ComponentA from './ComponentA';
-import ComponentB from './ComponentB';
+import React from "react";
+import ErrorBoundary from "./ErrorBoundary";
+import ComponentA from "./ComponentA";
+import ComponentB from "./ComponentB";
 
 function App() {
   return (
@@ -126,6 +126,7 @@ export default App;
 ```
 
 Here:
+
 - Errors in `ComponentA` will be caught by its own error boundary, while errors in `ComponentB` will be handled by a separate error boundary.
 
 ---
@@ -147,7 +148,7 @@ Here:
 ### **Common Use Cases for Error Boundaries**
 
 1. **Third-party components**: If you’re using third-party components that may throw errors, wrap them in error boundaries to prevent them from crashing your entire app.
-  
+
 2. **Complex parts of your app**: For example, if you have a complex component that performs a lot of logic (like a dynamic form or dashboard), wrap it in an error boundary to ensure other parts of your app continue to work even if this part fails.
 
 3. **External APIs**: When interacting with external APIs, network requests may fail. Though error boundaries don't catch errors from `fetch` or async functions directly, you can handle errors locally within those components and wrap them in error boundaries.
@@ -157,14 +158,15 @@ Here:
 ### **Limitations of Error Boundaries**
 
 - **Does not catch errors in event handlers**: Error boundaries do not catch errors thrown inside event handlers. For example, if an error occurs inside a button click handler, you will need to use a `try-catch` block to handle it.
-  
+
   Example:
+
   ```js
   const handleClick = () => {
     try {
       // Some code that might throw an error
     } catch (error) {
-      console.error('Error during click handler:', error);
+      console.error("Error during click handler:", error);
     }
   };
   ```
@@ -180,32 +182,32 @@ Here:
 Error boundaries are a powerful feature in React for catching errors in your app’s component tree and preventing the entire app from crashing. They provide a way to show fallback UI and log errors to an external service for better error tracking and debugging.
 
 To use error boundaries:
+
 - Create a class component with `getDerivedStateFromError` and `componentDidCatch` methods.
 - Wrap components or sections of your app with the error boundary to gracefully handle errors.
 
 By using error boundaries effectively, you can ensure your React app is more resilient and user-friendly, even when errors occur.
 
-
 Here’s a table summarizing the key differences between **`React.memo()`**, **`useMemo()`**, and **`useCallback()`** in React:
 
-| Feature                | `React.memo()`                                | `useMemo()`                                    | `useCallback()`                                 |
-|------------------------|-----------------------------------------------|------------------------------------------------|------------------------------------------------|
-| **Type of Component**   | Works with **function components**            | Works inside **function components**           | Works inside **function components**           |
-| **Purpose**             | Memoizes a function component to avoid unnecessary re-renders | Memoizes the result of an expensive computation | Memoizes a callback function to avoid unnecessary re-creations |
-| **Use Case**            | Prevents re-rendering of function components when props don’t change | Optimizes expensive computations by recalculating them only when dependencies change | Prevents the re-creation of a function on each render, useful when passing functions as props |
-| **When to Use**         | When you want to prevent unnecessary re-renders of a component | When performing an expensive computation or transformation | When passing a function as a prop to memoized child components or handling callbacks that depend on specific state/props |
-| **How It Works**        | Memoizes the component’s rendered output | Memoizes a computed value (e.g., calculation or transformation) | Memoizes a function itself to ensure it isn’t re-created unless dependencies change |
-| **Dependencies**        | No direct dependency tracking, based on props change | Requires dependencies array to track changes and re-compute value | Requires dependencies array to track changes in state or props used in the function |
-| **Recalculation Trigger** | Re-renders only if props change | Recalculates only if dependencies change | Recreates the function only if dependencies change |
-| **Example**             | `const MemoizedComponent = React.memo(MyComponent);` | `const expensiveValue = useMemo(() => calculateExpensiveValue(), [dependency]);` | `const memoizedCallback = useCallback(() => { /* logic */ }, [dependency]);` |
+| Feature                   | `React.memo()`                                                       | `useMemo()`                                                                          | `useCallback()`                                                                                                          |
+| ------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| **Type of Component**     | Works with **function components**                                   | Works inside **function components**                                                 | Works inside **function components**                                                                                     |
+| **Purpose**               | Memoizes a function component to avoid unnecessary re-renders        | Memoizes the result of an expensive computation                                      | Memoizes a callback function to avoid unnecessary re-creations                                                           |
+| **Use Case**              | Prevents re-rendering of function components when props don’t change | Optimizes expensive computations by recalculating them only when dependencies change | Prevents the re-creation of a function on each render, useful when passing functions as props                            |
+| **When to Use**           | When you want to prevent unnecessary re-renders of a component       | When performing an expensive computation or transformation                           | When passing a function as a prop to memoized child components or handling callbacks that depend on specific state/props |
+| **How It Works**          | Memoizes the component’s rendered output                             | Memoizes a computed value (e.g., calculation or transformation)                      | Memoizes a function itself to ensure it isn’t re-created unless dependencies change                                      |
+| **Dependencies**          | No direct dependency tracking, based on props change                 | Requires dependencies array to track changes and re-compute value                    | Requires dependencies array to track changes in state or props used in the function                                      |
+| **Recalculation Trigger** | Re-renders only if props change                                      | Recalculates only if dependencies change                                             | Recreates the function only if dependencies change                                                                       |
+| **Example**               | `const MemoizedComponent = React.memo(MyComponent);`                 | `const expensiveValue = useMemo(() => calculateExpensiveValue(), [dependency]);`     | `const memoizedCallback = useCallback(() => { /* logic */ }, [dependency]);`                                             |
 
 ---
 
 ### Key Points:
+
 - **`React.memo()`**: Primarily used for optimizing re-renders of function components based on props.
 - **`useMemo()`**: Memoizes a **value** (or result of a computation), useful for expensive operations.
 - **`useCallback()`**: Memoizes a **function**, especially useful when passing functions as props to child components or in cases where the function’s identity matters.
-
 
 ### **Error Boundaries in React**
 
@@ -222,7 +224,7 @@ In a **class component**, you can create an error boundary by implementing the `
 #### **Example: Error Boundary in Class Component**
 
 ```javascript
-import React from 'react';
+import React from "react";
 
 // Error Boundary Component in Class
 class ErrorBoundary extends React.Component {
@@ -251,7 +253,7 @@ class ErrorBoundary extends React.Component {
       return (
         <div>
           <h1>Something went wrong!</h1>
-          <details style={{ whiteSpace: 'pre-wrap' }}>
+          <details style={{ whiteSpace: "pre-wrap" }}>
             {this.state.errorInfo && this.state.errorInfo.componentStack}
           </details>
         </div>
@@ -280,6 +282,7 @@ export default App;
 ```
 
 **Explanation**:
+
 - The `ErrorBoundary` class component has two main methods: `getDerivedStateFromError` (which sets the state to indicate an error has occurred) and `componentDidCatch` (which logs the error or sends it to an external service).
 - In case of an error, the fallback UI is rendered with the error message and component stack trace.
 - If there is no error, the child components (like `BrokenComponent`) are rendered as usual.
@@ -295,7 +298,7 @@ Alternatively, you can combine **`useState`**, **`useEffect`**, and **`try-catch
 #### **Example: Error Boundary in Functional Component (using `useState` and `useEffect`)**
 
 ```javascript
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 // Error Boundary using React Hooks
 const useErrorBoundary = () => {
@@ -317,19 +320,20 @@ const useErrorBoundary = () => {
     hasError,
     errorInfo,
     catchError,
-    resetErrorBoundary
+    resetErrorBoundary,
   };
 };
 
 // Functional component to demonstrate error boundary
 const ErrorBoundaryFunctional = ({ children }) => {
-  const { hasError, errorInfo, catchError, resetErrorBoundary } = useErrorBoundary();
+  const { hasError, errorInfo, catchError, resetErrorBoundary } =
+    useErrorBoundary();
 
   if (hasError) {
     return (
       <div>
         <h1>Something went wrong!</h1>
-        <details style={{ whiteSpace: 'pre-wrap' }}>
+        <details style={{ whiteSpace: "pre-wrap" }}>
           {errorInfo && errorInfo.componentStack}
         </details>
         <button onClick={resetErrorBoundary}>Try Again</button>
@@ -358,6 +362,7 @@ export default App;
 ```
 
 **Explanation**:
+
 - We use `useState` and `useEffect` hooks inside a custom hook (`useErrorBoundary`) to manage the error state and provide a method to catch errors.
 - The `ErrorBoundaryFunctional` component is a wrapper that checks for errors and renders fallback UI if an error occurs.
 - If an error happens, the `catchError` function is invoked, and a fallback UI is shown with an option to "Try Again" (which resets the error state).
@@ -379,8 +384,8 @@ npm install react-error-boundary
 2. Use the library in your components:
 
 ```javascript
-import React from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import React from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 // A component that throws an error for demonstration
 const BrokenComponent = () => {
@@ -406,6 +411,7 @@ export default App;
 ```
 
 **Explanation**:
+
 - The `react-error-boundary` library provides a declarative way to handle errors in functional components.
 - The `ErrorBoundary` component accepts a `FallbackComponent` prop that defines how to render fallback UI when an error occurs.
 - If an error is caught, the fallback UI is rendered, and you can use the `resetErrorBoundary` function to reset the error state.

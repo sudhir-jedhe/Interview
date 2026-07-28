@@ -1,3 +1,4 @@
+```js
 import React, { useEffect, useRef } from "react";
 import { useEffect, useRef } from "react";
 
@@ -21,3 +22,4 @@ export function useTimeout(callback: () => void, delay: number) {
     return () => clearTimeout(id)
   }, [delay])
 }
+```

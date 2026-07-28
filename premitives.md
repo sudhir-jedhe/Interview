@@ -46,6 +46,7 @@ console.log("1" + "2" + (3 + 4) + 5 + "6"); // "12756"
 Converting between numbers and strings is often done in JavaScript.
 
 **Number to String:**
+
 ```js
 const num = 12;
 console.log(String(num)); // "12"
@@ -54,6 +55,7 @@ console.log(num + ""); // "12"
 ```
 
 **String to Number:**
+
 ```js
 const str = "12";
 console.log(Number(str)); // 12
@@ -67,8 +69,8 @@ BigInt allows you to perform operations on very large integers.
 
 ```js
 const bigNum1 = 1526688934595n,
-      bigNum2 = 256489246848n,
-      num3 = 1562365;
+  bigNum2 = 256489246848n,
+  num3 = 1562365;
 
 const bigSum = bigNum1 + bigNum2;
 const bigDiff = bigNum1 - bigNum2;
@@ -82,6 +84,7 @@ console.log(total); // BigInt result
 ### 5. Usage of `||`, `&&`, `??`, and `!!`
 
 #### Logical OR (`||`)
+
 ```js
 console.log(true || false); // true
 console.log(false || false); // false
@@ -92,6 +95,7 @@ console.log(10 > 0 || 20 < 0); // true
 ```
 
 #### Logical AND (`&&`)
+
 ```js
 console.log(true && true); // true
 console.log(true && false); // false
@@ -102,6 +106,7 @@ console.log(10 > 0 && 20 < 0); // false
 ```
 
 #### Nullish Coalescing (`??`)
+
 ```js
 console.log(undefined ?? 10); // 10
 console.log(null ?? 20); // 20
@@ -110,6 +115,7 @@ console.log(0 ?? 20); // 0
 ```
 
 #### Double NOT (`!!`)
+
 ```js
 console.log(!!10); // true
 console.log(!!{}); // true
@@ -179,6 +185,7 @@ console.log(0.1 + 0.2 - 0.3 < Number.EPSILON); // true
 You can iterate over a string in JavaScript using different methods:
 
 **Using a for loop:**
+
 ```js
 const str = "Hello";
 for (let i = 0; i < str.length; i++) {
@@ -187,6 +194,7 @@ for (let i = 0; i < str.length; i++) {
 ```
 
 **Using `for...in` loop:**
+
 ```js
 for (let index in str) {
   console.log(str[index]); // Logs each character
@@ -194,6 +202,7 @@ for (let index in str) {
 ```
 
 **Using `for...of` loop:**
+
 ```js
 for (let value of str) {
   console.log(value); // Logs each character
@@ -201,6 +210,7 @@ for (let value of str) {
 ```
 
 **Using spread syntax with `forEach`:**
+
 ```js
 [...str].forEach((value) => console.log(value)); // Logs each character
 ```
@@ -210,14 +220,17 @@ Sure, let's break down each of the code examples and explanations you provided:
 ### 11. Template Literals with Expression Interpolation and Tagged Templates
 
 #### Template Literals with Expression Interpolation
+
 Template literals allow embedding expressions inside strings, using `${}` for expression interpolation.
 
 ```js
-const num1 = 10, num2 = 20;
+const num1 = 10,
+  num2 = 20;
 `The sum of ${num1} and ${num2} is ${num1 + num2}`; // "The sum of 10 and 20 is 30"
 ```
 
 #### Tagged Templates
+
 Tagged templates let you define a function to process the template literals. The function gets an array of string literals and the values inside `${}`.
 
 ```js
@@ -238,22 +251,25 @@ myTag`Note: ${person} is a member of following communities: ${membership}`;
 ```
 
 ### 12. `try...catch...finally`
+
 The `try...catch...finally` construct is used to handle errors in JavaScript.
 
 ```js
 try {
-  callAPI();  // This will throw an error as callAPI is not defined
+  callAPI(); // This will throw an error as callAPI is not defined
 } catch (error) {
-  throw new Error(error);  // Throws a new error
+  throw new Error(error); // Throws a new error
 } finally {
   console.log("I will execute no matter what happened in try or catch");
 }
 ```
+
 - **try**: Block of code where errors might occur.
 - **catch**: Catches the error thrown in `try`.
 - **finally**: Executes code that needs to run no matter what happens in the `try` or `catch` blocks.
 
 ### 13. Working with Symbols
+
 Symbols are unique and immutable primitive values that can be used as object property keys.
 
 ```js
@@ -270,23 +286,29 @@ Symbol.keyFor(symUsername); // "username"
 - Symbols are skipped in `for...in` loops and do not appear in object serialization.
 
 ### 1. Swap Two Integers Without Temporary Variable
+
 You can use destructuring or arithmetic to swap values.
 
 #### Destructuring Assignment:
+
 ```js
-let num1 = 10, num2 = 20;
-[num1, num2] = [num2, num1];  // num1 = 20, num2 = 10
+let num1 = 10,
+  num2 = 20;
+[num1, num2] = [num2, num1]; // num1 = 20, num2 = 10
 ```
 
 #### Arithmetic Swap:
+
 ```js
-let num1 = 10, num2 = 20;
+let num1 = 10,
+  num2 = 20;
 num1 = num1 + num2;
 num2 = num1 - num2;
-num1 = num1 - num2;  // num1 = 20, num2 = 10
+num1 = num1 - num2; // num1 = 20, num2 = 10
 ```
 
 ### 2. Check if a Number is an Integer
+
 You can use the modulus operator to check if a number is an integer.
 
 ```js
@@ -299,6 +321,7 @@ console.log(isInt(12.2)); // false
 ```
 
 ### 3. Generate a Random Number in a Given Range
+
 To generate a random number within a specific range:
 
 ```js
@@ -310,29 +333,37 @@ console.log(randomNumberGeneratorInRange(10, 50)); // Random number between 10 a
 ```
 
 ### 4. Reverse a String
+
 You can reverse a string by splitting it into an array, reversing it, and joining it back.
 
 ```js
 const str = "JavaScript is awesome";
-let reversedString = str.split("").reverse().join("");  // "emosewa si tpircSavaJ"
+let reversedString = str.split("").reverse().join(""); // "emosewa si tpircSavaJ"
 ```
 
 ### 5. Reverse a String by Words or Reverse Each Word
+
 You can split the string by spaces and reverse the words.
 
 #### Reverse Entire String by Words:
+
 ```js
 const str = "JavaScript is awesome";
 str.split(" ").reverse().join(" "); // "awesome is JavaScript"
 ```
 
 #### Reverse Each Word:
+
 ```js
 const str = "JavaScript is awesome";
-str.split(" ").map(word => word.split("").reverse().join("")).join(" "); // "tpircSavaJ si emosewa"
+str
+  .split(" ")
+  .map((word) => word.split("").reverse().join(""))
+  .join(" "); // "tpircSavaJ si emosewa"
 ```
 
 ### 6. Reverse an Integer
+
 You can reverse a number by repeatedly extracting digits using the modulo operator.
 
 ```js
@@ -346,6 +377,7 @@ console.log(reversedNum); // 9483
 ```
 
 ### 7. Replace All Spaces with Underscores
+
 You can use `split` and `join`, or the `replaceAll` method to replace all spaces.
 
 ```js
@@ -354,6 +386,7 @@ console.log(str.replaceAll(" ", "_")); // "I_love_JavaScript"
 ```
 
 ### 8. Convert 12-Hour Time Format to 24-Hour Format
+
 Convert time in 12-hour format (AM/PM) to 24-hour format.
 
 ```js
@@ -370,6 +403,7 @@ function convertTo24HrsFormat(timeText) {
 ```
 
 ### 9. Count Characters Between First and Last 'X'
+
 You can use `indexOf` and `lastIndexOf` to find the positions of the first and last 'X'.
 
 ```js
@@ -382,6 +416,7 @@ function getTheGapX(str) {
 ```
 
 ### 10. Truncate String to a Given Number of Characters
+
 You can use `substr` to truncate the string.
 
 ```js
@@ -395,6 +430,7 @@ function truncateString(str, charCount) {
 ```
 
 ### 11. Truncate String to a Given Number of Words
+
 You can split the string by spaces, slice the array, and join the words back.
 
 ```js
@@ -403,6 +439,7 @@ str.split(" ").slice(0, 3).join(" "); // "JavaScript is simple"
 ```
 
 ### 12. Validate Indian Mobile Numbers
+
 Use a regular expression to validate Indian mobile numbers.
 
 ```js
@@ -413,15 +450,17 @@ function validateMobile(str) {
 ```
 
 ### 13. Find Elements with Digits in Strings
+
 You can use a regular expression to match strings containing digits.
 
 ```js
 function numInStr(mixArray) {
-  return mixArray.filter(value => /[0-9]/.test(value));
+  return mixArray.filter((value) => /[0-9]/.test(value));
 }
 ```
 
 ### 14. Validate Search Text in Names
+
 Check if the search text appears at the beginning of either the first or second name using a regular expression.
 
 ```js
@@ -432,6 +471,7 @@ function validateName(str, searchText) {
 ```
 
 ### 15. Chop String into Chunks of Given Length
+
 Use `slice` or `match` to split the string into chunks.
 
 ```js
@@ -447,6 +487,7 @@ function stringChop(str, size = str.length) {
 ```
 
 ### 16. Remove All Vowels from a String
+
 You can use `replace` with a regular expression to remove vowels.
 
 ```js
@@ -455,21 +496,29 @@ str.replace(/[aeiou]/gi, ""); // " lv JvScrpt"
 ```
 
 ### 17. Generate Random Hex Color Code
+
 Generate a random color code in hexadecimal format.
 
 ```js
 function getHEXColorCode() {
-  const rValue = Math.round(0xff * Math.random()).toString(16).padStart(2, "0");
-  const gValue = Math.round(0xff * Math.random()).toString(16).padStart(2, "0");
-  const bValue = Math.round(0xff * Math.random()).toString(16).padStart(2, "0");
+  const rValue = Math.round(0xff * Math.random())
+    .toString(16)
+    .padStart(2, "0");
+  const gValue = Math.round(0xff * Math.random())
+    .toString(16)
+    .padStart(2, "0");
+  const bValue = Math.round(0xff * Math.random())
+    .toString(16)
+    .padStart(2, "0");
   return "#" + rValue + gValue + bValue;
 }
 ```
 
 ### 18. Calculate Days Between Two Dates
+
 To find the difference between two dates in
 
- days, subtract their timestamps and convert the difference from milliseconds to days.
+days, subtract their timestamps and convert the difference from milliseconds to days.
 
 ```js
 const DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;

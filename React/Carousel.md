@@ -1,3 +1,4 @@
+```js
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.module.css";
 import { useTransition, animated } from "@react-spring/web";
@@ -30,7 +31,7 @@ const Carousel = () => {
 
   useEffect(() => {
     autoSlide();
-    
+
     if (!resume.current && !autoStart.current) {
       resume.current = setTimeout(() => {
         autoSlide();
@@ -100,7 +101,7 @@ const Carousel = () => {
   return (
     <>
       {/* Slides */}
-      <div className={"wrapper"}>{item}</div> 
+      <div className={"wrapper"}>{item}</div>
 
       {/* Controls */}
       <div className={"controls"}>
@@ -126,7 +127,7 @@ export default Carousel;
     height: 80vh;
     overflow: hidden;
   }
-  
+
   .slide {
     position: absolute;
     width: 100%;
@@ -138,7 +139,7 @@ export default Carousel;
     background-position: center;
     will-change: transform, opacity;
   }
-  
+
   .controls {
     display: flex;
     justify-content: space-between;
@@ -146,7 +147,7 @@ export default Carousel;
     width: 80%;
     margin: 25px auto 0 auto;
   }
-  
+
   .controls > span {
     font-size: 2em;
     cursor: pointer;
@@ -169,3 +170,4 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+```

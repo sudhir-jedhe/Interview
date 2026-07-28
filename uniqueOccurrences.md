@@ -4,18 +4,18 @@ Here's your code, which checks if the number of occurrences of each element in a
 
 ```javascript
 function uniqueOccurrences(arr) {
-    const occurrenceCount = new Map();
+  const occurrenceCount = new Map();
 
-    // Count occurrences of each integer
-    for (const num of arr) {
-        occurrenceCount.set(num, (occurrenceCount.get(num) || 0) + 1);
-    }
+  // Count occurrences of each integer
+  for (const num of arr) {
+    occurrenceCount.set(num, (occurrenceCount.get(num) || 0) + 1);
+  }
 
-    // Create a Set from the occurrence values (counts)
-    const occurrenceSet = new Set(occurrenceCount.values());
+  // Create a Set from the occurrence values (counts)
+  const occurrenceSet = new Set(occurrenceCount.values());
 
-    // Check if the count of occurrences is unique
-    return occurrenceSet.size === occurrenceCount.size;
+  // Check if the count of occurrences is unique
+  return occurrenceSet.size === occurrenceCount.size;
 }
 
 // Test cases
@@ -44,12 +44,10 @@ console.log(uniqueOccurrences(arr3)); // Output: true
      - Counts: `1` appears 3 times, `2` appears 2 times, and `3` appears 1 time.
      - Frequencies: `3`, `2`, `1` — all unique.
      - **Output:** `true`
-     
    - **Test Case 2:** `[1, 2]`
      - Counts: `1` appears 1 time, `2` appears 1 time.
      - Both frequencies are `1`, so they are not unique.
      - **Output:** `false`
-     
    - **Test Case 3:** `[-3, 0, 1, -3, 1, 1, 1, -3, 10, 0]`
      - Counts: `-3` appears 3 times, `0` appears 2 times, `1` appears 4 times, and `10` appears 1 time.
      - Frequencies: `3`, `2`, `4`, `1` — all unique.
@@ -58,17 +56,19 @@ console.log(uniqueOccurrences(arr3)); // Output: true
 ### Output:
 
 ```javascript
-true
-false
-true
+true;
+false;
+true;
 ```
 
 ### Time Complexity:
+
 - **O(n)** where `n` is the number of elements in the input array. This is because:
   - We iterate through the array once to build the occurrence map, and
   - We iterate over the unique counts to create the set.
 
 ### Space Complexity:
+
 - **O(n)** because the space is used for:
   - Storing the `Map` which holds occurrences of each element.
   - Storing the `Set` which holds the unique occurrence counts.

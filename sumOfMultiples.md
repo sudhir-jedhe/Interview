@@ -34,14 +34,17 @@ export function sumOfMultiples(n) {
 ### Example Walkthrough
 
 For `n = 20`, the numbers from `1` to `20` that are divisible by 3, 5, or 7 are:
+
 - **Multiples of 3**: 3, 6, 9, 12, 15, 18
 - **Multiples of 5**: 5, 10, 15, 20
 - **Multiples of 7**: 7, 14
 
 If we combine all the unique numbers divisible by 3, 5, or 7:
+
 - **Unique numbers**: 3, 5, 6, 7, 9, 10, 12, 14, 15, 18, 20
 
 Now, let's calculate the sum:
+
 ```
 3 + 5 + 6 + 7 + 9 + 10 + 12 + 14 + 15 + 18 + 20 = 98
 ```
@@ -79,20 +82,27 @@ Here's an optimized version:
 export function sumOfMultiples(n) {
   const sumDivisibleBy = (x) => {
     const p = Math.floor(n / x); // The largest integer less than or equal to n/x
-    return x * (p * (p + 1)) / 2; // Sum of first p multiples of x
+    return (x * (p * (p + 1))) / 2; // Sum of first p multiples of x
   };
 
-  return sumDivisibleBy(3) + sumDivisibleBy(5) + sumDivisibleBy(7)
-       - sumDivisibleBy(15) - sumDivisibleBy(21) - sumDivisibleBy(35)
-       + sumDivisibleBy(105); // 3*5*7
+  return (
+    sumDivisibleBy(3) +
+    sumDivisibleBy(5) +
+    sumDivisibleBy(7) -
+    sumDivisibleBy(15) -
+    sumDivisibleBy(21) -
+    sumDivisibleBy(35) +
+    sumDivisibleBy(105)
+  ); // 3*5*7
 }
 ```
 
 This approach calculates the sum of multiples of 3, 5, and 7, and then adjusts for overlap using the Inclusion-Exclusion principle.
 
 #### **Key Points of the Optimized Version**:
+
 - **`sumDivisibleBy(x)`**: Calculates the sum of multiples of `x` up to `n`.
-- **Inclusion-Exclusion**: It accounts for numbers divisible by both 3, 5, and 7 by subtracting the sums of their pairwise multiples, and adding back the sum of numbers divisible by 3 * 5 * 7 (i.e., 105).
+- **Inclusion-Exclusion**: It accounts for numbers divisible by both 3, 5, and 7 by subtracting the sums of their pairwise multiples, and adding back the sum of numbers divisible by 3 _ 5 _ 7 (i.e., 105).
 
 The performance improvement comes from directly computing the sum of multiples without having to iterate through every number up to `n`.
 

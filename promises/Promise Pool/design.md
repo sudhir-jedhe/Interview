@@ -10,7 +10,7 @@ You can assume all functions never reject. It is acceptable for promisePool to r
 
 Example 1:
 Input:
-
+```js
 functions = [
   () => new Promise(res => setTimeout(res, 300)),
   () => new Promise(res => setTimeout(res, 400)),

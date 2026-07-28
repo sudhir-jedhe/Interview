@@ -1,3 +1,4 @@
+```js
 const myPromisify = (fn) => {
   return (...args) => {
     return new Promise((resolve, reject) => {
@@ -12,7 +13,9 @@ const myPromisify = (fn) => {
     });
   };
 };
+```
 
+```js
 const getSumAsync = (num1, num2, callback) => {
   if (!num1 || !num2) {
     return callback(new Error("Missing dependencies"), null);
@@ -136,7 +139,7 @@ function promisify(fn: CallbackFn): Promisified {
  * const asyncFunc = promisify(callback => callback(42));
  * asyncFunc().then(console.log); // 42
  */
-
+```
 
 Write a function that accepts another function fn and converts the callback-based function into a promise-based function. 
 
@@ -145,7 +148,7 @@ The function fn takes a callback as its first argument, along with any additiona
 The promisify function returns a new function that should return a promise. The promise should resolve with the argument passed as the first parameter of the callback when the callback is invoked without error, and reject with the error when the callback is called with an error as the second argument.
 
 The following is an example of a function that could be passed into promisify.
-
+```js
 function sum(callback, a, b) {
   if (a < 0 || b < 0) {
     const err = Error('a and b must be positive');
@@ -154,8 +157,9 @@ function sum(callback, a, b) {
     callback(a + b);
   }
 }
+```
 This is the equivalent code based on promises:
-
+```js
 async function sum(a, b) {
   if (a < 0 || b < 0) {
     throw Error('a and b must be positive');
@@ -163,7 +167,7 @@ async function sum(a, b) {
     return a + b;
   }
 }
- 
+ ```
 
 Example 1:
 

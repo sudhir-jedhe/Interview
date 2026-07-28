@@ -19,7 +19,6 @@ The initial render in React happens when a component is first mounted to the DOM
 4. **Reconciliation**:
    - React compares the virtual DOM tree with the **previous virtual DOM** (if any).
    - React uses an efficient algorithm known as **"Reconciliation"** to compare the two virtual DOMs and figure out the minimal number of changes required.
-   
 5. **DOM Updates**:
    - After comparing the new virtual DOM with the previous one, React calculates the differences (or **diffs**), known as **"diffing"**.
    - React then updates the actual DOM with the minimal set of changes required.
@@ -88,11 +87,14 @@ React offers a number of optimizations for controlling unnecessary re-renders.
 5. **Use of `useMemo` and `useCallback` hooks (for functional components)**:
    - `useMemo` is used to memoize expensive calculations between renders.
    - `useCallback` is used to memoize functions between renders.
-   
+
    Example:
+
    ```javascript
    const memoizedValue = useMemo(() => expensiveCalculation(a, b), [a, b]);
-   const memoizedCallback = useCallback(() => { handleClick(a, b); }, [a, b]);
+   const memoizedCallback = useCallback(() => {
+     handleClick(a, b);
+   }, [a, b]);
    ```
 
 ### **4. Final Render and Commit Phase**

@@ -1,17 +1,13 @@
 **Create a Dictionary of Dates** is a popular DevTools/Frontend interview problem where you typically group dates or create a lookup table for fast access. [\[devtools.tech\]](https://devtools.tech/questions/s/create-a-dictionary-of-dates-or-frontend-interview-questions-or-problem-solving-practice---qid---Vp3l0UdgJIxFtSyF8nBh)
 
-***
+---
 
 # Problem
 
 Given:
 
 ```js
-[
-  "2026-07-01",
-  "2026-07-02",
-  "2026-07-05"
-]
+["2026-07-01", "2026-07-02", "2026-07-05"];
 ```
 
 Create:
@@ -26,43 +22,28 @@ Create:
 
 This provides **O(1)** lookup.
 
-***
+---
 
 # Solution 1: Using reduce()
 
 ```js
-function createDateDictionary(
-  dates
-) {
-  return dates.reduce(
-    (dictionary, date) => {
-      dictionary[date] =
-        true;
+function createDateDictionary(dates) {
+  return dates.reduce((dictionary, date) => {
+    dictionary[date] = true;
 
-      return dictionary;
-    },
-    {}
-  );
+    return dictionary;
+  }, {});
 }
 ```
 
 ### Usage
 
 ```js
-const dates = [
-  "2026-07-01",
-  "2026-07-02",
-  "2026-07-05",
-];
+const dates = ["2026-07-01", "2026-07-02", "2026-07-05"];
 
-const dictionary =
-  createDateDictionary(
-    dates
-  );
+const dictionary = createDateDictionary(dates);
 
-console.log(
-  dictionary
-);
+console.log(dictionary);
 ```
 
 ### Output
@@ -75,16 +56,14 @@ console.log(
 }
 ```
 
-***
+---
 
 # Solution 2: Using Map
 
 Better for large datasets.
 
 ```js
-function createDateMap(
-  dates
-) {
+function createDateMap(dates) {
   const map = new Map();
 
   for (const date of dates) {
@@ -98,25 +77,18 @@ function createDateMap(
 Usage:
 
 ```js
-const map =
-  createDateMap(
-    dates
-  );
+const map = createDateMap(dates);
 
-console.log(
-  map.has(
-    "2026-07-02"
-  )
-);
+console.log(map.has("2026-07-02"));
 ```
 
 Output:
 
 ```js
-true
+true;
 ```
 
-***
+---
 
 # Calendar Interview Variant
 
@@ -126,17 +98,17 @@ Input:
 [
   {
     id: 1,
-    date: "2026-07-01"
+    date: "2026-07-01",
   },
   {
     id: 2,
-    date: "2026-07-01"
+    date: "2026-07-01",
   },
   {
     id: 3,
-    date: "2026-07-02"
-  }
-]
+    date: "2026-07-02",
+  },
+];
 ```
 
 Create:
@@ -157,32 +129,24 @@ Create:
 ### Solution
 
 ```js
-function groupByDate(
-  items
-) {
+function groupByDate(items) {
   const result = {};
 
   for (const item of items) {
-    const date =
-      item.date;
+    const date = item.date;
 
-    if (
-      !result[date]
-    ) {
-      result[date] =
-        [];
+    if (!result[date]) {
+      result[date] = [];
     }
 
-    result[date].push(
-      item
-    );
+    result[date].push(item);
   }
 
   return result;
 }
 ```
 
-***
+---
 
 # React Use Case
 
@@ -203,24 +167,17 @@ Useful for:
 Example:
 
 ```js
-const disabledDates =
-{
+const disabledDates = {
   "2026-07-01": true,
-  "2026-07-02": true
+  "2026-07-02": true,
 };
 
-if (
-  disabledDates[
-    selectedDate
-  ]
-) {
-  console.log(
-    "Date blocked"
-  );
+if (disabledDates[selectedDate]) {
+  console.log("Date blocked");
 }
 ```
 
-***
+---
 
 # Time Complexity
 
@@ -240,7 +197,7 @@ Creation : O(n)
 Lookup   : O(1)
 ```
 
-***
+---
 
 # Senior Interview Answer
 

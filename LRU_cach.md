@@ -15,7 +15,7 @@
 About evictions & splay treesWhat about webassembly?Saving one pointer arrayAbout arbitrary evictionsA fully dynamic custom pointer system
 Let’s say we need to process a very large – hundreds of gigabytes large – csv file containing urls we will need to download. To ensure we are not going to run out of memory while parsing the whole file, we read the file line by line:
 csv.forEachLine(line => {
-  download(line.url);
+download(line.url);
 });
 
 Now let’s say the person that created our file forgot to deduplicate the urls. his is an issue because we don’t want to fetch the same url more than once: grabbing resources from the web is time-consuming & should be done parcimoniously not to flood the sites we are grabbing those resources from.
@@ -25,11 +25,11 @@ An obvious solution could be to remember urls we already fetched by caching them
 const done = new Map();
 
 csv.forEachLine(line => {
-  if (done.has(line.url))
-    return done.get(line.url);
+if (done.has(line.url))
+return done.get(line.url);
 
-  const result = download(line.url);
-  done.set(line.url, result);
+const result = download(line.url);
+done.set(line.url, result);
 });
 
 At this point, the astute reader will have noticed that we just defeated the purpose of reading the csv file line by line since we now need to commit all its urls to memory.
@@ -74,24 +74,25 @@ cache.set(2, 'two');
 cache.set(3, 'three');
 // Up until now, nothing was evicted from the cache
 cache.has(2);
->>> true
-// Oh no! we need to add a new item
-cache.set(4, 'four');
-// `1` was evicted because it was the LRU key
-cache.has(1);
->>> false
-// If we get `2`, it won't be the LRU key anymore
-cache.get(2);
->>> 'two'
-// Which means that `3` that will get evicted now!
-cache.set(5, 'five');
-cache.has(3);
->>> false
-// Thus we never store more than 3 items
-cache.size
->>> 3
-cache.items()
->>> ['five', 'two', 'four']
+
+> > > true
+> > > // Oh no! we need to add a new item
+> > > cache.set(4, 'four');
+> > > // `1` was evicted because it was the LRU key
+> > > cache.has(1);
+> > > false
+> > > // If we get `2`, it won't be the LRU key anymore
+> > > cache.get(2);
+> > > 'two'
+> > > // Which means that `3` that will get evicted now!
+> > > cache.set(5, 'five');
+> > > cache.has(3);
+> > > false
+> > > // Thus we never store more than 3 items
+> > > cache.size
+> > > 3
+> > > cache.items()
+> > > ['five', 'two', 'four']
 
 3 - Doubly-linked lists
 To be able to implement a LRU cache, we will need to implement a doubly-linked list to make sure we are able to store our items in order of their last access: the most recently used item starting the list and the least recently used one ending it.
@@ -107,93 +108,100 @@ Schematically, it looks somewhat like this:
 
 a node:
 
-  (prev|payload|next)
+(prev|payload|next)
 
-  payload: the stored value. here, a string
-  prev: pointer to previous item
-  next: pointer to next item
-  •: pointer
-  x: null pointer
+payload: the stored value. here, a string
+prev: pointer to previous item
+next: pointer to next item
+•: pointer
+x: null pointer
 
 a list:
 
        ┌─────>┐   ┌───────>┐   ┌────────>┐
-  head • (x|"one"|•)  (•|"two"|•)  (•|"three"|x) • tail
-              └<───────┘   └<───────┘    └<──────┘
+
+head • (x|"one"|•) (•|"two"|•) (•|"three"|x) • tail
+└<───────┘ └<───────┘ └<──────┘
 
 4 - LRU Cache list operations
 As long as the cache is not full, it is quite easy to maintain our list of cached items. We just need to prepend the newly inserted items into the list:
 
 1. an empty cache with capacity 3
 
+head x x tail
 
-  head x     x tail
+2.  let's insert key "one"
 
+         ┌─────>┐
 
-2. let's insert key "one"
+    head • (x|"one"|x) • tail
+    └<─────┘
 
-       ┌─────>┐
-  head • (x|"one"|x) • tail
-              └<─────┘
+3.  let's insert key "two" (notice how "two" comes at the front)
 
-3. let's insert key "two" (notice how "two" comes at the front)
+         ┌─────>┐   ┌───────>┐
 
-       ┌─────>┐   ┌───────>┐
-  head • (x|"two"|•)  (•|"one"|x) • tail
-              └<───────┘   └<─────┘
+    head • (x|"two"|•) (•|"one"|x) • tail
+    └<───────┘ └<─────┘
 
-4. finally we insert key "three"
+4.  finally we insert key "three"
 
-       ┌──────>┐    ┌───────>┐   ┌───────>┐
-  head • (x|"three"|•)  (•|"two"|•)  (•|"one"|x) • tail
-               └<────────┘   └<───────┘   └<─────┘
+         ┌──────>┐    ┌───────>┐   ┌───────>┐
+
+    head • (x|"three"|•) (•|"two"|•) (•|"one"|x) • tail
+    └<────────┘ └<───────┘ └<─────┘
 
 So far so good. Now, to keep our list in LRU order, if anyone accesses an already stored key in the cache we will need to reorder the list by moving said key to the front:
 
-1. the current state of our cache
+1.  the current state of our cache
 
-       ┌──────>┐    ┌───────>┐   ┌───────>┐
-  head • (x|"three"|•)  (•|"two"|•)  (•|"one"|x) • tail
-               └<────────┘   └<───────┘   └<─────┘
+         ┌──────>┐    ┌───────>┐   ┌───────>┐
 
-2. we access key "two", we first extract it from the list and
-   rewire previous & next items.
+    head • (x|"three"|•) (•|"two"|•) (•|"one"|x) • tail
+    └<────────┘ └<───────┘ └<─────┘
 
-  extracted: (x|"two"|x)
+2.  we access key "two", we first extract it from the list and
+    rewire previous & next items.
+
+extracted: (x|"two"|x)
 
        ┌──────>┐    ┌───────>┐
-  head • (x|"three"|•)  (•|"one"|x) • tail
-               └<────────┘   └<─────┘
 
-3. then we move it to the front
+head • (x|"three"|•) (•|"one"|x) • tail
+└<────────┘ └<─────┘
 
-       ┌─────>┐   ┌────────>┐    ┌───────>┐
-  head • (x|"two"|•)  (•|"three"|•)  (•|"one"|x) • tail
-              └<───────┘    └<────────┘   └<─────┘
+3.  then we move it to the front
+
+         ┌─────>┐   ┌────────>┐    ┌───────>┐
+
+    head • (x|"two"|•) (•|"three"|•) (•|"one"|x) • tail
+    └<───────┘ └<────────┘ └<─────┘
 
 Note that each time, we will need to update the head pointer and that, sometimes, we will also need to update the tail pointer.
 
 Finally, if the cache is already full and a yet unknown key needs to be inserted, we will need to pop the last item from the list to make place to prepend the new one.
 
-1. the current state of our cache
+1.  the current state of our cache
 
-       ┌─────>┐   ┌────────>┐    ┌───────>┐
-  head • (x|"two"|•)  (•|"three"|•)  (•|"one"|x) • tail
-              └<───────┘    └<────────┘   └<─────┘
+         ┌─────>┐   ┌────────>┐    ┌───────>┐
 
-2. we need to insert key "six" but cache is full
-   we first need to pop "one", being the LRU item
+    head • (x|"two"|•) (•|"three"|•) (•|"one"|x) • tail
+    └<───────┘ └<────────┘ └<─────┘
 
-  removed: (x|"one"|x)
+2.  we need to insert key "six" but cache is full
+    we first need to pop "one", being the LRU item
+
+removed: (x|"one"|x)
 
        ┌─────>┐   ┌────────>┐
-  head • (x|"two"|•)  (•|"three"|•) • tail
-              └<───────┘    └<──────┘
+
+head • (x|"two"|•) (•|"three"|•) • tail
+└<───────┘ └<──────┘
 
 3. then we prepend the new item
-       ┌─────>┐   ┌───────>┐   ┌────────>┐
-  head • (x|"six"|•)  (•|"two"|•)  (•|"three"|x) • tail
-              └<───────┘   └<───────┘    └<──────┘
+   ┌─────>┐ ┌───────>┐ ┌────────>┐
+   head • (x|"six"|•) (•|"two"|•) (•|"three"|x) • tail
+   └<───────┘ └<───────┘ └<──────┘
 
 Here is all we need to know about doubly-linked lists to be able to implement a decent LRU cache.
 
@@ -204,15 +212,15 @@ This means that most people usually implement linked lists in JavaScript by writ
 
 // One class for nodes
 function Node(value) {
-  this.value = value;
-  this.previous = null;
-  this.next = null;
+this.value = value;
+this.previous = null;
+this.next = null;
 }
 
 // One class for the list
 function DoublyLinkedList() {
-  this.head = null;
-  this.tail = null;
+this.head = null;
+this.tail = null;
 }
 
 // Performing operations
@@ -253,10 +261,11 @@ const array = new Uint16Array(256);
 // We can read/set items very naturally
 array[10] = 34;
 array[10];
->>> 34
-// But here's the catch: we cannot push new items
-array.push(45);
->>> throw `TypeError: array.push is not a function`
+
+> > > 34
+> > > // But here's the catch: we cannot push new items
+> > > array.push(45);
+> > > throw `TypeError: array.push is not a function`
 
 Since we can use those very performant arrays, why shouldn’t we use them to implement our own pointer system? After all, pointers are nothing more than addresses mapping chunks of memory.
 
@@ -270,12 +279,12 @@ Another one to store the indices representing our previous pointers.
 Our code would subsequently look something like this:
 
 function FixedCapacityDoublyLinkedList(capacity) {
-  this.keys   = new Array(capacity);
-  this.values = new Uint8Array(capacity);
-  this.next = new Uint8Array(capacity);
-  this.previous = new Uint8Array(capacity);
-  this.head = 0;
-  this.tail = 0;
+this.keys = new Array(capacity);
+this.values = new Uint8Array(capacity);
+this.next = new Uint8Array(capacity);
+this.previous = new Uint8Array(capacity);
+this.head = 0;
+this.tail = 0;
 }
 // This earlier example:
 const list = new DoublyLinkedList();
@@ -306,20 +315,21 @@ Schematically, again, here is what we are doing:
 To represent the following list:
 
        ┌──────>┐    ┌───────>┐   ┌───────>┐
-  head • (x|"three"|•)  (•|"two"|•)  (•|"one"|x) • tail
-               └<────────┘   └<───────┘   └<─────┘
+
+head • (x|"three"|•) (•|"two"|•) (•|"one"|x) • tail
+└<────────┘ └<───────┘ └<─────┘
 
 We store the following indices & arrays instead:
 
-  head     = 2
-  tail     = 0
-  capacity = 3
-  size     = 3
+head = 2
+tail = 0
+capacity = 3
+size = 3
 
-  index       0      1       2
-  keys   = ["one", "two", "three"]
-  prev   = [    1,     2,       x]
-  next   = [    x,     0,       1]
+index 0 1 2
+keys = ["one", "two", "three"]
+prev = [ 1, 2, x]
+next = [ x, 0, 1]
 
 // x (null pointer) should be 0 here but for
 // simplicity's sake don't worry too much about it
@@ -328,76 +338,76 @@ So, if we “rerun” our previous examples of required list operations using ou
 
 1. We start with an empty list
 
-  head     = x
-  tail     = x
-  capacity = 3
-  size     = 0
+head = x
+tail = x
+capacity = 3
+size = 0
 
-  index       0      1      2
-  keys   = [    x,     x,     x]
-  prev   = [    x,     x,     x]
-  next   = [    x,     x,     x]
+index 0 1 2
+keys = [ x, x, x]
+prev = [ x, x, x]
+next = [ x, x, x]
 
 2. We insert "one"
 
-  head     = 0
-  tail     = 0
-  capacity = 3
-  size     = 1
+head = 0
+tail = 0
+capacity = 3
+size = 1
 
-  index       0      1      2
-  keys   = ["one",     x,     x]
-  prev   = [    x,     x,     x]
-  next   = [    x,     x,     x]
+index 0 1 2
+keys = ["one", x, x]
+prev = [ x, x, x]
+next = [ x, x, x]
 
 3. We insert "two"
 
-  head     = 1
-  tail     = 0
-  capacity = 3
-  size     = 2
+head = 1
+tail = 0
+capacity = 3
+size = 2
 
-  index       0      1      2
-  keys   = ["one", "two",     x]
-  prev   = [    1,     x,     x]
-  next   = [    x,     0,     x]
+index 0 1 2
+keys = ["one", "two", x]
+prev = [ 1, x, x]
+next = [ x, 0, x]
 
 4. We insert "three"
 
-  head     = 2
-  tail     = 0
-  capacity = 3
-  size     = 3
+head = 2
+tail = 0
+capacity = 3
+size = 3
 
-  index       0      1       2
-  keys   = ["one", "two", "three"]
-  prev   = [    1,     2,       x]
-  next   = [    x,     0,       1]
+index 0 1 2
+keys = ["one", "two", "three"]
+prev = [ 1, 2, x]
+next = [ x, 0, 1]
 
 5. We access "two" and bring it the the front of the list
    (notice how only pointers change & keys stay the same)
 
-  head     = 1
-  tail     = 0
-  capacity = 3
-  size     = 3
+head = 1
+tail = 0
+capacity = 3
+size = 3
 
-  index       0      1       2
-  keys   = ["one", "two", "three"]
-  prev   = [    2,     x,       1]
-  next   = [    x,     2,       0]
+index 0 1 2
+keys = ["one", "two", "three"]
+prev = [ 2, x, 1]
+next = [ x, 2, 0]
 
 6. Finally we insert "six" and evict "one"
 
-  head     = 0
-  tail     = 2
-  capacity = 3
-  size     = 3
+head = 0
+tail = 2
+capacity = 3
+size = 3
 
-  index       0      1       2
-  keys   = ["six", "two", "three"]
-  prev   = [    1,     0,       1]
-  next   = [    x,     2,       x]
+index 0 1 2
+keys = ["six", "two", "three"]
+prev = [ 1, 0, 1]
+next = [ x, 2, x]
 
 Looks boring, no?
 
@@ -418,8 +428,6 @@ You can read their source code here and decide for yourself whether it’s gibbe
 Then there is this public benchmark on the dominictarr/bench-lru repository. As every benchmark it cannot perfectly suit your use cases but it still avoids some common pitfalls about unrelated engine optimizations and other related issues.
 
 Here are some the latest benchmark results, expressed in ops/ms (the higher, the better) for a variety of typical LRU cache methods, on my 2013 MacBook using node 12.6.0:
-
-
 
 You should also run it on your computer because, while the ranking is mostly stable, results tend to vary.
 
@@ -480,56 +488,57 @@ To do so, you can use dynamic typed arrays like mnemonist’s Vector. They are s
 
 I am unsure whether having a custom dynamic pointer system would yield any performance improvement when implementing some other data structure however.
 
-
-/********************************************* */
+/****\*\*****\*\*****\*\*****\*****\*\*****\*\*****\*\***** \*/
 
 class Node {
-  constructor(key, val) {
-      this.key = key;
-      this.val = val;
-      this.prev = null;
-      this.next = null;
-  }
+constructor(key, val) {
+this.key = key;
+this.val = val;
+this.prev = null;
+this.next = null;
+}
 }
 
 const LRUCache = function(cap) {
-  this.cap = cap;
-  this.count = 0;
-  this.head = null;
-  this.tail = null;
-  this.cache = new Map();
-  
-  //Returns the value of the given key
-  this.get = function(key) {
-      if (!this.cache.has(key)) {
-          return -1;
-      }
+this.cap = cap;
+this.count = 0;
+this.head = null;
+this.tail = null;
+this.cache = new Map();
+
+//Returns the value of the given key
+this.get = function(key) {
+if (!this.cache.has(key)) {
+return -1;
+}
 
       const node = this.cache.get(key);
       this.use(key);
       return node.val;
-  };
-  
-  //Adds new item in the list
-  this.put = function(key, val) {
-    if (this.cache.has(key)) {
-        const node = this.cache.get(key);
-        node.val = val;
-        this.use(key);
-        this.cache.set(key, node);
-    } else {
-        if (this.count >= this.cap) {
-            this.evict();
-        }
+
+};
+
+//Adds new item in the list
+this.put = function(key, val) {
+if (this.cache.has(key)) {
+const node = this.cache.get(key);
+node.val = val;
+this.use(key);
+this.cache.set(key, node);
+} else {
+if (this.count >= this.cap) {
+this.evict();
+}
 
         this.insert(key, val);
         this.use(key); // may not be needed
     }
+
 };
 
 //Uses the cache with given key and marks it as most recently used
 this.use = function(key) {
-    const node = this.cache.get(key);
+const node = this.cache.get(key);
 
     if (node === this.head) {
         return;
@@ -553,11 +562,12 @@ this.use = function(key) {
         this.head.prev = node;
         this.head = node;
     }
+
 };
 
 //Removes the least recent used cache
 this.evict = function() {
-    const keyToEvict = this.tail ? this.tail.key : null;
+const keyToEvict = this.tail ? this.tail.key : null;
 
     if (!this.tail) {
         return;
@@ -573,13 +583,14 @@ this.evict = function() {
         this.count--;
         this.cache.delete(keyToEvict);
     }
+
 };
 
 //Helper function to add new cache in the queue
 this.insert = function(key, val) {
-    const node = new Node(key, val);
-    this.count++;
-    this.cache.set(key, node);
+const node = new Node(key, val);
+this.count++;
+this.cache.set(key, node);
 
     if (!this.head) {
         this.head = node;
@@ -589,15 +600,16 @@ this.insert = function(key, val) {
         node.next = this.head;
         this.head = node;
     }
+
 };
 
 //Display the list
 this.display = function(){
-  let current = this.head;
-  while(current){
-    console.log(current.key, current.val);
-    current = current.next;
-  }
+let current = this.head;
+while(current){
+console.log(current.key, current.val);
+current = current.next;
+}
 }
 };
 
@@ -625,7 +637,6 @@ Output:
 3 "c"
 1 "a"
 
-
 We use two data structures to implement an LRU Cache.
 
 Queue: which is implemented using a doubly-linked list. The most recently used items will be near the front end and the least recent pages will be near the rear end.
@@ -638,67 +649,67 @@ use: Uses one of the existing values and re-arranges the cache by marking the us
 evict: Removes a value from the cache.
 Insert: A helper function to add value in cache while performing put
 
-
-/************************************************************** */
+/******\*\*******\*\*******\*\*******\*\*******\*\*******\*\*******\*\******* \*/
 
 class Node {
-  constructor(key, value) {
-      this.key = key;
-      this.value = value;
-      this.prev = null;
-      this.next = null;
-  }
+constructor(key, value) {
+this.key = key;
+this.value = value;
+this.prev = null;
+this.next = null;
+}
 }
 
 class LRUCache {
-  constructor(capacity) {
-      this.capacity = capacity;
-      this.size = 0;
-      this.cache = new Map();
-      this.head = new Node(null, null);
-      this.tail = new Node(null, null);
-      this.head.next = this.tail;
-      this.tail.prev = this.head;
-  }
-  
-  addToFront(node) {
-      node.prev = this.head;
-      node.next = this.head.next;
-      this.head.next.prev = node;
-      this.head.next = node;
-  }
-  
-  removeFromList(node) {
-      let prevNode = node.prev;
-      let nextNode = node.next;
-      prevNode.next = nextNode;
-      nextNode.prev = prevNode;
-  }
-  
-  get(key) {
-      if (!this.cache.has(key)) {
-          return -1;
-      }
-      
+constructor(capacity) {
+this.capacity = capacity;
+this.size = 0;
+this.cache = new Map();
+this.head = new Node(null, null);
+this.tail = new Node(null, null);
+this.head.next = this.tail;
+this.tail.prev = this.head;
+}
+
+addToFront(node) {
+node.prev = this.head;
+node.next = this.head.next;
+this.head.next.prev = node;
+this.head.next = node;
+}
+
+removeFromList(node) {
+let prevNode = node.prev;
+let nextNode = node.next;
+prevNode.next = nextNode;
+nextNode.prev = prevNode;
+}
+
+get(key) {
+if (!this.cache.has(key)) {
+return -1;
+}
+
       let node = this.cache.get(key);
       this.removeFromList(node);
       this.addToFront(node);
-      
+
       return node.value;
-  }
-  
-  put(key, value) {
-      if (this.cache.has(key)) {
-          let node = this.cache.get(key);
-          node.value = value;
-          this.removeFromList(node);
-          this.addToFront(node);
-      } else {
-          let newNode = new Node(key, value);
-          this.cache.set(key, newNode);
-          this.addToFront(newNode);
-          this.size++;
-          
+
+}
+
+put(key, value) {
+if (this.cache.has(key)) {
+let node = this.cache.get(key);
+node.value = value;
+this.removeFromList(node);
+this.addToFront(node);
+} else {
+let newNode = new Node(key, value);
+this.cache.set(key, newNode);
+this.addToFront(newNode);
+this.size++;
+
           if (this.size > this.capacity) {
               let tailNode = this.tail.prev;
               this.removeFromList(tailNode);
@@ -706,7 +717,8 @@ class LRUCache {
               this.size--;
           }
       }
-  }
+
+}
 }
 
 // Example usage:
@@ -721,83 +733,82 @@ console.log(lRUCache.get(1)); // Output: -1
 console.log(lRUCache.get(3)); // Output: 3
 console.log(lRUCache.get(4)); // Output: 4
 
-
-/***************************************** */
+/**\*\*\*\***\*\*\*\***\*\*\*\***\***\*\*\*\***\*\*\*\***\*\*\*\*** \*/
 
 class Node {
-  constructor(key, value) {
-    this.key = key;
-    this.value = value;
-    this.prev = null;
-    this.next = null;
-  }
+constructor(key, value) {
+this.key = key;
+this.value = value;
+this.prev = null;
+this.next = null;
+}
 }
 
 class LRUCache {
-  constructor(capacity) {
-    this.capacity = capacity;
-    this.size = 0;
-    this.head = new Node(null, null);
-    this.tail = new Node(null, null);
-    this.head.next = this.tail;
-    this.tail.prev = this.head;
-    this.cache = new Map(); // Hash table for faster key lookups
-  }
+constructor(capacity) {
+this.capacity = capacity;
+this.size = 0;
+this.head = new Node(null, null);
+this.tail = new Node(null, null);
+this.head.next = this.tail;
+this.tail.prev = this.head;
+this.cache = new Map(); // Hash table for faster key lookups
+}
 
-  // Move a node to the front of the doubly linked list
-  moveToFront(node) {
-    this.removeNode(node);
-    this.insertAtHead(node);
-  }
+// Move a node to the front of the doubly linked list
+moveToFront(node) {
+this.removeNode(node);
+this.insertAtHead(node);
+}
 
-  // Insert a node at the head of the doubly linked list
-  insertAtHead(node) {
-    node.prev = this.head;
-    node.next = this.head.next;
-    this.head.next.prev = node;
-    this.head.next = node;
-  }
+// Insert a node at the head of the doubly linked list
+insertAtHead(node) {
+node.prev = this.head;
+node.next = this.head.next;
+this.head.next.prev = node;
+this.head.next = node;
+}
 
-  // Remove a node from the doubly linked list
-  removeNode(node) {
-    node.prev.next = node.next;
-    node.next.prev = node.prev;
-  }
+// Remove a node from the doubly linked list
+removeNode(node) {
+node.prev.next = node.next;
+node.next.prev = node.prev;
+}
 
-  // Get the value of a key
-  get(key) {
-    const node = this.cache.get(key);
-    if (node) {
-      this.moveToFront(node); // Update recently used status
-      return node.value;
-    }
-    return -1;
-  }
+// Get the value of a key
+get(key) {
+const node = this.cache.get(key);
+if (node) {
+this.moveToFront(node); // Update recently used status
+return node.value;
+}
+return -1;
+}
 
-  // Put a key-value pair into the cache
-  put(key, value) {
-    const node = this.cache.get(key);
-    if (node) {
-      node.value = value; // Update value if key exists
-      this.moveToFront(node); // Update recently used status
-    } else {
-      const newNode = new Node(key, value);
-      this.cache.set(key, newNode);
-      this.insertAtHead(newNode);
-      this.size++;
-      if (this.size > this.capacity) {
-        this.removeLeastRecentlyUsed(); // Evict least recently used
-      }
-    }
-  }
+// Put a key-value pair into the cache
+put(key, value) {
+const node = this.cache.get(key);
+if (node) {
+node.value = value; // Update value if key exists
+this.moveToFront(node); // Update recently used status
+} else {
+const newNode = new Node(key, value);
+this.cache.set(key, newNode);
+this.insertAtHead(newNode);
+this.size++;
+if (this.size > this.capacity) {
+this.removeLeastRecentlyUsed(); // Evict least recently used
+}
+}
+}
 
-  // Remove the least recently used node from the cache
-  removeLeastRecentlyUsed() {
-    const removedNode = this.tail.prev;
-    this.removeNode(removedNode);
-    this.cache.delete(removedNode.key);
-    this.size--;
-  }
+// Remove the least recently used node from the cache
+removeLeastRecentlyUsed() {
+const removedNode = this.tail.prev;
+this.removeNode(removedNode);
+this.cache.delete(removedNode.key);
+this.size--;
+}
 }
 
 // Example usage
@@ -811,3 +822,717 @@ cache.put(4, 4);
 console.log(cache.get(1)); // Output: -1 (evicted)
 console.log(cache.get(3)); // Output: 3
 console.log(cache.get(4)); // Output: 4
+
+Here is an efficient **LRU (Least Recently Used) Cache** implementation in JavaScript.
+
+An LRU cache discards the **least recently used** item first when it reaches its capacity limit. To achieve **$\mathcal{O}(1)$ time complexity** for both `get` and `put` operations, we leverage JavaScript's built-in **`Map`**.
+
+---
+
+### Why `Map` achieves $\mathcal{O}(1)$ LRU behavior in JavaScript
+
+In JavaScript, `Map` objects maintain **insertion order** of keys:
+
+1. When you iterate over a `Map` or access `map.keys().next().value`, the first key is always the **oldest inserted key**.
+2. Deleting a key and setting it again (`map.delete(key); map.set(key, value)`) moves that key to the **very end (most recently used)**.
+
+---
+
+### Complete Code Implementation
+
+```javascript
+class LRUCache {
+  /**
+   * @param {number} capacity
+   */
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.cache = new Map();
+  }
+
+  /**
+   * Retrieves item by key and marks it as Most Recently Used.
+   * @param {any} key
+   * @return {any} Returns value if present, else -1
+   */
+  get(key) {
+    if (!this.cache.has(key)) return -1;
+
+    // Refresh key order: delete and re-insert to move to the end
+    const val = this.cache.get(key);
+    this.cache.delete(key);
+    this.cache.set(key, val);
+
+    return val;
+  }
+
+  /**
+   * Inserts or updates key. Evicts LRU item if capacity is exceeded.
+   * @param {any} key
+   * @param {any} value
+   * @return {void}
+   */
+  put(key, value) {
+    // If key exists, delete it first so re-setting moves it to the end
+    if (this.cache.has(key)) {
+      this.cache.delete(key);
+    }
+    // If at capacity, evict the least recently used item (first key in map)
+    else if (this.cache.size >= this.capacity) {
+      const lruKey = this.cache.keys().next().value;
+      this.cache.delete(lruKey);
+    }
+
+    // Insert key (becomes the most recently used)
+    this.cache.set(key, value);
+  }
+}
+
+// -------------------------------------------------------------
+// Usage Example (LeetCode #146)
+// -------------------------------------------------------------
+const lru = new LRUCache(2);
+
+lru.put(1, 1); // Cache: {1=1}
+lru.put(2, 2); // Cache: {1=1, 2=2}
+console.log(lru.get(1)); // Returns 1 -> Cache: {2=2, 1=1} (1 becomes MRU)
+
+lru.put(3, 3); // Evicts key 2 -> Cache: {1=1, 3=3}
+console.log(lru.get(2)); // Returns -1 (Not found)
+
+lru.put(4, 4); // Evicts key 1 -> Cache: {3=3, 4=4}
+console.log(lru.get(1)); // Returns -1 (Not found)
+console.log(lru.get(3)); // Returns 3
+console.log(lru.get(4)); // Returns 4
+```
+
+---
+
+### Complexity Analysis
+
+- **`get(key)`**: **$\mathcal{O}(1)$** time — Hash map lookup, delete, and insert operations are constant time.
+- **`put(key, value)`**: **$\mathcal{O}(1)$** time — Hash map insertion and `Map.prototype.keys().next()` iterator access takes constant time.
+- **Space Complexity**: **$\mathcal{O}(C)$** where $C$ is the `capacity` of the cache.
+
+---
+
+### Alternative: Doubly Linked List + Hash Map (Language-Agnostic Approach)
+
+If an interviewer asks you to build an LRU cache **without relying on language-specific `Map` behavior**, you use a **Doubly Linked List** (to maintain order in $\mathcal{O}(1)$) paired with a standard **Hash Map** (to lookup nodes in $\mathcal{O}(1)$):
+
+```javascript
+class Node {
+  constructor(key, val) {
+    this.key = key;
+    this.val = val;
+    this.prev = null;
+    this.next = null;
+  }
+}
+
+class LRUCacheManual {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.map = new Map();
+
+    // Dummy Head and Tail nodes
+    this.head = new Node(0, 0);
+    this.tail = new Node(0, 0);
+    this.head.next = this.tail;
+    this.tail.prev = this.head;
+  }
+
+  // Remove node from DLL
+  _remove(node) {
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+  }
+
+  // Add node right before tail (MRU position)
+  _add(node) {
+    node.prev = this.tail.prev;
+    node.next = this.tail;
+    this.tail.prev.next = node;
+    this.tail.prev = node;
+  }
+
+  get(key) {
+    if (!this.map.has(key)) return -1;
+
+    const node = this.map.get(key);
+    this._remove(node);
+    this._add(node); // Move to tail (MRU)
+    return node.val;
+  }
+
+  put(key, value) {
+    if (this.map.has(key)) {
+      this._remove(this.map.get(key));
+    }
+
+    const newNode = new Node(key, value);
+    this._add(newNode);
+    this.map.set(key, newNode);
+
+    if (this.map.size > this.capacity) {
+      // Evict node right after head (LRU position)
+      const lru = this.head.next;
+      this._remove(lru);
+      this.map.delete(lru.key);
+    }
+  }
+}
+```
+
+How do you implement an LFU (Least Frequently Used) Cache in JavaScript with O(1) time complexity?
+
+Implementing an **LFU (Least Frequently Used) Cache** with true **$\mathcal{O}(1)$ time complexity** for both `get` and `put` operations is famously tricky (LeetCode #460).
+
+Unlike LRU, which tracks ordering by time alone, LFU must track **frequency counts** _and_ break ties using LRU order when frequencies match.
+
+---
+
+### Key Data Structures ($\mathcal{O}(1)$ Complexity)
+
+To achieve $\mathcal{O}(1)$ execution:
+
+1. **`keyToNode` Map**: `key` $\to$ `Node`. Provides constant-time lookup.
+2. **`freqToList` Map**: `frequency` $\to$ `DoublyLinkedList`. Stores all nodes with that frequency in LRU order.
+3. **`minFreq` Tracker**: An integer tracking the current lowest frequency in the cache.
+
+```
+keyToNode: Map { key -> Node(key, val, freq) }
+
+freqToList: Map {
+  1 -> [ Head <-> Node(1) <-> Node(3) <-> Tail ]  <-- minFreq = 1
+  2 -> [ Head <-> Node(2) <-> Tail ]
+}
+
+```
+
+---
+
+### JavaScript Implementation
+
+```javascript
+// 1. Doubly Linked List Node
+class Node {
+  constructor(key, value) {
+    this.key = key;
+    this.value = value;
+    this.freq = 1;
+    this.prev = null;
+    this.next = null;
+  }
+}
+
+// 2. Doubly Linked List with Head & Tail Sentinel Nodes
+class DoublyLinkedList {
+  constructor() {
+    this.head = new Node(0, 0);
+    this.tail = new Node(0, 0);
+    this.head.next = this.tail;
+    this.tail.prev = this.head;
+    this.size = 0;
+  }
+
+  // Add node right before tail (Most Recently Used position for this frequency)
+  addNode(node) {
+    node.prev = this.tail.prev;
+    node.next = this.tail;
+    this.tail.prev.next = node;
+    this.tail.prev = node;
+    this.size++;
+  }
+
+  // Remove specific node in O(1)
+  removeNode(node) {
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+    this.size--;
+  }
+
+  // Remove and return LRU node (node right after head)
+  removeLRU() {
+    if (this.size === 0) return null;
+    const lruNode = this.head.next;
+    this.removeNode(lruNode);
+    return lruNode;
+  }
+}
+
+// 3. Main LFU Cache Engine
+class LFUCache {
+  /**
+   * @param {number} capacity
+   */
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.minFreq = 0;
+    this.keyToNode = new Map();
+    this.freqToList = new Map();
+  }
+
+  /**
+   * Internal helper to increment a node's frequency and update frequency lists
+   */
+  _updateFreq(node) {
+    const oldFreq = node.freq;
+    const oldList = this.freqToList.get(oldFreq);
+
+    // Remove node from its old frequency list
+    oldList.removeNode(node);
+
+    // If the old list is empty and it was the minFreq list, increment minFreq
+    if (oldFreq === this.minFreq && oldList.size === 0) {
+      this.minFreq++;
+    }
+
+    // Increment node's frequency
+    node.freq++;
+
+    // Add node to its new frequency list
+    if (!this.freqToList.has(node.freq)) {
+      this.freqToList.set(node.freq, new DoublyLinkedList());
+    }
+    this.freqToList.get(node.freq).addNode(node);
+  }
+
+  /**
+   * @param {number} key
+   * @return {number}
+   */
+  get(key) {
+    if (!this.keyToNode.has(key) || this.capacity === 0) return -1;
+
+    const node = this.keyToNode.get(key);
+    this._updateFreq(node);
+    return node.value;
+  }
+
+  /**
+   * @param {number} key
+   * @param {number} value
+   * @return {void}
+   */
+  put(key, value) {
+    if (this.capacity === 0) return;
+
+    // Case 1: Key already exists -> Update value & frequency
+    if (this.keyToNode.has(key)) {
+      const node = this.keyToNode.get(key);
+      node.value = value;
+      this._updateFreq(node);
+      return;
+    }
+
+    // Case 2: Cache is at capacity -> Evict LFU node
+    if (this.keyToNode.size >= this.capacity) {
+      const minFreqList = this.freqToList.get(this.minFreq);
+      const evictedNode = minFreqList.removeLRU();
+      if (evictedNode) {
+        this.keyToNode.delete(evictedNode.key);
+      }
+    }
+
+    // Case 3: Insert brand new node (initial frequency = 1)
+    const newNode = new Node(key, value);
+    this.keyToNode.set(key, newNode);
+    this.minFreq = 1;
+
+    if (!this.freqToList.has(1)) {
+      this.freqToList.set(1, new DoublyLinkedList());
+    }
+    this.freqToList.get(1).addNode(newNode);
+  }
+}
+
+// -------------------------------------------------------------
+// Usage Example (LeetCode #460)
+// -------------------------------------------------------------
+const lfu = new LFUCache(2);
+
+lfu.put(1, 1); // Cache: {1=1 (freq 1)}
+lfu.put(2, 2); // Cache: {1=1 (freq 1), 2=2 (freq 1)}
+console.log(lfu.get(1)); // Returns 1 -> freq(1) becomes 2
+
+lfu.put(3, 3); // Evicts key 2 (both freq 1, but 2 is LRU) -> Cache: {1=1 (freq 2), 3=3 (freq 1)}
+console.log(lfu.get(2)); // Returns -1 (Not found)
+console.log(lfu.get(3)); // Returns 3 -> freq(3) becomes 2
+
+lfu.put(4, 4); // Evicts key 1 (both freq 2, but 1 is LRU) -> Cache: {3=3 (freq 2), 4=4 (freq 1)}
+console.log(lfu.get(1)); // Returns -1 (Not found)
+console.log(lfu.get(3)); // Returns 3
+console.log(lfu.get(4)); // Returns 4
+```
+
+---
+
+### How $\mathcal{O}(1)$ Execution Works Step-by-Step
+
+| Operation      | Steps Executed                        | Complexity |
+| -------------- | ------------------------------------- | ---------- |
+| **`get(key)`** | 1. Hash map lookup in `keyToNode`<br> |
+
+<br>2. Remove node from `freqToList[freq]` DoublyLinkedList<br>
+
+<br>3. Insert node into `freqToList[freq + 1]` DoublyLinkedList | **$\mathcal{O}(1)$** |
+| **`put(key, val)` (New Key)** | 1. If full, `freqToList[minFreq].removeLRU()` in $\mathcal{O}(1)$<br>
+
+<br>2. Insert new node into `keyToNode` and `freqToList[1]`<br>
+
+<br>3. Set `minFreq = 1` | **$\mathcal{O}(1)$** |
+
+---
+
+### LRU vs LFU Comparison
+
+| Metric              | LRU (Least Recently Used)             | LFU (Least Frequently Used)                         |
+| ------------------- | ------------------------------------- | --------------------------------------------------- |
+| **Eviction Policy** | Evicts the item accessed longest ago. | Evicts the item accessed least number of times.     |
+| **Tie Breaker**     | N/A (single timeline).                | LRU among items with identical frequencies.         |
+| **Data Structures** | Map + DoublyLinkedList                | Map + Map of DoublyLinkedLists + `minFreq` variable |
+| **Memory Overhead** | Lower ($\mathcal{O}(C)$)              | Higher (stores frequency metadata per node)         |
+
+Adding **TTL (Time-To-Live)** to an LFU Cache requires tracking two timestamps per entry:
+
+1. **`createdAt` / `updatedAt**`: When the item was written or modified.
+2. **`ttl`**: How long (in milliseconds) the entry is valid for.
+
+When designing a production-grade TTL cache, you should combine two expiration strategies:
+
+- **Lazy Expiration (On Access)**: Check if a key is expired inside `get()` or `put()`. If expired, delete it immediately and treat it as a cache miss.
+- **Proactive Cleanup (Interval Sweep)**: Use a background `setInterval` loop to periodically purge expired keys so unused, expired keys don't sit in memory forever.
+
+---
+
+### Complete Implementation: LFU Cache with TTL
+
+```javascript
+// 1. Doubly Linked List Node with Expiration Metadata
+class Node {
+  constructor(key, value, ttl) {
+    this.key = key;
+    this.value = value;
+    this.freq = 1;
+    this.createdAt = Date.now();
+    this.ttl = ttl; // TTL in milliseconds (null/undefined = infinite)
+    this.prev = null;
+    this.next = null;
+  }
+
+  // Check if node has passed its expiration time
+  isExpired() {
+    if (!this.ttl) return false;
+    return Date.now() > this.createdAt + this.ttl;
+  }
+}
+
+// 2. Doubly Linked List
+class DoublyLinkedList {
+  constructor() {
+    this.head = new Node(null, null, null);
+    this.tail = new Node(null, null, null);
+    this.head.next = this.tail;
+    this.tail.prev = this.head;
+    this.size = 0;
+  }
+
+  addNode(node) {
+    node.prev = this.tail.prev;
+    node.next = this.tail;
+    this.tail.prev.next = node;
+    this.tail.prev = node;
+    this.size++;
+  }
+
+  removeNode(node) {
+    if (!node.prev || !node.next) return;
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+    node.prev = null;
+    node.next = null;
+    this.size--;
+  }
+
+  removeLRU() {
+    if (this.size === 0) return null;
+    const lruNode = this.head.next;
+    this.removeNode(lruNode);
+    return lruNode;
+  }
+}
+
+// 3. Main LFU Cache Engine with TTL Auto-Expiration
+class LFUCacheWithTTL {
+  /**
+   * @param {number} capacity - Maximum entries
+   * @param {number} [cleanupIntervalMs=5000] - Interval for proactive cleanup loop
+   */
+  constructor(capacity, cleanupIntervalMs = 5000) {
+    this.capacity = capacity;
+    this.minFreq = 0;
+    this.keyToNode = new Map();
+    this.freqToList = new Map();
+
+    // Start proactive background cleanup timer
+    if (cleanupIntervalMs > 0) {
+      this.cleanupTimer = setInterval(
+        () => this._purgeExpired(),
+        cleanupIntervalMs,
+      );
+      // Unref timer in Node.js environments so process can exit cleanly
+      if (this.cleanupTimer.unref) this.cleanupTimer.unref();
+    }
+  }
+
+  /**
+   * Internal helper to delete a node entirely from both maps
+   */
+  _deleteNode(node) {
+    const list = this.freqToList.get(node.freq);
+    if (list) {
+      list.removeNode(node);
+    }
+    this.keyToNode.delete(node.key);
+  }
+
+  /**
+   * Internal helper to increment a node's frequency
+   */
+  _updateFreq(node) {
+    const oldFreq = node.freq;
+    const oldList = this.freqToList.get(oldFreq);
+
+    oldList.removeNode(node);
+
+    if (oldFreq === this.minFreq && oldList.size === 0) {
+      this.minFreq++;
+    }
+
+    node.freq++;
+
+    if (!this.freqToList.has(node.freq)) {
+      this.freqToList.set(node.freq, new DoublyLinkedList());
+    }
+    this.freqToList.get(node.freq).addNode(node);
+  }
+
+  /**
+   * Get value by key. Returns -1 if key is missing or expired.
+   * @param {any} key
+   * @return {any}
+   */
+  get(key) {
+    if (!this.keyToNode.has(key) || this.capacity === 0) return -1;
+
+    const node = this.keyToNode.get(key);
+
+    // Lazy Expiration Check
+    if (node.isExpired()) {
+      this._deleteNode(node);
+      return -1;
+    }
+
+    this._updateFreq(node);
+    return node.value;
+  }
+
+  /**
+   * Put value into cache with an optional TTL
+   * @param {any} key
+   * @param {any} value
+   * @param {number} [ttlMs] - Time-To-Live in milliseconds
+   */
+  put(key, value, ttlMs = null) {
+    if (this.capacity === 0) return;
+
+    // Case 1: Key already exists -> Update value, timestamp, TTL & frequency
+    if (this.keyToNode.has(key)) {
+      const node = this.keyToNode.get(key);
+      node.value = value;
+      node.createdAt = Date.now();
+      node.ttl = ttlMs;
+      this._updateFreq(node);
+      return;
+    }
+
+    // Case 2: Cache is full -> Evict LFU node
+    if (this.keyToNode.size >= this.capacity) {
+      // First, attempt to clear any expired keys to free up space
+      this._purgeExpired();
+
+      // If still full after purging expired keys, evict true LFU item
+      if (this.keyToNode.size >= this.capacity) {
+        const minFreqList = this.freqToList.get(this.minFreq);
+        const evictedNode = minFreqList.removeLRU();
+        if (evictedNode) {
+          this.keyToNode.delete(evictedNode.key);
+        }
+      }
+    }
+
+    // Case 3: Insert brand new node
+    const newNode = new Node(key, value, ttlMs);
+    this.keyToNode.set(key, newNode);
+    this.minFreq = 1;
+
+    if (!this.freqToList.has(1)) {
+      this.freqToList.set(1, new DoublyLinkedList());
+    }
+    this.freqToList.get(1).addNode(newNode);
+  }
+
+  /**
+   * Proactive background sweep to remove expired entries
+   */
+  _purgeExpired() {
+    const now = Date.now();
+    for (const node of this.keyToNode.values()) {
+      if (node.ttl && now > node.createdAt + node.ttl) {
+        this._deleteNode(node);
+      }
+    }
+  }
+
+  /**
+   * Clean up background timer manually
+   */
+  destroy() {
+    if (this.cleanupTimer) {
+      clearInterval(this.cleanupTimer);
+    }
+  }
+}
+```
+
+---
+
+### Verification Example
+
+```javascript
+// Helper for async delays
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function runTest() {
+  const cache = new LFUCacheWithTTL(2, 1000); // Capacity 2, cleanup loop every 1s
+
+  // Insert key 1 with 500ms TTL
+  cache.put("a", "alpha", 500);
+
+  // Insert key 2 with infinite TTL
+  cache.put("b", "beta");
+
+  console.log("Get 'a' immediately:", cache.get("a")); // Output: "alpha"
+
+  // Wait 600ms (key "a" expires)
+  await sleep(600);
+
+  console.log("Get 'a' after 600ms:", cache.get("a")); // Output: -1 (Expired & evicted!)
+  console.log("Get 'b' after 600ms:", cache.get("b")); // Output: "beta"
+
+  cache.destroy();
+}
+
+runTest();
+```
+
+---
+
+### Expiration Strategy Comparison
+
+| Strategy                   | When Expiration Happens          | Pros                                              | Cons                                                          |
+| -------------------------- | -------------------------------- | ------------------------------------------------- | ------------------------------------------------------------- |
+| **Lazy Expiration**        | On `get()` or `put()` calls.     | Zero background CPU/timer overhead.               | Unread expired keys remain in memory until space is needed.   |
+| **Proactive Sweep**        | Background `setInterval()` loop. | Keeps memory usage clean by freeing stale data.   | Periodic CPU usage spikes when scanning large maps.           |
+| **Combined (Recommended)** | On access + background timer.    | Optimal memory management and immediate accuracy. | Requires explicit `destroy()` to clear timers in test suites. |
+
+What are the real-world performance differences and memory usage between LRU and LFU caches in Node.js?
+
+In a production Node.js environment, the real-world performance differences and memory usage between **LRU (Least Recently Used)** and **LFU (Least Frequently Used)** caches stem from their underlying data structures and V8 engine garbage collection dynamics.
+
+---
+
+## 1. Runtime Performance & Throughput
+
+While both algorithms can be written to achieve theoretical $\mathcal{O}(1)$ time complexity, **LRU significantly outperforms LFU in real-world Node.js operations per second (ops/sec)**.
+
+```
+    Throughput (Operations / Second)
+
+  LRU: [========================================] ~10M–15M ops/sec
+  LFU: [========================] ~3M–6M ops/sec
+
+```
+
+### Why LRU is Faster
+
+- **Pointer Manipulations:** In a standard LRU, a `get()` or `put()` operation requires adjusting a max of **4 object pointers** (updating the node's `prev`/`next` and linking it to the list tail/head).
+- **V8 Engine Optimization:** Fast LRU implementations (like Sindre Sorhus’s `quick-lru` or Isaac Z. Schlueter’s `lru-cache`) often use JS `Map` or pre-allocated flat arrays. V8 optimizes these flat references extremely well, leading to minimal CPU overhead.
+
+### Why LFU is Slower
+
+- **Double-Map & Linked List Maintenance:** An $\mathcal{O}(1)$ LFU requires updating a `keyToNode` map, removing a node from its current frequency doubly-linked list, checking if that list is empty (and updating a `minFreq` pointer), and adding the node into the next frequency list (`freq + 1`).
+- **Object Allocation Overhead:** Every new frequency bucket in LFU usually instantiates a new `DoublyLinkedList` instance. Creating and tearing down JS objects causes micro-pauses in the event loop.
+
+---
+
+## 2. Memory Usage & V8 Garbage Collection (GC) Impact
+
+In Node.js, V8 manages memory through generational garbage collection (Young/Old Generation). LFU places a significantly heavier burden on the V8 GC.
+
+```
+       Memory Consumption Per Cache Entry
+
+  LRU: [==========] ~120 - 180 Bytes / Entry
+  LFU: [====================] ~280 - 450 Bytes / Entry
+
+```
+
+### 1. Pointer & Structural Overhead
+
+- **LRU**: Requires 1 Node object (`key`, `val`, `prev`, `next`) per key + 1 Map entry.
+- **LFU**: Requires 1 Node object (`key`, `val`, `freq`, `prev`, `next`) + 1 `keyToNode` Map entry + 1 `freqToList` Map entry + 1 `DoublyLinkedList` wrapper object _per active frequency tier_.
+
+### 2. V8 Memory Fragmentation & GC Pressure
+
+When LFU frequency buckets are constantly created and destroyed (e.g., keys moving from frequency 1 to 2 to 3), V8 generates thousands of short-lived `DoublyLinkedList` and `Node` objects. This triggers **Scavenge (Young Generation GC)** cycles far more frequently than LRU, introducing micro-stutters under high throughput.
+
+---
+
+## 3. Cache Hit Ratio & Algorithmic Trade-offs
+
+Throughput and memory mean nothing if the cache doesn't retain the _right_ data. The algorithm you choose dictates how your cache handles specific traffic patterns.
+
+| Traffic Pattern                               | Winner  | Real-World Scenario                                        | Why It Wins                                                                                            |
+| --------------------------------------------- | ------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Temporal Locality** _(Burst Traffic)_       | **LRU** | Social media feeds, user sessions, news dashboards.        | Adapts instantly to sudden shifts in access patterns.                                                  |
+| **Skewed Frequency** _(Zipfian Distribution)_ | **LFU** | E-commerce top sellers, API access tokens, static configs. | Protects "permanently hot" items from being evicted by a burst of random keys.                         |
+| **Cyclic Scans** _(Sweeps larger than cache)_ | **LFU** | Sequential DB table scans, bulk export batch jobs.         | **LRU Thrashing Failure:** A scan over 1,001 items on a 1,000-size LRU cache results in a 0% hit rate. |
+
+### The "Cache Pollution" Problem in LFU
+
+In pure LFU, an item accessed 1,000 times during a morning promotion will sit in the cache forever—even if it is **never requested again in the afternoon**—because its frequency count is too high for new items to overtake.
+
+To fix this in production, LFU requires **Frequency Decay** (lowering all frequency counts periodically or using a logarithmic counter like Redis LFU), which adds even more CPU complexity.
+
+---
+
+## 4. Benchmark Summary Matrix
+
+| Metric                      | LRU (e.g., `lru-cache`)               | LFU (Custom / $\mathcal{O}(1)$ Array-based)      |
+| --------------------------- | ------------------------------------- | ------------------------------------------------ |
+| **Throughput (Ops/Sec)**    | **High** (~10M+ ops/sec)              | **Moderate** (~3M–6M ops/sec)                    |
+| **Memory Footprint**        | **Low** (~120B / key)                 | **High** (~300B+ / key due to frequency buckets) |
+| **V8 GC Pressure**          | **Low** (Stable object graph)         | **High** (Frequency list allocations)            |
+| **Adaptability to Shift**   | **Fast** (Immediate on burst)         | **Slow** (Suffer from frequency pollution)       |
+| **Resistance to Thrashing** | **Poor** (Vulnerable to cyclic scans) | **Excellent** (Protects hot keys)                |
+
+---
+
+## Production Recommendation for Node.js
+
+1. **Default Choice -> Use LRU (`lru-cache` v10+)**:
+   Unless you have explicit metrics showing frequency-based Zipfian access patterns, **LRU is almost always the right choice in Node.js**. It consumes less memory, triggers fewer V8 GC cycles, and executes significantly faster.
+2. **If you need LFU semantics -> Consider W-TinyLFU**:
+   Instead of pure LFU, modern high-performance Node.js services requiring frequency tracking use **W-TinyLFU** (Window TinyLFU). It combines a small LRU window for new items with a Probabilistic Counting Bloom Filter (Count-Min Sketch) for frequency tracking. This delivers LFU hit-rates with LRU-level memory footprint and speed.

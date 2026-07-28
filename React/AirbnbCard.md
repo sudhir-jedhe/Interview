@@ -2,15 +2,12 @@
 
 This challenge is a classic **Compound Components + Context API** interview problem where the `Card` component acts as a provider and subcomponents consume only the data they need from Context. This pattern enables flexible composition, implicit state sharing, and allows subcomponents to be rearranged or omitted. [\[dev.to\]](https://dev.to/muhammadazfaraslam/react-design-patterns-compound-component-pattern-2p0a), [\[patterns.dev\]](https://www.patterns.dev/react/compound-pattern/), [\[namastedev.com\]](https://namastedev.com/guides/namaste-react/how-to-implement-the-compound-component-pattern-in-react)
 
-***
+---
 
 # CardContext.tsx
 
 ```tsx
-import {
-  createContext,
-  useContext,
-} from "react";
+import { createContext, useContext } from "react";
 
 export interface AirbnbCardData {
   id: number;
@@ -24,19 +21,13 @@ export interface AirbnbCardData {
   isFavorite?: boolean;
 }
 
-const CardContext =
-  createContext<AirbnbCardData | null>(
-    null
-  );
+const CardContext = createContext<AirbnbCardData | null>(null);
 
 export function useCard() {
-  const context =
-    useContext(CardContext);
+  const context = useContext(CardContext);
 
   if (!context) {
-    throw new Error(
-      "Card compound components must be used inside Card"
-    );
+    throw new Error("Card compound components must be used inside Card");
   }
 
   return context;
@@ -45,7 +36,7 @@ export function useCard() {
 export default CardContext;
 ```
 
-***
+---
 
 # Card.tsx
 
@@ -60,13 +51,8 @@ export default function Card({
   children: React.ReactNode;
 }) {
   return (
-    <CardContext.Provider
-      value={data}
-    >
-      <article
-        data-testid={`card-${data.id}`}
-        className="card"
-      >
+    <CardContext.Provider value={data}>
+      <article data-testid={`card-${data.id}`} className="card">
         {children}
       </article>
     </CardContext.Provider>
@@ -74,30 +60,23 @@ export default function Card({
 }
 ```
 
-***
+---
 
 # Compound Components
 
 ## ImageWrapper
 
 ```tsx
-export function ImageWrapper({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function ImageWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      data-testid="image-wrapper"
-      className="image-wrapper"
-    >
+    <div data-testid="image-wrapper" className="image-wrapper">
       {children}
     </div>
   );
 }
 ```
 
-***
+---
 
 ## Image
 
@@ -113,47 +92,33 @@ export function Image() {
 }
 ```
 
-***
+---
 
 ## Heart
 
 ```tsx
-import {
-  useState,
-} from "react";
+import { useState } from "react";
 
 import { useCard } from "./CardContext";
 
 export function Heart() {
   const card = useCard();
 
-  const [
-    favorite,
-    setFavorite,
-  ] = useState(
-    card.isFavorite ??
-      false
-  );
+  const [favorite, setFavorite] = useState(card.isFavorite ?? false);
 
   return (
     <button
       data-testid="heart-btn"
       aria-label="Favorite"
-      onClick={() =>
-        setFavorite(
-          prev => !prev
-        )
-      }
+      onClick={() => setFavorite((prev) => !prev)}
     >
-      {favorite
-        ? "❤️"
-        : "🤍"}
+      {favorite ? "❤️" : "🤍"}
     </button>
   );
 }
 ```
 
-***
+---
 
 ## Recommendation
 
@@ -163,40 +128,23 @@ import { useCard } from "./CardContext";
 export function Recommendation() {
   const card = useCard();
 
-  if (!card.recommendation)
-    return null;
+  if (!card.recommendation) return null;
 
-  return (
-    <span
-      data-testid="recommendation"
-    >
-      {card.recommendation}
-    </span>
-  );
+  return <span data-testid="recommendation">{card.recommendation}</span>;
 }
 ```
 
-***
+---
 
 ## Content
 
 ```tsx
-export function Content({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      data-testid="content"
-    >
-      {children}
-    </div>
-  );
+export function Content({ children }: { children: React.ReactNode }) {
+  return <div data-testid="content">{children}</div>;
 }
 ```
 
-***
+---
 
 ## Title
 
@@ -206,15 +154,11 @@ import { useCard } from "./CardContext";
 export function Title() {
   const card = useCard();
 
-  return (
-    <h3 data-testid="title">
-      {card.title}
-    </h3>
-  );
+  return <h3 data-testid="title">{card.title}</h3>;
 }
 ```
 
-***
+---
 
 ## Valoration
 
@@ -224,23 +168,13 @@ import { useCard } from "./CardContext";
 export function Valoration() {
   const card = useCard();
 
-  if (
-    card.rating ===
-    undefined
-  )
-    return null;
+  if (card.rating === undefined) return null;
 
-  return (
-    <span
-      data-testid="rating"
-    >
-      ⭐ {card.rating}
-    </span>
-  );
+  return <span data-testid="rating">⭐ {card.rating}</span>;
 }
 ```
 
-***
+---
 
 ## Description
 
@@ -250,17 +184,11 @@ import { useCard } from "./CardContext";
 export function Description() {
   const card = useCard();
 
-  return (
-    <p
-      data-testid="description"
-    >
-      {card.description}
-    </p>
-  );
+  return <p data-testid="description">{card.description}</p>;
 }
 ```
 
-***
+---
 
 ## Price
 
@@ -272,15 +200,14 @@ export function Price() {
 
   return (
     <p data-testid="price">
-      $
-      {card.price}
+      ${card.price}
       /night
     </p>
   );
 }
 ```
 
-***
+---
 
 ## Cancelation
 
@@ -290,24 +217,13 @@ import { useCard } from "./CardContext";
 export function Cancelation() {
   const card = useCard();
 
-  if (
-    !card.cancellation
-  )
-    return null;
+  if (!card.cancellation) return null;
 
-  return (
-    <span
-      data-testid="cancelation"
-    >
-      {
-        card.cancellation
-      }
-    </span>
-  );
+  return <span data-testid="cancelation">{card.cancellation}</span>;
 }
 ```
 
-***
+---
 
 # Sample Data
 
@@ -318,13 +234,10 @@ export const airbnbData = [
     image: "/1.jpg",
     title: "Lake View",
     rating: 4.9,
-    description:
-      "Peaceful stay",
+    description: "Peaceful stay",
     price: 120,
-    cancellation:
-      "Free cancellation",
-    recommendation:
-      "Guest favorite",
+    cancellation: "Free cancellation",
+    recommendation: "Guest favorite",
     isFavorite: true,
   },
 
@@ -333,13 +246,10 @@ export const airbnbData = [
     image: "/2.jpg",
     title: "Mountain Cabin",
     rating: 4.7,
-    description:
-      "Amazing scenery",
+    description: "Amazing scenery",
     price: 150,
-    cancellation:
-      "Free cancellation",
-    recommendation:
-      "Top rated",
+    cancellation: "Free cancellation",
+    recommendation: "Top rated",
     isFavorite: false,
   },
 
@@ -348,13 +258,10 @@ export const airbnbData = [
     image: "/3.jpg",
     title: "Beach House",
     rating: 4.8,
-    description:
-      "Ocean front",
+    description: "Ocean front",
     price: 200,
-    cancellation:
-      "Free cancellation",
-    recommendation:
-      "Trending",
+    cancellation: "Free cancellation",
+    recommendation: "Trending",
     isFavorite: false,
   },
 
@@ -362,14 +269,13 @@ export const airbnbData = [
     id: 4,
     image: "/4.jpg",
     title: "Tiny House",
-    description:
-      "Minimalist stay",
+    description: "Minimalist stay",
     price: 90,
   },
 ];
 ```
 
-***
+---
 
 # App.tsx
 
@@ -391,51 +297,38 @@ import {
   Cancelation,
 } from "./Components";
 
-import {
-  airbnbData,
-} from "./data";
+import { airbnbData } from "./data";
 
 export default function App() {
   return (
     <div>
-      <h1>
-        Airbnb Cards
-      </h1>
+      <h1>Airbnb Cards</h1>
 
-      {airbnbData
-        .slice(0, 3)
-        .map(card => (
-          <Card
-            key={card.id}
-            data={card}
-          >
-            <ImageWrapper>
-              <Image />
-              <Heart />
-              <Recommendation />
-            </ImageWrapper>
+      {airbnbData.slice(0, 3).map((card) => (
+        <Card key={card.id} data={card}>
+          <ImageWrapper>
+            <Image />
+            <Heart />
+            <Recommendation />
+          </ImageWrapper>
 
-            <Content>
-              <div>
-                <Title />
-                <Valoration />
-              </div>
+          <Content>
+            <div>
+              <Title />
+              <Valoration />
+            </div>
 
-              <Description />
+            <Description />
 
-              <Price />
+            <Price />
 
-              <Cancelation />
-            </Content>
-          </Card>
-        ))}
+            <Cancelation />
+          </Content>
+        </Card>
+      ))}
 
       {/* Card 4 */}
-      <Card
-        data={
-          airbnbData[3]
-        }
-      >
+      <Card data={airbnbData[3]}>
         <ImageWrapper>
           <Image />
         </ImageWrapper>
@@ -453,7 +346,7 @@ export default function App() {
 }
 ```
 
-***
+---
 
 # Why This Passes
 
@@ -468,12 +361,12 @@ Provider supplies all data.
 Subcomponents consume it through:
 
 ```tsx
-useCard()
+useCard();
 ```
 
 without props. This aligns with the Compound Component pattern of a parent providing shared state through Context. [\[patterns.dev\]](https://www.patterns.dev/react/compound-pattern/), [\[namastedev.com\]](https://namastedev.com/guides/namaste-react/how-to-implement-the-compound-component-pattern-in-react)
 
-***
+---
 
 ### First Three Cards
 
@@ -494,7 +387,7 @@ Content
 
 ✅ Full composition
 
-***
+---
 
 ### Fourth Card
 
@@ -521,12 +414,12 @@ Cancelation
 
 ✅ Required partial card
 
-***
+---
 
 ### Heart
 
 ```tsx
-useState(card.isFavorite)
+useState(card.isFavorite);
 ```
 
 Clicking toggles:
@@ -538,7 +431,7 @@ Clicking toggles:
 
 ✅ Interactive state
 
-***
+---
 
 # Senior Interview Answer
 

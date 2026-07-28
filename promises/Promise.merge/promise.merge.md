@@ -12,6 +12,7 @@ It should reject with an TypeError if either of the inputs is different from oth
 Assumptions
 Valid input types are: Number, String, Boolean, Array, and Object.
 Syntax
+```js
 promiseMerge(p1, p2, ..., n);
 Examples
 cons value = await promiseMerge(Promise.resolve(1), Promise.resolve(2));

@@ -2,7 +2,7 @@
 
 This is a classic interview problem based on **Run-Length Encoding (RLE)**, where consecutive repeated characters are replaced by the character and its count. [\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/dsa/run-length-encoding/), [\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/problems/run-length-encoding/1)
 
-***
+---
 
 # Problem
 
@@ -36,7 +36,7 @@ AAAABBBCCDAA
 
 Run-length encoding replaces repeated characters with a count representation and can be implemented in linear time. [\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/dsa/run-length-encoding/), [\[medium.com\]](https://medium.com/@ishifoev/run-length-encoding-rle-algorithm-step-by-step-guide-b0b89f3a4a9f)
 
-***
+---
 
 # Compression
 
@@ -55,7 +55,7 @@ Result:
 A4B3C2D1A2
 ```
 
-***
+---
 
 ## Solution
 
@@ -93,9 +93,9 @@ Output
 A4B3C2D1A2
 ```
 
- [\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/dsa/run-length-encoding/), [\[js-craft.io\]](https://www.js-craft.io/blog/js-interview-question-1-length-encoding-and-decoding-for-strings/)
+[\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/dsa/run-length-encoding/), [\[js-craft.io\]](https://www.js-craft.io/blog/js-interview-question-1-length-encoding-and-decoding-for-strings/)
 
-***
+---
 
 # Decompression
 
@@ -112,7 +112,7 @@ C2
 CC
 ```
 
-***
+---
 
 ## Solution
 
@@ -143,9 +143,9 @@ Output
 AAAABBBCCDAA
 ```
 
- [\[js-craft.io\]](https://www.js-craft.io/blog/js-interview-question-1-length-encoding-and-decoding-for-strings/)
+[\[js-craft.io\]](https://www.js-craft.io/blog/js-interview-question-1-length-encoding-and-decoding-for-strings/)
 
-***
+---
 
 # Better Decompression (Multi-Digit Counts)
 
@@ -157,7 +157,7 @@ A12B3
 
 The previous solution fails.
 
-***
+---
 
 ## Production Version
 
@@ -171,16 +171,11 @@ function decompress(str) {
 
     let count = "";
 
-    while (
-      i < str.length &&
-      /\d/.test(str[i])
-    ) {
+    while (i < str.length && /\d/.test(str[i])) {
       count += str[i++];
     }
 
-    result += char.repeat(
-      Number(count)
-    );
+    result += char.repeat(Number(count));
   }
 
   return result;
@@ -199,7 +194,7 @@ Output
 AAAAAAAAAAAABBB
 ```
 
-***
+---
 
 # Interview Optimisation
 
@@ -224,7 +219,7 @@ Return:
 ABCD
 ```
 
-***
+---
 
 ```js
 function compress(str) {
@@ -235,45 +230,32 @@ function compress(str) {
     if (str[i] === str[i - 1]) {
       count++;
     } else {
-      compressed +=
-        str[i - 1] + count;
+      compressed += str[i - 1] + count;
 
       count = 1;
     }
   }
 
-  return compressed.length <
-    str.length
-    ? compressed
-    : str;
+  return compressed.length < str.length ? compressed : str;
 }
 ```
 
 This optimisation is commonly used in interview variants of the string compression problem. [\[dev.to\]](https://dev.to/dpc/daily-javascript-challenge-js-250-string-compression-5650)
 
-***
+---
 
 # TypeScript Version
 
 ```ts
-function compress(
-  str: string
-): string {
+function compress(str: string): string {
   let result = "";
   let count = 1;
 
-  for (
-    let i = 1;
-    i <= str.length;
-    i++
-  ) {
-    if (
-      str[i] === str[i - 1]
-    ) {
+  for (let i = 1; i <= str.length; i++) {
+    if (str[i] === str[i - 1]) {
       count++;
     } else {
-      result +=
-        str[i - 1] + count;
+      result += str[i - 1] + count;
 
       count = 1;
     }
@@ -283,7 +265,7 @@ function compress(
 }
 ```
 
-***
+---
 
 # Complexity
 
@@ -301,9 +283,9 @@ Time:  O(n)
 Space: O(n)
 ```
 
- [\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/dsa/run-length-encoding/), [\[medium.com\]](https://medium.com/@ishifoev/run-length-encoding-rle-algorithm-step-by-step-guide-b0b89f3a4a9f)
+[\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/dsa/run-length-encoding/), [\[medium.com\]](https://medium.com/@ishifoev/run-length-encoding-rle-algorithm-step-by-step-guide-b0b89f3a4a9f)
 
-***
+---
 
 # Senior Interview Follow-Ups
 
@@ -331,13 +313,13 @@ Process chunk by chunk.
 LeetCode 443 variant:
 
 ```js
-["a","a","a","b"]
+["a", "a", "a", "b"];
 ```
 
 ↓
 
 ```js
-["a","3","b"]
+["a", "3", "b"];
 ```
 
 ### 4. Unicode Support
@@ -349,10 +331,10 @@ LeetCode 443 variant:
 Use:
 
 ```js
-Array.from(str)
+Array.from(str);
 ```
 
-***
+---
 
 ## Senior Interview Answer
 

@@ -7,7 +7,7 @@ Let's break down your code and understand how it works with regular expressions 
 ```javascript
 function geek() {
   let str1 = "GeeksforGeeks@_123_$";
-  let regex4 = /\d/g;  // Regular expression to match digits globally
+  let regex4 = /\d/g; // Regular expression to match digits globally
   let match4 = str1.match(regex4);
 
   console.log("Found " + match4.length + " matches: " + match4);
@@ -27,6 +27,7 @@ geek();
   - **`match4`** will return the array of matches, `["1", "2", "3"]`.
 
 #### Output:
+
 ```javascript
 Found 3 matches: 1,2,3
 ```
@@ -38,7 +39,7 @@ Found 3 matches: 1,2,3
 ```javascript
 function geek() {
   let str1 = "Geeky@128";
-  let regex4 = new RegExp("\\d", "g");  // Creating regex using RegExp constructor
+  let regex4 = new RegExp("\\d", "g"); // Creating regex using RegExp constructor
   let match4 = str1.match(regex4);
 
   console.log("Found " + match4.length + " matches: " + match4);
@@ -50,11 +51,11 @@ geek();
 
 - **`new RegExp("\\d", "g")`**: This is the **RegExp constructor**, which allows you to create regular expressions dynamically. Here, we are using `\\d` to match a digit (since `\` is an escape character in strings, we need to escape it by using `\\`).
   - This regular expression is similar to `/\d/g` used earlier, which matches all digits globally in the string.
-  
 - **`match()`**: As in the first example, this method returns an array of all the digits found in the string `"Geeky@128"`. The digits present are `1`, `2`, and `8`.
   - So, the `match()` method will return `["1", "2", "8"]`.
 
 #### Output:
+
 ```javascript
 Found 3 matches: 1,2,8
 ```

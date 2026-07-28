@@ -7,8 +7,8 @@ Let's break down your code and explain how it works with regular expressions, pa
 ```javascript
 function geek() {
   let str1 = "123456790";
-  let regex4 = /[^0-4]/g;  // Regular expression to match any character that is NOT between 0 and 4
-  let match4 = str1.match(regex4);  // Find all characters that do not match the range [0-4]
+  let regex4 = /[^0-4]/g; // Regular expression to match any character that is NOT between 0 and 4
+  let match4 = str1.match(regex4); // Find all characters that do not match the range [0-4]
 
   console.log("Found " + match4.length + " matches: " + match4);
 }
@@ -38,8 +38,8 @@ Found 4 matches: 5,6,7,9
 function geek() {
   let str1 = "128@$%";
   let replacement = "#";
-  let regex4 = new RegExp("[^0-9]", "g");  // Regular expression to match any character that is NOT a digit
-  let match4 = str1.replace(regex4, replacement);  // Replace non-digit characters with "#"
+  let regex4 = new RegExp("[^0-9]", "g"); // Regular expression to match any character that is NOT a digit
+  let match4 = str1.replace(regex4, replacement); // Replace non-digit characters with "#"
 
   console.log("Found " + match4.length + " matches: " + match4);
 }
@@ -65,9 +65,9 @@ Found 6 matches: 128###
 
 - **`/[^0-4]/g`**: Matches all characters in the string that are **not** in the range from `0` to `4`.
   - In the string `"123456790"`, it matches `5`, `6`, `7`, and `9`, and the length of the match is 4.
-  
 - **`[^0-9]`**: Matches all characters in the string that are **not** digits.
   - In the string `"128@$%"`, the non-digit characters (`@`, `$`, `%`) are replaced with `"#"`, resulting in the string `"128###"`.
-  
+
 ### **Conclusion**:
+
 The regular expression `[^...]` is very useful for matching any characters that do not belong to a specific group (e.g., digits, letters, or certain ranges). It can be used in combination with the `match()` method to extract non-matching characters, or with the `replace()` method to replace them with a specific value.

@@ -7,8 +7,8 @@ Let's go through both examples in detail, where you're using the regular express
 ```javascript
 function geek() {
   let str1 = "GeeksforGeeks@_123_$";
-  let regex4 = /\bgeeksforgeeks/gi;  // Regular expression to match the word 'GeeksforGeeks'
-  let match4 = str1.match(regex4);   // Using match() to find the pattern
+  let regex4 = /\bgeeksforgeeks/gi; // Regular expression to match the word 'GeeksforGeeks'
+  let match4 = str1.match(regex4); // Using match() to find the pattern
 
   console.log("Found " + match4.length + " match: " + match4); // Logging the result
 }
@@ -42,11 +42,11 @@ geek();
 ```javascript
 function geek() {
   let str1 = "Geeky@128";
-  let regex4 = new RegExp("\\bGeeky", "gi");  // Regular expression to match the word 'Geeky'
-  let replace = "GFG";  // Replacement string
-  let match4 = str1.replace(regex4, replace);  // Using replace() to replace the match
+  let regex4 = new RegExp("\\bGeeky", "gi"); // Regular expression to match the word 'Geeky'
+  let replace = "GFG"; // Replacement string
+  let match4 = str1.replace(regex4, replace); // Using replace() to replace the match
 
-  console.log("New string: " + match4);  // Logging the new string
+  console.log("New string: " + match4); // Logging the new string
 }
 geek();
 ```
@@ -59,7 +59,7 @@ geek();
    - `g`: The **global** flag ensures the search is across the entire string.
    - `i`: The **case-insensitive** flag makes the search case-insensitive.
 
-   *Note*: We used `new RegExp("\\bGeeky", "gi")` instead of a regular literal pattern to demonstrate how the `RegExp` constructor works. `\\b` is used instead of just `\b` because in a string, the backslash `\` needs to be escaped with another backslash.
+   _Note_: We used `new RegExp("\\bGeeky", "gi")` instead of a regular literal pattern to demonstrate how the `RegExp` constructor works. `\\b` is used instead of just `\b` because in a string, the backslash `\` needs to be escaped with another backslash.
 
 2. **`replace()`**: The `replace()` method is used to replace all occurrences of the matched pattern with the specified replacement string. Here, `"Geeky"` is replaced with `"GFG"`.
 
@@ -85,7 +85,7 @@ geek();
    - The `g` flag ensures the regular expression is applied globally across the string.
    - The `i` flag makes the regular expression case-insensitive, so it matches both `"Geeky"` and `"geeky"`, for example.
 
-3. **`match()`**: 
+3. **`match()`**:
    - Used to find all matches in the string that fit the regular expression.
 
 4. **`replace()`**:
@@ -96,6 +96,7 @@ geek();
 ### Outputs:
 
 1. For the first example with `"GeeksforGeeks@_123_$"`:
+
    ```
    Found 1 match: GeeksforGeeks
    ```

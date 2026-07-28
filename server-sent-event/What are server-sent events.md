@@ -4,6 +4,7 @@
 
 // The EventSource object is used to receive server-sent event notifications. For example, you can receive messages from server as below,
 
+```js
 // if (typeof EventSource !== "undefined") {
 //      var source = new EventSource("sse_generator.js");
 //      source.onmessage = function (event) {
@@ -27,3 +28,4 @@ if (typeof EventSource !== "undefined") {
 // | onopen    | It is used when a connection to the server is opened  |
 // | onmessage | This event is used when a message is received         |
 // | onerror   | It happens when an error occurs                       |
+```

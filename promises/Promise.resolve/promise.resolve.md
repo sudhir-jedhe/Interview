@@ -1,6 +1,6 @@
 // The Promise.resolve method returns a Promise object that is resolved with a given value.
 
-
+```js
 let promise = new Promise(resolve => {
     setTimeout(() => resolve(2), 2000);
 });

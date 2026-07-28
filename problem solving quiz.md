@@ -7,21 +7,22 @@ Here's how you can implement the different concepts and problems mentioned:
 A closure is a function that has access to its own scope, the outer function's variables, and the global variables.
 
 #### Example:
+
 ```javascript
 function createCounter() {
   let count = 0;
   return {
-    increment: function() {
+    increment: function () {
       count++;
       return count;
     },
-    decrement: function() {
+    decrement: function () {
       count--;
       return count;
     },
-    getCount: function() {
+    getCount: function () {
       return count;
-    }
+    },
   };
 }
 
@@ -38,13 +39,14 @@ console.log(counter.getCount()); // 2
 Memoization stores the result of expensive function calls and returns the cached result when the same inputs occur again.
 
 #### Example:
+
 ```javascript
 function memoize(fn) {
   const cache = {};
-  return function(...args) {
+  return function (...args) {
     const key = JSON.stringify(args);
     if (cache[key]) {
-      console.log('Fetching from cache');
+      console.log("Fetching from cache");
       return cache[key];
     }
     const result = fn(...args);
@@ -54,7 +56,7 @@ function memoize(fn) {
 }
 
 const expensiveFunction = (num) => {
-  console.log('Calculating...');
+  console.log("Calculating...");
   return num * 2;
 };
 
@@ -68,9 +70,10 @@ console.log(memoizedFunction(5)); // Fetching from cache 10
 ### 3. **Polyfills: Implement Array.prototype.map, reduce, and Function.prototype.bind Polyfills**
 
 #### `map` Polyfill:
+
 ```javascript
 if (!Array.prototype.map) {
-  Array.prototype.map = function(callback) {
+  Array.prototype.map = function (callback) {
     const result = [];
     for (let i = 0; i < this.length; i++) {
       result.push(callback(this[i], i, this));
@@ -81,9 +84,10 @@ if (!Array.prototype.map) {
 ```
 
 #### `reduce` Polyfill:
+
 ```javascript
 if (!Array.prototype.reduce) {
-  Array.prototype.reduce = function(callback, initialValue) {
+  Array.prototype.reduce = function (callback, initialValue) {
     let accumulator = initialValue;
     for (let i = 0; i < this.length; i++) {
       accumulator = callback(accumulator, this[i], i, this);
@@ -94,11 +98,12 @@ if (!Array.prototype.reduce) {
 ```
 
 #### `bind` Polyfill:
+
 ```javascript
 if (!Function.prototype.bind) {
-  Function.prototype.bind = function(context, ...args) {
+  Function.prototype.bind = function (context, ...args) {
     const fn = this;
-    return function(...innerArgs) {
+    return function (...innerArgs) {
       return fn.apply(context, [...args, ...innerArgs]);
     };
   };
@@ -112,6 +117,7 @@ if (!Function.prototype.bind) {
 The `fetchWithRetry` function tries fetching a URL and retries if it fails (up to a maximum number of retries).
 
 #### Example:
+
 ```javascript
 async function fetchWithRetry(url, retries = 3, delay = 1000) {
   let attempt = 0;
@@ -121,12 +127,12 @@ async function fetchWithRetry(url, retries = 3, delay = 1000) {
       if (response.ok) {
         return await response.json();
       }
-      throw new Error('Request failed');
+      throw new Error("Request failed");
     } catch (error) {
       attempt++;
       if (attempt < retries) {
         console.log(`Retrying... Attempt ${attempt}`);
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
       } else {
         throw new Error(`Failed after ${retries} attempts`);
       }
@@ -134,9 +140,9 @@ async function fetchWithRetry(url, retries = 3, delay = 1000) {
   }
 }
 
-fetchWithRetry('https://api.example.com/data')
-  .then(data => console.log(data))
-  .catch(error => console.error(error));
+fetchWithRetry("https://api.example.com/data")
+  .then((data) => console.log(data))
+  .catch((error) => console.error(error));
 ```
 
 ---
@@ -146,6 +152,7 @@ fetchWithRetry('https://api.example.com/data')
 The `promiseAll` function waits for all promises to resolve or any of them to reject.
 
 #### Example:
+
 ```javascript
 function promiseAll(promises) {
   return new Promise((resolve, reject) => {
@@ -153,13 +160,15 @@ function promiseAll(promises) {
     let completed = 0;
 
     promises.forEach((promise, index) => {
-      Promise.resolve(promise).then(value => {
-        results[index] = value;
-        completed++;
-        if (completed === promises.length) {
-          resolve(results);
-        }
-      }).catch(reject);
+      Promise.resolve(promise)
+        .then((value) => {
+          results[index] = value;
+          completed++;
+          if (completed === promises.length) {
+            resolve(results);
+          }
+        })
+        .catch(reject);
     });
   });
 }
@@ -168,7 +177,7 @@ const p1 = Promise.resolve(1);
 const p2 = Promise.resolve(2);
 const p3 = Promise.resolve(3);
 
-promiseAll([p1, p2, p3]).then(results => console.log(results)); // [1, 2, 3]
+promiseAll([p1, p2, p3]).then((results) => console.log(results)); // [1, 2, 3]
 ```
 
 ---
@@ -178,20 +187,21 @@ promiseAll([p1, p2, p3]).then(results => console.log(results)); // [1, 2, 3]
 Debouncing limits the rate at which a function is invoked. It's useful for optimizing input-heavy operations, like search.
 
 #### Example:
+
 ```javascript
 function debounce(fn, delay) {
   let timeout;
-  return function(...args) {
+  return function (...args) {
     clearTimeout(timeout);
     timeout = setTimeout(() => fn(...args), delay);
   };
 }
 
 const handleInputChange = debounce((event) => {
-  console.log('Input value:', event.target.value);
+  console.log("Input value:", event.target.value);
 }, 500);
 
-document.querySelector('input').addEventListener('input', handleInputChange);
+document.querySelector("input").addEventListener("input", handleInputChange);
 ```
 
 ---
@@ -201,21 +211,23 @@ document.querySelector('input').addEventListener('input', handleInputChange);
 The event loop is responsible for executing asynchronous code, events, and messages in the JavaScript runtime.
 
 #### Example:
+
 ```javascript
-console.log('Start');
+console.log("Start");
 
 setTimeout(() => {
-  console.log('Timeout');
+  console.log("Timeout");
 }, 0);
 
 Promise.resolve().then(() => {
-  console.log('Promise');
+  console.log("Promise");
 });
 
-console.log('End');
+console.log("End");
 ```
 
 #### Output:
+
 ```
 Start
 End
@@ -224,6 +236,7 @@ Timeout
 ```
 
 Explanation:
+
 - `console.log('Start')` and `console.log('End')` run first, as they are synchronous.
 - The `setTimeout` is placed in the event queue, but with a 0ms delay, so it is executed after the synchronous code.
 - The `Promise.resolve().then()` is placed in the microtask queue and executed before the event queue, hence `'Promise'` logs before `'Timeout'`.
@@ -235,10 +248,11 @@ Explanation:
 Rotate an array by `k` positions (to the right).
 
 #### Example:
+
 ```javascript
 function rotateArray(arr, k) {
   const n = arr.length;
-  k = k % n;  // Handle cases where k > n
+  k = k % n; // Handle cases where k > n
   return [...arr.slice(n - k), ...arr.slice(0, n - k)];
 }
 
@@ -252,16 +266,17 @@ console.log(rotateArray([1, 2, 3, 4, 5], 2)); // [4, 5, 1, 2, 3]
 Kadane's algorithm is used to find the maximum sum of a subarray in an array.
 
 #### Example:
+
 ```javascript
 function maxSubArraySum(arr) {
   let maxSum = arr[0];
   let currentSum = arr[0];
-  
+
   for (let i = 1; i < arr.length; i++) {
     currentSum = Math.max(arr[i], currentSum + arr[i]);
     maxSum = Math.max(maxSum, currentSum);
   }
-  
+
   return maxSum;
 }
 
@@ -273,14 +288,15 @@ console.log(maxSubArraySum([-2, 1, -3, 4, -1, 2, 1, -5, 4])); // 6
 ### 10. **Two-Pointer: Find All Pairs in an Array That Sum Up to a Specific Target**
 
 #### Example:
+
 ```javascript
 function findPairs(arr, target) {
   let pairs = [];
   let left = 0;
   let right = arr.length - 1;
-  
-  arr.sort((a, b) => a - b);  // Sort the array first
-  
+
+  arr.sort((a, b) => a - b); // Sort the array first
+
   while (left < right) {
     const sum = arr[left] + arr[right];
     if (sum === target) {
@@ -293,7 +309,7 @@ function findPairs(arr, target) {
       right--;
     }
   }
-  
+
   return pairs;
 }
 
@@ -311,10 +327,13 @@ Here are the solutions for each of the problems you mentioned:
 This is often called the Dutch National Flag Problem. The idea is to sort the array with three pointers, without using extra space.
 
 #### Example:
+
 ```javascript
 function sortColors(arr) {
-  let low = 0, mid = 0, high = arr.length - 1;
-  
+  let low = 0,
+    mid = 0,
+    high = arr.length - 1;
+
   while (mid <= high) {
     if (arr[mid] === 0) {
       [arr[low], arr[mid]] = [arr[mid], arr[low]]; // swap low and mid
@@ -340,9 +359,11 @@ console.log(sortColors([2, 0, 1, 2, 0, 1])); // [0, 0, 1, 1, 2, 2]
 In this problem, we use a sliding window approach to keep track of characters and ensure there are no repeats within the window.
 
 #### Example:
+
 ```javascript
 function lengthOfLongestSubstring(s) {
-  let start = 0, maxLength = 0;
+  let start = 0,
+    maxLength = 0;
   let charMap = new Map();
 
   for (let end = 0; end < s.length; end++) {
@@ -366,17 +387,19 @@ console.log(lengthOfLongestSubstring("abcabcbb")); // 3 (abc)
 This is a sliding window problem to find the maximum sum of a subarray of a fixed size `k`.
 
 #### Example:
+
 ```javascript
 function maxSubArraySum(arr, k) {
-  if (arr.length < k) return null;  // If the array is smaller than k
-  
-  let maxSum = 0, windowSum = 0;
-  
+  if (arr.length < k) return null; // If the array is smaller than k
+
+  let maxSum = 0,
+    windowSum = 0;
+
   // Calculate the sum of the first window
   for (let i = 0; i < k; i++) {
     windowSum += arr[i];
   }
-  
+
   maxSum = windowSum;
 
   // Slide the window to the right
@@ -398,6 +421,7 @@ console.log(maxSubArraySum([2, 1, 5, 1, 3, 2], 3)); // 9 (subarray: [5, 1, 3])
 This can be done by checking if the two strings have the same character counts.
 
 #### Example:
+
 ```javascript
 function isAnagram(str1, str2) {
   if (str1.length !== str2.length) return false;
@@ -426,6 +450,7 @@ console.log(isAnagram("listen", "silent")); // true
 This can be solved by counting the frequency of each character and then finding the first character that appears only once.
 
 #### Example:
+
 ```javascript
 function firstUniqChar(s) {
   let count = {};
@@ -453,6 +478,7 @@ console.log(firstUniqChar("leetcode")); // 'l'
 We can expand around the center for each character and pair of characters to find the longest palindrome.
 
 #### Example:
+
 ```javascript
 function longestPalindrome(s) {
   if (s.length < 1) return "";
@@ -470,9 +496,12 @@ function longestPalindrome(s) {
   for (let i = 0; i < s.length; i++) {
     let oddPalindrome = expandFromCenter(i, i);
     let evenPalindrome = expandFromCenter(i, i + 1);
-    
-    let longest = oddPalindrome.length > evenPalindrome.length ? oddPalindrome : evenPalindrome;
-    
+
+    let longest =
+      oddPalindrome.length > evenPalindrome.length
+        ? oddPalindrome
+        : evenPalindrome;
+
     if (longest.length > maxPalindrome.length) {
       maxPalindrome = longest;
     }
@@ -491,6 +520,7 @@ console.log(longestPalindrome("babad")); // "bab" or "aba"
 A string can be rearranged into a palindrome if at most one character has an odd count.
 
 #### Example:
+
 ```javascript
 function canFormPalindrome(str) {
   let count = {};
@@ -521,6 +551,7 @@ console.log(canFormPalindrome("hello")); // false
 Deep cloning means creating a copy of an object that doesn’t share references with the original object.
 
 #### Example:
+
 ```javascript
 function deepClone(obj) {
   if (obj === null || typeof obj !== "object") return obj;
@@ -551,14 +582,15 @@ console.log(clone); // { a: 1, b: { c: 3 } }
 Flatten a nested object into a single-level object by using dot notation for keys.
 
 #### Example:
+
 ```javascript
-function flattenObject(obj, prefix = '') {
+function flattenObject(obj, prefix = "") {
   let result = {};
 
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       const newKey = prefix ? `${prefix}.${key}` : key;
-      if (typeof obj[key] === 'object' && obj[key] !== null) {
+      if (typeof obj[key] === "object" && obj[key] !== null) {
         Object.assign(result, flattenObject(obj[key], newKey));
       } else {
         result[newKey] = obj[key];
@@ -578,6 +610,7 @@ console.log(flattenObject(nestedObj)); // { 'a.b.c': 1, d: 2 }
 ### **10. Frequency Count: Count the Frequency of Characters or Elements in an Array or String**
 
 #### Example:
+
 ```javascript
 function frequencyCount(arr) {
   let count = {};
@@ -595,6 +628,7 @@ console.log(frequencyCount([1, 2, 2, 3, 3, 3])); // { 1: 1, 2: 2, 3: 3 }
 ### **Practical Applications**
 
 #### 1. **Pagination: Write a Function to Paginate an Array Based on Page Number and Size**
+
 ```javascript
 function paginate(arr, page, size) {
   const start = (page - 1) * size;
@@ -606,10 +640,11 @@ console.log(paginate([1, 2, 3, 4, 5, 6, 7, 8, 9], 2, 3)); // [4, 5, 6]
 ```
 
 #### 2. **Debouncing: Implement a Debounce Function to Optimize Search Inputs**
+
 ```javascript
 function debounce(fn, delay) {
   let timeout;
-  return function(...args) {
+  return function (...args) {
     clearTimeout(timeout);
     timeout = setTimeout(() => fn(...args), delay);
   };
@@ -617,10 +652,11 @@ function debounce(fn, delay) {
 ```
 
 #### 3. **Throttling: Implement a Throttle Function to Limit API Calls**
+
 ```javascript
 function throttle(fn, delay) {
   let lastCall = 0;
-  return function(...args) {
+  return function (...args) {
     const now = Date.now();
     if (now - lastCall >= delay) {
       fn(...args);
@@ -640,7 +676,8 @@ Here are solutions for the problems you've listed:
 
 Serialization of a DOM tree involves converting the DOM into a string that can be saved or transferred, and deserialization involves converting it back to a DOM tree.
 
-#### Example: 
+#### Example:
+
 ```javascript
 // Serialize a DOM tree (Convert it to a string)
 function serializeNode(node) {
@@ -648,7 +685,7 @@ function serializeNode(node) {
     nodeName: node.nodeName,
     nodeType: node.nodeType,
     nodeValue: node.nodeValue,
-    children: []
+    children: [],
   };
 
   for (let child of node.childNodes) {
@@ -686,20 +723,21 @@ document.body.appendChild(deserializedNode);
 Event delegation allows you to attach a single event listener to a parent element to handle events for child elements that might not exist yet.
 
 #### Example:
+
 ```javascript
 // Assuming there is an element with id 'list'
-let list = document.getElementById('list');
+let list = document.getElementById("list");
 
 // Event delegation for dynamically added list items
-list.addEventListener('click', function(event) {
-  if (event.target && event.target.matches('li')) {
-    alert('List item clicked: ' + event.target.textContent);
+list.addEventListener("click", function (event) {
+  if (event.target && event.target.matches("li")) {
+    alert("List item clicked: " + event.target.textContent);
   }
 });
 
 // Dynamically add new list item
-let newItem = document.createElement('li');
-newItem.textContent = 'New Item';
+let newItem = document.createElement("li");
+newItem.textContent = "New Item";
 list.appendChild(newItem);
 ```
 
@@ -712,6 +750,7 @@ In this example, we use event delegation to handle clicks on dynamically added l
 LRU Cache is used to store a fixed number of elements, and when it reaches the limit, it removes the least recently used item.
 
 #### Example:
+
 ```javascript
 class LRUCache {
   constructor(capacity) {
@@ -744,11 +783,11 @@ class LRUCache {
 
 // Usage
 let cache = new LRUCache(3);
-cache.put(1, 'A');
-cache.put(2, 'B');
-cache.put(3, 'C');
+cache.put(1, "A");
+cache.put(2, "B");
+cache.put(3, "C");
 console.log(cache.get(2)); // 'B'
-cache.put(4, 'D'); // LRU 1 is removed
+cache.put(4, "D"); // LRU 1 is removed
 console.log(cache.get(1)); // -1 (not found)
 ```
 
@@ -759,26 +798,27 @@ console.log(cache.get(1)); // -1 (not found)
 Here's an implementation of a simplified custom Promise class that supports `then`, `catch`, and `resolve` methods.
 
 #### Example:
+
 ```javascript
 class MyPromise {
   constructor(executor) {
-    this.state = 'pending';
+    this.state = "pending";
     this.value = null;
     this.callbacks = [];
 
     const resolve = (value) => {
-      if (this.state === 'pending') {
-        this.state = 'fulfilled';
+      if (this.state === "pending") {
+        this.state = "fulfilled";
         this.value = value;
-        this.callbacks.forEach(callback => callback.onFulfilled(value));
+        this.callbacks.forEach((callback) => callback.onFulfilled(value));
       }
     };
 
     const reject = (reason) => {
-      if (this.state === 'pending') {
-        this.state = 'rejected';
+      if (this.state === "pending") {
+        this.state = "rejected";
         this.value = reason;
-        this.callbacks.forEach(callback => callback.onRejected(reason));
+        this.callbacks.forEach((callback) => callback.onRejected(reason));
       }
     };
 
@@ -792,13 +832,13 @@ class MyPromise {
   then(onFulfilled, onRejected) {
     return new MyPromise((resolve, reject) => {
       const handleCallback = () => {
-        if (this.state === 'fulfilled') {
+        if (this.state === "fulfilled") {
           try {
             resolve(onFulfilled ? onFulfilled(this.value) : this.value);
           } catch (error) {
             reject(error);
           }
-        } else if (this.state === 'rejected') {
+        } else if (this.state === "rejected") {
           try {
             reject(onRejected ? onRejected(this.value) : this.value);
           } catch (error) {
@@ -827,7 +867,7 @@ class MyPromise {
 
 // Usage
 let p = new MyPromise((resolve, reject) => {
-  setTimeout(() => resolve('Success!'), 1000);
+  setTimeout(() => resolve("Success!"), 1000);
 });
 
 p.then((value) => {
@@ -844,30 +884,31 @@ p.then((value) => {
 A simple module bundler resolves JavaScript module dependencies. Here's a basic example using `require`-like syntax:
 
 #### Example:
+
 ```javascript
 // Module 1 (module1.js)
 module.exports = {
-  greet: function(name) {
+  greet: function (name) {
     return `Hello, ${name}!`;
-  }
+  },
 };
 
 // Module 2 (module2.js)
-const module1 = require('./module1');
+const module1 = require("./module1");
 console.log(module1.greet("John"));
 
 // Simple `require` function
 function require(modulePath) {
   const module = {};
-  
-  if (modulePath === './module1') {
+
+  if (modulePath === "./module1") {
     module.exports = {
-      greet: function(name) {
+      greet: function (name) {
         return `Hello, ${name}!`;
-      }
+      },
     };
   }
-  
+
   return module.exports;
 }
 ```

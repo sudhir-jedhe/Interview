@@ -688,14 +688,14 @@ Based on available React Query documentation and cache lifecycle examples. [[tan
 
 | Feature                      | React Query | LRU |
 | ---------------------------- | ----------- | --- |
-| Automatic Refetch            | ✅          | ❌  |
-| Query Invalidation           | ✅          | ❌  |
-| Mutation Support             | ✅          | ❌  |
-| Background Sync              | ✅          | ❌  |
-| Memory Bound Control         | Limited     | ✅  |
-| Least Recently Used Eviction | ❌          | ✅  |
-| TTL Support                  | ✅          | ✅  |
-| API Management               | ✅          | ❌  |
+| Automatic Refetch            | ✅           | ❌   |
+| Query Invalidation           | ✅           | ❌   |
+| Mutation Support             | ✅           | ❌   |
+| Background Sync              | ✅           | ❌   |
+| Memory Bound Control         | Limited     | ✅   |
+| Least Recently Used Eviction | ❌           | ✅   |
+| TTL Support                  | ✅           | ✅   |
+| API Management               | ✅           | ❌   |
 
 ### Interview Answer
 

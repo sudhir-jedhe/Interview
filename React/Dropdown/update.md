@@ -5,22 +5,16 @@ Absolutely. In a production-grade design system (Material UI, Ant Design, Adobe 
 ```tsx
 <Dropdown
   items={items}
-
   // Size
   size="sm"
-
   // Alignment
   align="start"
-
   // Placement
   placement="bottom"
-
   // Width behavior
   width="auto"
-
   // Variants
   variant="outlined"
-
   // States
   disabled={false}
   loading={false}
@@ -28,19 +22,14 @@ Absolutely. In a production-grade design system (Material UI, Ant Design, Adobe 
 />
 ```
 
-***
+---
 
 # 1. Size
 
 Support different trigger and menu sizes.
 
 ```ts
-type DropdownSize =
-  | "xs"
-  | "sm"
-  | "md"
-  | "lg"
-  | "xl";
+type DropdownSize = "xs" | "sm" | "md" | "lg" | "xl";
 ```
 
 ### Usage
@@ -81,18 +70,14 @@ type DropdownSize =
 }
 ```
 
-***
+---
 
 # 2. Placement
 
 Support where menu appears.
 
 ```ts
-type Placement =
-  | "top"
-  | "bottom"
-  | "left"
-  | "right";
+type Placement = "top" | "bottom" | "left" | "right";
 ```
 
 ### Examples
@@ -104,17 +89,14 @@ type Placement =
 <Dropdown placement="right" />
 ```
 
-***
+---
 
 # 3. Alignment
 
 Controls alignment relative to trigger.
 
 ```ts
-type Alignment =
-  | "start"
-  | "center"
-  | "end";
+type Alignment = "start" | "center" | "end";
 ```
 
 ### Examples
@@ -172,18 +154,14 @@ type Alignment =
 +----------------------+
 ```
 
-***
+---
 
 # 4. Width Behaviour
 
 Used a lot in enterprise applications.
 
 ```ts
-type WidthMode =
-  | "trigger"
-  | "auto"
-  | "full"
-  | "content";
+type WidthMode = "trigger" | "auto" | "full" | "content";
 ```
 
 ### Examples
@@ -194,7 +172,7 @@ type WidthMode =
 
 Menu width equals trigger width.
 
-***
+---
 
 ```tsx
 <Dropdown width="auto" />
@@ -202,7 +180,7 @@ Menu width equals trigger width.
 
 Menu grows automatically.
 
-***
+---
 
 ```tsx
 <Dropdown width="content" />
@@ -210,7 +188,7 @@ Menu grows automatically.
 
 Menu width based on longest option.
 
-***
+---
 
 ```tsx
 <Dropdown width="full" />
@@ -218,18 +196,14 @@ Menu width based on longest option.
 
 Menu stretches to container.
 
-***
+---
 
 # 5. Variant
 
 Many design systems support variants.
 
 ```ts
-type Variant =
-  | "outlined"
-  | "filled"
-  | "ghost"
-  | "borderless";
+type Variant = "outlined" | "filled" | "ghost" | "borderless";
 ```
 
 ### Examples
@@ -240,27 +214,21 @@ type Variant =
 <Dropdown variant="ghost" />
 ```
 
-***
+---
 
 # 6. Menu Size
 
 Sometimes trigger is compact but menu isn't.
 
 ```tsx
-<Dropdown
-  size="sm"
-  menuSize="lg"
-/>
+<Dropdown size="sm" menuSize="lg" />
 ```
 
 ```ts
-type MenuSize =
-  | "sm"
-  | "md"
-  | "lg";
+type MenuSize = "sm" | "md" | "lg";
 ```
 
-***
+---
 
 # 7. Responsive Placement
 
@@ -271,31 +239,23 @@ Important for mobile.
   placement={{
     desktop: "bottom",
     tablet: "bottom",
-    mobile: "fullScreen"
+    mobile: "fullScreen",
   }}
 />
 ```
 
 ```ts
-type Placement =
-  | "top"
-  | "bottom"
-  | "left"
-  | "right"
-  | "fullScreen";
+type Placement = "top" | "bottom" | "left" | "right" | "fullScreen";
 ```
 
-***
+---
 
 # 8. Offset
 
 Gap between trigger and menu.
 
 ```tsx
-<Dropdown
-  placement="bottom"
-  offset={8}
-/>
+<Dropdown placement="bottom" offset={8} />
 ```
 
 Visual:
@@ -308,17 +268,14 @@ Trigger
 Menu
 ```
 
-***
+---
 
 # 9. Flip Behaviour
 
 Like Popper.js.
 
 ```tsx
-<Dropdown
-  placement="bottom"
-  flip
-/>
+<Dropdown placement="bottom" flip />
 ```
 
 If insufficient space below:
@@ -336,7 +293,7 @@ Actual:
       Menu
 ```
 
-***
+---
 
 # 10. Enterprise-Level API (Recommended)
 
@@ -355,10 +312,7 @@ export interface DropdownProps {
 
   width?: "trigger" | "auto" | "full" | "content";
 
-  variant?:
-    | "outlined"
-    | "filled"
-    | "ghost";
+  variant?: "outlined" | "filled" | "ghost";
 
   offset?: number;
 
@@ -374,23 +328,20 @@ export interface DropdownProps {
 
   flip?: boolean;
 
-  onChange?: (
-    value: string,
-    item: DropdownItem
-  ) => void;
+  onChange?: (value: string, item: DropdownItem) => void;
 }
 ```
 
 For a **Senior/Lead Frontend System Design interview**, I'd also discuss:
 
-* Compound Component Pattern (`Dropdown.Trigger`, `Dropdown.Menu`, `Dropdown.Item`)
-* Headless UI approach
-* Context API for state management
-* Floating UI / Popper.js for positioning
-* Virtualisation with `react-window`
-* WCAG 2.2 accessibility
-* Controlled vs Uncontrolled mode
-* Portal rendering (`ReactDOM.createPortal`)
-* Design Tokens (`size`, `spacing`, `colour`, `radius`)
+- Compound Component Pattern (`Dropdown.Trigger`, `Dropdown.Menu`, `Dropdown.Item`)
+- Headless UI approach
+- Context API for state management
+- Floating UI / Popper.js for positioning
+- Virtualisation with `react-window`
+- WCAG 2.2 accessibility
+- Controlled vs Uncontrolled mode
+- Portal rendering (`ReactDOM.createPortal`)
+- Design Tokens (`size`, `spacing`, `colour`, `radius`)
 
 These are the differentiators interviewers expect from a Frontend Lead with your React experience.

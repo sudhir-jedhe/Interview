@@ -2,7 +2,7 @@ The code you've written seems to be aimed at implementing a search functionality
 
 There is a small potential issue with your approach: you're using `.textContent` to extract the text from the `contentElement`, which will not include any HTML tags. If the content has already been highlighted with `<mark>` tags, `.textContent` will return plain text, and the highlighting won't be preserved.
 
-Instead, you should use `.innerHTML` to get the HTML content, and also to inject the updated content with `<mark>` tags. 
+Instead, you should use `.innerHTML` to get the HTML content, and also to inject the updated content with `<mark>` tags.
 
 Let's go through your code with the necessary adjustments:
 
@@ -11,52 +11,52 @@ Let's go through your code with the necessary adjustments:
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Highlight Text</title>
-</head>
-<body>
-  <div id="content">Some text content with a search word in it.</div>
-  <input type="text" id="searchInput">
-  <button id="searchButton">Search</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Highlight Text</title>
+  </head>
+  <body>
+    <div id="content">Some text content with a search word in it.</div>
+    <input type="text" id="searchInput" />
+    <button id="searchButton">Search</button>
 
-  <script>
-    // Function to highlight the search term in the text
-    function highlightText(text, searchTerm) {
-      // Handle case-insensitive search using regular expression
-      const regex = new RegExp(searchTerm, "gi");
-      return text.replace(regex, (match) => `<mark>${match}</mark>`);
-    }
-
-    // Get elements
-    const contentElement = document.getElementById('content');
-    const searchInput = document.getElementById('searchInput');
-    const searchButton = document.getElementById('searchButton');
-
-    // Event listener for the search button click
-    searchButton.addEventListener('click', () => {
-      const searchTerm = searchInput.value.trim(); // Get the search term
-      if (searchTerm) {
-        // Get the current HTML content, not just the text
-        const currentContent = contentElement.innerHTML;
-
-        // Highlight the search term in the content
-        const newContent = highlightText(currentContent, searchTerm);
-
-        // Update the content with highlighted search term
-        contentElement.innerHTML = newContent;
+    <script>
+      // Function to highlight the search term in the text
+      function highlightText(text, searchTerm) {
+        // Handle case-insensitive search using regular expression
+        const regex = new RegExp(searchTerm, "gi");
+        return text.replace(regex, (match) => `<mark>${match}</mark>`);
       }
-    });
-  </script>
-</body>
+
+      // Get elements
+      const contentElement = document.getElementById("content");
+      const searchInput = document.getElementById("searchInput");
+      const searchButton = document.getElementById("searchButton");
+
+      // Event listener for the search button click
+      searchButton.addEventListener("click", () => {
+        const searchTerm = searchInput.value.trim(); // Get the search term
+        if (searchTerm) {
+          // Get the current HTML content, not just the text
+          const currentContent = contentElement.innerHTML;
+
+          // Highlight the search term in the content
+          const newContent = highlightText(currentContent, searchTerm);
+
+          // Update the content with highlighted search term
+          contentElement.innerHTML = newContent;
+        }
+      });
+    </script>
+  </body>
 </html>
 ```
 
 ### Explanation:
 
-1. **Highlight Function (`highlightText`)**: 
-   - This function uses a regular expression (`RegExp`) to find all occurrences of `searchTerm` in the `text` provided. 
+1. **Highlight Function (`highlightText`)**:
+   - This function uses a regular expression (`RegExp`) to find all occurrences of `searchTerm` in the `text` provided.
    - It wraps the matched text inside `<mark>` tags, which are commonly used to highlight text in HTML.
 
 2. **Event Listener on Search Button**:
@@ -74,5 +74,5 @@ Let's go through your code with the necessary adjustments:
 
 - **.innerHTML**: Used instead of `.textContent` to preserve HTML formatting, including `<mark>` tags.
 - **Trimming the search term**: `searchTerm.trim()` ensures that leading or trailing spaces are ignored before processing.
-  
+
 Let me know if you need further modifications or improvements to the code!

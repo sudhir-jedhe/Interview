@@ -9,7 +9,7 @@ The Fibonacci sequence is a classic example used to demonstrate recursion. In th
 Here’s the initial recursive implementation:
 
 ```javascript
-const fibonacciNumber = n => 
+const fibonacciNumber = (n) =>
   n < 2 ? n : fibonacciNumber(n - 1) + fibonacciNumber(n - 2);
 ```
 
@@ -20,12 +20,12 @@ This approach is intuitive but inefficient because it computes the same subprobl
 When we add `console.log` to track the calls, we get the following trace for `fibonacciNumber(4)`:
 
 ```javascript
-const fibonacciNumber = n => {
+const fibonacciNumber = (n) => {
   console.log(`[CALLED] fibonacciNumber(${n})`);
   const r = n >= 2 ? fibonacciNumber(n - 1) + fibonacciNumber(n - 2) : n;
   console.log(`[RETURN] ${r} for n=${n}`);
   return r;
-}
+};
 
 fibonacciNumber(4);
 ```
@@ -64,21 +64,20 @@ Here’s the **memoized Fibonacci implementation**:
 ```javascript
 const fibonacciCache = new Map();
 
-const fibonacciNumber = n => {
+const fibonacciNumber = (n) => {
   console.log(`[CALL] fibonacciNumber(${n})`);
   const cacheKey = `${n}`;
   let r;
-  if(fibonacciCache.has(cacheKey)) {
+  if (fibonacciCache.has(cacheKey)) {
     r = fibonacciCache.get(cacheKey);
     console.log(`[MEMO] Cache hit for ${n}: ${r}`);
-  }
-  else {
+  } else {
     r = n >= 2 ? fibonacciNumber(n - 1) + fibonacciNumber(n - 2) : n;
     fibonacciCache.set(cacheKey, r);
     console.log(`[CALC] Computed and stored value for ${n}: ${r}`);
   }
   return r;
-}
+};
 
 fibonacciNumber(4);
 ```
@@ -118,16 +117,18 @@ The iterative approach avoids recursion altogether and uses a simple loop to cal
 Here’s the **iterative Fibonacci function**:
 
 ```javascript
-const fibonacciNumber = n => {
-  let r = 0, l = 1, s = 0;
-  for(let i = 0; i < n; i++) {
+const fibonacciNumber = (n) => {
+  let r = 0,
+    l = 1,
+    s = 0;
+  for (let i = 0; i < n; i++) {
     r = l;
     l = s;
     s = r + l;
     console.log(`[CALC] i = ${i}: r = ${r}, l = ${l}, s = ${s}`);
   }
   return s;
-}
+};
 
 fibonacciNumber(4);
 ```

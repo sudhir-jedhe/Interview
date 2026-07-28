@@ -1,3 +1,4 @@
+```js
 import "./LoadingIndicator.css";
 import LoadingIndicator from "./LoadingIndicator";
 import React from "react";
@@ -71,3 +72,4 @@ const LoadingQueue = () => {
 };
 
 export default LoadingQueue;
+```

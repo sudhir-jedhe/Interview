@@ -1,3 +1,4 @@
+```js
 import { useEffect, useState } from "react";
 
 // helper function to generate a random color
@@ -96,3 +97,4 @@ const Example = () => {
 };
 
 export default Example;
+```

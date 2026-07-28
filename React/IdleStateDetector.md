@@ -1,3 +1,4 @@
+```js
 import { useEffect, useRef } from "react";
 
 const IdleStateDetector = ({ delay, onIdle, onActive }) => {
@@ -24,7 +25,7 @@ const IdleStateDetector = ({ delay, onIdle, onActive }) => {
     //if tab is changed or is out of focus
     window.addEventListener("blur", startTimer, false);
     window.addEventListener("focus", resetTimer, false);
-    
+
     //start the timer
     startTimer();
   };
@@ -76,3 +77,4 @@ const IdleStateDetector = ({ delay, onIdle, onActive }) => {
 };
 
 export default IdleStateDetector;
+```

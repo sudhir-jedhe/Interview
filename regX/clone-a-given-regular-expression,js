@@ -24,14 +24,14 @@ function cloneRegex(input, outputflag) {
 ```
 
 #### Key Parts:
-1. **`input.source`**: 
+
+1. **`input.source`**:
    - `source` gives the string representation of the regular expression pattern.
-   
-2. **`input.flags`**: 
+2. **`input.flags`**:
    - `flags` is a string containing all the flags set for the `input` regex, such as `'g'`, `'i'`, `'m'`, etc. These flags dictate how the regular expression behaves (e.g., global matching, case-insensitive, multiline matching).
 
 3. **Combining Flags**:
-   - The flags from `input` and `outputflag` are concatenated together (`input.flags + outputflag`), and then `new Set` is used to remove any duplicates. 
+   - The flags from `input` and `outputflag` are concatenated together (`input.flags + outputflag`), and then `new Set` is used to remove any duplicates.
    - The result is converted back to a string using `.join("")` to get the final set of flags for the cloned regex.
 
 4. **Cloning**:
@@ -50,24 +50,24 @@ var regex = new RegExp(d, "i");
 var clonedregex = cloneRegex(regex, "g");
 
 // Test with the cloned regex:
-console.log(clonedregex.flags);  // Output: "ig"
+console.log(clonedregex.flags); // Output: "ig"
 ```
 
 ### Detailed Flow:
+
 1. **Creating the Original Regex**:
    - `var regex = new RegExp(d, "i");`
      - The `RegExp` object is created with the pattern `"https://facebook.com"` and the `"i"` flag for case insensitivity.
-   
 2. **Cloning the Regex**:
    - `var clonedregex = cloneRegex(regex, "g");`
      - The `cloneRegex` function clones `regex` but adds the `"g"` flag for global matching, resulting in a new regular expression with the pattern `"https://facebook.com"` and flags `"ig"`.
-   
 3. **Testing the Cloned Regex**:
    - The `clonedregex` now matches the same pattern but with global and case-insensitive flags, and the combined flags can be accessed via `clonedregex.flags`.
 
 ### Result:
+
 ```js
-console.log(clonedregex.flags);  // Output: "ig"
+console.log(clonedregex.flags); // Output: "ig"
 ```
 
 This shows that the cloned regular expression has the combined flags `"i"` (case-insensitive) and `"g"` (global matching).
@@ -75,7 +75,7 @@ This shows that the cloned regular expression has the combined flags `"i"` (case
 ### Why Use This Approach?
 
 This approach is useful in situations where you need to:
+
 - Clone an existing regular expression.
 - Optionally modify the flags (like adding or removing flags).
 - Reuse the same pattern but with different behaviors (such as case-insensitive vs. global matching).
-

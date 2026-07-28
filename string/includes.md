@@ -1,3 +1,4 @@
+```js
 String.prototype.myIncludes = function (substring, fromIndex = 0) {
   for (let i = fromIndex; i < this.length; i++) {
     if (this.slice(i, i + substring.length) === substring) {
@@ -6,3 +7,4 @@ String.prototype.myIncludes = function (substring, fromIndex = 0) {
   }
   return false;
 };
+```

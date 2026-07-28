@@ -7,7 +7,7 @@ In this example, we’ll create a dropdown that displays a list of options and a
 ### 1. **CaseDropdown Component**
 
 ```javascript
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 // Custom CaseDropdown component
 const CaseDropdown = ({ options, label, onSelect }) => {
@@ -32,15 +32,15 @@ const CaseDropdown = ({ options, label, onSelect }) => {
 
   // Handle keyboard navigation (up/down arrow keys)
   const handleKeyDown = (e) => {
-    if (e.key === 'ArrowDown') {
+    if (e.key === "ArrowDown") {
       setHighlightedIndex((prev) => (prev + 1) % options.length);
-    } else if (e.key === 'ArrowUp') {
+    } else if (e.key === "ArrowUp") {
       setHighlightedIndex((prev) =>
-        prev === 0 ? options.length - 1 : prev - 1
+        prev === 0 ? options.length - 1 : prev - 1,
       );
-    } else if (e.key === 'Enter' && options[highlightedIndex]) {
+    } else if (e.key === "Enter" && options[highlightedIndex]) {
       handleSelect(options[highlightedIndex], highlightedIndex);
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       setIsOpen(false);
     }
   };
@@ -52,15 +52,20 @@ const CaseDropdown = ({ options, label, onSelect }) => {
         setIsOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <div className="dropdown" ref={dropdownRef} onKeyDown={handleKeyDown} tabIndex="0">
+    <div
+      className="dropdown"
+      ref={dropdownRef}
+      onKeyDown={handleKeyDown}
+      tabIndex="0"
+    >
       <label>{label}</label>
       <div className="dropdown-toggle" onClick={toggleDropdown}>
-        {selectedOption || 'Select an option'}
+        {selectedOption || "Select an option"}
       </div>
 
       {isOpen && (
@@ -70,7 +75,7 @@ const CaseDropdown = ({ options, label, onSelect }) => {
               key={index}
               ref={(el) => (optionRefs.current[index] = el)}
               className={`dropdown-item ${
-                highlightedIndex === index ? 'highlighted' : ''
+                highlightedIndex === index ? "highlighted" : ""
               }`}
               onClick={() => handleSelect(option, index)}
               onMouseEnter={() => setHighlightedIndex(index)} // Update index on hover
@@ -92,11 +97,11 @@ export default CaseDropdown;
 Now you can use the `CaseDropdown` component in your application. The `onSelect` function allows you to receive the selected item once it is chosen.
 
 ```javascript
-import React from 'react';
-import CaseDropdown from './CaseDropdown';
+import React from "react";
+import CaseDropdown from "./CaseDropdown";
 
 const App = () => {
-  const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+  const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
   const handleSelect = (selectedOption) => {
     alert(`Selected option: ${selectedOption}`);
@@ -105,7 +110,11 @@ const App = () => {
   return (
     <div>
       <h1>Custom CaseDropdown Example</h1>
-      <CaseDropdown options={options} label="Choose an Option" onSelect={handleSelect} />
+      <CaseDropdown
+        options={options}
+        label="Choose an Option"
+        onSelect={handleSelect}
+      />
     </div>
   );
 };
@@ -186,6 +195,7 @@ label {
    - If the user clicks outside the dropdown, it will automatically close. This is handled by the `useEffect` hook that listens for `mousedown` events.
 
 ### How It Works:
+
 - **Toggling Dropdown**: When the user clicks the dropdown button (`dropdown-toggle`), the `toggleDropdown` function is called, which toggles the `isOpen` state.
 - **Selecting an Item**: When an item is selected either by clicking on it or pressing "Enter" after highlighting it with the arrow keys, the `handleSelect` function updates the selected item and closes the dropdown.
 - **Keyboard Navigation**: Users can use the **up** and **down** arrow keys to navigate through the list. The selected option will be highlighted and can be selected with the **Enter** key.

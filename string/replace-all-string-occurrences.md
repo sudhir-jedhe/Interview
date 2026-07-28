@@ -1,3 +1,4 @@
+```js
 let str = 'I am prashant yadav';
 str.split(' '); // splitting at white space
 ['I', 'am', 'prashant', 'yadav']
@@ -29,3 +30,4 @@ Regular expression efficiency depends upon its implementation so in some cases i
 let escapeString = (string) => {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
+```

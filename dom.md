@@ -34,6 +34,7 @@ const elementsByName = document.getElementsByName("elementName");
 ```
 
 **Notes:**
+
 - `document.querySelector()` returns the first matching element.
 - `document.querySelectorAll()` returns a **NodeList** of all matching elements.
 - `document.getElementsByTagName()`, `document.getElementsByClassName()`, and `document.getElementsByName()` return live collections that auto-update.
@@ -45,7 +46,7 @@ const elementsByName = document.getElementsByName("elementName");
 **Example 1: Using `for...of` loop**
 
 ```js
-const domElements = document.querySelectorAll('.some-class');
+const domElements = document.querySelectorAll(".some-class");
 for (let element of domElements) {
   console.log(element);
   // Perform some operations on the element
@@ -55,10 +56,10 @@ for (let element of domElements) {
 **Example 2: Convert NodeList to array and use array methods**
 
 ```js
-const domElements = document.querySelectorAll('.some-class');
+const domElements = document.querySelectorAll(".some-class");
 const domElementsArray = Array.from(domElements); // Converts NodeList to Array
 
-domElementsArray.forEach(element => {
+domElementsArray.forEach((element) => {
   console.log(element);
 });
 ```
@@ -90,6 +91,7 @@ class NodeStore {
 ```
 
 **Explanation:**
+
 - The `set` method assigns a unique identifier to the node and stores the value.
 - The `get` method retrieves the value associated with the node using the unique identifier.
 - The `has` method checks whether the node exists in the store.
@@ -114,6 +116,7 @@ Element.prototype.closest = function (selector) {
 ```
 
 **Explanation:**
+
 - This method checks if the element itself matches the selector.
 - If not, it moves up to the parent element and checks again, continuing until it finds a match or reaches the root.
 
@@ -126,7 +129,11 @@ const findCorrespondingNode = (rootA, rootB, target) => {
   if (rootA === target) return rootB;
 
   for (let i = 0; i < rootA.childElementCount; i++) {
-    const result = findCorrespondingNode(rootA.children[i], rootB.children[i], target);
+    const result = findCorrespondingNode(
+      rootA.children[i],
+      rootB.children[i],
+      target,
+    );
     if (result) {
       return result;
     }
@@ -135,6 +142,7 @@ const findCorrespondingNode = (rootA, rootB, target) => {
 ```
 
 **Explanation:**
+
 - The function recursively compares the nodes at the same position in both trees, returning the corresponding node in tree B.
 
 ### 6. **Get the depth of a given DOM tree**
@@ -149,7 +157,7 @@ function getHeight(tree) {
 
   let maxHeight = 0;
   for (let child of tree.children) {
-    maxHeight = Math.max(maxHeight, getHeight(child)); 
+    maxHeight = Math.max(maxHeight, getHeight(child));
   }
   return maxHeight + 1;
 }
@@ -175,6 +183,7 @@ function getHeight(tree) {
 ```
 
 **Explanation:**
+
 - **DFS:** Recursively traverses the tree, computing the maximum depth.
 - **BFS:** Uses a queue to traverse level by level, tracking the maximum depth.
 
@@ -193,6 +202,7 @@ function getRootNode(tree) {
 ```
 
 **Explanation:**
+
 - The function keeps traversing up the tree until it reaches the root element.
 
 ### 8. **Get unique tag names in a DOM tree**
@@ -213,6 +223,7 @@ function getUniqueTags(root, result = new Set()) {
 ```
 
 **Explanation:**
+
 - This function recursively traverses all child elements and adds their tag names to the result set.
 
 ### 9. **Get elements by tag name**
@@ -239,6 +250,7 @@ function getElementsByTagName(root, tagName) {
 ```
 
 **Explanation:**
+
 - This function finds all elements with the specified tag name recursively.
 
 ### 10. **Check if a DOM tree has duplicate IDs**
@@ -263,6 +275,7 @@ function hasDuplicateId(tree, idSet = new Set()) {
 ```
 
 **Explanation:**
+
 - This function recursively checks if any node has a duplicate ID in the tree.
 
 ---

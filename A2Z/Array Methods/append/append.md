@@ -5,11 +5,11 @@ In the code you've provided, you're adding custom methods to the `Array.prototyp
 #### 1. **Appending to the End of the Array (`customAppendAtEnd`)**
 
 ```javascript
-Array.prototype.customAppendAtEnd = function(valueToBeAppend) {
-    let {length} = this;
-    this[length] = valueToBeAppend;
-    return this;
-}
+Array.prototype.customAppendAtEnd = function (valueToBeAppend) {
+  let { length } = this;
+  this[length] = valueToBeAppend;
+  return this;
+};
 ```
 
 - This method adds a new element to the end of the array by using the `length` property.
@@ -21,17 +21,15 @@ This is a correct and simple implementation of appending an element at the end o
 #### 2. **Appending to the Start of the Array (`customAppendAtStart`)**
 
 ```javascript
-Array.prototype.customAppendAtStart = function(valueToBeAppend) {
-    let {length} = this;
-    if(length === 0) {
-        this[length] = valueToBeAppend;
-    } 
-    else {
-        const [first, ...rest] = [valueToBeAppend, ...this];
-    }
-    return this;
-}
-
+Array.prototype.customAppendAtStart = function (valueToBeAppend) {
+  let { length } = this;
+  if (length === 0) {
+    this[length] = valueToBeAppend;
+  } else {
+    const [first, ...rest] = [valueToBeAppend, ...this];
+  }
+  return this;
+};
 ```
 
 - **First Issue**: The code within the `else` block attempts to spread the array `[valueToBeAppend, ...this]`, but then it destructures it into `[first, ...rest]` and does nothing with `rest`.
@@ -43,9 +41,9 @@ Array.prototype.customAppendAtStart = function(valueToBeAppend) {
 Here’s an updated and corrected version of `customAppendAtStart`:
 
 - Adds an element to the start of an array using the spread operator (immutable).
-  
+
 ```js
-    * 
+    *
     * @param {Array} arr - The original array.
     * @param {*} element - The element to add.
     * @returns {Array} - A new array with the element at the beginning.
@@ -63,7 +61,7 @@ console.log('Updated:', updatedArray);   // [0, 1, 2, 3, 4]
 
 /**
  * Alternative: Mutating the original array using Array.prototype.unshift()
-    * 
+    *
     * @param {Array} arr - The array to modify.
     * @param {*} element - The element to add.
     * @returns {number} - The new length of the array.
@@ -76,15 +74,15 @@ This implementation uses the native `unshift()` method to insert the value at th
 ```js
 // Add an element to the beginning of the array
 Array.prototype.customAppendAtStart = function (value) {
-    // Shift all existing elements one position to the right
-    for (let i = this.length; i > 0; i--) {
-        this[i] = this[i - 1];
-    }
+  // Shift all existing elements one position to the right
+  for (let i = this.length; i > 0; i--) {
+    this[i] = this[i - 1];
+  }
 
-    // Insert the new value at index 0
-    this[0] = value;
+  // Insert the new value at index 0
+  this[0] = value;
 
-    return this;
+  return this;
 };
 ```
 
@@ -111,15 +109,15 @@ arr2.unshift(...otherArr); // [4, 5, 6, 1, 2, 3, 4, 5, 6]
 console.log(arr2);
 
 // Custom methods to append at the start and end
-Array.prototype.customAppendAtEnd = function(valueToBeAppend) {
-    let {length} = this;
-    this[length] = valueToBeAppend;
-    return this;
+Array.prototype.customAppendAtEnd = function (valueToBeAppend) {
+  let { length } = this;
+  this[length] = valueToBeAppend;
+  return this;
 };
 
-Array.prototype.customAppendAtStart = function(valueToBeAppend) {
-    this.unshift(valueToBeAppend); // Adds the element at the start
-    return this;
+Array.prototype.customAppendAtStart = function (valueToBeAppend) {
+  this.unshift(valueToBeAppend); // Adds the element at the start
+  return this;
 };
 
 // Test the custom methods

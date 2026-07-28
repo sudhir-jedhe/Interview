@@ -16,7 +16,7 @@ In React, the **`setState()`** method is used to update the component's state. O
 ```javascript
 this.setState({ key: newValue }, () => {
   // This function will be called after the state has been updated and component re-renders
-  console.log('State has been updated!');
+  console.log("State has been updated!");
 });
 ```
 
@@ -32,7 +32,7 @@ class Counter extends React.Component {
   increment = () => {
     this.setState({ count: this.state.count + 1 }, () => {
       // Callback function runs after the state has been updated
-      console.log('State updated! New count:', this.state.count);
+      console.log("State updated! New count:", this.state.count);
     });
   };
 
@@ -48,8 +48,10 @@ class Counter extends React.Component {
 ```
 
 In this example:
+
 - The `increment` method calls `setState()` to update the `count` state.
 - The callback function inside `setState()` ensures that the `console.log()` runs only **after** the `count` state has been updated and the component has re-rendered.
 
 ### Summary:
+
 The **callback function** in `setState()` is helpful to perform actions or logic that depend on the state being updated and the component being re-rendered. It provides a way to execute code after React's state update cycle is complete.

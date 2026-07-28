@@ -6,7 +6,7 @@ Promise timeout
 How can I add a timeout to a promise in JavaScript?
 
 Many times in the past I've found myself needing to add a timeout to a promise in JavaScript. setTimeout() is not exactly a perfect tool for the job, but it's easy enough to wrap it into a promise:
-
+```js
 const awaitTimeout = delay =>
   new Promise(resolve => setTimeout(resolve, delay));
 
@@ -17,10 +17,12 @@ const f = async () => {
   await awaitTimeout(300);
   console.log('Hi');  // Logs 'Hi' after 300ms
 };
+
+```
 There's nothing particularly complicated about this code sample, really. All it does is use the Promise constructor to wrap setTimeout() and resolve the promise after delay ms. This can be a useful tool when some code has to stall for a given amount of time.
 
 In order to add a timeout to another promise, however, there are two additional needs this utility has to satisfy. The first one is allowing the timeout promise to reject instead of resolving when provided a reason as a second argument. The other one is to create a wrapper function which will add the timeout to the promise:
-
+```js
 const awaitTimeout = (delay, reason) =>
   new Promise((resolve, reject) =>
     setTimeout(
@@ -39,6 +41,7 @@ wrapPromise(fetch('https://cool.api.io/data.json'), 3000, {
     console.log(data.message);
   })
   .catch(data => console.log(`Failed with reason: ${data.reason}`));
+  ```
 // Will either log the `message` if `fetch` completes in under 3000ms
 // or log an error message with the reason 'Fetch timeout' otherwise
 As you can see in this example, reason is used to determine if the timeout promise will resolve or reject. awaitTimeout() is then used to create a new promise and passed to Promise.race() along with the other promise to create a timeout.

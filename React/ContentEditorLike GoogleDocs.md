@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+```js
+import React, { useState, useRef, useEffect } from "react";
 
 const TextEditor = () => {
   const [text, setText] = useState("");
@@ -31,23 +32,23 @@ const TextEditor = () => {
 
     // Handle arrow keys and Page Up/Down
     switch (key) {
-      case 'ArrowUp':
+      case "ArrowUp":
         // You can add custom behavior here if needed
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         // Custom behavior for Arrow Down key
         break;
-      case 'ArrowLeft':
+      case "ArrowLeft":
         // Custom behavior for Arrow Left key
         break;
-      case 'ArrowRight':
+      case "ArrowRight":
         // Custom behavior for Arrow Right key
         break;
-      case 'PageUp':
+      case "PageUp":
         // Handle Page Up (scrolling)
         editorRef.current.scrollTop -= 100; // Adjust as needed
         break;
-      case 'PageDown':
+      case "PageDown":
         // Handle Page Down (scrolling)
         editorRef.current.scrollTop += 100; // Adjust as needed
         break;
@@ -58,7 +59,7 @@ const TextEditor = () => {
 
   // Handle selection and replace
   const handleReplaceClick = () => {
-    const replacementText = prompt('Enter replacement text');
+    const replacementText = prompt("Enter replacement text");
     if (replacementText) {
       replaceText(replacementText);
     }
@@ -78,19 +79,21 @@ const TextEditor = () => {
         onInput={handleChange}
         onKeyDown={handleKeyDown}
         style={{
-          border: '1px solid #ccc',
-          minHeight: '300px',
-          padding: '10px',
-          whiteSpace: 'pre-wrap',
-          wordWrap: 'break-word',
-          fontFamily: 'Arial, sans-serif',
+          border: "1px solid #ccc",
+          minHeight: "300px",
+          padding: "10px",
+          whiteSpace: "pre-wrap",
+          wordWrap: "break-word",
+          fontFamily: "Arial, sans-serif",
         }}
       >
         {text}
       </div>
 
       <div>
-        <button onClick={() => appendText("New appended text. ")}>Append Text</button>
+        <button onClick={() => appendText("New appended text. ")}>
+          Append Text
+        </button>
         <button onClick={handleReplaceClick}>Replace Text</button>
       </div>
     </div>
@@ -98,3 +101,4 @@ const TextEditor = () => {
 };
 
 export default TextEditor;
+```

@@ -2,6 +2,7 @@
 
 // The window.history object contains the browser's history. You can load previous and next URLs in the history using back() and next() methods.
 
+```js
 function goBack() {
   window.history.back();
 }
@@ -10,3 +11,4 @@ function goForward() {
 }
 
 // **Note:** You can also access history without window prefix.
+```

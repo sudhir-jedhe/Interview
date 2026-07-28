@@ -24,7 +24,7 @@ interface Employee {
 }
 ```
 
-***
+---
 
 # Validation Rules
 
@@ -38,7 +38,7 @@ Length: 6-10 chars
 ```
 
 ```js
-/^[A-Z]{3}[0-9]{3,6}$/
+/^[A-Z]{3}[0-9]{3,6}$/;
 ```
 
 Examples:
@@ -51,7 +51,7 @@ Examples:
 ❌ 123EMP
 ```
 
-***
+---
 
 ## 2. First Name
 
@@ -63,7 +63,7 @@ Maximum 50 characters
 ```
 
 ```js
-/^[A-Za-z ]+$/
+/^[A-Za-z ]+$/;
 ```
 
 Examples:
@@ -76,7 +76,7 @@ Examples:
 ❌ @John
 ```
 
-***
+---
 
 ## 3. Last Name
 
@@ -86,10 +86,10 @@ Only alphabets
 ```
 
 ```js
-/^[A-Za-z ]+$/
+/^[A-Za-z ]+$/;
 ```
 
-***
+---
 
 ## 4. Email
 
@@ -100,7 +100,7 @@ Unique
 ```
 
 ```js
-/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 ```
 
 Examples:
@@ -113,7 +113,7 @@ Examples:
 ❌ test.com
 ```
 
-***
+---
 
 ## 5. Mobile Number
 
@@ -124,7 +124,7 @@ Only numbers
 ```
 
 ```js
-/^[0-9]{10}$/
+/^[0-9]{10}$/;
 ```
 
 Examples:
@@ -136,7 +136,7 @@ Examples:
 ❌ abc123
 ```
 
-***
+---
 
 ## 6. Date Of Birth
 
@@ -148,12 +148,10 @@ Age <= 60
 ```
 
 ```js
-const age =
- new Date().getFullYear() -
- new Date(dob).getFullYear();
+const age = new Date().getFullYear() - new Date(dob).getFullYear();
 ```
 
-***
+---
 
 ## 7. Joining Date
 
@@ -172,7 +170,7 @@ Examples:
 ❌ Joining before DOB
 ```
 
-***
+---
 
 ## 8. Gender
 
@@ -181,7 +179,7 @@ Required
 Male/Female/Other
 ```
 
-***
+---
 
 ## 9. Department
 
@@ -199,7 +197,7 @@ Sales
 Marketing
 ```
 
-***
+---
 
 ## 10. Designation
 
@@ -216,7 +214,7 @@ Manager
 Architect
 ```
 
-***
+---
 
 ## 11. Salary
 
@@ -231,10 +229,10 @@ Less than company limit
 ```
 
 ```js
-salary > 0
+salary > 0;
 ```
 
-***
+---
 
 ## 12. Manager
 
@@ -243,7 +241,7 @@ Optional
 If selected must exist
 ```
 
-***
+---
 
 ## 13. Address
 
@@ -253,7 +251,7 @@ Minimum 10 chars
 Maximum 250 chars
 ```
 
-***
+---
 
 ## 14. City
 
@@ -263,10 +261,10 @@ Only alphabets
 ```
 
 ```js
-/^[A-Za-z ]+$/
+/^[A-Za-z ]+$/;
 ```
 
-***
+---
 
 ## 15. State
 
@@ -274,7 +272,7 @@ Only alphabets
 Required
 ```
 
-***
+---
 
 ## 16. Country
 
@@ -282,14 +280,14 @@ Required
 Required
 ```
 
-***
+---
 
 ## 17. Pincode / ZIP
 
 India:
 
 ```js
-/^[1-9][0-9]{5}$/
+/^[1-9][0-9]{5}$/;
 ```
 
 Examples:
@@ -301,25 +299,25 @@ Examples:
 ❌ Pune
 ```
 
-***
+---
 
 # Common Cross-Field Validation
 
 ## Joining Date > DOB
 
 ```js
-joiningDate > dob
+joiningDate > dob;
 ```
 
-***
+---
 
 ## Age Validation
 
 ```js
-18 <= age <= 60
+18 <= age <= 60;
 ```
 
-***
+---
 
 ## Salary Based Designation
 
@@ -333,7 +331,7 @@ Lead        > 80k
 Manager     > 150k
 ```
 
-***
+---
 
 # Zod Schema (Production)
 
@@ -341,52 +339,29 @@ Manager     > 150k
 import { z } from "zod";
 
 export const EmployeeSchema = z.object({
-  employeeId: z
-    .string()
-    .regex(/^[A-Z]{3}[0-9]{3,6}$/),
+  employeeId: z.string().regex(/^[A-Z]{3}[0-9]{3,6}$/),
 
-  firstName: z
-    .string()
-    .min(2)
-    .max(50),
+  firstName: z.string().min(2).max(50),
 
-  lastName: z
-    .string()
-    .min(2),
+  lastName: z.string().min(2),
 
-  email: z
-    .string()
-    .email(),
+  email: z.string().email(),
 
-  phone: z
-    .string()
-    .regex(/^[0-9]{10}$/),
+  phone: z.string().regex(/^[0-9]{10}$/),
 
-  joiningDate:
-    z.string(),
+  joiningDate: z.string(),
 
-  department:
-    z.string().min(1),
+  department: z.string().min(1),
 
-  designation:
-    z.string().min(2),
+  designation: z.string().min(2),
 
-  salary: z
-    .number()
-    .positive(),
+  salary: z.number().positive(),
 
-  address:
-    z.string().min(10),
+  address: z.string().min(10),
 
-  city: z
-    .string()
-    .min(2),
+  city: z.string().min(2),
 
-  pincode: z
-    .string()
-    .regex(
-      /^[1-9][0-9]{5}$/
-    ),
+  pincode: z.string().regex(/^[1-9][0-9]{5}$/),
 });
 ```
 
@@ -418,8 +393,6 @@ export const EmployeeSchema = z.object({
 
 This covers nearly all validations expected in a real-world Employee Management System and frontend machine-coding interview.
 
-
-
 For a **Senior React Machine Coding Round**, an **Employee Management System** with all these features is one of the most frequently asked end-to-end CRUD applications.
 
 # Features
@@ -441,7 +414,7 @@ For a **Senior React Machine Coding Round**, an **Employee Management System** w
 ✅ Audit Trail
 ```
 
-***
+---
 
 # Recommended Project Structure
 
@@ -471,7 +444,7 @@ src
 └── App.jsx
 ```
 
-***
+---
 
 # Employee Form Validation (Zod)
 
@@ -479,62 +452,35 @@ src
 import { z } from "zod";
 
 export const EmployeeSchema = z.object({
-  employeeId: z
-    .string()
-    .regex(
-      /^[A-Z]{3}[0-9]{3,6}$/,
-      "Invalid Employee ID"
-    ),
+  employeeId: z.string().regex(/^[A-Z]{3}[0-9]{3,6}$/, "Invalid Employee ID"),
 
-  firstName: z
-    .string()
-    .min(2),
+  firstName: z.string().min(2),
 
-  lastName: z
-    .string()
-    .min(2),
+  lastName: z.string().min(2),
 
-  email: z
-    .string()
-    .email(),
+  email: z.string().email(),
 
-  phone: z
-    .string()
-    .regex(/^[0-9]{10}$/),
+  phone: z.string().regex(/^[0-9]{10}$/),
 
-  joiningDate:
-    z.string(),
+  joiningDate: z.string(),
 
-  department:
-    z.string().min(1),
+  department: z.string().min(1),
 
-  designation:
-    z.string().min(2),
+  designation: z.string().min(2),
 
-  salary: z
-    .number()
-    .positive(),
+  salary: z.number().positive(),
 
-  city:
-    z.string().min(2),
+  city: z.string().min(2),
 
-  pincode: z
-    .string()
-    .regex(
-      /^[1-9][0-9]{5}$/
-    ),
+  pincode: z.string().regex(/^[1-9][0-9]{5}$/),
 
-  profilePicture:
-    z.any().optional(),
+  profilePicture: z.any().optional(),
 
-  status: z.enum([
-    "Active",
-    "Inactive",
-  ]),
+  status: z.enum(["Active", "Inactive"]),
 });
 ```
 
-***
+---
 
 # Search Employee
 
@@ -550,35 +496,19 @@ Designation
 ```
 
 ```jsx
-const searchResult =
-  employees.filter(
-    employee =>
-      employee.firstName
-        .toLowerCase()
-        .includes(
-          search.toLowerCase()
-        ) ||
-      employee.employeeId
-        .toLowerCase()
-        .includes(
-          search.toLowerCase()
-        )
-  );
+const searchResult = employees.filter(
+  (employee) =>
+    employee.firstName.toLowerCase().includes(search.toLowerCase()) ||
+    employee.employeeId.toLowerCase().includes(search.toLowerCase()),
+);
 ```
 
-***
+---
 
 # Filter By Department
 
 ```jsx
-<select
-  value={department}
-  onChange={e =>
-    setDepartment(
-      e.target.value
-    )
-  }
->
+<select value={department} onChange={(e) => setDepartment(e.target.value)}>
   <option>All</option>
   <option>IT</option>
   <option>HR</option>
@@ -587,19 +517,14 @@ const searchResult =
 ```
 
 ```jsx
-if (
-  department !== "All"
-) {
-  employees =
-    employees.filter(
-      employee =>
-        employee.department ===
-        department
-    );
+if (department !== "All") {
+  employees = employees.filter(
+    (employee) => employee.department === department,
+  );
 }
 ```
 
-***
+---
 
 # Filter By Status
 
@@ -610,73 +535,43 @@ On Leave
 ```
 
 ```jsx
-employees.filter(
-  employee =>
-    employee.status ===
-    selectedStatus
-);
+employees.filter((employee) => employee.status === selectedStatus);
 ```
 
-***
+---
 
 # Sort By Name
 
 ```jsx
-employees.sort((a, b) =>
-  a.firstName.localeCompare(
-    b.firstName
-  )
-);
+employees.sort((a, b) => a.firstName.localeCompare(b.firstName));
 ```
 
-***
+---
 
 # Sort By Joining Date
 
 Newest First
 
 ```jsx
-employees.sort(
-  (a, b) =>
-    new Date(
-      b.joiningDate
-    ) -
-    new Date(
-      a.joiningDate
-    )
-);
+employees.sort((a, b) => new Date(b.joiningDate) - new Date(a.joiningDate));
 ```
 
 Oldest First
 
 ```jsx
-employees.sort(
-  (a, b) =>
-    new Date(
-      a.joiningDate
-    ) -
-    new Date(
-      b.joiningDate
-    )
-);
+employees.sort((a, b) => new Date(a.joiningDate) - new Date(b.joiningDate));
 ```
 
-***
+---
 
 # Pagination
 
 ```jsx
 const PAGE_SIZE = 10;
 
-const start =
-  (page - 1) *
-  PAGE_SIZE;
+const start = (page - 1) * PAGE_SIZE;
 
-const paginated =
-  filteredEmployees.slice(
-    start,
-    start + PAGE_SIZE
-  );
+const paginated = filteredEmployees.slice(start, start + PAGE_SIZE);
 ```
 
 ```text
@@ -685,64 +580,40 @@ Previous
 Next
 ```
 
-***
+---
 
 # Upload Profile Picture
 
 ```jsx
-<input
-  type="file"
-  accept="image/*"
-/>
+<input type="file" accept="image/*" />
 ```
 
 Preview
 
 ```jsx
-const imageUrl =
-  URL.createObjectURL(
-    file
-  );
+const imageUrl = URL.createObjectURL(file);
 ```
 
 ```jsx
-<img
-  src={imageUrl}
-  alt="Employee"
-/>
+<img src={imageUrl} alt="Employee" />
 ```
 
-***
+---
 
 # Export CSV
 
 ```jsx
 function exportCSV(data) {
-  const csv =
-    data
-      .map(row =>
-        Object.values(
-          row
-        ).join(",")
-      )
-      .join("\n");
+  const csv = data.map((row) => Object.values(row).join(",")).join("\n");
 
-  const blob =
-    new Blob([csv]);
+  const blob = new Blob([csv]);
 
-  const url =
-    URL.createObjectURL(
-      blob
-    );
+  const url = URL.createObjectURL(blob);
 
-  const link =
-    document.createElement(
-      "a"
-    );
+  const link = document.createElement("a");
 
   link.href = url;
-  link.download =
-    "employees.csv";
+  link.download = "employees.csv";
 
   link.click();
 }
@@ -751,18 +622,10 @@ function exportCSV(data) {
 Button
 
 ```jsx
-<button
-  onClick={() =>
-    exportCSV(
-      employees
-    )
-  }
->
-  Export CSV
-</button>
+<button onClick={() => exportCSV(employees)}>Export CSV</button>
 ```
 
-***
+---
 
 # Audit Trail
 
@@ -783,24 +646,18 @@ Track every action.
 Store in state:
 
 ```jsx
-const [
-  auditLogs,
-  setAuditLogs,
-] = useState([]);
+const [auditLogs, setAuditLogs] = useState([]);
 ```
 
 On Create
 
 ```jsx
-setAuditLogs(prev => [
+setAuditLogs((prev) => [
   ...prev,
   {
-    action:
-      "Created",
-    employeeId:
-      employee.id,
-    timestamp:
-      new Date().toISOString(),
+    action: "Created",
+    employeeId: employee.id,
+    timestamp: new Date().toISOString(),
   },
 ]);
 ```
@@ -817,7 +674,7 @@ On Delete
 Employee Deleted
 ```
 
-***
+---
 
 # Table Columns
 
@@ -845,7 +702,7 @@ Status
 Actions
 ```
 
-***
+---
 
 # Actions
 
@@ -859,7 +716,7 @@ View Profile
 Export
 ```
 
-***
+---
 
 # React Hook Form
 
@@ -867,39 +724,23 @@ Export
 const {
   register,
   handleSubmit,
-  formState: {
-    errors,
-  },
+  formState: { errors },
 } = useForm({
-  resolver:
-    zodResolver(
-      EmployeeSchema
-    ),
+  resolver: zodResolver(EmployeeSchema),
 });
 ```
 
 Input
 
 ```jsx
-<input
-  {...register(
-    "firstName"
-  )}
-/>
+<input {...register("firstName")} />;
 
 {
-  errors.firstName && (
-    <span>
-      {
-        errors.firstName
-          .message
-      }
-    </span>
-  )
+  errors.firstName && <span>{errors.firstName.message}</span>;
 }
 ```
 
-***
+---
 
 # Senior Interview Enhancements
 

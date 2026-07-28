@@ -14,19 +14,19 @@ Here’s how to implement code splitting in React.
 
 `React.lazy()` allows you to dynamically import components only when they are required. When using `React.lazy()`, you can specify a component to be loaded lazily, and React will automatically load it when it’s needed.
 
-#### Example: 
+#### Example:
 
 ```jsx
-import React, { Suspense } from 'react';
+import React, { Suspense } from "react";
 
 // Lazy loading the HomePage component
-const HomePage = React.lazy(() => import('./HomePage'));
+const HomePage = React.lazy(() => import("./HomePage"));
 
 function App() {
   return (
     <div>
       <h1>My React App</h1>
-      
+
       {/* Suspense fallback will show loading state until the component is loaded */}
       <Suspense fallback={<div>Loading...</div>}>
         <HomePage />
@@ -39,6 +39,7 @@ export default App;
 ```
 
 ### Explanation:
+
 - **React.lazy()**: This function takes a function that dynamically imports a component and returns a component that is loaded lazily. In this example, `HomePage` is not loaded until it’s needed.
 - **Suspense**: This component is used to handle loading states while the lazily loaded component is being fetched. The `fallback` prop is used to specify what should be displayed while waiting for the lazy-loaded component.
 
@@ -49,13 +50,13 @@ Another common approach for code splitting is at the route level. If your app us
 #### Example with React Router:
 
 ```jsx
-import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { Suspense } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // Lazy load the components
-const Home = React.lazy(() => import('./Home'));
-const About = React.lazy(() => import('./About'));
-const Contact = React.lazy(() => import('./Contact'));
+const Home = React.lazy(() => import("./Home"));
+const About = React.lazy(() => import("./About"));
+const Contact = React.lazy(() => import("./Contact"));
 
 function App() {
   return (
@@ -75,6 +76,7 @@ export default App;
 ```
 
 ### Explanation:
+
 - Each route (`Home`, `About`, `Contact`) is lazily loaded using `React.lazy()`.
 - `React.Suspense` is used at the top level of the component tree, so any lazy-loaded route will show a loading indicator until the component is ready.
 
@@ -85,16 +87,16 @@ Sometimes, while lazy loading components, there might be a delay in loading the 
 You can also use **Error Boundaries** to gracefully handle any errors that occur while loading the lazy components.
 
 ```jsx
-import React, { Suspense } from 'react';
+import React, { Suspense } from "react";
 
 // Lazy load the components
-const About = React.lazy(() => import('./About'));
+const About = React.lazy(() => import("./About"));
 
 function App() {
   return (
     <div>
       <h1>My Application</h1>
-      
+
       {/* Suspense fallback until About component is loaded */}
       <Suspense fallback={<div>Loading About...</div>}>
         <About />
@@ -113,7 +115,9 @@ React relies on **Webpack** (or another bundler) to bundle the application and d
 In **Webpack**, when you use dynamic imports, it automatically handles the code splitting process for you. You don't need to manually configure chunking.
 
 ```js
-const MyComponent = React.lazy(() => import(/* webpackChunkName: "my-chunk-name" */ './MyComponent'));
+const MyComponent = React.lazy(
+  () => import(/* webpackChunkName: "my-chunk-name" */ "./MyComponent"),
+);
 ```
 
 #### 5. **Chunk Naming for Better Caching**
@@ -121,7 +125,9 @@ const MyComponent = React.lazy(() => import(/* webpackChunkName: "my-chunk-name"
 You can specify a chunk name using a comment (`webpackChunkName`) to improve caching. This helps in keeping the cache efficient when deploying updates to the app.
 
 ```js
-const HomePage = React.lazy(() => import(/* webpackChunkName: "home-page" */ './HomePage'));
+const HomePage = React.lazy(
+  () => import(/* webpackChunkName: "home-page" */ "./HomePage"),
+);
 ```
 
 This chunk will be given a name like `home-page.js`, and the browser can cache it more effectively.

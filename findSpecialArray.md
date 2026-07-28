@@ -24,7 +24,7 @@ export function findSpecialArray(nums) {
   // Iterate through the array to find the special number x
   for (let i = 0; i < nums.length; i++) {
     const x = nums.length - i; // x is the count of numbers >= nums[i]
-    
+
     if (nums[i] >= x) {
       // If the current number is greater than or equal to x,
       // check if it is indeed the special number
@@ -61,6 +61,7 @@ console.log(findSpecialArray(nums3)); // Output: 3
 4. **Edge Cases**: If no such `x` is found during the loop, return `-1`.
 
 ### Time Complexity:
+
 - **Sorting**: O(n log n), where `n` is the length of the input array.
 - **Looping**: O(n), where we simply traverse the array once.
 - **Overall Complexity**: O(n log n) due to the sorting step.
@@ -68,7 +69,9 @@ console.log(findSpecialArray(nums3)); // Output: 3
 ### Example Walkthrough:
 
 #### Example 1:
+
 For `nums = [3, 5]`:
+
 - Sorted array: `[3, 5]`
 - Check:
   - For `3`, the count of numbers `>= 3` is `2`. Since `3 <= 2`, this is a valid candidate.
@@ -76,7 +79,9 @@ For `nums = [3, 5]`:
 - Output: `2` because there are exactly 2 numbers `>= 2` (the numbers are `3` and `5`).
 
 #### Example 2:
+
 For `nums = [0, 0]`:
+
 - Sorted array: `[0, 0]`
 - Check:
   - For `0`, the count of numbers `>= 0` is `2`. But `0` doesn't meet the requirement.
@@ -84,7 +89,9 @@ For `nums = [0, 0]`:
 - Output: `-1` because no valid `x` satisfies the condition.
 
 #### Example 3:
+
 For `nums = [0, 4, 3, 0, 4]`:
+
 - Sorted array: `[0, 0, 3, 4, 4]`
 - Check:
   - For `0`, the count of numbers `>= 0` is `5`. But `0` doesn't meet the requirement.
@@ -93,4 +100,5 @@ For `nums = [0, 4, 3, 0, 4]`:
 - Output: `3` because there are exactly 3 numbers `>= 3`.
 
 ### Conclusion:
+
 The optimized solution ensures that we find the special number `x` (if it exists) in an efficient manner, and handles all edge cases like no special number, all numbers being too small, or the existence of multiple valid numbers correctly.

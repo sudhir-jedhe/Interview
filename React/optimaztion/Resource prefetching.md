@@ -6,7 +6,7 @@
    - DNS prefetching allows the browser to resolve domain names before they are needed. This helps reduce the time it takes to establish a connection to a server.
    - Example:
      ```html
-     <link rel="dns-prefetch" href="//example.com">
+     <link rel="dns-prefetch" href="//example.com" />
      ```
      This prefetches the DNS lookup for `example.com` so that when the resources from this domain are requested, the browser already knows the IP address.
 
@@ -14,7 +14,7 @@
    - Preconnect is a stronger form of DNS prefetching. It establishes an early connection to a server, including DNS lookup, TCP handshake, and sometimes even SSL/TLS negotiation.
    - Example:
      ```html
-     <link rel="preconnect" href="https://example.com">
+     <link rel="preconnect" href="https://example.com" />
      ```
      This establishes an early connection to `example.com`, making subsequent requests faster.
 
@@ -23,27 +23,27 @@
    - Resources prefetched using `rel="prefetch"` are fetched in the background and stored in the cache so that they can be used later when the user navigates to a new page or section.
    - Example:
      ```html
-     <link rel="prefetch" href="next-page.js">
+     <link rel="prefetch" href="next-page.js" />
      ```
 
 4. **Preload**:
    - `preload` allows the browser to fetch and prioritize resources that are crucial for the current page, such as images, scripts, and stylesheets, before they are actually used. This can help speed up the initial rendering process.
    - Example:
      ```html
-     <link rel="preload" href="style.css" as="style">
-     <link rel="preload" href="script.js" as="script">
+     <link rel="preload" href="style.css" as="style" />
+     <link rel="preload" href="script.js" as="script" />
      ```
 
 5. **Prerender**:
    - **Prerendering** involves loading and rendering a complete webpage (or part of it) in the background before the user navigates to it. This allows the page to be fully prepared in advance and can make the page appear almost instantly when the user navigates to it.
    - Example:
      ```html
-     <link rel="prerender" href="next-page.html">
+     <link rel="prerender" href="next-page.html" />
      ```
 
 ### How Resource Prefetching Works
 
-1. **DNS Prefetching**: 
+1. **DNS Prefetching**:
    - The browser performs a DNS lookup for a domain specified in the `<link rel="dns-prefetch">` tag. This is useful when external resources (such as scripts, fonts, or images) are hosted on different domains.
 
 2. **Preconnect**:

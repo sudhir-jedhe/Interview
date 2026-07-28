@@ -1,3 +1,4 @@
+```js
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
@@ -163,12 +164,12 @@ class CheckboxGroup extends Component {
     const { values } = this.state;
 
     return (
-      
+
         {/* Generate checkboxes from the array of options */}
         {options.map((option, index) => (
-          
+
         ))}
-      
+
     );
   }
 }
@@ -181,7 +182,7 @@ export default CheckboxGroup;
 .item {
     display: flex;
   }
-  
+
   .inlineItem {
     display: inline-flex;
   }
@@ -204,3 +205,4 @@ export default CheckboxGroup;
     </div>,
     document.getElementById("root")
   );
+```

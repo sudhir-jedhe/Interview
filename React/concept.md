@@ -1,9 +1,9 @@
-Life cycle methods of components:
-=======================
+# Life cycle methods of components:
+
 3 phases and their methods
 
-Hooks:
-========
+# Hooks:
+
 useState
 useEffect
 useContext
@@ -12,68 +12,68 @@ useMemo
 useCallback
 useRef
 
-Virtual dom:
-=========
+# Virtual dom:
+
 Reconciliation
 Diffing algorithm
 Render
 
-SSR and CSR
-============
+# SSR and CSR
+
 Difference and benifit, SEO, Performance
 
-Higher Order components:
-===================
+# Higher Order components:
+
 What is hoc, Why we use , When we use, How we use them ?
 
-State management
-=============
+# State management
+
 State
 Props
 Props driling
 Context api
 Redux and toolkit
 
-CustomHooks
-==========
+# CustomHooks
+
 When to use them and example code.
 
-LazyLoading:
-=========
+# LazyLoading:
+
 code splitting
 Suspense
 chunking
 
-Routing 
-================
+# Routing
+
 react-router
 protected routes
 query params
 Dynamic routing
 Role based access control
 
-Testing:
-==================
+# Testing:
+
 unit testing - Jest
 
-Async tasks
-==================
+# Async tasks
+
 Api calls
 fetch, axios
-events - scrolling 
+events - scrolling
 
 Reusability, Modularity, Testability and Readability
 
-Performance:
-============
+# Performance:
+
 lazyloading
 optimize assets,js,css
 Bundlers
 How to make rendering components fast and optimized?
 
-Styling:
-===============
-Bootstrap,Material Ui 
+# Styling:
+
+Bootstrap,Material Ui
 Css,scss,inline styling
 
 Accessibility

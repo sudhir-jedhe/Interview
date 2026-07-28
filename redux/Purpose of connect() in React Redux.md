@@ -8,10 +8,8 @@ In simpler terms, `connect()` provides the **binding** between the React compone
 
 1. **Access Redux State in React Components**
    - `connect()` allows you to **map the Redux store's state** to the component's **props**, which enables the component to read the store's state and react to it.
-   
 2. **Dispatch Actions to Redux Store**
    - `connect()` allows you to **map Redux action creators** to the component's **props**. This makes it easy to dispatch actions directly from the component (e.g., when a user clicks a button).
-   
 3. **Optimizes Performance**
    - `connect()` automatically optimizes component re-rendering by only triggering re-renders when specific pieces of state have changed. This is done through **shallow equality checks** on the props passed to the component, preventing unnecessary re-renders.
 
@@ -30,7 +28,7 @@ In return, `connect()` creates a higher-order component (HOC) that wraps the giv
 ### **Basic Syntax of `connect()`**
 
 ```javascript
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 const MyComponent = ({ value, increment }) => {
   return (
@@ -46,7 +44,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  increment: () => dispatch({ type: 'INCREMENT' }),
+  increment: () => dispatch({ type: "INCREMENT" }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyComponent);
@@ -56,7 +54,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(MyComponent);
 
 1. **`mapStateToProps`**:
    - `mapStateToProps` takes the Redux **state** as an argument and maps a part of that state to the component's props. In this case, it maps `state.counter.value` to the `value` prop.
-   
 2. **`mapDispatchToProps`**:
    - `mapDispatchToProps` allows you to bind **action creators** to the component's props. In this case, it binds a function (`increment`) that dispatches the `INCREMENT` action when called.
 
@@ -68,11 +65,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(MyComponent);
 1. **`mapStateToProps`**:
    - **Purpose**: It subscribes to the Redux store and ensures that the component re-renders when the part of the state it needs changes.
    - It is a function that receives the **entire Redux state** as its argument and returns an object. The keys of this object will become the props for the component, and the values will come from the Redux state.
-   
+
    Example:
+
    ```javascript
    const mapStateToProps = (state) => ({
-     count: state.count
+     count: state.count,
    });
    ```
 
@@ -81,18 +79,20 @@ export default connect(mapStateToProps, mapDispatchToProps)(MyComponent);
    - It can be either a **function** or an **object**.
      - If it's a **function**, it receives `dispatch` as an argument and returns an object with action creators.
      - If it's an **object**, Redux will automatically bind the action creators to the `dispatch` function.
-   
+
    Example with a function:
+
    ```javascript
    const mapDispatchToProps = (dispatch) => ({
-     increment: () => dispatch({ type: 'INCREMENT' }),
+     increment: () => dispatch({ type: "INCREMENT" }),
    });
    ```
 
    Example with an object:
+
    ```javascript
    const mapDispatchToProps = {
-     increment: () => ({ type: 'INCREMENT' }),
+     increment: () => ({ type: "INCREMENT" }),
    };
    ```
 
@@ -104,9 +104,9 @@ For **class components**, `connect()` is essential to accessing the Redux state.
 
 ```javascript
 // Using connect in a class component
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { increment, decrement } from './actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { increment, decrement } from "./actions";
 
 class Counter extends Component {
   render() {
@@ -138,9 +138,9 @@ In modern React, **functional components** and **hooks** are often used. You can
 
 ```javascript
 // Using connect in a functional component (without hooks)
-import React from 'react';
-import { connect } from 'react-redux';
-import { increment, decrement } from './actions';
+import React from "react";
+import { connect } from "react-redux";
+import { increment, decrement } from "./actions";
 
 function Counter({ count, increment, decrement }) {
   return (

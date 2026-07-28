@@ -1,3 +1,4 @@
+```js
 function race(promises) {
   return new Promise((resolve, reject) => {
     promises.forEach((promise) => {

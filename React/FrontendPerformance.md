@@ -2,7 +2,7 @@
 
 These topics are heavily asked in **Senior React / Frontend Engineer** interviews.
 
-***
+---
 
 # 1. Event Loop, Microtasks vs Macrotasks
 
@@ -20,7 +20,7 @@ Event Loop
 
 The event loop continuously checks whether the call stack is empty and then processes queued work. Microtasks have higher priority than macrotasks. [\[dev.to\]](https://dev.to/satishjaiswal/javascript-event-loop-explained-macrotasks-microtasks-and-asyncawait-made-simple-22cd), [\[developer....ozilla.org\]](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide), [\[tutorialre...erence.com\]](https://tutorialreference.com/javascript/browser-and-events/miscellaneous-browser/javascript-event-loop-microtasks-macrotasks)
 
-***
+---
 
 ## Execution Flow
 
@@ -36,7 +36,7 @@ Macrotasks
 
 After a task finishes, the browser drains the microtask queue before moving to the next macrotask. [\[developer....ozilla.org\]](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide), [\[tutorialre...erence.com\]](https://tutorialreference.com/javascript/browser-and-events/miscellaneous-browser/javascript-event-loop-microtasks-macrotasks)
 
-***
+---
 
 ## Microtasks
 
@@ -54,7 +54,7 @@ async/await continuation
 
 Promise callbacks, `queueMicrotask`, and code after `await` run in the microtask queue. [\[dev.to\]](https://dev.to/satishjaiswal/javascript-event-loop-explained-macrotasks-microtasks-and-asyncawait-made-simple-22cd), [\[developer....ozilla.org\]](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide)
 
-***
+---
 
 ## Macrotasks
 
@@ -72,7 +72,7 @@ Network callbacks
 
 These are scheduled in the task (macrotask) queue. [\[dev.to\]](https://dev.to/satishjaiswal/javascript-event-loop-explained-macrotasks-microtasks-and-asyncawait-made-simple-22cd), [\[developer....ozilla.org\]](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide)
 
-***
+---
 
 ## Interview Example
 
@@ -115,7 +115,7 @@ Macrotasks:
 
 Microtasks run before macrotasks. [\[dev.to\]](https://dev.to/antonov_mike/event-loop-call-stack-web-api-task-queue-microtask-queue-1eb2), [\[dev.to\]](https://dev.to/satishjaiswal/javascript-event-loop-explained-macrotasks-microtasks-and-asyncawait-made-simple-22cd)
 
-***
+---
 
 # 2. Critical Rendering Path (CRP)
 
@@ -139,7 +139,7 @@ Paint
 Composite
 ```
 
-***
+---
 
 ## Visual Flow
 
@@ -157,7 +157,7 @@ Render Tree
  Paint
 ```
 
-***
+---
 
 ## Example
 
@@ -209,7 +209,7 @@ Text
 Borders
 ```
 
-***
+---
 
 ## CRP Optimisation
 
@@ -235,11 +235,11 @@ AVIF
 Lazy Loading
 ```
 
-***
+---
 
 # 3. Bundle Optimisation, Code Splitting & Lazy Loading
 
-***
+---
 
 ## Problem
 
@@ -262,7 +262,7 @@ Settings
 
 Even if not used.
 
-***
+---
 
 ## Code Splitting
 
@@ -278,26 +278,18 @@ admin.js
 settings.js
 ```
 
-***
+---
 
 ## React.lazy()
 
 ```jsx
-import React, {
-  Suspense,
-  lazy
-} from "react";
+import React, { Suspense, lazy } from "react";
 
-const Dashboard =
-  lazy(() =>
-    import("./Dashboard")
-  );
+const Dashboard = lazy(() => import("./Dashboard"));
 
 export default function App() {
   return (
-    <Suspense
-      fallback={<div>Loading...</div>}
-    >
+    <Suspense fallback={<div>Loading...</div>}>
       <Dashboard />
     </Suspense>
   );
@@ -306,34 +298,25 @@ export default function App() {
 
 Bundle loads only when required.
 
-***
+---
 
 ## Route Based Splitting
 
 ```jsx
-const Home =
-  lazy(() =>
-    import("./pages/Home")
-  );
+const Home = lazy(() => import("./pages/Home"));
 
-const Products =
-  lazy(() =>
-    import("./pages/Products")
-  );
+const Products = lazy(() => import("./pages/Products"));
 ```
 
-***
+---
 
 ## Dynamic Import
 
 ```js
-const module =
-  await import(
-    "./utils"
-  );
+const module = await import("./utils");
 ```
 
-***
+---
 
 ## Benefits
 
@@ -347,11 +330,11 @@ const module =
 ✅ Better Core Web Vitals
 ```
 
-***
+---
 
 # 4. Reflow vs Repaint
 
-***
+---
 
 ## Reflow (Layout)
 
@@ -360,11 +343,9 @@ Reflow occurs when layout changes.
 Examples:
 
 ```js
-element.style.width =
-  "400px";
+element.style.width = "400px";
 
-element.style.height =
-  "300px";
+element.style.height = "300px";
 ```
 
 Browser recalculates:
@@ -376,15 +357,14 @@ Height
 Layout
 ```
 
-***
+---
 
 ## Repaint
 
 Visual changes only.
 
 ```js
-element.style.color =
- "red";
+element.style.color = "red";
 ```
 
 No layout changes.
@@ -397,7 +377,7 @@ Border
 Background
 ```
 
-***
+---
 
 ## Cost
 
@@ -411,37 +391,33 @@ Repaint
 Less Expensive
 ```
 
-***
+---
 
 ## Interview Example
 
 ### Causes Reflow
 
 ```js
-element.style.width =
-  "200px";
+element.style.width = "200px";
 ```
 
 ### Causes Repaint Only
 
 ```js
-element.style.background =
-  "red";
+element.style.background = "red";
 ```
 
-***
+---
 
 ## Layout Thrashing
 
 Bad:
 
 ```js
-for(let i=0;i<1000;i++){
+for (let i = 0; i < 1000; i++) {
+  element.style.width = i + "px";
 
- element.style.width =
-  i + "px";
-
- element.offsetWidth;
+  element.offsetWidth;
 }
 ```
 
@@ -456,24 +432,21 @@ Read
 
 Forces repeated layouts.
 
-***
+---
 
 ## Better
 
 ```js
-requestAnimationFrame(
- () => {
-   element.style.width =
-      "500px";
- }
-);
+requestAnimationFrame(() => {
+  element.style.width = "500px";
+});
 ```
 
-***
+---
 
 # 5. HTTP/1.1 vs HTTP/2
 
-***
+---
 
 # HTTP/1.1
 
@@ -491,7 +464,7 @@ Browser opens:
 
 to same domain.
 
-***
+---
 
 ## Waterfall
 
@@ -508,7 +481,7 @@ wait
 
 Head-of-line blocking becomes a bottleneck.
 
-***
+---
 
 # HTTP/2
 
@@ -531,7 +504,7 @@ Connection
 
 Multiple requests can share the same connection concurrently.
 
-***
+---
 
 ## HTTP/1.1
 
@@ -546,7 +519,7 @@ GET Image
 wait
 ```
 
-***
+---
 
 ## HTTP/2
 
@@ -558,7 +531,7 @@ GET Image
 Parallel Streams
 ```
 
-***
+---
 
 ## Features of HTTP/2
 
@@ -585,7 +558,7 @@ first
 Send assets proactively
 ```
 
-***
+---
 
 ## Performance Impact
 
@@ -610,7 +583,7 @@ Multiplexed streams
 
 Better resource utilisation and reduced connection overhead.
 
-***
+---
 
 # Senior Frontend Interview Summary
 
@@ -625,9 +598,7 @@ console.log("start");
 
 setTimeout(() => console.log("timeout"));
 
-Promise.resolve().then(() =>
-  console.log("promise")
-);
+Promise.resolve().then(() => console.log("promise"));
 
 console.log("end");
 ```

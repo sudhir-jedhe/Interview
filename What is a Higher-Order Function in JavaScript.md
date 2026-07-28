@@ -17,7 +17,6 @@ Function Taking Another Function as an Argument
 In this example, we have a higher-order function operate, which accepts a function (callback) as an argument and executes it.
 
 ```javascript
-
 function operate(a, b, callback) {
   return callback(a, b);
 }
@@ -30,9 +29,10 @@ function multiply(x, y) {
   return x * y;
 }
 
-console.log(operate(5, 3, add));       // 8
-console.log(operate(5, 3, multiply));  // 15
+console.log(operate(5, 3, add)); // 8
+console.log(operate(5, 3, multiply)); // 15
 ```
+
 Here, operate is a higher-order function because it accepts the add and multiply functions as arguments and invokes them within the body.
 
 add and multiply are callback functions that operate calls with two numbers.
@@ -42,17 +42,18 @@ A higher-order function can also return a function. Here’s an example of a fun
 
 ```javascript
 function multiplyBy(factor) {
-  return function(x) {
+  return function (x) {
     return x * factor;
   };
 }
 
-const multiplyBy2 = multiplyBy(2);  // Returns a function that multiplies by 2
-const multiplyBy3 = multiplyBy(3);  // Returns a function that multiplies by 3
+const multiplyBy2 = multiplyBy(2); // Returns a function that multiplies by 2
+const multiplyBy3 = multiplyBy(3); // Returns a function that multiplies by 3
 
-console.log(multiplyBy2(5));  // 10
-console.log(multiplyBy3(5));  // 15
+console.log(multiplyBy2(5)); // 10
+console.log(multiplyBy3(5)); // 15
 ```
+
 In this case:
 
 multiplyBy is a higher-order function because it returns a new function.
@@ -63,41 +64,44 @@ Built-in JavaScript Higher-Order Functions
 JavaScript provides several built-in higher-order functions, especially for working with arrays. Some of the most common ones are:
 
 `map`() - Returns a new array with the results of calling a provided function on every element in the array.
+
 ```javascript
 const numbers = [1, 2, 3, 4];
 
-const doubledNumbers = numbers.map(function(num) {
+const doubledNumbers = numbers.map(function (num) {
   return num * 2;
 });
 
-console.log(doubledNumbers);  // [2, 4, 6, 8]
+console.log(doubledNumbers); // [2, 4, 6, 8]
 ```
+
 `map` is a higher-order function because it takes a function as an argument and applies that function to each element in the array.
 `filter`() - Creates a new array with all elements that pass the test implemented by the provided function.
+
 ```javascript
 const numbers = [1, 2, 3, 4, 5];
 
-const evenNumbers = numbers.filter(function(num) {
+const evenNumbers = numbers.filter(function (num) {
   return num % 2 === 0;
 });
 
-console.log(evenNumbers);  // [2, 4]
-
+console.log(evenNumbers); // [2, 4]
 ```
 
 `filter` is a higher-order function because it accepts a callback function that determines whether an element should be included in the new array.
 `reduce`() - Applies a function to accumulate or reduce all elements in the array into a single result.
+
 ```javascript
 const numbers = [1, 2, 3, 4, 5];
 
-const sum = numbers.reduce(function(accumulator, currentValue) {
+const sum = numbers.reduce(function (accumulator, currentValue) {
   return accumulator + currentValue;
 }, 0);
 
-console.log(sum);  // 15
+console.log(sum); // 15
 ```
-`reduce` is a higher-order function because it takes a function (the callback) to reduce an array into a single value.
 
+`reduce` is a higher-order function because it takes a function (the callback) to reduce an array into a single value.
 
 **Advantages of Higher-Order Functions**
 `Code Reusability:` You can write a function once and reuse it with different logic. For example, map, filter, and reduce allow you to process arrays in a variety of ways using different callback functions.
@@ -113,16 +117,16 @@ console.log(sum);  // 15
 
 ```javascript
 function multiply(a) {
-  return function(b) {
+  return function (b) {
     return a * b;
   };
 }
 
 const multiplyBy2 = multiply(2);
-console.log(multiplyBy2(5));  // 10
+console.log(multiplyBy2(5)); // 10
 
 const multiplyBy3 = multiply(3);
-console.log(multiplyBy3(5));  // 15
+console.log(multiplyBy3(5)); // 15
 ```
 
 The `multiply` function is a higher-order function that returns a function that multiplies its argument by a.
@@ -134,6 +138,6 @@ A higher-order function is a function that:
 Takes other functions as arguments.
 Returns a function as its result.
 
-Higher-order functions are foundational to functional programming and allow you to write more flexible, reusable, and concise code. 
+Higher-order functions are foundational to functional programming and allow you to write more flexible, reusable, and concise code.
 
 They are used extensively in JavaScript, especially in array manipulation methods like map, filter, and reduce, and in advanced patterns like currying and function composition.

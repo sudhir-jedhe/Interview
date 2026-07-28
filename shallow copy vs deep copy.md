@@ -14,7 +14,7 @@ const shallowCopy = [...originalArray]; // Spread operator
 shallowCopy[2].a = 100;
 
 console.log(originalArray[2].a); // 100, as the inner object is shared
-console.log(shallowCopy[2].a);   // 100
+console.log(shallowCopy[2].a); // 100
 ```
 
 #### Example 2: Shallow Copy with Objects
@@ -27,7 +27,7 @@ const shallowCopy = { ...originalObject }; // Spread operator
 shallowCopy.nested.a = 100;
 
 console.log(originalObject.nested.a); // 100, as the inner object is shared
-console.log(shallowCopy.nested.a);    // 100
+console.log(shallowCopy.nested.a); // 100
 ```
 
 In both examples, the shallow copy creates a new reference for the outer array or object, but the nested objects (or arrays) are still pointing to the same references as in the original.
@@ -46,7 +46,7 @@ const deepCopy = JSON.parse(JSON.stringify(originalArray));
 deepCopy[2].a = 100;
 
 console.log(originalArray[2].a); // 10, the original array is unaffected
-console.log(deepCopy[2].a);      // 100, deep copy has its own reference
+console.log(deepCopy[2].a); // 100, deep copy has its own reference
 ```
 
 #### Example 2: Deep Copy with Objects (Using JSON Methods)
@@ -59,7 +59,7 @@ const deepCopy = JSON.parse(JSON.stringify(originalObject));
 deepCopy.nested.a = 100;
 
 console.log(originalObject.nested.a); // 10, the original object is unaffected
-console.log(deepCopy.nested.a);       // 100, deep copy has its own reference
+console.log(deepCopy.nested.a); // 100, deep copy has its own reference
 ```
 
 In these deep copy examples, we used `JSON.parse(JSON.stringify(...))` to create a deep copy. This method works well for simple objects without functions, `undefined`, or circular references, but it has limitations (e.g., it can't copy methods or handle `undefined` values).
@@ -70,7 +70,7 @@ For objects that might include methods, functions, or other complex structures, 
 
 ```javascript
 function deepCopy(obj) {
-  if (obj === null || typeof obj !== 'object') {
+  if (obj === null || typeof obj !== "object") {
     return obj; // If it's not an object, return it as is
   }
 
@@ -111,23 +111,25 @@ const shallow = { ...original };
 const deep = JSON.parse(JSON.stringify(original));
 
 // Modifying nested data
-shallow.b[0] = 99;         // Affects original.b because it's a shallow copy
-shallow.c.x = 999;         // Affects original.c because it's a shallow copy
+shallow.b[0] = 99; // Affects original.b because it's a shallow copy
+shallow.c.x = 999; // Affects original.c because it's a shallow copy
 
-deep.b[1] = 999;           // Does not affect original.b (deep copy)
-deep.c.x = 1000;           // Does not affect original.c (deep copy)
+deep.b[1] = 999; // Does not affect original.b (deep copy)
+deep.c.x = 1000; // Does not affect original.c (deep copy)
 
-console.log(original.b);   // [99, 2, 3] (shallow copy modified original)
-console.log(original.c);   // { x: 999, y: 20 } (shallow copy modified original)
-console.log(deep.b);       // [1, 999, 3] (deep copy is unaffected)
-console.log(deep.c);       // { x: 1000, y: 20 } (deep copy is unaffected)
+console.log(original.b); // [99, 2, 3] (shallow copy modified original)
+console.log(original.c); // { x: 999, y: 20 } (shallow copy modified original)
+console.log(deep.b); // [1, 999, 3] (deep copy is unaffected)
+console.log(deep.c); // { x: 1000, y: 20 } (deep copy is unaffected)
 ```
 
 ### Key Differences:
+
 - **Shallow Copy**: Only the top-level structure is copied. Nested objects or arrays are shared between the original and copied object/array.
 - **Deep Copy**: The entire structure, including nested objects/arrays, is fully copied, and changes in the copy do not affect the original.
 
 ### Conclusion:
+
 - **Shallow Copy** is fast and efficient but can lead to unintended side effects when working with nested objects or arrays.
 - **Deep Copy** is safer for complex structures, especially when you need to modify deeply nested objects independently of the original, but it can be slower, especially for large objects.
 

@@ -1,6 +1,6 @@
 // Different from Promise.all() which rejects right away once an error occurs,
 // Promise.allSettled() waits for all promises to settle.
-
+```js
 /**
  * @param {Array<any>} promises - notice that input might contains non-promises
  * @return {Promise<Array<{status: 'fulfilled', value: any} | {status: 'rejected', reason: any}>>}

@@ -1,82 +1,61 @@
 # Custom React Hooks Collection (Interview Must-Have)
 
-***
+---
 
 # 1. useBoolean
 
 ```jsx
 import { useState } from "react";
 
-export function useBoolean(
-  initial = false
-) {
-  const [value, setValue] =
-    useState(initial);
+export function useBoolean(initial = false) {
+  const [value, setValue] = useState(initial);
 
   return {
     value,
-    setTrue: () =>
-      setValue(true),
-    setFalse: () =>
-      setValue(false),
-    toggle: () =>
-      setValue(v => !v),
+    setTrue: () => setValue(true),
+    setFalse: () => setValue(false),
+    toggle: () => setValue((v) => !v),
   };
 }
 ```
 
-***
+---
 
 # 2. useToggle
 
 ```jsx
 import { useState } from "react";
 
-export function useToggle(
-  initial = false
-) {
-  const [value, setValue] =
-    useState(initial);
+export function useToggle(initial = false) {
+  const [value, setValue] = useState(initial);
 
-  const toggle = () =>
-    setValue(v => !v);
+  const toggle = () => setValue((v) => !v);
 
   return [value, toggle];
 }
 ```
 
-***
+---
 
 # 3. useCountdown
 
 ```jsx
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-export function useCountdown(
-  initialSeconds
-) {
-  const [count, setCount] =
-    useState(initialSeconds);
+export function useCountdown(initialSeconds) {
+  const [count, setCount] = useState(initialSeconds);
 
   useEffect(() => {
     if (count <= 0) return;
 
-    const timer =
-      setTimeout(() => {
-        setCount(
-          count - 1
-        );
-      }, 1000);
+    const timer = setTimeout(() => {
+      setCount(count - 1);
+    }, 1000);
 
-    return () =>
-      clearTimeout(timer);
+    return () => clearTimeout(timer);
   }, [count]);
 
-  const reset = () =>
-    setCount(initialSeconds);
+  const reset = () => setCount(initialSeconds);
 
   return {
     count,
@@ -85,51 +64,36 @@ export function useCountdown(
 }
 ```
 
-***
+---
 
 # 4. useWindowSize
 
 ```jsx
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 export function useWindowSize() {
-  const [size, setSize] =
-    useState({
-      width:
-        window.innerWidth,
-      height:
-        window.innerHeight,
-    });
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   useEffect(() => {
     const resize = () =>
       setSize({
-        width:
-          window.innerWidth,
-        height:
-          window.innerHeight,
+        width: window.innerWidth,
+        height: window.innerHeight,
       });
 
-    window.addEventListener(
-      "resize",
-      resize
-    );
+    window.addEventListener("resize", resize);
 
-    return () =>
-      window.removeEventListener(
-        "resize",
-        resize
-      );
+    return () => window.removeEventListener("resize", resize);
   }, []);
 
   return size;
 }
 ```
 
-***
+---
 
 # 5. useBreakpoint
 
@@ -137,95 +101,61 @@ export function useWindowSize() {
 import { useWindowSize } from "./useWindowSize";
 
 export function useBreakpoint() {
-  const { width } =
-    useWindowSize();
+  const { width } = useWindowSize();
 
-  if (width < 768)
-    return "mobile";
+  if (width < 768) return "mobile";
 
-  if (width < 1024)
-    return "tablet";
+  if (width < 1024) return "tablet";
 
   return "desktop";
 }
 ```
 
-***
+---
 
 # 6. useClickAnywhere
 
 ```jsx
 import { useEffect } from "react";
 
-export function useClickAnywhere(
-  callback
-) {
+export function useClickAnywhere(callback) {
   useEffect(() => {
-    document.addEventListener(
-      "click",
-      callback
-    );
+    document.addEventListener("click", callback);
 
-    return () =>
-      document.removeEventListener(
-        "click",
-        callback
-      );
+    return () => document.removeEventListener("click", callback);
   }, [callback]);
 }
 ```
 
-***
+---
 
 # 7. useEventListener
 
 ```jsx
 import { useEffect } from "react";
 
-export function useEventListener(
-  event,
-  handler,
-  element = window
-) {
+export function useEventListener(event, handler, element = window) {
   useEffect(() => {
-    element.addEventListener(
-      event,
-      handler
-    );
+    element.addEventListener(event, handler);
 
-    return () =>
-      element.removeEventListener(
-        event,
-        handler
-      );
-  }, [
-    event,
-    handler,
-    element,
-  ]);
+    return () => element.removeEventListener(event, handler);
+  }, [event, handler, element]);
 }
 ```
 
-***
+---
 
 # 8. useInputControl
 
 ```jsx
 import { useState } from "react";
 
-export function useInputControl(
-  initial = ""
-) {
-  const [value, setValue] =
-    useState(initial);
+export function useInputControl(initial = "") {
+  const [value, setValue] = useState(initial);
 
-  const onChange = e =>
-    setValue(
-      e.target.value
-    );
+  const onChange = (e) => setValue(e.target.value);
 
-  const reset = () =>
-    setValue("");
+  const reset = () => setValue("");
 
   return {
     value,
@@ -235,96 +165,63 @@ export function useInputControl(
 }
 ```
 
-***
+---
 
 # 9. useInterval
 
 ```jsx
-import {
-  useEffect,
-  useRef,
-} from "react";
+import { useEffect, useRef } from "react";
 
-export function useInterval(
-  callback,
-  delay
-) {
-  const savedCallback =
-    useRef();
+export function useInterval(callback, delay) {
+  const savedCallback = useRef();
 
   useEffect(() => {
-    savedCallback.current =
-      callback;
+    savedCallback.current = callback;
   });
 
   useEffect(() => {
-    if (delay == null)
-      return;
+    if (delay == null) return;
 
-    const id =
-      setInterval(() => {
-        savedCallback.current();
-      }, delay);
+    const id = setInterval(() => {
+      savedCallback.current();
+    }, delay);
 
-    return () =>
-      clearInterval(id);
+    return () => clearInterval(id);
   }, [delay]);
 }
 ```
 
-***
+---
 
 # 10. useKeyPress
 
 ```jsx
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-export function useKeyPress(
-  targetKey
-) {
-  const [pressed, setPressed] =
-    useState(false);
+export function useKeyPress(targetKey) {
+  const [pressed, setPressed] = useState(false);
 
   useEffect(() => {
-    const down = e => {
-      if (
-        e.key === targetKey
-      ) {
+    const down = (e) => {
+      if (e.key === targetKey) {
         setPressed(true);
       }
     };
 
-    const up = e => {
-      if (
-        e.key === targetKey
-      ) {
+    const up = (e) => {
+      if (e.key === targetKey) {
         setPressed(false);
       }
     };
 
-    window.addEventListener(
-      "keydown",
-      down
-    );
+    window.addEventListener("keydown", down);
 
-    window.addEventListener(
-      "keyup",
-      up
-    );
+    window.addEventListener("keyup", up);
 
     return () => {
-      window.removeEventListener(
-        "keydown",
-        down
-      );
+      window.removeEventListener("keydown", down);
 
-      window.removeEventListener(
-        "keyup",
-        up
-      );
+      window.removeEventListener("keyup", up);
     };
   }, [targetKey]);
 
@@ -332,19 +229,14 @@ export function useKeyPress(
 }
 ```
 
-***
+---
 
 # 11. usePreviousState
 
 ```jsx
-import {
-  useEffect,
-  useRef,
-} from "react";
+import { useEffect, useRef } from "react";
 
-export function usePreviousState(
-  value
-) {
+export function usePreviousState(value) {
   const ref = useRef();
 
   useEffect(() => {
@@ -355,44 +247,28 @@ export function usePreviousState(
 }
 ```
 
-***
+---
 
 # 12. useSet
 
 ```jsx
 import { useState } from "react";
 
-export function useSet(
-  initialValue =
-    new Set()
-) {
-  const [set, setSet] =
-    useState(
-      new Set(
-        initialValue
-      )
-    );
+export function useSet(initialValue = new Set()) {
+  const [set, setSet] = useState(new Set(initialValue));
 
-  const add = value =>
-    setSet(prev =>
-      new Set([
-        ...prev,
-        value,
-      ])
-    );
+  const add = (value) => setSet((prev) => new Set([...prev, value]));
 
-  const remove = value =>
-    setSet(prev => {
-      const copy =
-        new Set(prev);
+  const remove = (value) =>
+    setSet((prev) => {
+      const copy = new Set(prev);
 
       copy.delete(value);
 
       return copy;
     });
 
-  const clear = () =>
-    setSet(new Set());
+  const clear = () => setSet(new Set());
 
   return {
     set,
@@ -404,42 +280,29 @@ export function useSet(
 }
 ```
 
-***
+---
 
 # 13. useThrottle
 
 ```jsx
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-export function useThrottle(
-  value,
-  delay
-) {
-  const [
-    throttledValue,
-    setThrottledValue,
-  ] = useState(value);
+export function useThrottle(value, delay) {
+  const [throttledValue, setThrottledValue] = useState(value);
 
   useEffect(() => {
-    const timer =
-      setTimeout(() => {
-        setThrottledValue(
-          value
-        );
-      }, delay);
+    const timer = setTimeout(() => {
+      setThrottledValue(value);
+    }, delay);
 
-    return () =>
-      clearTimeout(timer);
+    return () => clearTimeout(timer);
   }, [value, delay]);
 
   return throttledValue;
 }
 ```
 
-***
+---
 
 # Interview Questions Around These Hooks
 
@@ -493,28 +356,17 @@ These hooks are frequently asked in Senior Frontend and React interview rounds b
 Delays updating a value until the user stops changing it.
 
 ```jsx
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-export function useDebounce(
-  value,
-  delay = 500
-) {
-  const [
-    debouncedValue,
-    setDebouncedValue,
-  ] = useState(value);
+export function useDebounce(value, delay = 500) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
-    const timer =
-      setTimeout(() => {
-        setDebouncedValue(value);
-      }, delay);
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
 
-    return () =>
-      clearTimeout(timer);
+    return () => clearTimeout(timer);
   }, [value, delay]);
 
   return debouncedValue;
@@ -524,61 +376,47 @@ export function useDebounce(
 ### Usage
 
 ```jsx
-const [search, setSearch] =
-  useState("");
+const [search, setSearch] = useState("");
 
-const debouncedSearch =
-  useDebounce(search, 500);
+const debouncedSearch = useDebounce(search, 500);
 ```
 
-***
+---
 
 # 2. `useAsync`
 
 Handles async operations.
 
 ```jsx
-import {
-  useCallback,
-  useState,
-} from "react";
+import { useCallback, useState } from "react";
 
-export function useAsync(
-  asyncFunction
-) {
-  const [loading, setLoading] =
-    useState(false);
+export function useAsync(asyncFunction) {
+  const [loading, setLoading] = useState(false);
 
-  const [error, setError] =
-    useState(null);
+  const [error, setError] = useState(null);
 
-  const [data, setData] =
-    useState(null);
+  const [data, setData] = useState(null);
 
-  const execute =
-    useCallback(
-      async (...args) => {
-        setLoading(true);
-        setError(null);
+  const execute = useCallback(
+    async (...args) => {
+      setLoading(true);
+      setError(null);
 
-        try {
-          const result =
-            await asyncFunction(
-              ...args
-            );
+      try {
+        const result = await asyncFunction(...args);
 
-          setData(result);
+        setData(result);
 
-          return result;
-        } catch (err) {
-          setError(err);
-          throw err;
-        } finally {
-          setLoading(false);
-        }
-      },
-      [asyncFunction]
-    );
+        return result;
+      } catch (err) {
+        setError(err);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [asyncFunction],
+  );
 
   return {
     loading,
@@ -589,25 +427,19 @@ export function useAsync(
 }
 ```
 
-***
+---
 
 # 3. `useFetch`
 
 ```jsx
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 export function useFetch(url) {
-  const [data, setData] =
-    useState(null);
+  const [data, setData] = useState(null);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [error, setError] =
-    useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let mounted = true;
@@ -616,14 +448,11 @@ export function useFetch(url) {
       try {
         setLoading(true);
 
-        const response =
-          await fetch(url);
+        const response = await fetch(url);
 
-        const json =
-          await response.json();
+        const json = await response.json();
 
-        if (mounted)
-          setData(json);
+        if (mounted) setData(json);
       } catch (error) {
         setError(error);
       } finally {
@@ -646,212 +475,126 @@ export function useFetch(url) {
 }
 ```
 
-***
+---
 
 # 4. `useLocalStorage`
 
 ```jsx
-import {
-  useState,
-} from "react";
+import { useState } from "react";
 
-export function useLocalStorage(
-  key,
-  initialValue
-) {
-  const [value, setValue] =
-    useState(() => {
-      const stored =
-        localStorage.getItem(
-          key
-        );
+export function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    const stored = localStorage.getItem(key);
 
-      return stored
-        ? JSON.parse(
-            stored
-          )
-        : initialValue;
-    });
+    return stored ? JSON.parse(stored) : initialValue;
+  });
 
-  const updateValue =
-    newValue => {
-      setValue(newValue);
+  const updateValue = (newValue) => {
+    setValue(newValue);
 
-      localStorage.setItem(
-        key,
-        JSON.stringify(
-          newValue
-        )
-      );
-    };
+    localStorage.setItem(key, JSON.stringify(newValue));
+  };
 
-  return [
-    value,
-    updateValue,
-  ];
+  return [value, updateValue];
 }
 ```
 
-***
+---
 
 # 5. `useUndoRedo`
 
 ```jsx
-import {
-  useState,
-} from "react";
+import { useState } from "react";
 
-export function useUndoRedo(
-  initial
-) {
-  const [history, setHistory] =
-    useState([initial]);
+export function useUndoRedo(initial) {
+  const [history, setHistory] = useState([initial]);
 
-  const [index, setIndex] =
-    useState(0);
+  const [index, setIndex] = useState(0);
 
-  const value =
-    history[index];
+  const value = history[index];
 
-  const set =
-    newValue => {
-      const copy =
-        history.slice(
-          0,
-          index + 1
-        );
+  const set = (newValue) => {
+    const copy = history.slice(0, index + 1);
 
-      copy.push(newValue);
+    copy.push(newValue);
 
-      setHistory(copy);
-      setIndex(
-        copy.length - 1
-      );
-    };
+    setHistory(copy);
+    setIndex(copy.length - 1);
+  };
 
-  const undo = () =>
-    setIndex(i =>
-      Math.max(0, i - 1)
-    );
+  const undo = () => setIndex((i) => Math.max(0, i - 1));
 
-  const redo = () =>
-    setIndex(i =>
-      Math.min(
-        history.length - 1,
-        i + 1
-      )
-    );
+  const redo = () => setIndex((i) => Math.min(history.length - 1, i + 1));
 
   return {
     value,
     set,
     undo,
     redo,
-    canUndo:
-      index > 0,
-    canRedo:
-      index <
-      history.length - 1,
+    canUndo: index > 0,
+    canRedo: index < history.length - 1,
   };
 }
 ```
 
-***
+---
 
 # 6. `useHover`
 
 ```jsx
-import {
-  useRef,
-  useState,
-  useEffect,
-} from "react";
+import { useRef, useState, useEffect } from "react";
 
 export function useHover() {
-  const [hovered, setHovered] =
-    useState(false);
+  const [hovered, setHovered] = useState(false);
 
-  const ref =
-    useRef(null);
+  const ref = useRef(null);
 
   useEffect(() => {
-    const node =
-      ref.current;
+    const node = ref.current;
 
     if (!node) return;
 
-    const enter = () =>
-      setHovered(true);
+    const enter = () => setHovered(true);
 
-    const leave = () =>
-      setHovered(false);
+    const leave = () => setHovered(false);
 
-    node.addEventListener(
-      "mouseenter",
-      enter
-    );
+    node.addEventListener("mouseenter", enter);
 
-    node.addEventListener(
-      "mouseleave",
-      leave
-    );
+    node.addEventListener("mouseleave", leave);
 
     return () => {
-      node.removeEventListener(
-        "mouseenter",
-        enter
-      );
+      node.removeEventListener("mouseenter", enter);
 
-      node.removeEventListener(
-        "mouseleave",
-        leave
-      );
+      node.removeEventListener("mouseleave", leave);
     };
   }, []);
 
-  return [
-    ref,
-    hovered,
-  ];
+  return [ref, hovered];
 }
 ```
 
-***
+---
 
 # 7. `useLongPress`
 
 ```jsx
-import {
-  useRef,
-} from "react";
+import { useRef } from "react";
 
-export function useLongPress(
-  callback,
-  delay = 500
-) {
-  const timer =
-    useRef();
+export function useLongPress(callback, delay = 500) {
+  const timer = useRef();
 
   const start = () => {
-    timer.current =
-      setTimeout(
-        callback,
-        delay
-      );
+    timer.current = setTimeout(callback, delay);
   };
 
   const clear = () => {
-    clearTimeout(
-      timer.current
-    );
+    clearTimeout(timer.current);
   };
 
   return {
-    onMouseDown:
-      start,
+    onMouseDown: start,
     onMouseUp: clear,
-    onTouchStart:
-      start,
+    onTouchStart: start,
     onTouchEnd: clear,
   };
 }
@@ -860,22 +603,17 @@ export function useLongPress(
 ### Usage
 
 ```jsx
-const longPress =
-  useLongPress(() => {
-    console.log(
-      "Long pressed"
-    );
-  });
+const longPress = useLongPress(() => {
+  console.log("Long pressed");
+});
 ```
 
-***
+---
 
 # 8. `useVirtualizedList`
 
 ```jsx
-import {
-  useMemo,
-} from "react";
+import { useMemo } from "react";
 
 export function useVirtualizedList({
   items,
@@ -883,33 +621,14 @@ export function useVirtualizedList({
   containerHeight,
   scrollTop,
 }) {
-  const startIndex =
-    Math.floor(
-      scrollTop /
-        itemHeight
-    );
+  const startIndex = Math.floor(scrollTop / itemHeight);
 
-  const visibleCount =
-    Math.ceil(
-      containerHeight /
-        itemHeight
-    );
+  const visibleCount = Math.ceil(containerHeight / itemHeight);
 
-  const visibleItems =
-    useMemo(
-      () =>
-        items.slice(
-          startIndex,
-          startIndex +
-            visibleCount +
-            1
-        ),
-      [
-        items,
-        startIndex,
-        visibleCount,
-      ]
-    );
+  const visibleItems = useMemo(
+    () => items.slice(startIndex, startIndex + visibleCount + 1),
+    [items, startIndex, visibleCount],
+  );
 
   return {
     startIndex,
@@ -918,83 +637,54 @@ export function useVirtualizedList({
 }
 ```
 
-***
+---
 
 # 9. `useIntersectionObserver`
 
 ```jsx
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-export function useIntersectionObserver(
-  ref
-) {
-  const [isVisible, setVisible] =
-    useState(false);
+export function useIntersectionObserver(ref) {
+  const [isVisible, setVisible] = useState(false);
 
   useEffect(() => {
-    const observer =
-      new IntersectionObserver(
-        ([entry]) => {
-          setVisible(
-            entry.isIntersecting
-          );
-        }
-      );
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting);
+    });
 
     if (ref.current) {
-      observer.observe(
-        ref.current
-      );
+      observer.observe(ref.current);
     }
 
-    return () =>
-      observer.disconnect();
+    return () => observer.disconnect();
   }, [ref]);
 
   return isVisible;
 }
 ```
 
-***
+---
 
 # 10. `useInfiniteScroll`
 
 ```jsx
-import {
-  useEffect,
-  useRef,
-} from "react";
+import { useEffect, useRef } from "react";
 
-export function useInfiniteScroll(
-  callback
-) {
-  const ref =
-    useRef(null);
+export function useInfiniteScroll(callback) {
+  const ref = useRef(null);
 
   useEffect(() => {
-    const observer =
-      new IntersectionObserver(
-        entries => {
-          if (
-            entries[0]
-              .isIntersecting
-          ) {
-            callback();
-          }
-        }
-      );
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        callback();
+      }
+    });
 
     if (ref.current) {
-      observer.observe(
-        ref.current
-      );
+      observer.observe(ref.current);
     }
 
-    return () =>
-      observer.disconnect();
+    return () => observer.disconnect();
   }, [callback]);
 
   return ref;
@@ -1004,27 +694,20 @@ export function useInfiniteScroll(
 ### Usage
 
 ```jsx
-const loadMoreRef =
-  useInfiniteScroll(
-    fetchNextPage
-  );
+const loadMoreRef = useInfiniteScroll(fetchNextPage);
 
 return (
   <>
-    {data.map(item => (
-      <Card
-        key={item.id}
-      />
+    {data.map((item) => (
+      <Card key={item.id} />
     ))}
 
-    <div
-      ref={loadMoreRef}
-    />
+    <div ref={loadMoreRef} />
   </>
 );
 ```
 
-***
+---
 
 # Senior React Hooks Cheat Sheet
 
@@ -1069,7 +752,6 @@ return (
 
 These hooks are among the most common custom-hook discussions in Senior React interviews because they demonstrate state management, side effects, performance optimisation, browser APIs, and reusable abstraction design.
 
-
 # 1. `useQuery` (Custom React Query Style)
 
 Features:
@@ -1083,53 +765,35 @@ Features:
 ```
 
 ```jsx
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 const cache = new Map();
 
-export function useQuery(
-  key,
-  fetcher
-) {
-  const [data, setData] =
-    useState(
-      cache.get(key)
-    );
+export function useQuery(key, fetcher) {
+  const [data, setData] = useState(cache.get(key));
 
-  const [loading, setLoading] =
-    useState(!cache.has(key));
+  const [loading, setLoading] = useState(!cache.has(key));
 
-  const [error, setError] =
-    useState(null);
+  const [error, setError] = useState(null);
 
-  const fetchData =
-    async () => {
-      try {
-        setLoading(true);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
 
-        const result =
-          await fetcher();
+      const result = await fetcher();
 
-        cache.set(
-          key,
-          result
-        );
+      cache.set(key, result);
 
-        setData(result);
-      } catch (e) {
-        setError(e);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setData(result);
+    } catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (
-      !cache.has(key)
-    ) {
+    if (!cache.has(key)) {
       fetchData();
     }
   }, [key]);
@@ -1143,7 +807,7 @@ export function useQuery(
 }
 ```
 
-***
+---
 
 # 2. `useMutation`
 
@@ -1157,34 +821,25 @@ POST API
 ```
 
 ```jsx
-import {
-  useState,
-} from "react";
+import { useState } from "react";
 
-export function useMutation(
-  mutationFn
-) {
-  const [loading, setLoading] =
-    useState(false);
+export function useMutation(mutationFn) {
+  const [loading, setLoading] = useState(false);
 
-  const [error, setError] =
-    useState(null);
+  const [error, setError] = useState(null);
 
-  const mutate =
-    async payload => {
-      try {
-        setLoading(true);
+  const mutate = async (payload) => {
+    try {
+      setLoading(true);
 
-        return await mutationFn(
-          payload
-        );
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    };
+      return await mutationFn(payload);
+    } catch (err) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return {
     mutate,
@@ -1197,61 +852,36 @@ export function useMutation(
 ### Usage
 
 ```jsx
-const {
-  mutate,
-} = useMutation(
-  createEmployee
-);
+const { mutate } = useMutation(createEmployee);
 
 mutate(employeeData);
 ```
 
-***
+---
 
 # 3. `useWebSocket`
 
 ```jsx
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
-export function useWebSocket(
-  url
-) {
-  const ws =
-    useRef(null);
+export function useWebSocket(url) {
+  const ws = useRef(null);
 
-  const [
-    messages,
-    setMessages,
-  ] = useState([]);
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    ws.current =
-      new WebSocket(url);
+    ws.current = new WebSocket(url);
 
-    ws.current.onmessage =
-      event => {
-        setMessages(
-          prev => [
-            ...prev,
-            event.data,
-          ]
-        );
-      };
+    ws.current.onmessage = (event) => {
+      setMessages((prev) => [...prev, event.data]);
+    };
 
-    return () =>
-      ws.current?.close();
+    return () => ws.current?.close();
   }, [url]);
 
-  const sendMessage =
-    message => {
-      ws.current?.send(
-        message
-      );
-    };
+  const sendMessage = (message) => {
+    ws.current?.send(message);
+  };
 
   return {
     messages,
@@ -1260,34 +890,24 @@ export function useWebSocket(
 }
 ```
 
-***
+---
 
 # 4. `useSyncExternalStore`
 
 React's official external-store subscription hook.
 
 ```jsx
-import {
-  useSyncExternalStore,
-} from "react";
+import { useSyncExternalStore } from "react";
 
 const store = {
   value: 0,
 
-  listeners:
-    new Set(),
+  listeners: new Set(),
 
-  subscribe(
-    listener
-  ) {
-    this.listeners.add(
-      listener
-    );
+  subscribe(listener) {
+    this.listeners.add(listener);
 
-    return () =>
-      this.listeners.delete(
-        listener
-      );
+    return () => this.listeners.delete(listener);
   },
 
   getSnapshot() {
@@ -1297,21 +917,14 @@ const store = {
   increment() {
     this.value++;
 
-    this.listeners.forEach(
-      listener =>
-        listener()
-    );
+    this.listeners.forEach((listener) => listener());
   },
 };
 
 export function useCounterStore() {
   return useSyncExternalStore(
-    store.subscribe.bind(
-      store
-    ),
-    store.getSnapshot.bind(
-      store
-    )
+    store.subscribe.bind(store),
+    store.getSnapshot.bind(store),
   );
 }
 ```
@@ -1319,11 +932,10 @@ export function useCounterStore() {
 ### Usage
 
 ```jsx
-const count =
-  useCounterStore();
+const count = useCounterStore();
 ```
 
-***
+---
 
 # 5. `useCommandPattern`
 
@@ -1337,43 +949,25 @@ Drawing App
 ```
 
 ```jsx
-import {
-  useState,
-} from "react";
+import { useState } from "react";
 
 export function useCommandPattern() {
-  const [
-    history,
-    setHistory,
-  ] = useState([]);
+  const [history, setHistory] = useState([]);
 
-  const execute =
-    command => {
-      command.execute();
+  const execute = (command) => {
+    command.execute();
 
-      setHistory(prev => [
-        ...prev,
-        command,
-      ]);
-    };
+    setHistory((prev) => [...prev, command]);
+  };
 
   const undo = () => {
-    const last =
-      history[
-        history.length -
-          1
-      ];
+    const last = history[history.length - 1];
 
     if (!last) return;
 
     last.undo();
 
-    setHistory(prev =>
-      prev.slice(
-        0,
-        -1
-      )
-    );
+    setHistory((prev) => prev.slice(0, -1));
   };
 
   return {
@@ -1383,52 +977,35 @@ export function useCommandPattern() {
 }
 ```
 
-***
+---
 
 # 6. `useStateMachine`
 
 ```jsx
-import {
-  useReducer,
-} from "react";
+import { useReducer } from "react";
 
 const machine = {
   idle: {
-    START:
-      "loading",
+    START: "loading",
   },
 
   loading: {
-    SUCCESS:
-      "success",
+    SUCCESS: "success",
 
-    ERROR:
-      "error",
+    ERROR: "error",
   },
 
   error: {
-    RETRY:
-      "loading",
+    RETRY: "loading",
   },
 };
 
-function reducer(
-  state,
-  action
-) {
-  return (
-    machine[state][
-      action
-    ] || state
-  );
+function reducer(state, action) {
+  return machine[state][action] || state;
 }
 
 export function useStateMachine() {
-  const [state, send] =
-    useReducer(
-      reducer,
-      "idle"
-    );
+  const [state, send] = useReducer(reducer, "idle");
 
   return {
     state,
@@ -1445,36 +1022,25 @@ send("START");
 send("SUCCESS");
 ```
 
-***
+---
 
 # 7. `useActorModel`
 
 Inspired by XState.
 
 ```jsx
-import {
-  useReducer,
-} from "react";
+import { useReducer } from "react";
 
-function actorReducer(
-  state,
-  event
-) {
-  switch (
-    event.type
-  ) {
+function actorReducer(state, event) {
+  switch (event.type) {
     case "INCREMENT":
       return {
-        count:
-          state.count +
-          1,
+        count: state.count + 1,
       };
 
     case "DECREMENT":
       return {
-        count:
-          state.count -
-          1,
+        count: state.count - 1,
       };
 
     default:
@@ -1483,19 +1049,11 @@ function actorReducer(
 }
 
 export function useActorModel() {
-  const [state, dispatch] =
-    useReducer(
-      actorReducer,
-      {
-        count: 0,
-      }
-    );
+  const [state, dispatch] = useReducer(actorReducer, {
+    count: 0,
+  });
 
-  const send =
-    event =>
-      dispatch(
-        event
-      );
+  const send = (event) => dispatch(event);
 
   return {
     state,
@@ -1504,7 +1062,7 @@ export function useActorModel() {
 }
 ```
 
-***
+---
 
 # 8. `useOptimisticCache`
 
@@ -1518,39 +1076,22 @@ Shopping Cart
 ```
 
 ```jsx
-import {
-  useState,
-} from "react";
+import { useState } from "react";
 
-export function useOptimisticCache(
-  initialData
-) {
-  const [data, setData] =
-    useState(
-      initialData
-    );
+export function useOptimisticCache(initialData) {
+  const [data, setData] = useState(initialData);
 
-  const updateOptimistically =
-    (
-      updater,
-      mutation
-    ) => {
-      const previous =
-        data;
+  const updateOptimistically = (updater, mutation) => {
+    const previous = data;
 
-      const next =
-        updater(data);
+    const next = updater(data);
 
-      setData(next);
+    setData(next);
 
-      mutation().catch(
-        () => {
-          setData(
-            previous
-          );
-        }
-      );
-    };
+    mutation().catch(() => {
+      setData(previous);
+    });
+  };
 
   return {
     data,
@@ -1563,22 +1104,21 @@ export function useOptimisticCache(
 
 ```jsx
 updateOptimistically(
-  users =>
-    users.map(user =>
+  (users) =>
+    users.map((user) =>
       user.id === id
         ? {
             ...user,
             liked: true,
           }
-        : user
+        : user,
     ),
 
-  () =>
-    api.likePost(id)
+  () => api.likePost(id),
 );
 ```
 
-***
+---
 
 # Hook Architecture by Seniority
 
@@ -1593,7 +1133,7 @@ updateOptimistically(
 ✅ usePrevious
 ```
 
-***
+---
 
 ## Senior
 
@@ -1608,7 +1148,7 @@ updateOptimistically(
 ✅ useWebSocket
 ```
 
-***
+---
 
 ## Staff / Architect
 
@@ -1648,7 +1188,6 @@ for large enterprise applications
 
 These advanced hooks are typically discussed in Senior, Staff, and Frontend Architect interviews because they represent reusable abstractions for complex state management, side effects, caching, real-time communication, and application architecture.
 
-
 Here are **more advanced custom hooks** frequently discussed in **Senior React / Frontend Architecture interviews**.
 
 # State Hooks
@@ -1657,78 +1196,51 @@ Here are **more advanced custom hooks** frequently discussed in **Senior React /
 
 ```jsx
 export function useCounter(initial = 0) {
-  const [count, setCount] =
-    useState(initial);
+  const [count, setCount] = useState(initial);
 
   return {
     count,
-    increment: () =>
-      setCount(c => c + 1),
-    decrement: () =>
-      setCount(c => c - 1),
-    reset: () =>
-      setCount(initial),
+    increment: () => setCount((c) => c + 1),
+    decrement: () => setCount((c) => c - 1),
+    reset: () => setCount(initial),
   };
 }
 ```
 
-***
+---
 
 ## `useList`
 
 ```jsx
-export function useList(
-  initial = []
-) {
-  const [list, setList] =
-    useState(initial);
+export function useList(initial = []) {
+  const [list, setList] = useState(initial);
 
   return {
     list,
-    add: item =>
-      setList(l => [...l, item]),
-    remove: index =>
-      setList(l =>
-        l.filter(
-          (_, i) =>
-            i !== index
-        )
-      ),
-    clear: () =>
-      setList([]),
+    add: (item) => setList((l) => [...l, item]),
+    remove: (index) => setList((l) => l.filter((_, i) => i !== index)),
+    clear: () => setList([]),
   };
 }
 ```
 
-***
+---
 
 ## `useQueue`
 
 ```jsx
-export function useQueue(
-  initial = []
-) {
-  const [queue, setQueue] =
-    useState(initial);
+export function useQueue(initial = []) {
+  const [queue, setQueue] = useState(initial);
 
-  const enqueue =
-    item =>
-      setQueue(q => [
-        ...q,
-        item,
-      ]);
+  const enqueue = (item) => setQueue((q) => [...q, item]);
 
-  const dequeue =
-    () => {
-      const first =
-        queue[0];
+  const dequeue = () => {
+    const first = queue[0];
 
-      setQueue(q =>
-        q.slice(1)
-      );
+    setQueue((q) => q.slice(1));
 
-      return first;
-    };
+    return first;
+  };
 
   return {
     queue,
@@ -1738,7 +1250,7 @@ export function useQueue(
 }
 ```
 
-***
+---
 
 # Browser Hooks
 
@@ -1746,68 +1258,41 @@ export function useQueue(
 
 ```jsx
 export function useClipboard() {
-  const [copied, setCopied] =
-    useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const copy =
-    async text => {
-      await navigator.clipboard.writeText(
-        text
-      );
+  const copy = async (text) => {
+    await navigator.clipboard.writeText(text);
 
-      setCopied(true);
+    setCopied(true);
 
-      setTimeout(
-        () =>
-          setCopied(false),
-        2000
-      );
-    };
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return { copy, copied };
 }
 ```
 
-***
+---
 
 ## `useOnlineStatus`
 
 ```jsx
 export function useOnlineStatus() {
-  const [online, setOnline] =
-    useState(
-      navigator.onLine
-    );
+  const [online, setOnline] = useState(navigator.onLine);
 
   useEffect(() => {
-    const online =
-      () =>
-        setOnline(true);
+    const online = () => setOnline(true);
 
-    const offline =
-      () =>
-        setOnline(false);
+    const offline = () => setOnline(false);
 
-    window.addEventListener(
-      "online",
-      online
-    );
+    window.addEventListener("online", online);
 
-    window.addEventListener(
-      "offline",
-      offline
-    );
+    window.addEventListener("offline", offline);
 
     return () => {
-      window.removeEventListener(
-        "online",
-        online
-      );
+      window.removeEventListener("online", online);
 
-      window.removeEventListener(
-        "offline",
-        offline
-      );
+      window.removeEventListener("offline", offline);
     };
   }, []);
 
@@ -1815,22 +1300,19 @@ export function useOnlineStatus() {
 }
 ```
 
-***
+---
 
 ## `useDocumentTitle`
 
 ```jsx
-export function useDocumentTitle(
-  title
-) {
+export function useDocumentTitle(title) {
   useEffect(() => {
-    document.title =
-      title;
+    document.title = title;
   }, [title]);
 }
 ```
 
-***
+---
 
 # Performance Hooks
 
@@ -1839,15 +1321,10 @@ export function useDocumentTitle(
 Avoid stale closures.
 
 ```jsx
-import {
-  useRef,
-} from "react";
+import { useRef } from "react";
 
-export function useLatest(
-  value
-) {
-  const ref =
-    useRef(value);
+export function useLatest(value) {
+  const ref = useRef(value);
 
   ref.current = value;
 
@@ -1855,108 +1332,64 @@ export function useLatest(
 }
 ```
 
-***
+---
 
 ## `useMemoizedFn`
 
 ```jsx
-import {
-  useRef,
-  useCallback,
-} from "react";
+import { useRef, useCallback } from "react";
 
-export function useMemoizedFn(
-  fn
-) {
-  const fnRef =
-    useRef(fn);
+export function useMemoizedFn(fn) {
+  const fnRef = useRef(fn);
 
   fnRef.current = fn;
 
-  return useCallback(
-    (...args) =>
-      fnRef.current(
-        ...args
-      ),
-    []
-  );
+  return useCallback((...args) => fnRef.current(...args), []);
 }
 ```
 
-***
+---
 
 # Storage Hooks
 
 ## `useSessionStorage`
 
 ```jsx
-export function useSessionStorage(
-  key,
-  initial
-) {
-  const [value, setValue] =
-    useState(() => {
-      const stored =
-        sessionStorage.getItem(
-          key
-        );
+export function useSessionStorage(key, initial) {
+  const [value, setValue] = useState(() => {
+    const stored = sessionStorage.getItem(key);
 
-      return stored
-        ? JSON.parse(
-            stored
-          )
-        : initial;
-    });
+    return stored ? JSON.parse(stored) : initial;
+  });
 
   useEffect(() => {
-    sessionStorage.setItem(
-      key,
-      JSON.stringify(
-        value
-      )
-    );
+    sessionStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);
 
-  return [
-    value,
-    setValue,
-  ];
+  return [value, setValue];
 }
 ```
 
-***
+---
 
 # Form Hooks
 
 ## `useForm`
 
 ```jsx
-export function useForm(
-  initialValues
-) {
-  const [values, setValues] =
-    useState(
-      initialValues
-    );
+export function useForm(initialValues) {
+  const [values, setValues] = useState(initialValues);
 
-  const handleChange =
-    e => {
-      const {
-        name,
-        value,
-      } = e.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-      setValues(prev => ({
-        ...prev,
-        [name]: value,
-      }));
-    };
+    setValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-  const reset =
-    () =>
-      setValues(
-        initialValues
-      );
+  const reset = () => setValues(initialValues);
 
   return {
     values,
@@ -1966,54 +1399,31 @@ export function useForm(
 }
 ```
 
-***
+---
 
 # Media Hooks
 
 ## `useMediaQuery`
 
 ```jsx
-export function useMediaQuery(
-  query
-) {
-  const [
-    matches,
-    setMatches,
-  ] = useState(
-    window.matchMedia(
-      query
-    ).matches
-  );
+export function useMediaQuery(query) {
+  const [matches, setMatches] = useState(window.matchMedia(query).matches);
 
   useEffect(() => {
-    const media =
-      window.matchMedia(
-        query
-      );
+    const media = window.matchMedia(query);
 
-    const listener =
-      () =>
-        setMatches(
-          media.matches
-        );
+    const listener = () => setMatches(media.matches);
 
-    media.addEventListener(
-      "change",
-      listener
-    );
+    media.addEventListener("change", listener);
 
-    return () =>
-      media.removeEventListener(
-        "change",
-        listener
-      );
+    return () => media.removeEventListener("change", listener);
   }, [query]);
 
   return matches;
 }
 ```
 
-***
+---
 
 # Animation Hooks
 
@@ -2022,36 +1432,24 @@ export function useMediaQuery(
 (requestAnimationFrame)
 
 ```jsx
-export function useRaf(
-  callback
-) {
+export function useRaf(callback) {
   useEffect(() => {
     let frameId;
 
-    const animate =
-      () => {
-        callback();
+    const animate = () => {
+      callback();
 
-        frameId =
-          requestAnimationFrame(
-            animate
-          );
-      };
+      frameId = requestAnimationFrame(animate);
+    };
 
-    frameId =
-      requestAnimationFrame(
-        animate
-      );
+    frameId = requestAnimationFrame(animate);
 
-    return () =>
-      cancelAnimationFrame(
-        frameId
-      );
+    return () => cancelAnimationFrame(frameId);
   }, [callback]);
 }
 ```
 
-***
+---
 
 # Advanced Enterprise Hooks
 
@@ -2059,37 +1457,22 @@ export function useRaf(
 
 ```jsx
 const permissions = {
-  ADMIN: [
-    "CREATE",
-    "EDIT",
-    "DELETE",
-  ],
+  ADMIN: ["CREATE", "EDIT", "DELETE"],
 
   USER: ["VIEW"],
 };
 
-export function usePermission(
-  role
-) {
-  return (
-    permission =>
-      permissions[
-        role
-      ]?.includes(
-        permission
-      )
-  );
+export function usePermission(role) {
+  return (permission) => permissions[role]?.includes(permission);
 }
 ```
 
-***
+---
 
 ## `useFeatureFlag`
 
 ```jsx
-export function useFeatureFlag(
-  feature
-) {
+export function useFeatureFlag(feature) {
   const flags = {
     darkMode: true,
     aiSearch: false,
@@ -2099,7 +1482,7 @@ export function useFeatureFlag(
 }
 ```
 
-***
+---
 
 # Hooks Often Asked by Experience Level
 
@@ -2145,7 +1528,7 @@ export function useFeatureFlag(
 These are the hooks most frequently used in enterprise React applications and commonly discussed in Senior/Lead React interviews.
 These are **Architect-Level React Hooks** commonly used in large-scale applications (FinTech, Banking, Healthcare, SaaS, Trading Platforms).
 
-***
+---
 
 # 1. `useFeatureFlag`
 
@@ -2161,25 +1544,19 @@ const flags = {
 };
 
 export function useFeatureFlag(flagName) {
-  return useMemo(
-    () => !!flags[flagName],
-    [flagName]
-  );
+  return useMemo(() => !!flags[flagName], [flagName]);
 }
 ```
 
 ### Usage
 
 ```jsx
-const isNewDashboard =
-  useFeatureFlag("newDashboard");
+const isNewDashboard = useFeatureFlag("newDashboard");
 
-return isNewDashboard
-  ? <NewDashboard />
-  : <LegacyDashboard />;
+return isNewDashboard ? <NewDashboard /> : <LegacyDashboard />;
 ```
 
-***
+---
 
 # 2. `usePermission`
 
@@ -2187,30 +1564,15 @@ Role-Based Access Control (RBAC)
 
 ```jsx
 const permissions = {
-  ADMIN: [
-    "CREATE",
-    "EDIT",
-    "DELETE",
-    "VIEW",
-  ],
+  ADMIN: ["CREATE", "EDIT", "DELETE", "VIEW"],
 
-  MANAGER: [
-    "EDIT",
-    "VIEW",
-  ],
+  MANAGER: ["EDIT", "VIEW"],
 
   USER: ["VIEW"],
 };
 
-export function usePermission(
-  role
-) {
-  const can = permission =>
-    permissions[
-      role
-    ]?.includes(
-      permission
-    );
+export function usePermission(role) {
+  const can = (permission) => permissions[role]?.includes(permission);
 
   return { can };
 }
@@ -2219,49 +1581,34 @@ export function usePermission(
 ### Usage
 
 ```jsx
-const { can } =
-  usePermission("ADMIN");
+const { can } = usePermission("ADMIN");
 
 {
-  can("DELETE") && (
-    <DeleteButton />
-  );
+  can("DELETE") && <DeleteButton />;
 }
 ```
 
-***
+---
 
 # 3. `useQuery` (Enterprise Cache)
 
 ```jsx
 const cache = new Map();
 
-export function useQuery(
-  key,
-  fetcher
-) {
-  const [data, setData] =
-    useState(
-      cache.get(key)
-    );
+export function useQuery(key, fetcher) {
+  const [data, setData] = useState(cache.get(key));
 
-  const [loading, setLoading] =
-    useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (cache.has(key))
-      return;
+    if (cache.has(key)) return;
 
     async function load() {
       setLoading(true);
 
-      const result =
-        await fetcher();
+      const result = await fetcher();
 
-      cache.set(
-        key,
-        result
-      );
+      cache.set(key, result);
 
       setData(result);
 
@@ -2278,29 +1625,23 @@ export function useQuery(
 }
 ```
 
-***
+---
 
 # 4. `useMutation`
 
 ```jsx
-export function useMutation(
-  apiCall
-) {
-  const [loading, setLoading] =
-    useState(false);
+export function useMutation(apiCall) {
+  const [loading, setLoading] = useState(false);
 
-  const mutate =
-    async body => {
-      setLoading(true);
+  const mutate = async (body) => {
+    setLoading(true);
 
-      try {
-        return await apiCall(
-          body
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+    try {
+      return await apiCall(body);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return {
     mutate,
@@ -2312,51 +1653,34 @@ export function useMutation(
 ### Usage
 
 ```jsx
-const {
-  mutate,
-} = useMutation(
-  createEmployee
-);
+const { mutate } = useMutation(createEmployee);
 
 mutate(data);
 ```
 
-***
+---
 
 # 5. `useOptimisticCache`
 
 React Query style optimistic updates.
 
 ```jsx
-export function useOptimisticCache(
-  initialData
-) {
-  const [data, setData] =
-    useState(
-      initialData
-    );
+export function useOptimisticCache(initialData) {
+  const [data, setData] = useState(initialData);
 
-  const optimisticUpdate =
-    async (
-      updater,
-      mutation
-    ) => {
-      const oldData =
-        data;
+  const optimisticUpdate = async (updater, mutation) => {
+    const oldData = data;
 
-      const newData =
-        updater(data);
+    const newData = updater(data);
 
-      setData(newData);
+    setData(newData);
 
-      try {
-        await mutation();
-      } catch {
-        setData(
-          oldData
-        );
-      }
-    };
+    try {
+      await mutation();
+    } catch {
+      setData(oldData);
+    }
+  };
 
   return {
     data,
@@ -2369,45 +1693,37 @@ export function useOptimisticCache(
 
 ```jsx
 optimisticUpdate(
-  users =>
-    users.map(user =>
+  (users) =>
+    users.map((user) =>
       user.id === id
         ? {
             ...user,
             active: true,
           }
-        : user
+        : user,
     ),
 
-  () =>
-    api.activateUser(id)
+  () => api.activateUser(id),
 );
 ```
 
-***
+---
 
 # 6. `useSyncExternalStore`
 
 Redux/Zustand Internals
 
 ```jsx
-import {
-  useSyncExternalStore,
-} from "react";
+import { useSyncExternalStore } from "react";
 
 const store = {
   value: 0,
   listeners: new Set(),
 
   subscribe(listener) {
-    this.listeners.add(
-      listener
-    );
+    this.listeners.add(listener);
 
-    return () =>
-      this.listeners.delete(
-        listener
-      );
+    return () => this.listeners.delete(listener);
   },
 
   getSnapshot() {
@@ -2417,54 +1733,40 @@ const store = {
 
 export function useCounterStore() {
   return useSyncExternalStore(
-    store.subscribe.bind(
-      store
-    ),
-    store.getSnapshot.bind(
-      store
-    )
+    store.subscribe.bind(store),
+    store.getSnapshot.bind(store),
   );
 }
 ```
 
-***
+---
 
 # 7. `useStateMachine`
 
 ```jsx
 const machine = {
   idle: {
-    START:
-      "loading",
+    START: "loading",
   },
 
   loading: {
-    SUCCESS:
-      "success",
-    ERROR:
-      "error",
+    SUCCESS: "success",
+    ERROR: "error",
   },
 
   error: {
-    RETRY:
-      "loading",
+    RETRY: "loading",
   },
 };
 
 export function useStateMachine() {
-  const [state, setState] =
-    useState("idle");
+  const [state, setState] = useState("idle");
 
-  const send =
-    event => {
-      const next =
-        machine[state]?.[
-          event
-        ];
+  const send = (event) => {
+    const next = machine[state]?.[event];
 
-      if (next)
-        setState(next);
-    };
+    if (next) setState(next);
+  };
 
   return {
     state,
@@ -2483,32 +1785,23 @@ loading
 success
 ```
 
-***
+---
 
 # 8. `useActorModel`
 
 Inspired by XState.
 
 ```jsx
-function reducer(
-  state,
-  event
-) {
-  switch (
-    event.type
-  ) {
+function reducer(state, event) {
+  switch (event.type) {
     case "INCREMENT":
       return {
-        count:
-          state.count +
-          1,
+        count: state.count + 1,
       };
 
     case "DECREMENT":
       return {
-        count:
-          state.count -
-          1,
+        count: state.count - 1,
       };
 
     default:
@@ -2517,13 +1810,9 @@ function reducer(
 }
 
 export function useActorModel() {
-  const [state, send] =
-    useReducer(
-      reducer,
-      {
-        count: 0,
-      }
-    );
+  const [state, send] = useReducer(reducer, {
+    count: 0,
+  });
 
   return {
     state,
@@ -2540,7 +1829,7 @@ send({
 });
 ```
 
-***
+---
 
 # 9. `useCommandPattern`
 
@@ -2556,33 +1845,20 @@ Editor
 
 ```jsx
 export function useCommandPattern() {
-  const [history, setHistory] =
-    useState([]);
+  const [history, setHistory] = useState([]);
 
-  const execute =
-    command => {
-      command.execute();
+  const execute = (command) => {
+    command.execute();
 
-      setHistory(prev => [
-        ...prev,
-        command,
-      ]);
-    };
+    setHistory((prev) => [...prev, command]);
+  };
 
   const undo = () => {
-    const last =
-      history[
-        history.length - 1
-      ];
+    const last = history[history.length - 1];
 
     last?.undo();
 
-    setHistory(prev =>
-      prev.slice(
-        0,
-        -1
-      )
-    );
+    setHistory((prev) => prev.slice(0, -1));
   };
 
   return {
@@ -2592,29 +1868,21 @@ export function useCommandPattern() {
 }
 ```
 
-***
+---
 
 # 10. Offline-First Hook
 
 ```jsx
 export function useOfflineQueue() {
-  const [queue, setQueue] =
-    useState([]);
+  const [queue, setQueue] = useState([]);
 
-  const addRequest =
-    request => {
-      setQueue(prev => [
-        ...prev,
-        request,
-      ]);
-    };
+  const addRequest = (request) => {
+    setQueue((prev) => [...prev, request]);
+  };
 
   useEffect(() => {
     async function sync() {
-      if (
-        navigator.onLine &&
-        queue.length
-      ) {
+      if (navigator.onLine && queue.length) {
         for (const req of queue) {
           await req();
         }
@@ -2623,16 +1891,9 @@ export function useOfflineQueue() {
       }
     }
 
-    window.addEventListener(
-      "online",
-      sync
-    );
+    window.addEventListener("online", sync);
 
-    return () =>
-      window.removeEventListener(
-        "online",
-        sync
-      );
+    return () => window.removeEventListener("online", sync);
   }, [queue]);
 
   return {
@@ -2641,7 +1902,7 @@ export function useOfflineQueue() {
 }
 ```
 
-***
+---
 
 # 11. Event Sourcing Hook
 
@@ -2649,19 +1910,16 @@ Instead of storing state, store events.
 
 ```jsx
 export function useEventSourcing() {
-  const [events, setEvents] =
-    useState([]);
+  const [events, setEvents] = useState([]);
 
-  const append =
-    event =>
-      setEvents(prev => [
-        ...prev,
-        {
-          ...event,
-          timestamp:
-            Date.now(),
-        },
-      ]);
+  const append = (event) =>
+    setEvents((prev) => [
+      ...prev,
+      {
+        ...event,
+        timestamp: Date.now(),
+      },
+    ]);
 
   return {
     events,
@@ -2675,38 +1933,28 @@ export function useEventSourcing() {
 ```jsx
 [
   {
-    type:
-      "EMPLOYEE_CREATED",
+    type: "EMPLOYEE_CREATED",
   },
   {
-    type:
-      "EMPLOYEE_UPDATED",
+    type: "EMPLOYEE_UPDATED",
   },
   {
-    type:
-      "EMPLOYEE_DELETED",
+    type: "EMPLOYEE_DELETED",
   },
 ];
 ```
 
-***
+---
 
 # 12. CQRS Hook
 
 Separate Reads and Writes.
 
 ```jsx
-export function useCQRS(
-  queryFn,
-  commandFn
-) {
-  const query =
-    async params =>
-      queryFn(params);
+export function useCQRS(queryFn, commandFn) {
+  const query = async (params) => queryFn(params);
 
-  const command =
-    async body =>
-      commandFn(body);
+  const command = async (body) => commandFn(body);
 
   return {
     query,
@@ -2718,20 +1966,14 @@ export function useCQRS(
 ### Usage
 
 ```jsx
-const {
-  query,
-  command,
-} = useCQRS(
-  getEmployees,
-  createEmployee
-);
+const { query, command } = useCQRS(getEmployees, createEmployee);
 
 await query();
 
 await command(data);
 ```
 
-***
+---
 
 # React Hooks by Architecture Level
 
@@ -2796,12 +2038,11 @@ CQRS + Event Sourcing + Actor Model
 
 These patterns are typically discussed in Staff Engineer, Frontend Architect, and Principal Engineer interviews when designing large-scale React applications.
 
-
 # Headless UI Hooks (useTab, useAccordion, useButton, useInput)
 
 These are **behaviour hooks** used in design systems (Material UI, Radix UI, Headless UI, Adobe Spectrum, Atlassian).
 
-***
+---
 
 # 1. useTab
 
@@ -2810,30 +2051,16 @@ Manages tab navigation logic.
 ```jsx
 import { useState } from "react";
 
-export function useTab(
-  tabs,
-  initialIndex = 0
-) {
-  const [activeIndex, setActiveIndex] =
-    useState(initialIndex);
+export function useTab(tabs, initialIndex = 0) {
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
 
-  const next = () =>
-    setActiveIndex(i =>
-      Math.min(
-        tabs.length - 1,
-        i + 1
-      )
-    );
+  const next = () => setActiveIndex((i) => Math.min(tabs.length - 1, i + 1));
 
-  const prev = () =>
-    setActiveIndex(i =>
-      Math.max(0, i - 1)
-    );
+  const prev = () => setActiveIndex((i) => Math.max(0, i - 1));
 
   return {
     activeIndex,
-    activeTab:
-      tabs[activeIndex],
+    activeTab: tabs[activeIndex],
     setActiveIndex,
     next,
     prev,
@@ -2844,17 +2071,14 @@ export function useTab(
 ### Usage
 
 ```jsx
-const {
-  activeIndex,
-  setActiveIndex,
-} = useTab([
+const { activeIndex, setActiveIndex } = useTab([
   "Profile",
   "Settings",
   "Billing",
 ]);
 ```
 
-***
+---
 
 # 2. useAccordion
 
@@ -2863,14 +2087,10 @@ Single Accordion
 ```jsx
 import { useState } from "react";
 
-export function useAccordion(
-  initial = false
-) {
-  const [expanded, setExpanded] =
-    useState(initial);
+export function useAccordion(initial = false) {
+  const [expanded, setExpanded] = useState(initial);
 
-  const toggle = () =>
-    setExpanded(v => !v);
+  const toggle = () => setExpanded((v) => !v);
 
   return {
     expanded,
@@ -2883,15 +2103,10 @@ export function useAccordion(
 
 ```jsx
 export function useAccordionGroup() {
-  const [openId, setOpenId] =
-    useState(null);
+  const [openId, setOpenId] = useState(null);
 
-  const toggle = id => {
-    setOpenId(current =>
-      current === id
-        ? null
-        : id
-    );
+  const toggle = (id) => {
+    setOpenId((current) => (current === id ? null : id));
   };
 
   return {
@@ -2901,21 +2116,16 @@ export function useAccordionGroup() {
 }
 ```
 
-***
+---
 
 # 3. useButton
 
 Accessibility + Keyboard Support
 
 ```jsx
-export function useButton(
-  onClick
-) {
-  const handleKeyDown = e => {
-    if (
-      e.key === "Enter" ||
-      e.key === " "
-    ) {
+export function useButton(onClick) {
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
       onClick?.(e);
     }
   };
@@ -2924,8 +2134,7 @@ export function useButton(
     role: "button",
     tabIndex: 0,
     onClick,
-    onKeyDown:
-      handleKeyDown,
+    onKeyDown: handleKeyDown,
   };
 }
 ```
@@ -2933,19 +2142,14 @@ export function useButton(
 ### Usage
 
 ```jsx
-const buttonProps =
-  useButton(() => {
-    console.log(
-      "clicked"
-    );
-  });
+const buttonProps = useButton(() => {
+  console.log("clicked");
+});
 
-<div {...buttonProps}>
-  Save
-</div>;
+<div {...buttonProps}>Save</div>;
 ```
 
-***
+---
 
 # 4. useInput
 
@@ -2954,19 +2158,12 @@ Controlled input abstraction.
 ```jsx
 import { useState } from "react";
 
-export function useInput(
-  initial = ""
-) {
-  const [value, setValue] =
-    useState(initial);
+export function useInput(initial = "") {
+  const [value, setValue] = useState(initial);
 
-  const onChange = e =>
-    setValue(
-      e.target.value
-    );
+  const onChange = (e) => setValue(e.target.value);
 
-  const reset = () =>
-    setValue("");
+  const reset = () => setValue("");
 
   return {
     value,
@@ -2977,31 +2174,25 @@ export function useInput(
 }
 ```
 
-***
+---
 
 # 5. useRadioGroup
 
 ```jsx
 import { useState } from "react";
 
-export function useRadioGroup(
-  initial
-) {
-  const [value, setValue] =
-    useState(initial);
+export function useRadioGroup(initial) {
+  const [value, setValue] = useState(initial);
 
   return {
     value,
     setValue,
-    isSelected:
-      option =>
-        value ===
-        option,
+    isSelected: (option) => value === option,
   };
 }
 ```
 
-***
+---
 
 # 6. useCheckboxGroup
 
@@ -3009,17 +2200,11 @@ export function useRadioGroup(
 import { useState } from "react";
 
 export function useCheckboxGroup() {
-  const [values, setValues] =
-    useState([]);
+  const [values, setValues] = useState([]);
 
-  const toggle = item => {
-    setValues(prev =>
-      prev.includes(item)
-        ? prev.filter(
-            x =>
-              x !== item
-          )
-        : [...prev, item]
+  const toggle = (item) => {
+    setValues((prev) =>
+      prev.includes(item) ? prev.filter((x) => x !== item) : [...prev, item],
     );
   };
 
@@ -3030,7 +2215,7 @@ export function useCheckboxGroup() {
 }
 ```
 
-***
+---
 
 # 7. useDisclosure
 
@@ -3047,78 +2232,52 @@ Tooltip
 ```jsx
 import { useState } from "react";
 
-export function useDisclosure(
-  initial = false
-) {
-  const [isOpen, setOpen] =
-    useState(initial);
+export function useDisclosure(initial = false) {
+  const [isOpen, setOpen] = useState(initial);
 
   return {
     isOpen,
 
-    open: () =>
-      setOpen(true),
+    open: () => setOpen(true),
 
-    close: () =>
-      setOpen(false),
+    close: () => setOpen(false),
 
-    toggle: () =>
-      setOpen(v => !v),
+    toggle: () => setOpen((v) => !v),
   };
 }
 ```
 
-***
+---
 
 # 8. useDropdown
 
 ```jsx
 export function useDropdown() {
-  const [open, setOpen] =
-    useState(false);
+  const [open, setOpen] = useState(false);
 
   return {
     open,
-    openMenu: () =>
-      setOpen(true),
-    closeMenu: () =>
-      setOpen(false),
-    toggleMenu: () =>
-      setOpen(v => !v),
+    openMenu: () => setOpen(true),
+    closeMenu: () => setOpen(false),
+    toggleMenu: () => setOpen((v) => !v),
   };
 }
 ```
 
-***
+---
 
 # 9. useMenu
 
 Keyboard Accessible Menu
 
 ```jsx
-export function useMenu(
-  items
-) {
-  const [activeIndex, setActiveIndex] =
-    useState(0);
+export function useMenu(items) {
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const moveDown =
-    () =>
-      setActiveIndex(i =>
-        Math.min(
-          items.length - 1,
-          i + 1
-        )
-      );
+  const moveDown = () =>
+    setActiveIndex((i) => Math.min(items.length - 1, i + 1));
 
-  const moveUp =
-    () =>
-      setActiveIndex(i =>
-        Math.max(
-          0,
-          i - 1
-        )
-      );
+  const moveUp = () => setActiveIndex((i) => Math.max(0, i - 1));
 
   return {
     activeIndex,
@@ -3128,27 +2287,19 @@ export function useMenu(
 }
 ```
 
-***
+---
 
 # 10. useCombobox
 
 Autocomplete / Search Dropdown
 
 ```jsx
-export function useCombobox(
-  items
-) {
-  const [query, setQuery] =
-    useState("");
+export function useCombobox(items) {
+  const [query, setQuery] = useState("");
 
-  const filtered =
-    items.filter(item =>
-      item
-        .toLowerCase()
-        .includes(
-          query.toLowerCase()
-        )
-    );
+  const filtered = items.filter((item) =>
+    item.toLowerCase().includes(query.toLowerCase()),
+  );
 
   return {
     query,
@@ -3158,31 +2309,25 @@ export function useCombobox(
 }
 ```
 
-***
+---
 
 # 11. useFormField
 
 Enterprise Form Hook
 
 ```jsx
-export function useFormField(
-  initial
-) {
-  const [value, setValue] =
-    useState(initial);
+export function useFormField(initial) {
+  const [value, setValue] = useState(initial);
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState("");
 
-  const validate =
-    validator => {
-      const result =
-        validator(value);
+  const validate = (validator) => {
+    const result = validator(value);
 
-      setError(result);
+    setError(result);
 
-      return !result;
-    };
+    return !result;
+  };
 
   return {
     value,
@@ -3193,38 +2338,23 @@ export function useFormField(
 }
 ```
 
-***
+---
 
 # 12. useStepper
 
 ```jsx
-export function useStepper(
-  total
-) {
-  const [step, setStep] =
-    useState(1);
+export function useStepper(total) {
+  const [step, setStep] = useState(1);
 
   return {
     step,
-    next: () =>
-      setStep(s =>
-        Math.min(
-          total,
-          s + 1
-        )
-      ),
-    prev: () =>
-      setStep(s =>
-        Math.max(
-          1,
-          s - 1
-        )
-      ),
+    next: () => setStep((s) => Math.min(total, s + 1)),
+    prev: () => setStep((s) => Math.max(1, s - 1)),
   };
 }
 ```
 
-***
+---
 
 # Enterprise Design System Hooks
 
@@ -3269,7 +2399,7 @@ export function useStepper(
 ✅ useFocusVisible
 ```
 
-***
+---
 
 # Senior React Interview Follow-up
 
@@ -3305,7 +2435,6 @@ StyledTabs
 
 This separation gives maximum reusability, accessibility, testability, and theming flexibility.
 
-
 # Headless UI + Accessibility Hooks (Production Ready)
 
 These are the hooks typically built inside **Design Systems** like:
@@ -3319,7 +2448,7 @@ These are the hooks typically built inside **Design Systems** like:
 ✅ Shopify Polaris
 ```
 
-***
+---
 
 # 1. useTab
 
@@ -3336,24 +2465,16 @@ Supports:
 import { useState } from "react";
 
 export function useTab(totalTabs) {
-  const [activeIndex, setActiveIndex] =
-    useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const onKeyDown = e => {
+  const onKeyDown = (e) => {
     switch (e.key) {
       case "ArrowRight":
-        setActiveIndex(i =>
-          Math.min(
-            totalTabs - 1,
-            i + 1
-          )
-        );
+        setActiveIndex((i) => Math.min(totalTabs - 1, i + 1));
         break;
 
       case "ArrowLeft":
-        setActiveIndex(i =>
-          Math.max(0, i - 1)
-        );
+        setActiveIndex((i) => Math.max(0, i - 1));
         break;
 
       case "Home":
@@ -3361,9 +2482,7 @@ export function useTab(totalTabs) {
         break;
 
       case "End":
-        setActiveIndex(
-          totalTabs - 1
-        );
+        setActiveIndex(totalTabs - 1);
         break;
     }
   };
@@ -3376,7 +2495,7 @@ export function useTab(totalTabs) {
 }
 ```
 
-***
+---
 
 # 2. useAccordion
 
@@ -3386,33 +2505,26 @@ Single Expand
 import { useState } from "react";
 
 export function useAccordion() {
-  const [expanded, setExpanded] =
-    useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   return {
     expanded,
-    toggle: () =>
-      setExpanded(v => !v),
+    toggle: () => setExpanded((v) => !v),
   };
 }
 ```
 
-***
+---
 
 # Multi Accordion
 
 ```jsx
 export function useAccordionGroup() {
-  const [openIds, setOpenIds] =
-    useState([]);
+  const [openIds, setOpenIds] = useState([]);
 
-  const toggle = id => {
-    setOpenIds(prev =>
-      prev.includes(id)
-        ? prev.filter(
-            x => x !== id
-          )
-        : [...prev, id]
+  const toggle = (id) => {
+    setOpenIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 
@@ -3423,7 +2535,7 @@ export function useAccordionGroup() {
 }
 ```
 
-***
+---
 
 # 3. useMenu
 
@@ -3433,27 +2545,16 @@ Accessible menu navigation.
 import { useState } from "react";
 
 export function useMenu(items) {
-  const [active, setActive] =
-    useState(0);
+  const [active, setActive] = useState(0);
 
-  const onKeyDown = e => {
+  const onKeyDown = (e) => {
     switch (e.key) {
       case "ArrowDown":
-        setActive(index =>
-          Math.min(
-            items.length - 1,
-            index + 1
-          )
-        );
+        setActive((index) => Math.min(items.length - 1, index + 1));
         break;
 
       case "ArrowUp":
-        setActive(index =>
-          Math.max(
-            0,
-            index - 1
-          )
-        );
+        setActive((index) => Math.max(0, index - 1));
         break;
     }
   };
@@ -3465,7 +2566,7 @@ export function useMenu(items) {
 }
 ```
 
-***
+---
 
 # 4. useDropdown
 
@@ -3473,22 +2574,18 @@ export function useMenu(items) {
 import { useState } from "react";
 
 export function useDropdown() {
-  const [open, setOpen] =
-    useState(false);
+  const [open, setOpen] = useState(false);
 
   return {
     open,
-    openMenu: () =>
-      setOpen(true),
-    closeMenu: () =>
-      setOpen(false),
-    toggleMenu: () =>
-      setOpen(v => !v),
+    openMenu: () => setOpen(true),
+    closeMenu: () => setOpen(false),
+    toggleMenu: () => setOpen((v) => !v),
   };
 }
 ```
 
-***
+---
 
 # 5. useStepper
 
@@ -3496,35 +2593,21 @@ export function useDropdown() {
 import { useState } from "react";
 
 export function useStepper(total) {
-  const [step, setStep] =
-    useState(1);
+  const [step, setStep] = useState(1);
 
   return {
     step,
 
-    next: () =>
-      setStep(current =>
-        Math.min(
-          total,
-          current + 1
-        )
-      ),
+    next: () => setStep((current) => Math.min(total, current + 1)),
 
-    prev: () =>
-      setStep(current =>
-        Math.max(
-          1,
-          current - 1
-        )
-      ),
+    prev: () => setStep((current) => Math.max(1, current - 1)),
 
-    reset: () =>
-      setStep(1),
+    reset: () => setStep(1),
   };
 }
 ```
 
-***
+---
 
 # 6. useDisclosure
 
@@ -3544,38 +2627,28 @@ Accordion
 ```jsx
 import { useState } from "react";
 
-export function useDisclosure(
-  initial = false
-) {
-  const [isOpen, setOpen] =
-    useState(initial);
+export function useDisclosure(initial = false) {
+  const [isOpen, setOpen] = useState(initial);
 
   return {
     isOpen,
 
-    open: () =>
-      setOpen(true),
+    open: () => setOpen(true),
 
-    close: () =>
-      setOpen(false),
+    close: () => setOpen(false),
 
-    toggle: () =>
-      setOpen(v => !v),
+    toggle: () => setOpen((v) => !v),
   };
 }
 ```
 
-***
+---
 
 # 7. useModal
 
 ```jsx
 export function useModal() {
-  const {
-    isOpen,
-    open,
-    close,
-  } = useDisclosure();
+  const { isOpen, open, close } = useDisclosure();
 
   return {
     isOpen,
@@ -3585,7 +2658,7 @@ export function useModal() {
 }
 ```
 
-***
+---
 
 # 8. useDialog
 
@@ -3600,18 +2673,13 @@ export function useDialog() {
 }
 ```
 
-***
+---
 
 # 9. usePopover
 
 ```jsx
 export function usePopover() {
-  const {
-    isOpen,
-    open,
-    close,
-    toggle,
-  } = useDisclosure();
+  const { isOpen, open, close, toggle } = useDisclosure();
 
   return {
     isOpen,
@@ -3622,7 +2690,7 @@ export function usePopover() {
 }
 ```
 
-***
+---
 
 # 10. useTooltip
 
@@ -3630,36 +2698,28 @@ export function usePopover() {
 import { useState } from "react";
 
 export function useTooltip() {
-  const [visible, setVisible] =
-    useState(false);
+  const [visible, setVisible] = useState(false);
 
   return {
     visible,
 
-    show: () =>
-      setVisible(true),
+    show: () => setVisible(true),
 
-    hide: () =>
-      setVisible(false),
+    hide: () => setVisible(false),
   };
 }
 ```
 
-***
+---
 
 # 11. useButton
 
 Accessibility-friendly button.
 
 ```jsx
-export function useButton(
-  onClick
-) {
-  const onKeyDown = e => {
-    if (
-      e.key === "Enter" ||
-      e.key === " "
-    ) {
+export function useButton(onClick) {
+  const onKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
       onClick?.();
     }
   };
@@ -3673,7 +2733,7 @@ export function useButton(
 }
 ```
 
-***
+---
 
 # 12. useFocusTrap
 
@@ -3684,63 +2744,38 @@ import { useEffect } from "react";
 
 export function useFocusTrap(ref) {
   useEffect(() => {
-    const container =
-      ref.current;
+    const container = ref.current;
 
-    if (!container)
-      return;
+    if (!container) return;
 
-    const elements =
-      container.querySelectorAll(
-        "button,input,a[href]"
-      );
+    const elements = container.querySelectorAll("button,input,a[href]");
 
-    const first =
-      elements[0];
+    const first = elements[0];
 
-    const last =
-      elements[
-        elements.length - 1
-      ];
+    const last = elements[elements.length - 1];
 
-    const handleTab = e => {
-      if (e.key !== "Tab")
-        return;
+    const handleTab = (e) => {
+      if (e.key !== "Tab") return;
 
-      if (
-        e.shiftKey &&
-        document.activeElement ===
-          first
-      ) {
+      if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
       }
 
-      if (
-        !e.shiftKey &&
-        document.activeElement ===
-          last
-      ) {
+      if (!e.shiftKey && document.activeElement === last) {
         e.preventDefault();
         first.focus();
       }
     };
 
-    document.addEventListener(
-      "keydown",
-      handleTab
-    );
+    document.addEventListener("keydown", handleTab);
 
-    return () =>
-      document.removeEventListener(
-        "keydown",
-        handleTab
-      );
+    return () => document.removeEventListener("keydown", handleTab);
   }, [ref]);
 }
 ```
 
-***
+---
 
 # 13. useKeyboard
 
@@ -3749,27 +2784,17 @@ Global Keyboard Shortcuts
 ```jsx
 import { useEffect } from "react";
 
-export function useKeyboard(
-  key,
-  callback
-) {
+export function useKeyboard(key, callback) {
   useEffect(() => {
-    const handler = e => {
+    const handler = (e) => {
       if (e.key === key) {
         callback(e);
       }
     };
 
-    window.addEventListener(
-      "keydown",
-      handler
-    );
+    window.addEventListener("keydown", handler);
 
-    return () =>
-      window.removeEventListener(
-        "keydown",
-        handler
-      );
+    return () => window.removeEventListener("keydown", handler);
   }, [key, callback]);
 }
 ```
@@ -3777,73 +2802,46 @@ export function useKeyboard(
 ### Usage
 
 ```jsx
-useKeyboard(
-  "Escape",
-  closeModal
-);
+useKeyboard("Escape", closeModal);
 ```
 
-***
+---
 
 # 14. useAriaLabel
 
 ```jsx
-export function useAriaLabel(
-  label
-) {
+export function useAriaLabel(label) {
   return {
     "aria-label": label,
   };
 }
 ```
 
-***
+---
 
 # 15. useFocusVisible
 
 Show focus ring only for keyboard users.
 
 ```jsx
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 export function useFocusVisible() {
-  const [
-    keyboardMode,
-    setKeyboardMode,
-  ] = useState(false);
+  const [keyboardMode, setKeyboardMode] = useState(false);
 
   useEffect(() => {
-    const keyboard =
-      () =>
-        setKeyboardMode(true);
+    const keyboard = () => setKeyboardMode(true);
 
-    const mouse =
-      () =>
-        setKeyboardMode(false);
+    const mouse = () => setKeyboardMode(false);
 
-    window.addEventListener(
-      "keydown",
-      keyboard
-    );
+    window.addEventListener("keydown", keyboard);
 
-    window.addEventListener(
-      "mousedown",
-      mouse
-    );
+    window.addEventListener("mousedown", mouse);
 
     return () => {
-      window.removeEventListener(
-        "keydown",
-        keyboard
-      );
+      window.removeEventListener("keydown", keyboard);
 
-      window.removeEventListener(
-        "mousedown",
-        mouse
-      );
+      window.removeEventListener("mousedown", mouse);
     };
   }, []);
 
@@ -3851,7 +2849,7 @@ export function useFocusVisible() {
 }
 ```
 
-***
+---
 
 # Design System Architecture
 
@@ -3885,7 +2883,7 @@ Emotion
 Styled Components
 ```
 
-***
+---
 
 # Hooks Commonly Asked in Senior React Interviews
 
@@ -3934,7 +2932,6 @@ Styled Components
 
 These are the hooks that form the foundation of enterprise-grade, accessible component libraries.
 
-
 These are **Staff/Principal Engineer level accessibility hooks** used in building components like:
 
 ```text
@@ -3948,7 +2945,7 @@ IDE Navigation
 Keyboard Accessible Menus
 ```
 
-***
+---
 
 # 1. useRovingTabIndex
 
@@ -3979,33 +2976,21 @@ Toolbar
 import { useState } from "react";
 
 export function useRovingTabIndex(count) {
-  const [activeIndex, setActiveIndex] =
-    useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const getItemProps = index => ({
-    tabIndex:
-      index === activeIndex ? 0 : -1,
+  const getItemProps = (index) => ({
+    tabIndex: index === activeIndex ? 0 : -1,
 
-    onKeyDown: e => {
+    onKeyDown: (e) => {
       switch (e.key) {
         case "ArrowRight":
         case "ArrowDown":
-          setActiveIndex(i =>
-            Math.min(
-              count - 1,
-              i + 1
-            )
-          );
+          setActiveIndex((i) => Math.min(count - 1, i + 1));
           break;
 
         case "ArrowLeft":
         case "ArrowUp":
-          setActiveIndex(i =>
-            Math.max(
-              0,
-              i - 1
-            )
-          );
+          setActiveIndex((i) => Math.max(0, i - 1));
           break;
       }
     },
@@ -4018,7 +3003,7 @@ export function useRovingTabIndex(count) {
 }
 ```
 
-***
+---
 
 # 2. useTypeAheadSearch
 
@@ -4046,40 +3031,26 @@ Banana highlighted
 ## Hook
 
 ```jsx
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-export function useTypeAheadSearch(
-  items
-) {
-  const [query, setQuery] =
-    useState("");
+export function useTypeAheadSearch(items) {
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
-    const timer =
-      setTimeout(() => {
-        setQuery("");
-      }, 500);
+    const timer = setTimeout(() => {
+      setQuery("");
+    }, 500);
 
-    return () =>
-      clearTimeout(timer);
+    return () => clearTimeout(timer);
   }, [query]);
 
-  const search = key => {
-    const nextQuery =
-      query + key;
+  const search = (key) => {
+    const nextQuery = query + key;
 
     setQuery(nextQuery);
 
-    return items.findIndex(
-      item =>
-        item
-          .toLowerCase()
-          .startsWith(
-            nextQuery.toLowerCase()
-          )
+    return items.findIndex((item) =>
+      item.toLowerCase().startsWith(nextQuery.toLowerCase()),
     );
   };
 
@@ -4087,7 +3058,7 @@ export function useTypeAheadSearch(
 }
 ```
 
-***
+---
 
 # 3. useCompositeNavigation
 
@@ -4112,53 +3083,37 @@ Vertical
 ```jsx
 import { useState } from "react";
 
-export function useCompositeNavigation(
-  rows,
-  cols
-) {
-  const [position, setPosition] =
-    useState({
-      row: 0,
-      col: 0,
-    });
+export function useCompositeNavigation(rows, cols) {
+  const [position, setPosition] = useState({
+    row: 0,
+    col: 0,
+  });
 
-  const onKeyDown = e => {
-    setPosition(pos => {
+  const onKeyDown = (e) => {
+    setPosition((pos) => {
       switch (e.key) {
         case "ArrowRight":
           return {
             ...pos,
-            col: Math.min(
-              cols - 1,
-              pos.col + 1
-            ),
+            col: Math.min(cols - 1, pos.col + 1),
           };
 
         case "ArrowLeft":
           return {
             ...pos,
-            col: Math.max(
-              0,
-              pos.col - 1
-            ),
+            col: Math.max(0, pos.col - 1),
           };
 
         case "ArrowDown":
           return {
             ...pos,
-            row: Math.min(
-              rows - 1,
-              pos.row + 1
-            ),
+            row: Math.min(rows - 1, pos.row + 1),
           };
 
         case "ArrowUp":
           return {
             ...pos,
-            row: Math.max(
-              0,
-              pos.row - 1
-            ),
+            row: Math.max(0, pos.row - 1),
           };
 
         default:
@@ -4174,7 +3129,7 @@ export function useCompositeNavigation(
 }
 ```
 
-***
+---
 
 # 4. useTreeView
 
@@ -4193,17 +3148,13 @@ Categories
 import { useState } from "react";
 
 export function useTreeView() {
-  const [expanded, setExpanded] =
-    useState(new Set());
+  const [expanded, setExpanded] = useState(new Set());
 
-  const toggle = id => {
-    setExpanded(prev => {
-      const next =
-        new Set(prev);
+  const toggle = (id) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
 
-      if (
-        next.has(id)
-      ) {
+      if (next.has(id)) {
         next.delete(id);
       } else {
         next.add(id);
@@ -4220,7 +3171,7 @@ export function useTreeView() {
 }
 ```
 
-***
+---
 
 # 5. useCommandPalette
 
@@ -4239,20 +3190,12 @@ Slack
 ```jsx
 import { useState } from "react";
 
-export function useCommandPalette(
-  commands
-) {
-  const [query, setQuery] =
-    useState("");
+export function useCommandPalette(commands) {
+  const [query, setQuery] = useState("");
 
-  const filtered =
-    commands.filter(command =>
-      command.label
-        .toLowerCase()
-        .includes(
-          query.toLowerCase()
-        )
-    );
+  const filtered = commands.filter((command) =>
+    command.label.toLowerCase().includes(query.toLowerCase()),
+  );
 
   return {
     query,
@@ -4274,7 +3217,7 @@ Open Folder
 Open Settings
 ```
 
-***
+---
 
 # 6. useHotkeys
 
@@ -4291,65 +3234,35 @@ Figma
 ```jsx
 import { useEffect } from "react";
 
-export function useHotkeys(
-  shortcut,
-  callback
-) {
+export function useHotkeys(shortcut, callback) {
   useEffect(() => {
-    const handler = e => {
-      const ctrl =
-        shortcut.includes(
-          "Ctrl"
-        );
+    const handler = (e) => {
+      const ctrl = shortcut.includes("Ctrl");
 
-      const key =
-        shortcut
-          .split("+")
-          .pop();
+      const key = shortcut.split("+").pop();
 
-      if (
-        ctrl &&
-        e.ctrlKey &&
-        e.key.toLowerCase() ===
-          key.toLowerCase()
-      ) {
+      if (ctrl && e.ctrlKey && e.key.toLowerCase() === key.toLowerCase()) {
         e.preventDefault();
         callback();
       }
     };
 
-    window.addEventListener(
-      "keydown",
-      handler
-    );
+    window.addEventListener("keydown", handler);
 
-    return () =>
-      window.removeEventListener(
-        "keydown",
-        handler
-      );
-  }, [
-    shortcut,
-    callback,
-  ]);
+    return () => window.removeEventListener("keydown", handler);
+  }, [shortcut, callback]);
 }
 ```
 
 ### Usage
 
 ```jsx
-useHotkeys(
-  "Ctrl+K",
-  openPalette
-);
+useHotkeys("Ctrl+K", openPalette);
 
-useHotkeys(
-  "Ctrl+S",
-  saveDocument
-);
+useHotkeys("Ctrl+S", saveDocument);
 ```
 
-***
+---
 
 # 7. useAccessibleGrid
 
@@ -4364,35 +3277,25 @@ Excel Clone
 ## Hook
 
 ```jsx
-export function useAccessibleGrid(
-  rows,
-  cols
-) {
-  const [cell, setCell] =
-    useState({
-      row: 0,
-      col: 0,
-    });
+export function useAccessibleGrid(rows, cols) {
+  const [cell, setCell] = useState({
+    row: 0,
+    col: 0,
+  });
 
-  const move = e => {
+  const move = (e) => {
     switch (e.key) {
       case "ArrowDown":
-        setCell(c => ({
+        setCell((c) => ({
           ...c,
-          row: Math.min(
-            rows - 1,
-            c.row + 1
-          ),
+          row: Math.min(rows - 1, c.row + 1),
         }));
         break;
 
       case "ArrowUp":
-        setCell(c => ({
+        setCell((c) => ({
           ...c,
-          row: Math.max(
-            0,
-            c.row - 1
-          ),
+          row: Math.max(0, c.row - 1),
         }));
         break;
     }
@@ -4405,7 +3308,7 @@ export function useAccessibleGrid(
 }
 ```
 
-***
+---
 
 # 8. useDragAndDrop
 
@@ -4424,21 +3327,12 @@ Task Management
 import { useState } from "react";
 
 export function useDragAndDrop() {
-  const [dragged, setDragged] =
-    useState(null);
+  const [dragged, setDragged] = useState(null);
 
-  const onDragStart =
-    item =>
-      setDragged(item);
+  const onDragStart = (item) => setDragged(item);
 
-  const onDrop = (
-    target,
-    callback
-  ) => {
-    callback(
-      dragged,
-      target
-    );
+  const onDrop = (target, callback) => {
+    callback(dragged, target);
 
     setDragged(null);
   };
@@ -4451,7 +3345,7 @@ export function useDragAndDrop() {
 }
 ```
 
-***
+---
 
 # Real Products Using These Patterns
 
@@ -4466,7 +3360,7 @@ export function useDragAndDrop() {
 | useAccessibleGrid      | Excel, Airtable  |
 | useDragAndDrop         | Jira, Trello     |
 
-***
+---
 
 # Staff Engineer Interview Follow-up
 

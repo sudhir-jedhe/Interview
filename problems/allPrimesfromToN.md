@@ -1,3 +1,5 @@
+
+```js
 let allPrimes = (n) => {
     //Create new n+1 array and mark them as true
     let isPrime = new Array(n+1).fill(true);

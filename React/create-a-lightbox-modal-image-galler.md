@@ -1,3 +1,4 @@
+```js
 import { useState } from "react";
 import Modal from "./Modal";
 
@@ -101,7 +102,7 @@ export default Modal;
     top: 0;
     left: 0;
   }
-  
+
   .modal-wrapper {
     padding: 10px;
     margin: 10px auto;
@@ -115,14 +116,14 @@ export default Modal;
     z-index: 11111;
     background-color: #fff;
   }
-  
+
   .modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
   }
-  
+
   .modal-close {
     text-align: center;
     font-size: 1.2em;
@@ -141,13 +142,13 @@ export default Modal;
         setActive(active + 1);
       }
     };
-  
+
     const onPrev = () => {
       if (active > 0) {
         setActive(active - 1);
       }
     };
-  
+
     return (
       <div className="slider">
         <div className="slides">
@@ -170,7 +171,7 @@ export default Modal;
       </div>
     );
   };
-  
+
   const Slide = ({ image_url, caption, active }) => {
     return (
       <div className={`slide ${active ? "active" : ""}`}>
@@ -284,3 +285,4 @@ export default Modal;
 .image-list > div.active img {
   border-color: skyblue;
 }
+```

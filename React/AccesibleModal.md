@@ -20,37 +20,25 @@ This is one of the most common accessibility-focused React interview questions.
 
 ✅ ARIA Support
 
-***
+---
 
 # App.jsx
 
 ```jsx
-import React, {
-  useRef,
-  useState,
-} from "react";
+import React, { useRef, useState } from "react";
 
 import Modal from "./Modal";
 
 export default function App() {
-  const [open, setOpen] =
-    useState(false);
+  const [open, setOpen] = useState(false);
 
-  const buttonRef =
-    useRef(null);
+  const buttonRef = useRef(null);
 
   return (
     <div>
-      <h1>
-        Modal Dialog
-      </h1>
+      <h1>Modal Dialog</h1>
 
-      <button
-        ref={buttonRef}
-        onClick={() =>
-          setOpen(true)
-        }
-      >
+      <button ref={buttonRef} onClick={() => setOpen(true)}>
         Open Modal
       </button>
 
@@ -68,135 +56,83 @@ export default function App() {
 }
 ```
 
-***
+---
 
 # Modal.jsx
 
 ```jsx
-import React, {
-  useEffect,
-  useRef,
-} from "react";
+import React, { useEffect, useRef } from "react";
 
-export default function Modal({
-  onClose,
-}) {
-  const modalRef =
-    useRef(null);
+export default function Modal({ onClose }) {
+  const modalRef = useRef(null);
 
-  const firstFocusableRef =
-    useRef(null);
+  const firstFocusableRef = useRef(null);
 
-  const lastFocusableRef =
-    useRef(null);
+  const lastFocusableRef = useRef(null);
 
   useEffect(() => {
     firstFocusableRef.current?.focus();
 
-    const handleKeyDown =
-      e => {
-        // ESC
+    const handleKeyDown = (e) => {
+      // ESC
 
-        if (
-          e.key ===
-          "Escape"
-        ) {
-          onClose();
-        }
+      if (e.key === "Escape") {
+        onClose();
+      }
 
-        // Focus Trap
+      // Focus Trap
 
-        if (
-          e.key === "Tab"
-        ) {
-          if (
-            e.shiftKey
-          ) {
-            if (
-              document.activeElement ===
-              firstFocusableRef.current
-            ) {
-              e.preventDefault();
+      if (e.key === "Tab") {
+        if (e.shiftKey) {
+          if (document.activeElement === firstFocusableRef.current) {
+            e.preventDefault();
 
-              lastFocusableRef.current?.focus();
-            }
-          } else {
-            if (
-              document.activeElement ===
-              lastFocusableRef.current
-            ) {
-              e.preventDefault();
+            lastFocusableRef.current?.focus();
+          }
+        } else {
+          if (document.activeElement === lastFocusableRef.current) {
+            e.preventDefault();
 
-              firstFocusableRef.current?.focus();
-            }
+            firstFocusableRef.current?.focus();
           }
         }
-      };
+      }
+    };
 
-    document.addEventListener(
-      "keydown",
-      handleKeyDown
-    );
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener(
-        "keydown",
-        handleKeyDown
-      );
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
 
-  const handleBackdropClick =
-    e => {
-      if (
-        e.target ===
-        modalRef.current
-      ) {
-        onClose();
-      }
-    };
+  const handleBackdropClick = (e) => {
+    if (e.target === modalRef.current) {
+      onClose();
+    }
+  };
 
   return (
-    <div
-      ref={modalRef}
-      className="backdrop"
-      onClick={
-        handleBackdropClick
-      }
-    >
+    <div ref={modalRef} className="backdrop" onClick={handleBackdropClick}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
         className="modal"
       >
-        <h2 id="modal-title">
-          Confirm Action
-        </h2>
+        <h2 id="modal-title">Confirm Action</h2>
 
-        <p>
-          Are you sure you
-          want to continue?
-        </p>
+        <p>Are you sure you want to continue?</p>
 
         <div>
-          <button
-            ref={
-              firstFocusableRef
-            }
-            onClick={onClose}
-          >
+          <button ref={firstFocusableRef} onClick={onClose}>
             Cancel
           </button>
 
           <button
-            ref={
-              lastFocusableRef
-            }
+            ref={lastFocusableRef}
             onClick={() => {
-              alert(
-                "Confirmed"
-              );
+              alert("Confirmed");
 
               onClose();
             }}
@@ -210,7 +146,7 @@ export default function Modal({
 }
 ```
 
-***
+---
 
 # CSS
 
@@ -218,12 +154,7 @@ export default function Modal({
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(
-    0,
-    0,
-    0,
-    0.5
-  );
+  background: rgba(0, 0, 0, 0.5);
 
   display: flex;
   justify-content: center;
@@ -238,7 +169,7 @@ export default function Modal({
 }
 ```
 
-***
+---
 
 # Keyboard Support
 
@@ -258,7 +189,7 @@ ESC
 Modal Closes
 ```
 
-***
+---
 
 ## TAB Focus Trap
 
@@ -280,7 +211,7 @@ Button2
 Button1 ✅
 ```
 
-***
+---
 
 ## Shift + TAB
 
@@ -291,7 +222,7 @@ Button1
 Button2 ✅
 ```
 
-***
+---
 
 # Accessibility
 
@@ -309,7 +240,7 @@ Focus Moved
 Modal Active
 ```
 
-***
+---
 
 # Advanced Production Features
 
@@ -337,7 +268,7 @@ Modal Active
 ✅ Trap Screen Reader Navigation
 ```
 
-***
+---
 
 # Interview Follow-Up Questions
 
@@ -353,7 +284,7 @@ User reaches page behind modal
 
 Bad accessibility.
 
-***
+---
 
 ### Why restore focus?
 
@@ -367,15 +298,12 @@ Return to trigger button
 
 Required for accessibility.
 
-***
+---
 
 ### Why use Portal?
 
 ```jsx
-ReactDOM.createPortal(
-  modal,
-  document.body
-)
+ReactDOM.createPortal(modal, document.body);
 ```
 
 Avoids:
@@ -386,7 +314,7 @@ z-index issues
 stacking-context issues
 ```
 
-***
+---
 
 # Senior-Level Architecture
 
@@ -403,7 +331,6 @@ Modal Component
 ```
 
 This is the accessibility-compliant implementation typically expected in Senior React machine-coding interviews.
-
 
 # Production Modal Architecture (Senior / Staff Level)
 
@@ -440,7 +367,7 @@ This architecture separates concerns and scales to:
 ✅ Modal Queue
 ```
 
-***
+---
 
 # Folder Structure
 
@@ -461,66 +388,37 @@ src
 └── index.js
 ```
 
-***
+---
 
 # 1. Modal Context
 
 ```jsx
-import {
-  createContext,
-  useContext,
-} from "react";
+import { createContext, useContext } from "react";
 
-export const ModalContext =
-  createContext();
+export const ModalContext = createContext();
 
-export const useModal =
-  () =>
-    useContext(
-      ModalContext
-    );
+export const useModal = () => useContext(ModalContext);
 ```
 
-***
+---
 
 # 2. ModalProvider
 
 Global modal management.
 
 ```jsx
-import {
-  useState,
-} from "react";
+import { useState } from "react";
 
-import {
-  ModalContext,
-} from "./ModalContext";
+import { ModalContext } from "./ModalContext";
 
 import ModalRoot from "./ModalRoot";
 
-export default function ModalProvider({
-  children,
-}) {
-  const [
-    modals,
-    setModals,
-  ] = useState([]);
+export default function ModalProvider({ children }) {
+  const [modals, setModals] = useState([]);
 
-  const openModal =
-    modal =>
-      setModals(prev => [
-        ...prev,
-        modal,
-      ]);
+  const openModal = (modal) => setModals((prev) => [...prev, modal]);
 
-  const closeModal =
-    () =>
-      setModals(prev =>
-        prev.slice(
-          0,
-          -1
-        )
-      );
+  const closeModal = () => setModals((prev) => prev.slice(0, -1));
 
   return (
     <ModalContext.Provider
@@ -531,42 +429,31 @@ export default function ModalProvider({
     >
       {children}
 
-      <ModalRoot
-        modals={modals}
-      />
+      <ModalRoot modals={modals} />
     </ModalContext.Provider>
   );
 }
 ```
 
-***
+---
 
 # 3. Portal Layer
 
 ```jsx
-import {
-  createPortal,
-} from "react-dom";
+import { createPortal } from "react-dom";
 
 import Modal from "./Modal";
 
-export default function ModalRoot({
-  modals,
-}) {
+export default function ModalRoot({ modals }) {
   return createPortal(
     <>
-      {modals.map(
-        (
-          ModalComponent,
-          index
-        ) => (
-          <Modal key={index}>
-            <ModalComponent />
-          </Modal>
-        )
-      )}
+      {modals.map((ModalComponent, index) => (
+        <Modal key={index}>
+          <ModalComponent />
+        </Modal>
+      ))}
     </>,
-    document.body
+    document.body,
   );
 }
 ```
@@ -581,185 +468,113 @@ Avoid overflow hidden
 Render above page
 ```
 
-***
+---
 
 # 4. Focus Trap
 
 Accessibility requirement.
 
 ```jsx
-import {
-  useEffect,
-  useRef,
-} from "react";
+import { useEffect, useRef } from "react";
 
-export default function FocusTrap({
-  children,
-}) {
-  const containerRef =
-    useRef();
+export default function FocusTrap({ children }) {
+  const containerRef = useRef();
 
   useEffect(() => {
-    const focusable =
-      containerRef.current.querySelectorAll(
-        "button,input,select,textarea,a[href]"
-      );
-
-    const first =
-      focusable[0];
-
-    const last =
-      focusable[
-        focusable.length -
-          1
-      ];
-
-    const handleTab =
-      e => {
-        if (
-          e.key !== "Tab"
-        )
-          return;
-
-        if (
-          e.shiftKey
-        ) {
-          if (
-            document.activeElement ===
-            first
-          ) {
-            e.preventDefault();
-
-            last.focus();
-          }
-        } else {
-          if (
-            document.activeElement ===
-            last
-          ) {
-            e.preventDefault();
-
-            first.focus();
-          }
-        }
-      };
-
-    document.addEventListener(
-      "keydown",
-      handleTab
+    const focusable = containerRef.current.querySelectorAll(
+      "button,input,select,textarea,a[href]",
     );
+
+    const first = focusable[0];
+
+    const last = focusable[focusable.length - 1];
+
+    const handleTab = (e) => {
+      if (e.key !== "Tab") return;
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleTab);
 
     first?.focus();
 
-    return () =>
-      document.removeEventListener(
-        "keydown",
-        handleTab
-      );
+    return () => document.removeEventListener("keydown", handleTab);
   }, []);
 
-  return (
-    <div ref={containerRef}>
-      {children}
-    </div>
-  );
+  return <div ref={containerRef}>{children}</div>;
 }
 ```
 
-***
+---
 
 # 5. Keyboard Manager
 
 Handles all modal keyboard interactions.
 
 ```jsx
-import {
-  useEffect,
-} from "react";
+import { useEffect } from "react";
 
-export default function KeyboardManager({
-  onClose,
-}) {
+export default function KeyboardManager({ onClose }) {
   useEffect(() => {
-    const handleKeyDown =
-      e => {
-        switch (
-          e.key
-        ) {
-          case "Escape":
-            onClose();
-            break;
+    const handleKeyDown = (e) => {
+      switch (e.key) {
+        case "Escape":
+          onClose();
+          break;
 
-          default:
-            break;
-        }
-      };
+        default:
+          break;
+      }
+    };
 
-    document.addEventListener(
-      "keydown",
-      handleKeyDown
-    );
+    document.addEventListener("keydown", handleKeyDown);
 
-    return () =>
-      document.removeEventListener(
-        "keydown",
-        handleKeyDown
-      );
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
   return null;
 }
 ```
 
-***
+---
 
 # 6. Modal Component
 
 ```jsx
-import {
-  useModal,
-} from "./ModalContext";
+import { useModal } from "./ModalContext";
 
 import FocusTrap from "./FocusTrap";
 
 import KeyboardManager from "./KeyboardManager";
 
-export default function Modal({
-  children,
-}) {
-  const {
-    closeModal,
-  } = useModal();
+export default function Modal({ children }) {
+  const { closeModal } = useModal();
 
-  const backdropClick =
-    e => {
-      if (
-        e.target ===
-        e.currentTarget
-      ) {
-        closeModal();
-      }
-    };
+  const backdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
+  };
 
   return (
-    <div
-      className="backdrop"
-      onClick={
-        backdropClick
-      }
-    >
-      <KeyboardManager
-        onClose={
-          closeModal
-        }
-      />
+    <div className="backdrop" onClick={backdropClick}>
+      <KeyboardManager onClose={closeModal} />
 
       <FocusTrap>
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="modal"
-        >
+        <div role="dialog" aria-modal="true" className="modal">
           {children}
         </div>
       </FocusTrap>
@@ -768,63 +583,39 @@ export default function Modal({
 }
 ```
 
-***
+---
 
 # Example Usage
 
 ```jsx
-import {
-  useModal,
-} from "./modal/ModalContext";
+import { useModal } from "./modal/ModalContext";
 
 function UserModal() {
-  const {
-    closeModal,
-  } = useModal();
+  const { closeModal } = useModal();
 
   return (
     <>
-      <h2>
-        User Details
-      </h2>
+      <h2>User Details</h2>
 
-      <button
-        onClick={
-          closeModal
-        }
-      >
-        Close
-      </button>
+      <button onClick={closeModal}>Close</button>
     </>
   );
 }
 ```
 
-***
+---
 
 # Open Modal Anywhere
 
 ```jsx
 function Dashboard() {
-  const {
-    openModal,
-  } = useModal();
+  const { openModal } = useModal();
 
-  return (
-    <button
-      onClick={() =>
-        openModal(
-          UserModal
-        )
-      }
-    >
-      Open User Modal
-    </button>
-  );
+  return <button onClick={() => openModal(UserModal)}>Open User Modal</button>;
 }
 ```
 
-***
+---
 
 # Enterprise Extensions
 
@@ -840,7 +631,7 @@ Modal C
 
 Stack automatically maintained.
 
-***
+---
 
 ## Nested Modals
 
@@ -854,34 +645,32 @@ Theme Preview
 
 Supported via stack.
 
-***
+---
 
 ## Animation Layer
 
 ```jsx
-AnimatePresence
-motion.div
+AnimatePresence;
+motion.div;
 ```
 
 Framer Motion integration.
 
-***
+---
 
 ## Body Scroll Lock
 
 ```jsx
 useEffect(() => {
-  document.body.style.overflow =
-    "hidden";
+  document.body.style.overflow = "hidden";
 
   return () => {
-    document.body.style.overflow =
-      "";
+    document.body.style.overflow = "";
   };
 }, []);
 ```
 
-***
+---
 
 # Interview Discussion
 
@@ -892,7 +681,7 @@ Modal must render outside
 application DOM hierarchy.
 ```
 
-***
+---
 
 ### Why Focus Trap?
 
@@ -903,7 +692,7 @@ TAB
 stays inside dialog
 ```
 
-***
+---
 
 ### Why ModalProvider?
 
@@ -913,7 +702,7 @@ Open modal from anywhere
 Without prop drilling
 ```
 
-***
+---
 
 ### Why Keyboard Manager?
 
@@ -928,7 +717,7 @@ instead of every modal
 implementing them
 ```
 
-***
+---
 
 # Staff Engineer Answer
 

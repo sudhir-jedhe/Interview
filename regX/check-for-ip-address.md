@@ -10,11 +10,12 @@ In your examples, you're using regular expressions (RegEx) to validate IP addres
 #### RegExp Explanation for IPv4:
 
 ```js
-/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(addr)
+/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
+  addr,
+);
 ```
 
 - **`^` and `$`**: These are anchors indicating the start (`^`) and end (`$`) of the string. The string must match the entire pattern.
-  
 - **Octet Matching**:
   - **`25[0-5]`**: This matches any number from `250` to `255`. The number must start with `25`, followed by any digit from `0` to `5`.
   - **`2[0-4][0-9]`**: This matches numbers from `200` to `249`. The number starts with `2`, followed by a digit from `0` to `4`, and then a digit from `0` to `9`.
@@ -29,7 +30,11 @@ In your examples, you're using regular expressions (RegEx) to validate IP addres
 
 ```js
 var addr = "172.169.43.1";
-console.log(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(addr));
+console.log(
+  /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
+    addr,
+  ),
+);
 // Output: true
 ```
 
@@ -42,7 +47,9 @@ console.log(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?
 #### RegExp Explanation for IPv6:
 
 ```js
-/^[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}$/.test(addr)
+/^[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}$/.test(
+  addr,
+);
 ```
 
 - **`^` and `$`**: Like the IPv4 example, these are start and end anchors, meaning the entire string must match the pattern.
@@ -58,7 +65,11 @@ console.log(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?
 
 ```js
 var addr = "2001:0db8:0000:0000:0000:ff00:0042:8329";
-console.log(/^[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}$/.test(addr));
+console.log(
+  /^[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}$/.test(
+    addr,
+  ),
+);
 // Output: true
 ```
 
@@ -71,7 +82,7 @@ console.log(/^[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-9]{1, 4}\:[a-fA-F0-
 1. **IPv4**:
    - Validates decimal numbers between `0` and `255` in each of the four octets.
    - The octets are separated by dots (`.`).
-  
+
 2. **IPv6**:
    - Validates hexadecimal numbers with 1 to 4 digits in each of the eight groups.
    - The groups are separated by colons (`:`).

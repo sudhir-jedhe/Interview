@@ -1,3 +1,4 @@
+```js
 import "./FeedbackModal.css";
 import React, { useState } from "react";
 
@@ -140,3 +141,4 @@ button[type="button"] {
 .emoji.selected {
     color: gold; /* Highlight selected rating */
 }
+```

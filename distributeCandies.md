@@ -10,10 +10,8 @@ The task at hand is to help Alice, who has `n` candies, where `n` is always even
 
 1. **Unique Candy Types**:
    - The first step is to identify how many unique candy types Alice has. This can be done using a `Set`, as it automatically filters out duplicates.
-   
 2. **Maximum Candies Alice Can Eat**:
    - Alice can eat up to `n / 2` candies. However, if she has fewer than `n / 2` unique types of candies, she can only eat as many as there are unique types.
-   
 3. **Return the Result**:
    - The result will be the smaller value between the number of unique types and `n / 2`.
 
@@ -25,28 +23,28 @@ Here’s the implementation of the `distributeCandies` function in JavaScript, u
 
 ```js
 export function distributeCandies(candyType) {
-  const maxCandies = candyType.length / 2;  // Alice can eat at most n / 2 candies
-  const uniqueCandies = new Set(candyType);  // Set to get unique candy types
+  const maxCandies = candyType.length / 2; // Alice can eat at most n / 2 candies
+  const uniqueCandies = new Set(candyType); // Set to get unique candy types
 
-  return Math.min(maxCandies, uniqueCandies.size);  // Return the minimum of n / 2 or the number of unique types
+  return Math.min(maxCandies, uniqueCandies.size); // Return the minimum of n / 2 or the number of unique types
 }
 ```
 
 #### `main.js`
 
 ```js
-import { distributeCandies } from "./distributeCandies.js";  // Import the function
+import { distributeCandies } from "./distributeCandies.js"; // Import the function
 
 // Example test cases
 
 const candyType1 = [1, 1, 2, 2, 3, 3];
-console.log(distributeCandies(candyType1));  // Output: 3
+console.log(distributeCandies(candyType1)); // Output: 3
 
 const candyType2 = [1, 1, 2, 3];
-console.log(distributeCandies(candyType2));  // Output: 2
+console.log(distributeCandies(candyType2)); // Output: 2
 
 const candyType3 = [6, 6, 6, 6];
-console.log(distributeCandies(candyType3));  // Output: 1
+console.log(distributeCandies(candyType3)); // Output: 1
 ```
 
 ### Explanation of the Code
@@ -55,7 +53,6 @@ console.log(distributeCandies(candyType3));  // Output: 1
   - We calculate `maxCandies` as `candyType.length / 2`. This is the maximum number of candies Alice can eat.
   - We create a `Set` from `candyType`, which gives us the unique candy types.
   - We return the smaller of `maxCandies` (the number of candies Alice can eat) and the size of the `Set` (the number of unique candy types).
-  
 - **`main.js`**:
   - We import the `distributeCandies` function.
   - Then, we test the function with three different arrays:
@@ -66,7 +63,6 @@ console.log(distributeCandies(candyType3));  // Output: 1
 ### Time Complexity
 
 - **Time Complexity**: The time complexity is \( O(n) \), where \( n \) is the length of the `candyType` array. This is because we need to iterate through the entire array to build the `Set` of unique types, and the size of the `Set` is computed in constant time.
-  
 - **Space Complexity**: The space complexity is also \( O(n) \) because we use a `Set` to store the unique candy types.
 
 ### Example Walkthrough

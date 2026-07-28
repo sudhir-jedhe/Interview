@@ -2,33 +2,23 @@
 
 This challenge uses an **8×8 grid (64 squares)** where one square has a slightly different colour. The goal is to find it and advance levels. The React Challenges description explicitly mentions identifying the slightly different square in an 8×8 grid and levelling up. [\[reactchallenges.com\]](https://www.reactchallenges.com/challenges/color-game), [\[dev.to\]](https://dev.to/reactchallenges/new-challenge-color-game-394b)
 
-***
+---
 
 ## App.tsx
 
 ```tsx
 import { useState } from "react";
 
-import {
-  getRandomColor,
-  getRandomNumber,
-  getSimilarColor,
-} from "./utils";
+import { getRandomColor, getRandomNumber, getSimilarColor } from "./utils";
 
 const TOTAL_SQUARES = 64;
 
 function createGameState() {
-  const baseColor =
-    getRandomColor();
+  const baseColor = getRandomColor();
 
-  const correctIndex =
-    getRandomNumber();
+  const correctIndex = getRandomNumber();
 
-  const differentColor =
-    getSimilarColor(
-      baseColor,
-      20
-    );
+  const differentColor = getSimilarColor(baseColor, 20);
 
   return {
     baseColor,
@@ -38,27 +28,16 @@ function createGameState() {
 }
 
 export default function App() {
-  const [level, setLevel] =
-    useState(1);
+  const [level, setLevel] = useState(1);
 
-  const [
-    gameOver,
-    setGameOver,
-  ] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
-  const [
-    gameState,
-    setGameState,
-  ] = useState(
-    createGameState()
-  );
+  const [gameState, setGameState] = useState(createGameState());
 
   function nextLevel() {
-    setLevel(prev => prev + 1);
+    setLevel((prev) => prev + 1);
 
-    setGameState(
-      createGameState()
-    );
+    setGameState(createGameState());
   }
 
   function resetGame() {
@@ -66,20 +45,13 @@ export default function App() {
 
     setGameOver(false);
 
-    setGameState(
-      createGameState()
-    );
+    setGameState(createGameState());
   }
 
-  function handleSquareClick(
-    index: number
-  ) {
+  function handleSquareClick(index: number) {
     if (gameOver) return;
 
-    if (
-      index ===
-      gameState.correctIndex
-    ) {
+    if (index === gameState.correctIndex) {
       nextLevel();
       return;
     }
@@ -89,70 +61,38 @@ export default function App() {
 
   return (
     <div>
-      <h1>
-        Color Game
-      </h1>
+      <h1>Color Game</h1>
 
-      <h2
-        data-testid="level"
-      >
-        Level: {level}
-      </h2>
+      <h2 data-testid="level">Level: {level}</h2>
 
-      {gameOver && (
-        <h3
-          data-testid="game-over"
-        >
-          Game Over
-        </h3>
-      )}
+      {gameOver && <h3 data-testid="game-over">Game Over</h3>}
 
-      <button
-        data-testid="reset-btn"
-        onClick={resetGame}
-      >
+      <button data-testid="reset-btn" onClick={resetGame}>
         Reset Game
       </button>
 
-      <div
-        className="grid grid-cols-8 gap-1"
-        data-testid="board"
-      >
+      <div className="grid grid-cols-8 gap-1" data-testid="board">
         {Array.from({
-          length:
-            TOTAL_SQUARES,
+          length: TOTAL_SQUARES,
         }).map((_, index) => {
-          const isCorrect =
-            index ===
-            gameState.correctIndex;
+          const isCorrect = index === gameState.correctIndex;
 
-          const color =
-            isCorrect
-              ? gameState.differentColor
-              : gameState.baseColor;
+          const color = isCorrect
+            ? gameState.differentColor
+            : gameState.baseColor;
 
           return (
             <button
               key={index}
               data-testid={`square-${index}`}
-              onClick={() =>
-                handleSquareClick(
-                  index
-                )
-              }
+              onClick={() => handleSquareClick(index)}
               className={`
                 h-10
                 w-10
-                ${
-                  gameOver &&
-                  isCorrect
-                    ? "border-2"
-                    : ""
-                }
+                ${gameOver && isCorrect ? "border-2" : ""}
               `}
               style={{
-                backgroundColor:
-                  color,
+                backgroundColor: color,
               }}
             />
           );
@@ -163,7 +103,7 @@ export default function App() {
 }
 ```
 
-***
+---
 
 # Why This Passes The Tests
 
@@ -171,17 +111,16 @@ export default function App() {
 
 ```tsx
 Array.from({
-  length: 64
-})
+  length: 64,
+});
 ```
 
-***
+---
 
 ### ✅ Correct Square
 
 ```tsx
-correctIndex =
- getRandomNumber();
+correctIndex = getRandomNumber();
 ```
 
 One square gets:
@@ -193,26 +132,26 @@ getSimilarColor(...)
 while the rest get:
 
 ```tsx
-baseColor
+baseColor;
 ```
 
-***
+---
 
 ### ✅ Level Up
 
 ```tsx
-setLevel(prev => prev + 1);
+setLevel((prev) => prev + 1);
 ```
 
 also creates:
 
 ```tsx
-new baseColor
-new differentColor
-new correctIndex
+new baseColor();
+new differentColor();
+new correctIndex();
 ```
 
-***
+---
 
 ### ✅ Game Over
 
@@ -228,21 +167,19 @@ Shows:
 Game Over
 ```
 
-***
+---
 
 ### ✅ Highlight Correct Answer
 
 After game over:
 
 ```tsx
-gameOver && isCorrect
- ? "border-2"
- : ""
+gameOver && isCorrect ? "border-2" : "";
 ```
 
 Required by test.
 
-***
+---
 
 ### ✅ Block Further Clicks
 
@@ -252,7 +189,7 @@ if (gameOver) return;
 
 No state changes after losing.
 
-***
+---
 
 ### ✅ Reset Game
 
@@ -276,7 +213,7 @@ and hides:
 Game Over
 ```
 
-***
+---
 
 ## Senior Interview Answer
 

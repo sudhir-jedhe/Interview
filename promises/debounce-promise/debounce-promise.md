@@ -14,7 +14,7 @@ However, we also need to keep track of all pending promises and resolve/reject t
 When the function is invoked, the current pending array will have to be copied, as it can change between the function call and its resolution. Then, we can clear the pending array and call the provided function.
 
 Finally, when the function resolves/rejects, we can resolve/reject all promises in the copied array with the returned data. This means that all promises created in the meantime will resolve/reject with the same data.
-
+```js
 const debouncePromise = (fn, ms = 0) => {
   let timeoutId;
   const pending = [];

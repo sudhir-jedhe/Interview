@@ -7,11 +7,9 @@ The Core Web Vitals consist of three main metrics:
 1. **Largest Contentful Paint (LCP)**:
    - **What it measures**: The loading performance of a page. Specifically, LCP measures how long it takes for the largest content element (such as an image, video, or block of text) to load and become visible on the screen.
    - **Optimal value**: LCP should occur within 2.5 seconds of the page starting to load for a good user experience.
-   
 2. **First Input Delay (FID)**:
    - **What it measures**: The interactivity of the page. FID measures the time from when a user first interacts with your page (such as clicking a link or tapping a button) to the time the browser is able to respond to that interaction.
    - **Optimal value**: FID should be less than 100 milliseconds for a good user experience.
-   
 3. **Cumulative Layout Shift (CLS)**:
    - **What it measures**: The visual stability of a page. CLS measures how much the page's layout shifts during its loading phase. High CLS means that elements are unexpectedly shifting, which can be frustrating for users (e.g., clicking a button only for it to move when the page finishes loading).
    - **Optimal value**: CLS should be less than 0.1 to avoid layout shifts that disrupt the user experience.
@@ -30,16 +28,13 @@ Since LCP is a measure of how quickly the largest element on the page loads, imp
 
 - **Optimize Server Response Time**: A slow server response time contributes to a delayed LCP. Use faster servers or a **Content Delivery Network (CDN)** to reduce server response time.
   - Aim for **server response times under 200ms**.
-  
 - **Lazy Load Non-Essential Resources**: Lazy load images and videos that are not critical to the initial page load. This reduces the amount of data the browser needs to download initially.
-  
 - **Optimize Images**: Compress and serve images in modern formats like **WebP** or **AVIF**, which offer better compression rates than traditional formats like JPEG and PNG.
   - Use responsive images (`srcset`) to serve different image sizes based on screen resolution and viewport size.
-  
 - **Preload Important Resources**: Preload fonts and critical images (above-the-fold content) to ensure they load quickly and do not block the rendering process.
 
   ```html
-  <link rel="preload" href="hero-image.jpg" as="image">
+  <link rel="preload" href="hero-image.jpg" as="image" />
   ```
 
 - **Reduce Render-Blocking JavaScript and CSS**: Minimize JavaScript and CSS that block the rendering of the page's critical content. Use **async** or **defer** attributes for JavaScript files and load non-critical CSS files asynchronously.
@@ -73,7 +68,7 @@ CLS is an important metric because it measures unexpected shifts in content layo
 - **Set Size for Images and Videos**: Always set width and height attributes for images, videos, and other media. This ensures that the browser can reserve space for them before they’re fully loaded.
 
   ```html
-  <img src="image.jpg" width="600" height="400" alt="Image">
+  <img src="image.jpg" width="600" height="400" alt="Image" />
   ```
 
 - **Avoid Inserting Content Above Existing Content**: Avoid dynamically inserting content (such as ads or new images) above existing content, as this can cause layout shifts.
@@ -82,8 +77,8 @@ CLS is an important metric because it measures unexpected shifts in content layo
 
   ```css
   @font-face {
-    font-family: 'CustomFont';
-    src: url('custom-font.woff2') format('woff2');
+    font-family: "CustomFont";
+    src: url("custom-font.woff2") format("woff2");
     font-display: swap;
   }
   ```
@@ -98,7 +93,6 @@ CLS is an important metric because it measures unexpected shifts in content layo
 
 - **Google PageSpeed Insights**: A tool that provides insights into how your website performs on mobile and desktop and offers recommendations to improve your Core Web Vitals scores.
   - [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)
-  
 - **Google Search Console**: This provides data on your site’s Core Web Vitals performance in the “Core Web Vitals” report under the "Experience" section.
   - [Search Console](https://search.google.com/search-console/)
 

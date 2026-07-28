@@ -25,6 +25,7 @@ function maxProfit1(prices) {
 ```
 
 ### Explanation:
+
 - **Idea:** This approach uses two nested loops to evaluate every possible pair of days and calculates the profit. If a greater profit is found, it is stored in `globalProfit`.
 - **Time Complexity:** **O(n^2)**, as there are two nested loops, making it inefficient for large arrays.
 - **Space Complexity:** **O(1)**, as no extra data structures are used other than variables for the loop.
@@ -57,6 +58,7 @@ const maxProfit = function (prices) {
 ```
 
 ### Explanation:
+
 - **Idea:** This solution keeps track of the minimum price encountered so far (`minStockPurchasePrice`) and updates the profit if selling at the current price gives a higher profit than the previous maximum.
 - **Time Complexity:** **O(n)**, as we only loop through the array once.
 - **Space Complexity:** **O(1)**, as we use only a few variables to track the minimum price and profit.
@@ -86,6 +88,7 @@ function maxProfit(prices) {
 ```
 
 ### Explanation:
+
 - **Idea:** This is another variant of the greedy approach that also tracks the minimum price and calculates the maximum profit.
 - **Time Complexity:** **O(n)**, as we only loop through the array once.
 - **Space Complexity:** **O(1)**, as we use only a few variables to track the minimum price and profit.
@@ -105,14 +108,15 @@ var maxProfit = function (prices) {
   let ans = 0;
   let mi = prices[0];
   for (const v of prices) {
-      ans = Math.max(ans, v - mi);
-      mi = Math.min(mi, v);
+    ans = Math.max(ans, v - mi);
+    mi = Math.min(mi, v);
   }
   return ans;
 };
 ```
 
 ### Explanation:
+
 - **Idea:** This solution tracks the minimum price (`mi`) and iterates through the array once, calculating the potential profit at each price and updating the maximum profit if needed.
 - **Time Complexity:** **O(n)**, as we iterate through the array once.
 - **Space Complexity:** **O(1)**, as we use a few variables to track the minimum price and profit.
@@ -133,13 +137,14 @@ If you are allowed to perform multiple buy and sell transactions (i.e., you can 
 var maxProfit = function (prices) {
   let ans = 0;
   for (let i = 1; i < prices.length; i++) {
-      ans += Math.max(0, prices[i] - prices[i - 1]);
+    ans += Math.max(0, prices[i] - prices[i - 1]);
   }
   return ans;
 };
 ```
 
 ### Explanation:
+
 - **Idea:** This solution allows you to make multiple transactions. If the price on day `i` is higher than the price on day `i-1`, it adds the difference to the total profit, as this represents a profitable transaction. If the price on day `i` is lower than the price on day `i-1`, it doesn't perform any transaction (i.e., `Math.max(0, prices[i] - prices[i-1])` ensures no negative profit is added).
 - **Time Complexity:** **O(n)**, as we iterate through the array once.
 - **Space Complexity:** **O(1)**, as we use only a few variables for tracking profit.
@@ -154,12 +159,12 @@ console.log(maxProfit([7, 6, 4, 3, 1])); // Output: 0 (No transactions)
 
 ### Time and Space Complexity Comparison
 
-| Approach                                | Time Complexity | Space Complexity |
-|-----------------------------------------|-----------------|------------------|
-| **Brute Force**                         | **O(n^2)**       | **O(1)**          |
-| **Greedy (Single Transaction)**        | **O(n)**         | **O(1)**          |
-| **Greedy (Multiple Transactions)**     | **O(n)**         | **O(1)**          |
-| **Optimized with Map for Min Price**   | **O(n)**         | **O(1)**          |
+| Approach                             | Time Complexity | Space Complexity |
+| ------------------------------------ | --------------- | ---------------- |
+| **Brute Force**                      | **O(n^2)**      | **O(1)**         |
+| **Greedy (Single Transaction)**      | **O(n)**        | **O(1)**         |
+| **Greedy (Multiple Transactions)**   | **O(n)**        | **O(1)**         |
+| **Optimized with Map for Min Price** | **O(n)**        | **O(1)**         |
 
 - **Brute Force:** **O(n^2)** time complexity, making it impractical for large inputs.
 - **Greedy and Optimized Solutions:** All greedy solutions run in **O(n)** time and use **O(1)** space, making them efficient.

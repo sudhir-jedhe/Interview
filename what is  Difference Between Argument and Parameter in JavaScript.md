@@ -8,11 +8,14 @@ Parameters are part of the function's signature.
 Parameters exist only in the scope of the function.
 They are local variables used to handle input values within the function.
 Example:
+
 ```js
-function greet(name, age) {  // 'name' and 'age' are parameters
+function greet(name, age) {
+  // 'name' and 'age' are parameters
   console.log(`Hello, my name is ${name} and I am ${age} years old.`);
 }
 ```
+
 In the above example:
 
 name and age are parameters because they are defined inside the function greet and are placeholders for values that will be passed when the function is called.
@@ -22,24 +25,26 @@ An argument is the actual value that is passed to a function when it is called. 
 Arguments are the values or expressions passed to the function.
 Arguments are provided when the function is invoked.
 Example:
+
 ```js
-greet('Alice', 30);  // 'Alice' and '30' are arguments
+greet("Alice", 30); // 'Alice' and '30' are arguments
 ```
+
 # Difference Between Parameter and Argument in JavaScript
 
-| **Aspect**        | **Parameter**                                 | **Argument**                                   |
-|-------------------|------------------------------------------------|------------------------------------------------|
-| **Definition**    | A variable defined in the function declaration. | The actual value passed to the function when it is called. |
-| **Purpose**       | A placeholder that receives values when the function is called. | The actual data that replaces the parameters during function execution. |
-| **Location**      | Found in the function declaration or definition. | Found in the function call.                    |
-| **Scope**         | Exists only within the function where it is defined. | Exists in the context of the function call.     |
-| **Example**       | `function greet(name, age)` – `name`, `age` are parameters. | `greet('Alice', 30)` – `'Alice'`, `30` are arguments. |
+| **Aspect**     | **Parameter**                                                   | **Argument**                                                            |
+| -------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| **Definition** | A variable defined in the function declaration.                 | The actual value passed to the function when it is called.              |
+| **Purpose**    | A placeholder that receives values when the function is called. | The actual data that replaces the parameters during function execution. |
+| **Location**   | Found in the function declaration or definition.                | Found in the function call.                                             |
+| **Scope**      | Exists only within the function where it is defined.            | Exists in the context of the function call.                             |
+| **Example**    | `function greet(name, age)` – `name`, `age` are parameters.     | `greet('Alice', 30)` – `'Alice'`, `30` are arguments.                   |
 
 ---
 
 ### Real-World Example
 
-```javascript
+````javascript
 // Function Definition (Parameters: 'a', 'b')
 function add(a, b) {
   return a + b;  // 'a' and 'b' are parameters
@@ -63,11 +68,10 @@ function add(a, b) {
 let sum = add(5, 3);  // '5' and '3' are arguments passed into the function
 console.log(sum);  // Output: 8
 
-```
+````
 
 `Parameters:` a and b are parameters. They are declared in the function definition.
 `Arguments:` 5 and 3 are arguments. These values are passed to the add function when it is called.
-
 
 `Parameters` are the variables you define in a function declaration to accept values.
 `Arguments` are the actual values you pass to the function when calling it.

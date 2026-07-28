@@ -16,11 +16,11 @@
 
 // Also, we will wrap the logic inside the useCallback() to avoid needless re-renderings as the callback function returns a memoized function that only change when one of the dependency changes.
 
-
+```js
 const useThrottle = (fn, wait, option = { leading: true, trailing: true }) => {
     const timerId = useRef(); // track the timer
     const lastArgs = useRef(); // track the args
-  
+
     // create a memoized debounce
     const throttle = useCallback(
       function (...args) {
@@ -37,7 +37,7 @@ const useThrottle = (fn, wait, option = { leading: true, trailing: true }) => {
             timerId.current = null;
           }
         };
-  
+
         // if leading run it right away
         if (!timerId.current && leading) {
           fn.apply(this, args);
@@ -46,7 +46,7 @@ const useThrottle = (fn, wait, option = { leading: true, trailing: true }) => {
         else {
           lastArgs.current = args;
         }
-  
+
         // run the delayed call
         if (!timerId.current) {
           timerId.current = setTimeout(waitFunc, wait);
@@ -54,7 +54,7 @@ const useThrottle = (fn, wait, option = { leading: true, trailing: true }) => {
       },
       [fn, wait, option]
     );
-  
+
     return throttle;
   };
 
@@ -93,3 +93,4 @@ Output:
 "hello" // after 2500 milliseconds
 "hello" // after 2500 milliseconds of last call
 "hello" // after 2500 milliseconds of last call
+```

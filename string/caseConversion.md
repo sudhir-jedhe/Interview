@@ -1,12 +1,12 @@
 Word boundary identification
 Before we can convert a string to a different case, we need to be able to identify the boundaries between words. While a naive approach could rely on spaces or other delimiters to separate words, this approach is not robust enough to handle all cases. Regular expressions provide a far more robust solution to this problem. After much experimentation, I've found the following regular expression to be the most robust:
 
-const r = /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g;
+const r = /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]_|\b)|[A-Z]?[a-z]+[0-9]_|[A-Z]|[0-9]+/g;
 This looks intimidating even to me, not gonna lie. Let's break it down into its constituent parts:
 
 [A-Z]{2,} matches two or more consecutive uppercase letters. This is useful for identifying acronyms like XML or HTML.
-(?=[A-Z][a-z]+[0-9]*|\b) is a lookahead assertion that matches a word boundary.
-[A-Z]?[a-z]+[0-9]* matches a word starting with an optional uppercase letter, followed by one or more lowercase letters and zero or more digits.
+(?=[A-Z][a-z]+[0-9]_|\b) is a lookahead assertion that matches a word boundary.
+[A-Z]?[a-z]+[0-9]_ matches a word starting with an optional uppercase letter, followed by one or more lowercase letters and zero or more digits.
 [A-Z] matches a single uppercase letter.
 [0-9]+ matches one or more digits.
 g is a global flag that allows the regular expression to match all occurrences in the string.
@@ -19,6 +19,8 @@ Use String.prototype.match() to break the string into words using an appropriate
 Use Array.prototype.map() to transform individual words. Use String.prototype.slice() and String.prototype.toUpperCase() to capitalize the first letter of each word, and String.prototype.toLowerCase() to lowercase the rest.
 Use Array.prototype.join() to combine the words into a single string.
 Finally, use String.prototype.toLowerCase() to lowercase the first letter of the final string.
+
+```js
 const toCamelCase = str => {
   const s =
     str &&
@@ -180,3 +182,4 @@ convertCase('mixed_string with spaces_underscores-and-hyphens', 'title');
 // 'Mixed String With Spaces Underscores And Hyphens'
 convertCase('mixed_string with spaces_underscores-and-hyphens', 'sentence');
 // 'Mixed string with spaces underscores and hyphens'
+```

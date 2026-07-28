@@ -34,7 +34,7 @@ In TypeScript, ambient declarations are commonly created with the `declare` keyw
 
    ```typescript
    // ambient.d.ts
-   declare module 'my-javascript-library' {
+   declare module "my-javascript-library" {
      export function myFunction(a: string): number;
    }
    ```
@@ -60,7 +60,7 @@ In TypeScript, ambient declarations are commonly created with the `declare` keyw
 
    ```typescript
    // ambient.d.ts
-   declare module 'some-external-library' {
+   declare module "some-external-library" {
      export function someFunction(arg: string): boolean;
    }
    ```
@@ -78,6 +78,7 @@ While you may see the term **ambient** in TypeScript documentation, it doesn't r
 - **Environment-specific types** like browser `window` object or Node.js `process` object that are already available in the runtime.
 
 ### **Example: Ambient Declaration for `window` object**
+
 TypeScript has built-in types for common environments like the browser or Node.js. You can declare new properties on the `window` object if needed.
 
 ```typescript

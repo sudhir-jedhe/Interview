@@ -7,17 +7,15 @@ Here's a step-by-step guide on how to customize the scrollbar in a React compone
 You can apply custom styles to your scrollbar by adding the relevant CSS styles to a component. Here's a simple React component structure:
 
 ```jsx
-import React from 'react';
-import './CustomScrollbar.css'; // External CSS file to style the scrollbar
+import React from "react";
+import "./CustomScrollbar.css"; // External CSS file to style the scrollbar
 
 const CustomScrollbarComponent = () => {
   return (
     <div className="scroll-container">
       <p>Some content...</p>
       {/* Add lots of content to make the scrollbars appear */}
-      <div style={{ height: '1000px' }}>
-        More content goes here...
-      </div>
+      <div style={{ height: "1000px" }}>More content goes here...</div>
     </div>
   );
 };
@@ -82,6 +80,7 @@ The `CustomScrollbar.css` file is already linked to your component, so the style
 When you render the component, the scrollbars should have a custom look, with specific width, color, and hover effects based on the CSS properties you set.
 
 ### Example Breakdown:
+
 - **`::-webkit-scrollbar`**: Targets the entire scrollbar (both vertical and horizontal).
 - **`::-webkit-scrollbar-track`**: Styles the track (the part the thumb moves along).
 - **`::-webkit-scrollbar-thumb`**: Styles the thumb (the draggable part of the scrollbar).
@@ -89,10 +88,12 @@ When you render the component, the scrollbars should have a custom look, with sp
 - **`::-webkit-scrollbar-vertical` & `::-webkit-scrollbar-horizontal`**: Optionally, these pseudo-elements target the vertical and horizontal scrollbars specifically.
 
 ### Notes:
+
 - **Cross-browser compatibility**: This method only works in WebKit-based browsers like Chrome, Safari, and newer versions of Edge. Firefox uses a different approach, but you can still apply custom styles to it using `scrollbar-width` and `scrollbar-color`.
 - **Non-WebKit browsers**: Custom scrollbar styles are not supported in older versions of Internet Explorer and some other browsers, so it's important to check compatibility for your target audience.
 
 ### Example for Firefox:
+
 If you want to target Firefox as well, you can add the following:
 
 ```css

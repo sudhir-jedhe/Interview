@@ -11,6 +11,7 @@ For enterprise forms, validate:
 ✅ Business Hours
 
 Custom Hook
+```js
 function useTimeValidation() {
 const [value, setValue] =
 useState("");
@@ -75,13 +76,14 @@ setValue(nextValue);
 }
 
 return {
-value,
-error,
-handleChange
+  value,
+  error,
+  handleChange
 };
 }
-
-Usage
+```
+```js
+// Usage
 function CustomTimeInput() {
 
 const {
@@ -124,6 +126,7 @@ return (
 
 }
 
+```
 This pattern provides immediate feedback as the user types, which is consistent with validation-focused picker implementations.
 
 2. Holiday Tooltip Appearance Customization
@@ -135,6 +138,7 @@ Republic Day
 Create rich enterprise tooltips.
 
 Holiday Model
+```js
 const holidays = {
 
 "2026-01-26": {

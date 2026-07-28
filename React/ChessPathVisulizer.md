@@ -6,7 +6,7 @@ The goal is:
 
 > Visualise the shortest path between two positions on a chessboard for a chess piece (usually a Knight) and animate the path. The shortest-path version is commonly solved using **Breadth-First Search (BFS)** because each valid move has equal cost. [\[baeldung.com\]](https://www.baeldung.com/cs/knights-shortest-path-chessboard), [\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/dsa/minimum-steps-reach-target-knight/)
 
-***
+---
 
 # Requirements
 
@@ -32,7 +32,7 @@ King
 
 ✅ Animate Movement
 
-***
+---
 
 # UI
 
@@ -54,7 +54,7 @@ End: H8
 [ Find Path ]
 ```
 
-***
+---
 
 # Data Model
 
@@ -70,7 +70,7 @@ interface PathNode {
 }
 ```
 
-***
+---
 
 # Knight Moves
 
@@ -91,7 +91,7 @@ const moves = [
 
 These are the standard knight moves used when modelling the chessboard as a graph. [\[baeldung.com\]](https://www.baeldung.com/cs/knights-shortest-path-chessboard), [\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/dsa/minimum-steps-reach-target-knight/)
 
-***
+---
 
 # Why BFS?
 
@@ -123,15 +123,12 @@ Use BFS
 
 BFS is a standard approach for knight shortest-path problems on a chessboard. [\[baeldung.com\]](https://www.baeldung.com/cs/knights-shortest-path-chessboard), [\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/dsa/minimum-steps-reach-target-knight/), [\[finalroundai.com\]](https://www.finalroundai.com/articles/knights-shortest-path)
 
-***
+---
 
 # BFS Solution
 
 ```js
-function shortestKnightPath(
-  start,
-  target
-) {
+function shortestKnightPath(start, target) {
   const queue = [
     {
       position: start,
@@ -142,52 +139,30 @@ function shortestKnightPath(
   const visited = new Set();
 
   while (queue.length) {
-    const {
-      position,
-      path,
-    } = queue.shift();
+    const { position, path } = queue.shift();
 
-    const key =
-      `${position.row}-${position.col}`;
+    const key = `${position.row}-${position.col}`;
 
-    if (
-      visited.has(key)
-    ) {
+    if (visited.has(key)) {
       continue;
     }
 
     visited.add(key);
 
-    if (
-      position.row === target.row &&
-      position.col === target.col
-    ) {
+    if (position.row === target.row && position.col === target.col) {
       return path;
     }
 
-    for (const [
-      dx,
-      dy,
-    ] of moves) {
+    for (const [dx, dy] of moves) {
       const next = {
-        row:
-          position.row + dx,
-        col:
-          position.col + dy,
+        row: position.row + dx,
+        col: position.col + dy,
       };
 
-      if (
-        next.row >= 0 &&
-        next.row < 8 &&
-        next.col >= 0 &&
-        next.col < 8
-      ) {
+      if (next.row >= 0 && next.row < 8 && next.col >= 0 && next.col < 8) {
         queue.push({
           position: next,
-          path: [
-            ...path,
-            next,
-          ],
+          path: [...path, next],
         });
       }
     }
@@ -197,96 +172,67 @@ function shortestKnightPath(
 }
 ```
 
-***
+---
 
 # React State
 
 ```tsx
-const [start, setStart] =
-  useState(null);
+const [start, setStart] = useState(null);
 
-const [target, setTarget] =
-  useState(null);
+const [target, setTarget] = useState(null);
 
-const [path, setPath] =
-  useState([]);
+const [path, setPath] = useState([]);
 ```
 
-***
+---
 
 # Board Rendering
 
 ```tsx
 <div className="board">
-  {Array.from(
-    { length: 8 }
-  ).map((_, row) =>
-    Array.from(
-      { length: 8 }
-    ).map((_, col) => (
-      <Cell
-        key={`${row}-${col}`}
-        row={row}
-        col={col}
-      />
-    ))
+  {Array.from({ length: 8 }).map((_, row) =>
+    Array.from({ length: 8 }).map((_, col) => (
+      <Cell key={`${row}-${col}`} row={row} col={col} />
+    )),
   )}
 </div>
 ```
 
-***
+---
 
 # Visualise Path
 
 ```tsx
 {
-  path.map(
-    (
-      position,
-      index
-    ) => (
-      <div
-        key={index}
-        className="path"
-      >
-        {position.row},
-        {position.col}
-      </div>
-    )
-  );
+  path.map((position, index) => (
+    <div key={index} className="path">
+      {position.row},{position.col}
+    </div>
+  ));
 }
 ```
 
-***
+---
 
 # Animation
 
 ```js
-function animatePath(
-  path
-) {
+function animatePath(path) {
   let index = 0;
 
-  const timer =
-    setInterval(() => {
-      setCurrentPosition(
-        path[index]
-      );
+  const timer = setInterval(() => {
+    setCurrentPosition(path[index]);
 
-      index++;
+    index++;
 
-      if (
-        index >= path.length
-      ) {
-        clearInterval(
-          timer
-        );
-      }
-    }, 300);
+    if (index >= path.length) {
+      clearInterval(timer);
+    }
+  }, 300);
 }
 ```
 
-***
+---
 
 # Advanced Version
 
@@ -312,16 +258,13 @@ if (
 
 Obstacle-aware path visualisers are common extensions of pathfinding visualisation tools. [\[github.com\]](https://github.com/cemkagba/-Knight-Path-Finder---Algorithm-Visualizer)
 
-***
+---
 
 # Multi-Piece Support
 
 ```ts
 interface PieceStrategy {
-  getMoves(
-    row: number,
-    col: number
-  ): Position[];
+  getMoves(row: number, col: number): Position[];
 }
 ```
 
@@ -337,7 +280,7 @@ King
 
 Use Strategy Pattern.
 
-***
+---
 
 # Complexity
 
@@ -359,7 +302,7 @@ O(64)
 
 For a standard chessboard, BFS visits board positions and guarantees the minimum-move solution. [\[geeksforgeeks.org\]](https://www.geeksforgeeks.org/dsa/minimum-steps-reach-target-knight/), [\[finalroundai.com\]](https://www.finalroundai.com/articles/knights-shortest-path)
 
-***
+---
 
 # Senior Interview Answer
 

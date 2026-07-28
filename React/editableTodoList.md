@@ -1,7 +1,8 @@
+```js
 export default function App() {
     const [todos, setTodos] = useState([]);
     const inputRef = useRef();
-  
+
     const handleKeyPress = (e) => {
       if (e.key === "Enter") {
         setTodos([
@@ -11,39 +12,39 @@ export default function App() {
         inputRef.current.value = "";
       }
     };
-   
+
     // toggle completed
     const handleCompleted = (id) => {
       const updatedList = todos.map((e) => {
         if (e.id === id) {
           e.completed = !e.completed;
         }
-  
+
         return e;
       });
-  
+
       setTodos(updatedList);
     };
-  
+
     // delete item
     const handleDelete = (id) => {
       const filter = todos.filter((e) => e.id !== id);
       setTodos(filter);
     };
-  
+
     // handle text update
     const handleUpdateText = (id, text) => {
       const updatedList = todos.map((e) => {
         if (e.id === id) {
           e.text = text;
         }
-  
+
         return e;
       });
-  
+
       setTodos(updatedList);
     };
-  
+
     return (
       <div className="App">
         <input type="text" onKeyPress={handleKeyPress} ref={inputRef} />
@@ -71,7 +72,7 @@ export default function App() {
   }) => {
     const [edit, setEdit] = useState(false);
     const [editText, setEditText] = useState(text);
-  
+
     return (
       <div className="item">
         <div class="circle" onClick={() => updateCompleted(id)}>
@@ -115,7 +116,7 @@ export default function App() {
     max-width: 300px;
     margin: 0 auto;
   }
-  
+
   .item {
     display: flex;
     align-items: center;
@@ -123,17 +124,17 @@ export default function App() {
     padding: 5px;
     border-bottom: 1px solid #000;
   }
-  
+
   .close {
     cursor: pointer;
     opacity: 0;
     transition: all 0.2s ease;
   }
-  
+
   .item:hover .close {
     opacity: 1;
   }
-  
+
   .circle {
     width: 30px;
     height: 30px;
@@ -143,14 +144,15 @@ export default function App() {
     align-items: center;
     justify-content: center;
   }
-  
+
   input {
     width: 100%;
     padding: 5px;
     font: 1.2em;
     margin-bottom: 20px;
   }
-  
+
   .strike {
     text-decoration: line-through;
   }
+```

@@ -1,3 +1,4 @@
+```js
 import { EffectCallback, useEffect, useRef } from "react";
 import { EffectCallback, useEffect } from "react";
 
@@ -14,3 +15,4 @@ export function useEffectOnce(effect: EffectCallback) {
 export function useEffectOnce(effect: EffectCallback) {
   useEffect(effect, [])
 }
+```

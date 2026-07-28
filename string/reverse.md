@@ -1,3 +1,4 @@
+```js
 function reverseString(str) {
   const reversedString = str.split("").reduce((acc, char) => char + acc, "");
   console.log(reversedString);
@@ -54,7 +55,7 @@ function reverseString(str) {
   console.log(strRev);
 }
 
-  
+
 
 function reverseString(str) {
   // Base case: if the string is empty or has only one character, return the string
@@ -102,7 +103,7 @@ var reverseString = function (s) {
 
 // Input: s = "abcd", k = 2
 // Output: "bacd"
- 
+
 
 
 function reverseStr(s: string, k: number): string {
@@ -115,3 +116,4 @@ function reverseStr(s: string, k: number): string {
   }
   return cs.join('');
 }
+```

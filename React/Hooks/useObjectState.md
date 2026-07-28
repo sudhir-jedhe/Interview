@@ -2,47 +2,38 @@
 
 A common React pattern is creating a custom hook that behaves like `setState` from class components by **merging object updates instead of replacing them**. This is often referred to as `useObjectState`. [\[learnhooks.dev\]](https://learnhooks.dev/articles/simplify-complex-state-management), [\[github.com\]](https://github.com/thers/use-object-state)
 
-***
+---
 
 # Basic Implementation
 
 ```tsx
 import { useState } from "react";
 
-function useObjectState<T extends object>(
-  initialState: T
-) {
-  const [state, setState] =
-    useState(initialState);
+function useObjectState<T extends object>(initialState: T) {
+  const [state, setState] = useState(initialState);
 
-  const updateState = (
-    updates: Partial<T>
-  ) => {
-    setState(prev => ({
+  const updateState = (updates: Partial<T>) => {
+    setState((prev) => ({
       ...prev,
       ...updates,
     }));
   };
 
-  return [
-    state,
-    updateState,
-  ] as const;
+  return [state, updateState] as const;
 }
 ```
 
-***
+---
 
 # Usage
 
 ```tsx
 function Profile() {
-  const [user, setUser] =
-    useObjectState({
-      name: "",
-      email: "",
-      age: 0,
-    });
+  const [user, setUser] = useObjectState({
+    name: "",
+    email: "",
+    age: 0,
+  });
 
   return (
     <div>
@@ -50,8 +41,7 @@ function Profile() {
         value={user.name}
         onChange={(e) =>
           setUser({
-            name:
-              e.target.value,
+            name: e.target.value,
           })
         }
       />
@@ -60,8 +50,7 @@ function Profile() {
         value={user.email}
         onChange={(e) =>
           setUser({
-            email:
-              e.target.value,
+            email: e.target.value,
           })
         }
       />
@@ -70,7 +59,7 @@ function Profile() {
 }
 ```
 
-***
+---
 
 # Advanced Version (Supports Function Updates)
 
@@ -79,27 +68,14 @@ This is the version I recommend for interviews because it handles React state ba
 ```tsx
 import { useState } from "react";
 
-type Update<T> =
-  | Partial<T>
-  | ((
-      prev: T
-    ) => Partial<T>);
+type Update<T> = Partial<T> | ((prev: T) => Partial<T>);
 
-export function useObjectState<
-  T extends object
->(initialState: T) {
-  const [state, setState] =
-    useState(initialState);
+export function useObjectState<T extends object>(initialState: T) {
+  const [state, setState] = useState(initialState);
 
-  const updateState = (
-    update: Update<T>
-  ) => {
-    setState(prev => {
-      const updates =
-        typeof update ===
-        "function"
-          ? update(prev)
-          : update;
+  const updateState = (update: Update<T>) => {
+    setState((prev) => {
+      const updates = typeof update === "function" ? update(prev) : update;
 
       return {
         ...prev,
@@ -108,50 +84,41 @@ export function useObjectState<
     });
   };
 
-  return [
-    state,
-    updateState,
-  ] as const;
+  return [state, updateState] as const;
 }
 ```
 
-***
+---
 
 # Usage
 
 ```tsx
-const [counter, setCounter] =
-  useObjectState({
-    count: 0,
-    total: 100,
-  });
+const [counter, setCounter] = useObjectState({
+  count: 0,
+  total: 100,
+});
 
 const increment = () => {
-  setCounter(prev => ({
-    count:
-      prev.count + 1,
+  setCounter((prev) => ({
+    count: prev.count + 1,
   }));
 };
 ```
 
-***
+---
 
 # Form Handling Example
 
 ```tsx
-const [form, setForm] =
-  useObjectState({
-    firstName: "",
-    lastName: "",
-    email: "",
-  });
+const [form, setForm] = useObjectState({
+  firstName: "",
+  lastName: "",
+  email: "",
+});
 
-const handleChange = (
-  e: React.ChangeEvent<HTMLInputElement>
-) => {
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   setForm({
-    [e.target.name]:
-      e.target.value,
+    [e.target.name]: e.target.value,
   });
 };
 ```
@@ -176,21 +143,16 @@ const handleChange = (
 />
 ```
 
-***
+---
 
 # Even Better API
 
 ```tsx
-function useObjectState<
-  T extends object
->(initialState: T) {
-  const [state, setState] =
-    useState(initialState);
+function useObjectState<T extends object>(initialState: T) {
+  const [state, setState] = useState(initialState);
 
-  const merge = (
-    updates: Partial<T>
-  ) => {
-    setState(prev => ({
+  const merge = (updates: Partial<T>) => {
+    setState((prev) => ({
       ...prev,
       ...updates,
     }));
@@ -211,11 +173,7 @@ function useObjectState<
 Usage:
 
 ```tsx
-const {
-  state,
-  merge,
-  reset,
-} = useObjectState({
+const { state, merge, reset } = useObjectState({
   name: "",
   age: 0,
 });
@@ -227,7 +185,7 @@ merge({
 reset();
 ```
 
-***
+---
 
 # Senior Interview Discussion
 
@@ -245,7 +203,7 @@ Result:
 
 ```tsx
 {
-  name: "John"
+  name: "John";
 }
 ```
 
@@ -269,7 +227,7 @@ Result:
 }
 ```
 
-***
+---
 
 # Common Enhancements
 

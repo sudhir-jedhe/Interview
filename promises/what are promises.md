@@ -99,13 +99,13 @@ handleData();
 
 ### **Key Differences Between Promises and `async/await`**
 
-| Feature                | **Promise**                           | **async/await**                          |
-|------------------------|---------------------------------------|------------------------------------------|
-| Syntax                | `.then()` and `.catch()` for handling promises | `await` inside an `async` function |
-| Readability           | Can result in "callback hell" with nested promises | Cleaner and more readable, looks like synchronous code |
-| Error handling        | `.catch()` to handle errors | `try/catch` block to handle errors |
-| Execution Flow        | Asynchronous, but requires chaining `.then()` | Synchronous-like execution with `await` |
-| Use Cases             | General asynchronous operations | More readable asynchronous code handling |
+| Feature        | **Promise**                                        | **async/await**                                        |
+| -------------- | -------------------------------------------------- | ------------------------------------------------------ |
+| Syntax         | `.then()` and `.catch()` for handling promises     | `await` inside an `async` function                     |
+| Readability    | Can result in "callback hell" with nested promises | Cleaner and more readable, looks like synchronous code |
+| Error handling | `.catch()` to handle errors                        | `try/catch` block to handle errors                     |
+| Execution Flow | Asynchronous, but requires chaining `.then()`      | Synchronous-like execution with `await`                |
+| Use Cases      | General asynchronous operations                    | More readable asynchronous code handling               |
 
 ### **Types of Promises**
 
@@ -308,12 +308,12 @@ Promise.all([task1(), task2(), task3()])
 
 ### **Summary of Differences Between Promises and `async/await`**
 
-| Aspect               | **Promise**                         | **async/await**                        |
-|----------------------|-------------------------------------|----------------------------------------|
-| **Syntax**           | `.then()`, `.catch()`               | `await` in `async` functions          |
-| **Code Readability** | Can be harder to read with chains   | More readable and synchronous-like    |
-| **Error Handling**   | `.catch()`                          | `try/catch` block                     |
-| **Flow Control**     | Must chain promises or use `catch`  | Linear flow with `await`              |
-| **Execution**        | Asynchronous, resolves at some point | Asynchronous, looks synchronous       |
+| Aspect               | **Promise**                          | **async/await**                    |
+| -------------------- | ------------------------------------ | ---------------------------------- |
+| **Syntax**           | `.then()`, `.catch()`                | `await` in `async` functions       |
+| **Code Readability** | Can be harder to read with chains    | More readable and synchronous-like |
+| **Error Handling**   | `.catch()`                           | `try/catch` block                  |
+| **Flow Control**     | Must chain promises or use `catch`   | Linear flow with `await`           |
+| **Execution**        | Asynchronous, resolves at some point | Asynchronous, looks synchronous    |
 
 Promises are useful for handling asynchronous operations, while `async/await` provides a more modern, cleaner, and synchronous-looking approach to deal with them. Both are used to handle asynchronous operations, but `async/await` simplifies the process and makes your code more readable.

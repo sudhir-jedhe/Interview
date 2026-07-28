@@ -1,3 +1,4 @@
+```js
 getStringsWithVowels(["apple", "banana", "orange", "pear"]); // Output: ['apple', 'orange']
 getStringsWithVowels(["Elephant", "Zebra", "Ostrich", "Umbrella"]); // Output: ['Elephant', 'Umbrella']
 getStringsWithVowels(["cat", "dog", "elephant", "pig"]); // Output: ['elephant']
@@ -9,3 +10,4 @@ export const getStringsWithVowels = (array) => {
     return vowels.includes(string.charAt(0).toLowerCase());
   });
 };
+```

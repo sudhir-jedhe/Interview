@@ -16,7 +16,7 @@ class Currency {
   }
 
   static wrap(currency) {
-    if (typeof currency === 'string') {
+    if (typeof currency === "string") {
       return this.get(currency);
     }
     return currency;
@@ -34,9 +34,9 @@ class Currency {
 }
 
 // Example Currencies
-new Currency('USD', '$');
-new Currency('EUR', '€');
-new Currency('GBP', '£');
+new Currency("USD", "$");
+new Currency("EUR", "€");
+new Currency("GBP", "£");
 
 // Bank Class
 class Bank {
@@ -65,7 +65,9 @@ class Bank {
 
     const rate = this.getRate(money.currency, toCurrencyObj);
     if (!rate) {
-      throw new TypeError(`No exchange rate found for ${money.currency.code} to ${toCurrencyObj.code}`);
+      throw new TypeError(
+        `No exchange rate found for ${money.currency.code} to ${toCurrencyObj.code}`,
+      );
     }
 
     return new Money(money.value * rate, toCurrencyObj, this);
@@ -136,27 +138,27 @@ class Money {
 
 // Create Bank instance
 const bank = new Bank();
-bank.setRate('USD', 'EUR', 0.85); // 1 USD = 0.85 EUR
-bank.setRate('EUR', 'USD', 1.1765); // 1 EUR = 1.1765 USD
+bank.setRate("USD", "EUR", 0.85); // 1 USD = 0.85 EUR
+bank.setRate("EUR", "USD", 1.1765); // 1 EUR = 1.1765 USD
 
 // Create Money instances
-const usdMoney = new Money(100, 'USD', bank);
-const eurMoney = new Money(100, 'EUR', bank);
+const usdMoney = new Money(100, "USD", bank);
+const eurMoney = new Money(100, "EUR", bank);
 
 // Format Money objects
 console.log(usdMoney.format()); // Output: $100.00
 console.log(eurMoney.format()); // Output: €100.00
 
 // Exchange USD to EUR
-const exchangedMoney = usdMoney.exchangeTo('EUR');
+const exchangedMoney = usdMoney.exchangeTo("EUR");
 console.log(exchangedMoney.format()); // Output: €85.00
 
 // Add Money objects
-const sumMoney = usdMoney.add(new Money(50, 'USD', bank));
+const sumMoney = usdMoney.add(new Money(50, "USD", bank));
 console.log(sumMoney.format()); // Output: $150.00
 
 // Subtract Money objects
-const differenceMoney = usdMoney.subtract(new Money(30, 'USD', bank));
+const differenceMoney = usdMoney.subtract(new Money(30, "USD", bank));
 console.log(differenceMoney.format()); // Output: $70.00
 
 // Multiply Money object
@@ -168,9 +170,9 @@ const dividedMoney = usdMoney.divide(4);
 console.log(dividedMoney.format()); // Output: $25.00
 
 // Comparison
-console.log(usdMoney.equals(new Money(100, 'USD', bank))); // Output: true
-console.log(usdMoney.greaterThan(new Money(50, 'USD', bank))); // Output: true
-console.log(usdMoney.lessThan(new Money(200, 'USD', bank))); // Output: true
+console.log(usdMoney.equals(new Money(100, "USD", bank))); // Output: true
+console.log(usdMoney.greaterThan(new Money(50, "USD", bank))); // Output: true
+console.log(usdMoney.lessThan(new Money(200, "USD", bank))); // Output: true
 ```
 
 ### Explanation of the Example:
@@ -200,6 +202,7 @@ console.log(usdMoney.lessThan(new Money(200, 'USD', bank))); // Output: true
    - We compare `Money` objects using `equals()`, `greaterThan()`, and `lessThan()` methods. Again, conversions are done as needed if the currencies are different.
 
 ### Example Output:
+
 ```
 $100.00
 €100.00

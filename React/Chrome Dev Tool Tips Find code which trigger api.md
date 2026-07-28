@@ -59,9 +59,7 @@ Let's say you see a **POST** request to `/api/users` in the Network tab.
 ### Additional Tips:
 
 - **XHR and Fetch Filters:** In the Network panel, you can filter requests by **XHR** (AJAX requests), **Fetch** (Fetch API), or **WS** (WebSockets). This is particularly useful if you're debugging API calls or server communication.
-  
 - **Console Logs:** If you suspect an API request is being made dynamically, add `console.log()` statements at different places in your code to log out where the API call is being triggered.
-  
 - **Event Listeners:** If the API call is triggered by an event (like a button click), you can use the **Event Listener Breakpoints** feature in the **Sources** tab:
   - Go to **Sources > Event Listener Breakpoints**.
   - You can enable breakpoints for various event types (e.g., `click`, `submit`, etc.).
@@ -72,7 +70,5 @@ Let's say you see a **POST** request to `/api/users` in the Network tab.
 - **Network Tab:** Use this tab to monitor and inspect all network requests, including API calls.
 - **Initiator Tab:** The key to tracking which code triggers a request. It shows the call stack leading to the request.
 - **Sources Tab:** Once you identify the code from the Initiator tab, use the Sources tab to inspect and debug the code.
-  
+
 By following these steps, you can efficiently trace which code in your application is responsible for triggering an API request.
-
-

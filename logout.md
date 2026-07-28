@@ -649,3 +649,328 @@ If a user opens your app and it fires three simultaneous API calls with an expir
 The first request will rotate the token and mark it as used. The second and third requests will arrive, see `isUsed: true`, trigger the security breach logic, and lock the legitimate user out.
 
 To fix this, you must rely on the **Axios Interceptor queue** we built in the previous step. By ensuring the frontend pauses all other requests and only sends **one** `/refresh` request at a time, you prevent accidental reuse lockouts while maintaining strict security against actual attackers.
+
+Here is a complete, production-ready architecture for managing cross-tab synchronization and token refresh queues in a React application using **Axios** and the **Broadcast Channel API**.
+
+---
+
+## 1. Cross-Tab Communication Utility
+
+Using the native `BroadcastChannel` API allows real-time messaging between browser tabs running on the same origin without polling `localStorage`.
+
+```typescript
+// src/utils/authChannel.ts
+export type AuthMessage =
+  | { type: "LOGOUT" }
+  | { type: "TOKEN_REFRESHED"; accessToken: string };
+
+const CHANNEL_NAME = "auth_channel";
+
+class AuthBroadcastChannel {
+  private channel: BroadcastChannel | null = null;
+
+  constructor() {
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      this.channel = new BroadcastChannel(CHANNEL_NAME);
+    }
+  }
+
+  public postMessage(message: AuthMessage) {
+    this.channel?.postMessage(message);
+  }
+
+  public subscribe(callback: (message: AuthMessage) => void) {
+    if (!this.channel) return () => {};
+
+    const handler = (event: MessageEvent<AuthMessage>) => {
+      callback(event.data);
+    };
+
+    this.channel.addEventListener("message", handler);
+    return () => {
+      this.channel?.removeEventListener("message", handler);
+    };
+  }
+
+  public close() {
+    this.channel?.close();
+  }
+}
+
+export const authChannel = new AuthBroadcastChannel();
+```
+
+---
+
+## 2. Global Cross-Tab Logout Hook (`useCrossTabLogout`)
+
+This hook handles logging out the current user, notifying other tabs to do the same, and listening for logout events emitted by sister tabs.
+
+```typescript
+// src/hooks/useCrossTabLogout.ts
+import { useEffect, useCallback } from "react";
+import { authChannel } from "../utils/authChannel";
+
+export const useCrossTabLogout = (onLogoutCallback: () => void) => {
+  // 1. Local trigger: Performs local cleanup & broadcasts logout to other tabs
+  const logout = useCallback(() => {
+    // Clear local storage / session tokens
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
+    // Broadcast event to other open tabs
+    authChannel.postMessage({ type: "LOGOUT" });
+
+    // Perform local redirect/state reset
+    onLogoutCallback();
+  }, [onLogoutCallback]);
+
+  // 2. Cross-tab listener: Listens for LOGOUT signals sent from other tabs
+  useEffect(() => {
+    const unsubscribe = authChannel.subscribe((message) => {
+      if (message.type === "LOGOUT") {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        onLogoutCallback();
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [onLogoutCallback]);
+
+  return { logout };
+};
+```
+
+---
+
+## 3. Axios Interceptor with Queue & Tab Sync
+
+When multiple API requests fail simultaneously with `401 Unauthorized`, this interceptor ensures:
+
+1. **Only one request triggers the refresh API endpoint**.
+2. Subsequent concurrent requests are queued.
+3. Upon token refresh, the new token is broadcast across open tabs.
+
+```typescript
+// src/api/axiosClient.ts
+import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
+import { authChannel } from "../utils/authChannel";
+
+export const api = axios.create({
+  baseURL: process.env.REACT_APP_API_URL || "/api",
+  headers: { "Content-Type": "application/json" },
+});
+
+// State for request queuing
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (token: string) => void;
+  reject: (error: any) => void;
+}> = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((promise) => {
+    if (error) {
+      promise.reject(error);
+    } else if (token) {
+      promise.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
+
+// Listen for tokens refreshed in OTHER tabs
+authChannel.subscribe((message) => {
+  if (message.type === "TOKEN_REFRESHED") {
+    localStorage.setItem("accessToken", message.accessToken);
+    processQueue(null, message.accessToken);
+    isRefreshing = false;
+  }
+});
+
+// Request Interceptor: Attach bearer token
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const token = localStorage.getItem("accessToken");
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Response Interceptor: Queue requests & Refresh token
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config as AxiosRequestConfig & {
+      _retry?: boolean;
+    };
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (originalRequest.url?.includes("/auth/refresh")) {
+        // Refresh token itself expired -> Force global logout
+        authChannel.postMessage({ type: "LOGOUT" });
+        return Promise.reject(error);
+      }
+
+      originalRequest._retry = true;
+
+      if (isRefreshing) {
+        // Queue pending request while refresh is in progress
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then((token) => {
+          if (originalRequest.headers) {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+          }
+          return api(originalRequest);
+        });
+      }
+
+      isRefreshing = true;
+
+      try {
+        const refreshToken = localStorage.getItem("refreshToken");
+        const { data } = await axios.post("/api/auth/refresh", {
+          refreshToken,
+        });
+
+        const newAccessToken = data.accessToken;
+        localStorage.setItem("accessToken", newAccessToken);
+
+        // Notify other open tabs about the new token
+        authChannel.postMessage({
+          type: "TOKEN_REFRESHED",
+          accessToken: newAccessToken,
+        });
+
+        // Resolve queued local requests
+        processQueue(null, newAccessToken);
+
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        }
+
+        return api(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+
+        // Broadcast logout on refresh failure
+        localStorage.clear();
+        authChannel.postMessage({ type: "LOGOUT" });
+
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);
+```
+
+---
+
+## 4. Reactive Token Expiration Hook (`useTokenExpiration`)
+
+This hook proactively sets up a timer to auto-refresh the token **before** it expires, preventing unnecessary `401` network failures.
+
+```typescript
+// src/hooks/useTokenExpiration.ts
+import { useEffect } from "react";
+import { api } from "../api/axiosClient";
+
+// Helper to parse JWT expiration timestamp
+const getTokenExpiration = (token: string): number | null => {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.exp ? payload.exp * 1000 : null; // Convert to ms
+  } catch {
+    return null;
+  }
+};
+
+export const useTokenExpiration = () => {
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) return;
+
+    const expTime = getTokenExpiration(token);
+    if (!expTime) return;
+
+    const now = Date.now();
+    // Schedule proactive refresh 1 minute before expiration
+    const refreshBuffer = 60 * 1000;
+    const delay = expTime - now - refreshBuffer;
+
+    if (delay <= 0) {
+      // Token is already near expiration, trigger immediate refresh
+      api.post("/auth/refresh", {
+        refreshToken: localStorage.getItem("refreshToken"),
+      });
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      api.post("/auth/refresh", {
+        refreshToken: localStorage.getItem("refreshToken"),
+      });
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, []);
+};
+```
+
+---
+
+## 5. Mounting at App Root (`App.tsx`)
+
+Mount the authentication listeners and proactive timers at the root level of your React tree.
+
+```tsx
+// src/App.tsx
+import React, { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCrossTabLogout } from "./hooks/useCrossTabLogout";
+import { useTokenExpiration } from "./hooks/useTokenExpiration";
+
+export const App: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = useCallback(() => {
+    // Reset global state (Redux/Zustand) if applicable
+    navigate("/login");
+  }, [navigate]);
+
+  // Mount Cross-Tab Logout Listener
+  const { logout } = useCrossTabLogout(handleLogout);
+
+  // Mount Reactive Token Expiration Timer
+  useTokenExpiration();
+
+  return (
+    <div className="app">
+      <header>
+        <h1>Secure Dashboard</h1>
+        <button onClick={logout}>Logout All Tabs</button>
+      </header>
+    </div>
+  );
+};
+```
+
+---
+
+## Architecture Summary
+
+| Feature                  | Mechanism                                          | Benefit                                                                                         |
+| ------------------------ | -------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Cross-Tab Logout**     | `BroadcastChannel.postMessage({ type: 'LOGOUT' })` | Instantly logs out all open browser tabs when one tab logs out.                                 |
+| **Token Refresh Queue**  | Axios Interceptor + Promise Queue (`failedQueue`)  | Prevents parallel API race conditions when multiple requests hit `401`.                         |
+| **Cross-Tab Token Sync** | `BroadcastChannel` with `'TOKEN_REFRESHED'`        | Avoids redundant refresh calls from multiple tabs.                                              |
+| **Proactive Expiration** | `useTokenExpiration` with `setTimeout`             | Auto-refreshes tokens before expiration, avoiding `401` errors entirely during active sessions. |

@@ -1,5 +1,5 @@
 // This is a JavaScript Quiz from BFE.dev
-
+```js
 console.log(1);
 const promise = new Promise((resolve) => {
   console.log(2);

@@ -1,3 +1,4 @@
+```js
 // remove all occurrence of specific character
 let str = "Hello World";
 let charToRemove = "l";
@@ -19,3 +20,4 @@ let originalString = "Hello World";
 let indexRemove = 3;
 let removedCharacter = originalString.charAt(indexRemove);
 let output = originalString.replace(removedCharacter, "T");
+```

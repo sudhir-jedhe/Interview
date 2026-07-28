@@ -2,7 +2,7 @@
 
 `useCycle` is popular in **Framer Motion** and cycles through a predefined set of values. Under the hood, it can be implemented using `useState` and an index that wraps back to the beginning when it reaches the end. [\[learnreact.design\]](https://learnreact.design/course-posts/prototyping-react-framer/module6-react-state/6.8-understanding-usecycle)
 
-***
+---
 
 # Basic Implementation
 
@@ -13,18 +13,14 @@ export function useCycle(...items) {
   const [index, setIndex] = useState(0);
 
   const cycle = useCallback(() => {
-    setIndex(prev =>
-      prev === items.length - 1
-        ? 0
-        : prev + 1
-    );
+    setIndex((prev) => (prev === items.length - 1 ? 0 : prev + 1));
   }, [items.length]);
 
   return [items[index], cycle];
 }
 ```
 
-***
+---
 
 # Usage Example
 
@@ -32,32 +28,19 @@ export function useCycle(...items) {
 import { useCycle } from "./useCycle";
 
 export default function App() {
-  const [
-    mode,
-    cycleMode
-  ] = useCycle(
-    "light",
-    "dark",
-    "system"
-  );
+  const [mode, cycleMode] = useCycle("light", "dark", "system");
 
   return (
     <div>
-      <h2>
-        Theme: {mode}
-      </h2>
+      <h2>Theme: {mode}</h2>
 
-      <button
-        onClick={cycleMode}
-      >
-        Change Theme
-      </button>
+      <button onClick={cycleMode}>Change Theme</button>
     </div>
   );
 }
 ```
 
-***
+---
 
 # Output
 
@@ -73,7 +56,7 @@ light
 dark
 ```
 
-***
+---
 
 # Advanced Production Version
 
@@ -87,43 +70,27 @@ Supports:
 ✅ currentIndex
 ```
 
-***
+---
 
 ## useCycle.js
 
 ```jsx
-import {
-  useState,
-  useCallback,
-} from "react";
+import { useState, useCallback } from "react";
 
-export function useCycle(
-  ...items
-) {
-  const [index, setIndex] =
-    useState(0);
+export function useCycle(...items) {
+  const [index, setIndex] = useState(0);
 
-  const next =
-    useCallback(() => {
-      setIndex(prev =>
-        (prev + 1) %
-        items.length
-      );
-    }, [items.length]);
+  const next = useCallback(() => {
+    setIndex((prev) => (prev + 1) % items.length);
+  }, [items.length]);
 
-  const previous =
-    useCallback(() => {
-      setIndex(prev =>
-        prev === 0
-          ? items.length - 1
-          : prev - 1
-      );
-    }, [items.length]);
+  const previous = useCallback(() => {
+    setIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
+  }, [items.length]);
 
-  const reset =
-    useCallback(() => {
-      setIndex(0);
-    }, []);
+  const reset = useCallback(() => {
+    setIndex(0);
+  }, []);
 
   return {
     value: items[index],
@@ -136,7 +103,7 @@ export function useCycle(
 }
 ```
 
-***
+---
 
 # Usage
 
@@ -144,16 +111,10 @@ export function useCycle(
 import { useCycle } from "./useCycle";
 
 export default function App() {
-  const {
-    value,
-    index,
-    next,
-    previous,
-    reset,
-  } = useCycle(
+  const { value, index, next, previous, reset } = useCycle(
     "Low",
     "Medium",
-    "High"
+    "High",
   );
 
   return (
@@ -168,119 +129,69 @@ export default function App() {
         {index}
       </p>
 
-      <button
-        onClick={previous}
-      >
-        Prev
-      </button>
+      <button onClick={previous}>Prev</button>
 
-      <button onClick={next}>
-        Next
-      </button>
+      <button onClick={next}>Next</button>
 
-      <button
-        onClick={reset}
-      >
-        Reset
-      </button>
+      <button onClick={reset}>Reset</button>
     </div>
   );
 }
 ```
 
-***
+---
 
 # Real Interview Use Cases
 
 ## Theme Switcher
 
 ```jsx
-const [theme, cycleTheme] =
-  useCycle(
-    "light",
-    "dark"
-  );
+const [theme, cycleTheme] = useCycle("light", "dark");
 ```
 
-***
+---
 
 ## Traffic Light
 
 ```jsx
-const [
-  signal,
-  nextSignal
-] = useCycle(
-  "Red",
-  "Yellow",
-  "Green"
-);
+const [signal, nextSignal] = useCycle("Red", "Yellow", "Green");
 ```
 
-***
+---
 
 ## Stepper
 
 ```jsx
-const {
-  value: step,
-  next,
-} = useCycle(
-  1,
-  2,
-  3,
-  4
-);
+const { value: step, next } = useCycle(1, 2, 3, 4);
 ```
 
-***
+---
 
 ## Carousel
 
 ```jsx
-const {
-  value: image,
-  next,
-  previous,
-} = useCycle(
-  image1,
-  image2,
-  image3
-);
+const { value: image, next, previous } = useCycle(image1, image2, image3);
 ```
 
-***
+---
 
 # TypeScript Version
 
 ```tsx
-import {
-  useState,
-  useCallback,
-} from "react";
+import { useState, useCallback } from "react";
 
-export function useCycle<T>(
-  ...items: T[]
-) {
-  const [index, setIndex] =
-    useState(0);
+export function useCycle<T>(...items: T[]) {
+  const [index, setIndex] = useState(0);
 
-  const next =
-    useCallback(() => {
-      setIndex(prev =>
-        (prev + 1) %
-        items.length
-      );
-    }, [items.length]);
+  const next = useCallback(() => {
+    setIndex((prev) => (prev + 1) % items.length);
+  }, [items.length]);
 
-  return [
-    items[index],
-    next,
-  ] as const;
+  return [items[index], next] as const;
 }
 ```
 
-***
+---
 
 # Senior Interview Answer
 

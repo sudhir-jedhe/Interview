@@ -1,12 +1,14 @@
 =The code you've provided implements a solution for searching an element (`target`) in a rotated sorted array, and it does so with a time complexity of O(log n), which meets the problem's requirement. Let's break down how the algorithm works and its logic.
 
 ### Problem Recap:
+
 Given a rotated sorted array and a target value, we need to find the index of the target using an O(log n) approach. The array was originally sorted but might have been rotated at an unknown pivot.
 
 ### Key Insights:
+
 1. **Binary Search**: The core idea is to leverage binary search, as it provides a time complexity of O(log n). However, the array isn't simply sorted—it has been rotated.
 2. **Identifying Sorted Half**: In any rotation, one half of the array will be sorted, while the other half will be unsorted. By checking the left and right halves of the array, we can decide which half to discard in order to narrow down the search.
-3. **Conditions to Adjust Search Range**: 
+3. **Conditions to Adjust Search Range**:
    - If the left half is sorted, we check if the target lies within this range.
    - If not, we check if the right half is sorted, and similarly adjust the search range.
 
@@ -14,39 +16,39 @@ Given a rotated sorted array and a target value, we need to find the index of th
 
 ```javascript
 function search(nums, target) {
-    let left = 0;
-    let right = nums.length - 1;
+  let left = 0;
+  let right = nums.length - 1;
 
-    while (left <= right) {
-        const mid = Math.floor((left + right) / 2);
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
 
-        // If the target is found at the middle element
-        if (nums[mid] === target) {
-            return mid;
-        }
-
-        // Check if the left half is sorted (based on the first and middle elements)
-        if (nums[left] <= nums[mid]) {
-            // If the target is within the sorted left half
-            if (target >= nums[left] && target < nums[mid]) {
-                right = mid - 1;
-            } else {
-                // Search in the unsorted right half
-                left = mid + 1;
-            }
-        } else {
-            // Check if the right half is sorted (based on the middle and last elements)
-            if (target > nums[mid] && target <= nums[right]) {
-                left = mid + 1;
-            } else {
-                // Search in the unsorted left half
-                right = mid - 1;
-            }
-        }
+    // If the target is found at the middle element
+    if (nums[mid] === target) {
+      return mid;
     }
 
-    // Target not found
-    return -1;
+    // Check if the left half is sorted (based on the first and middle elements)
+    if (nums[left] <= nums[mid]) {
+      // If the target is within the sorted left half
+      if (target >= nums[left] && target < nums[mid]) {
+        right = mid - 1;
+      } else {
+        // Search in the unsorted right half
+        left = mid + 1;
+      }
+    } else {
+      // Check if the right half is sorted (based on the middle and last elements)
+      if (target > nums[mid] && target <= nums[right]) {
+        left = mid + 1;
+      } else {
+        // Search in the unsorted left half
+        right = mid - 1;
+      }
+    }
+  }
+
+  // Target not found
+  return -1;
 }
 ```
 
@@ -74,6 +76,7 @@ function search(nums, target) {
 ### Example Walkthrough:
 
 #### Example 1:
+
 ```javascript
 console.log(search([4, 5, 6, 7, 0, 1, 2], 0)); // Output: 4
 ```
@@ -88,6 +91,7 @@ console.log(search([4, 5, 6, 7, 0, 1, 2], 0)); // Output: 4
    - Finally, `left = 4`, `right = 4`, `mid = 4` (`nums[mid] = 0`), and we find the target at index `4`.
 
 #### Example 2:
+
 ```javascript
 console.log(search([4, 5, 6, 7, 0, 1, 2], 3)); // Output: -1
 ```
@@ -95,6 +99,7 @@ console.log(search([4, 5, 6, 7, 0, 1, 2], 3)); // Output: -1
 1. The target `3` is not in the array, so after running the binary search, the result is `-1`.
 
 #### Example 3:
+
 ```javascript
 console.log(search([1], 0)); // Output: -1
 ```
@@ -102,12 +107,15 @@ console.log(search([1], 0)); // Output: -1
 1. The target `0` is not in the array, so the result is `-1`.
 
 ### Edge Cases:
+
 - If the array has only one element, the algorithm will correctly return the index if the target matches or `-1` if it doesn't.
 - The algorithm works efficiently even when the array is not rotated (i.e., no pivot).
 
 ### Time Complexity:
+
 - **Time Complexity**: O(log n). This is due to the binary search approach, where in each iteration we halve the search space.
 - **Space Complexity**: O(1). We only use a constant amount of extra space for the variables `left`, `right`, and `mid`.
 
 ### Conclusion:
+
 This solution effectively and efficiently solves the problem by using binary search and leveraging the properties of a rotated sorted array. It ensures a logarithmic time complexity, which is optimal for this problem.

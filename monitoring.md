@@ -24,7 +24,7 @@ Different CPU speeds
 
 This creates the **long tail** of performance, where a small percentage of users experience significantly worse performance than average. Real User Monitoring (RUM) exists specifically to capture these real-world conditions. [\[ip-label.com\]](https://ip-label.com/real-user-monitoring/), [\[raygun.com\]](https://raygun.com/documentation/product-guides/real-user-monitoring/for-web/performance/)
 
-***
+---
 
 # What Is the Long Tail?
 
@@ -61,7 +61,7 @@ are suffering badly.
 
 Latency and performance distributions are often long-tailed, meaning averages can hide severe outliers. [\[oneuptime.com\]](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view), [\[watchmantower.com\]](https://www.watchmantower.com/blog/average-response-time-vs-percentile-metrics)
 
-***
+---
 
 # Why Averages Lie
 
@@ -95,7 +95,7 @@ Users:
 
 Several observability guides explicitly warn that averages hide outliers and do not accurately represent user experience. [\[oneuptime.com\]](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view), [\[watchmantower.com\]](https://www.watchmantower.com/blog/average-response-time-vs-percentile-metrics)
 
-***
+---
 
 # Use Percentiles Instead
 
@@ -116,7 +116,7 @@ P99
 
 Percentiles provide a distribution-aware view of performance and help reveal long-tail issues. [\[oneuptime.com\]](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view), [\[debugbear.com\]](https://www.debugbear.com/docs/rum/percentiles)
 
-***
+---
 
 # Understanding Percentiles
 
@@ -128,7 +128,7 @@ Median user experience
 
 Half faster, half slower. [\[oneuptime.com\]](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view)
 
-***
+---
 
 ### P75
 
@@ -139,7 +139,7 @@ Half faster, half slower. [\[oneuptime.com\]](https://oneuptime.com/blog/post/20
 
 Google reports Core Web Vitals using the **75th percentile (p75)**. [\[debugbear.com\]](https://www.debugbear.com/docs/rum/percentiles), [\[aws.amazon.com\]](https://aws.amazon.com/about-aws/whats-new/2024/11/cloudwatch-rum-percentile-aggregations-simplified-troubleshooting/), [\[ip-label.com\]](https://ip-label.com/real-user-monitoring/)
 
-***
+---
 
 ### P95
 
@@ -149,7 +149,7 @@ Tail latency
 
 Shows performance affecting the slowest 5% of users. [\[oneuptime.com\]](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view), [\[watchmantower.com\]](https://www.watchmantower.com/blog/average-response-time-vs-percentile-metrics)
 
-***
+---
 
 ### P99
 
@@ -159,7 +159,7 @@ Extreme long tail
 
 Highlights the slowest 1% of experiences. [\[oneuptime.com\]](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view), [\[debugbear.com\]](https://www.debugbear.com/docs/rum/percentiles)
 
-***
+---
 
 # Production Monitoring Strategy
 
@@ -183,7 +183,7 @@ CI/CD
 
 But lab testing cannot fully capture real user diversity. [\[ip-label.com\]](https://ip-label.com/real-user-monitoring/), [\[aws.amazon.com\]](https://aws.amazon.com/about-aws/whats-new/2024/11/cloudwatch-rum-percentile-aggregations-simplified-troubleshooting/)
 
-***
+---
 
 ## Field Data (RUM)
 
@@ -198,7 +198,7 @@ Actual networks
 
 RUM captures real-world experience across environments and is used to analyse Core Web Vitals and user experience at scale. [\[ip-label.com\]](https://ip-label.com/real-user-monitoring/), [\[raygun.com\]](https://raygun.com/documentation/product-guides/real-user-monitoring/for-web/performance/)
 
-***
+---
 
 # Image Performance Monitoring
 
@@ -223,7 +223,7 @@ Connection Type
 
 RUM platforms commonly expose segmentation by geography, device, browser, network, and other attributes. [\[raygun.com\]](https://raygun.com/documentation/product-guides/real-user-monitoring/for-web/performance/), [\[ip-label.com\]](https://ip-label.com/real-user-monitoring/)
 
-***
+---
 
 # Example Investigation
 
@@ -249,7 +249,7 @@ LCP p95 = 8s
 
 This is exactly the type of long-tail issue percentile and segmentation analysis is designed to reveal. [\[ip-label.com\]](https://ip-label.com/real-user-monitoring/), [\[raygun.com\]](https://raygun.com/documentation/product-guides/real-user-monitoring/for-web/performance/)
 
-***
+---
 
 # What to Monitor for Images
 
@@ -288,7 +288,7 @@ Network
 
 RUM solutions emphasise monitoring performance together with contextual dimensions such as browser, location, network, and device. [\[ip-label.com\]](https://ip-label.com/real-user-monitoring/), [\[raygun.com\]](https://raygun.com/documentation/product-guides/real-user-monitoring/for-web/performance/)
 
-***
+---
 
 # Alerting
 
@@ -310,7 +310,7 @@ CDN Cache Hit < 90%
 
 Google's Core Web Vitals reporting and several monitoring systems focus on percentile-based thresholds, especially p75. [\[aws.amazon.com\]](https://aws.amazon.com/about-aws/whats-new/2024/11/cloudwatch-rum-percentile-aggregations-simplified-troubleshooting/), [\[debugbear.com\]](https://www.debugbear.com/docs/rum/percentiles)
 
-***
+---
 
 # Real-World React/Frontend Stack
 
@@ -338,7 +338,7 @@ User Segments
 
 Modern RUM platforms support percentile aggregations and Web Vitals monitoring directly. [\[aws.amazon.com\]](https://aws.amazon.com/about-aws/whats-new/2024/11/cloudwatch-rum-percentile-aggregations-simplified-troubleshooting/), [\[raygun.com\]](https://raygun.com/documentation/product-guides/real-user-monitoring/for-web/performance/)
 
-***
+---
 
 # Senior Frontend Interview Answer
 

@@ -10,7 +10,7 @@ INP → Responsiveness
 
 Images can affect all three metrics and are often the largest contributor to poor scores. In many cases, the largest visible image (such as a hero image) becomes the LCP element. [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals), [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals), [\[corewebvitals.io\]](https://www.corewebvitals.io/pagespeed/optimize-images-for-core-web-vitals)
 
-***
+---
 
 # 1. LCP (Largest Contentful Paint)
 
@@ -29,7 +29,7 @@ Google's "good" threshold:
 
 [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals), [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals), [\[digitalapplied.com\]](https://www.digitalapplied.com/blog/core-web-vitals-2026-inp-lcp-cls-optimization-guide)
 
-***
+---
 
 ## Typical LCP Element
 
@@ -44,7 +44,7 @@ Featured Image
 
 Images frequently become the LCP element of a page. [\[corewebvitals.io\]](https://www.corewebvitals.io/pagespeed/optimize-images-for-core-web-vitals), [\[imgcraftlab.com\]](https://www.imgcraftlab.com/blog/core-web-vitals-image-optimization)
 
-***
+---
 
 ## Bad Example
 
@@ -61,7 +61,7 @@ Problems:
 
 [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals), [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals)
 
-***
+---
 
 ## Improve LCP
 
@@ -89,7 +89,7 @@ hero.webp![Visualization](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAD8AAAAak
 
 Preloading allows the browser to begin downloading critical images earlier. [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals), [\[imgcraftlab.com\]](https://www.imgcraftlab.com/blog/core-web-vitals-image-optimization)
 
-***
+---
 
 # 2. CLS (Cumulative Layout Shift)
 
@@ -108,7 +108,7 @@ Good score:
 
 [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals), [\[digitalapplied.com\]](https://www.digitalapplied.com/blog/core-web-vitals-2026-inp-lcp-cls-optimization-guide), [\[imgcraftlab.com\]](https://www.imgcraftlab.com/blog/core-web-vitals-image-optimization)
 
-***
+---
 
 ## Classic Problem
 
@@ -136,7 +136,7 @@ Everything jumps
 
 Layout shifts caused by images without dimensions are a common source of CLS problems. [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals), [\[corewebvitals.io\]](https://www.corewebvitals.io/pagespeed/optimize-images-for-core-web-vitals), [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals)
 
-***
+---
 
 ## Fix
 
@@ -152,7 +152,7 @@ img {
 
 Explicit dimensions or aspect ratios reserve space before the image loads. [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals), [\[corewebvitals.io\]](https://www.corewebvitals.io/pagespeed/optimize-images-for-core-web-vitals)
 
-***
+---
 
 # 3. INP (Interaction to Next Paint)
 
@@ -171,7 +171,7 @@ Good score:
 
 [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals), [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals), [\[digitalapplied.com\]](https://www.digitalapplied.com/blog/core-web-vitals-2026-inp-lcp-cls-optimization-guide), [\[imgcraftlab.com\]](https://www.imgcraftlab.com/blog/core-web-vitals-image-optimization)
 
-***
+---
 
 ## How Images Impact INP
 
@@ -185,7 +185,7 @@ Occupy main thread resources
 
 This can indirectly hurt responsiveness. [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals), [\[corewebvitals.io\]](https://www.corewebvitals.io/pagespeed/optimize-images-for-core-web-vitals), [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals)
 
-***
+---
 
 # Measuring with Lighthouse
 
@@ -209,7 +209,7 @@ Performance
 
 and helps identify the largest contentful element and layout-shift contributors. [\[web.dev\]](https://web.dev/articles/optimize-vitals-lighthouse)
 
-***
+---
 
 # Measuring with PageSpeed Insights
 
@@ -231,7 +231,7 @@ INP
 
 and image-related recommendations. [\[web.dev\]](https://web.dev/articles/optimize-vitals-lighthouse), [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals)
 
-***
+---
 
 # Chrome DevTools Performance
 
@@ -253,7 +253,7 @@ Long Tasks
 
 DevTools includes Web Vitals visualisation tracks to help identify these moments. [\[web.dev\]](https://web.dev/articles/optimize-vitals-lighthouse)
 
-***
+---
 
 # Image Optimisation Checklist
 
@@ -269,7 +269,7 @@ DevTools includes Web Vitals visualisation tracks to help identify these moments
 
 [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals), [\[imgcraftlab.com\]](https://www.imgcraftlab.com/blog/core-web-vitals-image-optimization)
 
-***
+---
 
 ### CLS
 
@@ -282,7 +282,7 @@ DevTools includes Web Vitals visualisation tracks to help identify these moments
 
 [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals), [\[corewebvitals.io\]](https://www.corewebvitals.io/pagespeed/optimize-images-for-core-web-vitals)
 
-***
+---
 
 ### INP
 
@@ -294,7 +294,7 @@ DevTools includes Web Vitals visualisation tracks to help identify these moments
 
 [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals), [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals)
 
-***
+---
 
 # React Example
 
@@ -310,7 +310,7 @@ For below-the-fold images:
 
 This aligns with guidance to prioritise critical images while lazy-loading non-critical off-screen images. [\[melotools.com\]](https://melotools.com/guide/image-optimization-core-web-vitals), [\[imgfast.com\]](https://imgfast.com/learn/performance/core-vitals)
 
-***
+---
 
 # Senior Frontend Interview Answer
 

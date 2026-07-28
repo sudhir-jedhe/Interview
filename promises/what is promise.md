@@ -3,7 +3,7 @@
 // A promise is an object that may produce a single value some time in the future with either a resolved value or a reason that it’s not resolved(for example, network error). It will be in one of the 3 possible states: fulfilled, rejected, or pending.
 
 // The syntax of Promise creation looks like below,
-
+```js
 const promise1 = new Promise(function (resolve, reject) {
   // promise description
 });
@@ -20,6 +20,7 @@ const promise = new Promise(
 );
 
 promise.then((value) => console.log(value));
+```
 
 // Why do you need a promise
 
@@ -43,7 +44,7 @@ promise.then((value) => console.log(value));
 // What is promise chaining
 
 // The process of executing a sequence of asynchronous tasks one after another using promises is known as Promise chaining. Let's take an example of promise chaining for calculating the final result,
-
+```js
 new Promise(function (resolve, reject) {
   setTimeout(() => resolve(1), 1000);
 })
@@ -59,6 +60,8 @@ new Promise(function (resolve, reject) {
     console.log(result); // 6
     return result * 4;
   });
+
+  ```
 
 // In the above handlers, the result is passed to the chain of .then() handlers with the below work flow,
 
@@ -82,7 +85,7 @@ Promise.all([Promise1, Promise2, Promise3]) .then(result) => {   console.log(res
 // What is the purpose of the race method in promise
 
 //     Promise.race() method will return the promise instance which is firstly resolved or rejected. Let's take an example of race() method where promise2 is resolved first
-
+```js
 
 var promise1 = new Promise(function (resolve, reject) {
     setTimeout(resolve, 500, "one");
@@ -94,7 +97,7 @@ var promise2 = new Promise(function (resolve, reject) {
 Promise.race([promise1, promise2]).then(function (value) {
     console.log(value); // "two" // Both promises will resolve, but promise2 is faster
 });
-
+```
 
 // What are the pros and cons of promises over callbacks
 
@@ -117,11 +120,13 @@ Promise.race([promise1, promise2]).then(function (value) {
 /*************************************** */
 
 The Promise object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value. A common example of using promises would be fetching data from a URL. This would create a Promise object that represents the data we expect to receive. For example:
-
+```js
 fetch('https://my.api.com/items/1')
   .catch(err => console.log(`Failed with error: ${err}`))
   .then(response => response.json())
   .then(json => console.log(json));
+
+  ```
 The tricky part about promises is understanding that the resulting value may not initially be available. Instead, the promise can be in one of three states:
 
 Pending: initial state, neither fulfilled nor rejected.

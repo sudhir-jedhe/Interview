@@ -21,7 +21,7 @@ In React, you typically make API calls inside the `useEffect` hook, which allows
 Here’s an example using the native `fetch` API to make a GET request:
 
 ```jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function DataFetcher() {
   const [data, setData] = useState([]);
@@ -30,17 +30,17 @@ function DataFetcher() {
 
   useEffect(() => {
     // Fetch data when the component mounts
-    fetch('https://jsonplaceholder.typicode.com/posts')
+    fetch("https://jsonplaceholder.typicode.com/posts")
       .then((response) => response.json())
       .then((result) => {
-        setData(result);  // Set the fetched data
-        setLoading(false);  // Turn off the loading state
+        setData(result); // Set the fetched data
+        setLoading(false); // Turn off the loading state
       })
       .catch((err) => {
-        setError(err.message);  // Handle any errors
-        setLoading(false);  // Turn off the loading state
+        setError(err.message); // Handle any errors
+        setLoading(false); // Turn off the loading state
       });
-  }, []);  // Empty dependency array makes this effect run only once on mount
+  }, []); // Empty dependency array makes this effect run only once on mount
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -65,8 +65,8 @@ export default DataFetcher;
 Here’s how to perform the same task using the `Axios` library:
 
 ```jsx
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function DataFetcher() {
   const [data, setData] = useState([]);
@@ -76,16 +76,16 @@ function DataFetcher() {
   useEffect(() => {
     // Axios GET request
     axios
-      .get('https://jsonplaceholder.typicode.com/posts')
+      .get("https://jsonplaceholder.typicode.com/posts")
       .then((response) => {
-        setData(response.data);  // Set the fetched data
-        setLoading(false);  // Turn off the loading state
+        setData(response.data); // Set the fetched data
+        setLoading(false); // Turn off the loading state
       })
       .catch((err) => {
-        setError(err.message);  // Handle errors
-        setLoading(false);  // Turn off the loading state
+        setError(err.message); // Handle errors
+        setLoading(false); // Turn off the loading state
       });
-  }, []);  // Empty dependency array makes this effect run only once on mount
+  }, []); // Empty dependency array makes this effect run only once on mount
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -113,14 +113,14 @@ If you need to send data to the API (e.g., creating a new resource), you can use
 
 ```jsx
 const postData = async () => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-    method: 'POST',
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      title: 'foo',
-      body: 'bar',
+      title: "foo",
+      body: "bar",
       userId: 1,
     }),
   });
@@ -132,20 +132,20 @@ const postData = async () => {
 #### 3.2 **Using `Axios` (POST Request)**
 
 ```jsx
-import axios from 'axios';
+import axios from "axios";
 
 const postData = () => {
   axios
-    .post('https://jsonplaceholder.typicode.com/posts', {
-      title: 'foo',
-      body: 'bar',
+    .post("https://jsonplaceholder.typicode.com/posts", {
+      title: "foo",
+      body: "bar",
       userId: 1,
     })
     .then((response) => {
       console.log(response.data);
     })
     .catch((error) => {
-      console.error('Error posting data:', error);
+      console.error("Error posting data:", error);
     });
 };
 ```
@@ -168,16 +168,16 @@ Both `fetch` and `Axios` allow you to customize requests with headers, authentic
 
 ```jsx
 axios
-  .get('https://jsonplaceholder.typicode.com/posts', {
+  .get("https://jsonplaceholder.typicode.com/posts", {
     headers: {
-      Authorization: 'Bearer YOUR_ACCESS_TOKEN',
+      Authorization: "Bearer YOUR_ACCESS_TOKEN",
     },
   })
   .then((response) => {
     console.log(response.data);
   })
   .catch((error) => {
-    console.error('Error fetching data:', error);
+    console.error("Error fetching data:", error);
   });
 ```
 
@@ -190,8 +190,8 @@ When making requests, it's important to cancel them if the component unmounts be
 #### Example (Using Axios Cancellation):
 
 ```jsx
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function DataFetcher() {
   const [data, setData] = useState([]);
@@ -202,7 +202,7 @@ function DataFetcher() {
     const source = axios.CancelToken.source();
 
     axios
-      .get('https://jsonplaceholder.typicode.com/posts', {
+      .get("https://jsonplaceholder.typicode.com/posts", {
         cancelToken: source.token,
       })
       .then((response) => {
@@ -211,7 +211,7 @@ function DataFetcher() {
       })
       .catch((err) => {
         if (axios.isCancel(err)) {
-          console.log('Request canceled', err.message);
+          console.log("Request canceled", err.message);
         } else {
           setError(err.message);
           setLoading(false);
@@ -220,7 +220,7 @@ function DataFetcher() {
 
     // Cleanup function to cancel request on unmount
     return () => {
-      source.cancel('Operation canceled by the user.');
+      source.cancel("Operation canceled by the user.");
     };
   }, []);
 

@@ -1,3 +1,4 @@
+```js
 Input: "( p((q)) ((s)t) )";
 ("b) (c) ()");
 
@@ -91,3 +92,4 @@ console.log(maximumDepthWithStack("b) (c) ()"));
 Output: 4;
 3;
 0 - 1;
+```

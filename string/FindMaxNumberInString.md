@@ -9,6 +9,7 @@ We can use **regular expressions** to extract numbers from the string, then use 
 ### Example Approach:
 
 We will:
+
 - Use a **regular expression** to match all numbers in a string.
 - Convert those numbers to integers.
 - Find the maximum value from the numbers in each string.
@@ -18,15 +19,15 @@ We will:
 ```javascript
 // Function to find the maximum number in each string of an array
 function findMaxInEachString(arr) {
-  return arr.map(str => {
+  return arr.map((str) => {
     // Use regular expression to extract all numbers from the string
     const numbers = str.match(/\d+/g);
-    
+
     // If no numbers are found, return null or any default value
     if (!numbers) return null;
 
     // Convert the matched string numbers to integers and find the maximum
-    return Math.max(...numbers.map(num => parseInt(num, 10)));
+    return Math.max(...numbers.map((num) => parseInt(num, 10)));
   });
 }
 
@@ -34,10 +35,11 @@ function findMaxInEachString(arr) {
 const arr = ["abc123", "456def789", "10", "hello42world", "noNumbersHere"];
 const result = findMaxInEachString(arr);
 
-console.log(result);  // Output: [123, 789, 10, 42, null]
+console.log(result); // Output: [123, 789, 10, 42, null]
 ```
 
 ### **Explanation**:
+
 1. **Regular Expression (`\d+`)**: This regular expression `\d+` matches sequences of digits (numbers). The `g` flag ensures it matches all occurrences of numbers in the string.
 2. **`match()`**: The `match()` method returns an array of all matches. If there are no matches (i.e., no numbers in the string), it will return `null`.
 3. **`map()`**: The `map()` function is used to iterate through each string in the array and apply the operation to find the maximum number in that string.
@@ -59,7 +61,6 @@ console.log(result);  // Output: [123, 789, 10, 42, null]
 
 This approach allows you to easily extract and find the maximum number from each string in an array.
 
-
 In your scenario where you have strings that might contain numbers separated by underscores (e.g., `"123_12_10"` or `"12_1235_"`), the regular expression needs to be adjusted to correctly extract numbers separated by underscores as well. Let's update the solution to handle these cases:
 
 1. **Numbers separated by underscores**: We'll need to treat underscores as separators and extract the numbers accordingly.
@@ -71,30 +72,30 @@ In your scenario where you have strings that might contain numbers separated by 
 ```javascript
 // Function to find the maximum number in each string of an array
 function findMaxInEachString(arr) {
-  return arr.map(str => {
+  return arr.map((str) => {
     // Use regular expression to extract all numbers from the string, considering underscores
     const numbers = str.match(/\d+/g);
-    
+
     // If no numbers are found, return null or any default value
     if (!numbers) return null;
 
     // Convert the matched string numbers to integers and find the maximum
-    return Math.max(...numbers.map(num => parseInt(num, 10)));
+    return Math.max(...numbers.map((num) => parseInt(num, 10)));
   });
 }
 
 // Example usage:
 const arr = [
-  "abc123_12_10",   // Numbers are 123, 12, and 10
-  "12_1235_",       // Numbers are 12 and 1235
-  "123_45_67_89",   // Numbers are 123, 45, 67, 89
-  "noNumbersHere",  // No numbers at all
-  "5_10_20"         // Numbers are 5, 10, and 20
+  "abc123_12_10", // Numbers are 123, 12, and 10
+  "12_1235_", // Numbers are 12 and 1235
+  "123_45_67_89", // Numbers are 123, 45, 67, 89
+  "noNumbersHere", // No numbers at all
+  "5_10_20", // Numbers are 5, 10, and 20
 ];
 
 const result = findMaxInEachString(arr);
 
-console.log(result);  
+console.log(result);
 // Output: [123, 1235, 89, null, 20]
 ```
 
@@ -102,7 +103,6 @@ console.log(result);
 
 1. **Regular Expression (`\d+`)**: This is used to find sequences of digits (numbers). The underscore `_` does not affect the regular expression, because it is just a separator between the numbers, not part of the number itself.
    - The `\d+` matches one or more digits, so it will capture all number sequences even if they are separated by underscores.
-   
 2. **`match()`**: The `match()` method captures all occurrences of numbers in the string, including those separated by underscores.
 
 3. **`map()`**: The `map()` function is used to loop through each string and extract numbers. We convert the numbers to integers using `parseInt()` and then use `Math.max()` to find the maximum number from the extracted numbers.
@@ -113,10 +113,11 @@ console.log(result);
    - **Underscores**: Numbers separated by underscores (e.g., `"123_12_10"`) are handled correctly because underscores are simply ignored when extracting the numbers.
 
 ### **Edge Cases** Handled:
+
 - **Underscores as Separators**: The updated code correctly handles strings where numbers are separated by underscores.
 - **No Numbers in String**: If the string doesn't contain any numbers, it returns `null`.
 - **Multiple Numbers**: If there are multiple numbers, it calculates the maximum correctly.
-  
+
 ### **Test Cases**:
 
 1. `"abc123_12_10"`: The numbers are `123`, `12`, and `10`. The maximum is `123`.
@@ -126,8 +127,9 @@ console.log(result);
 5. `"5_10_20"`: The numbers are `5`, `10`, and `20`. The maximum is `20`.
 
 ### **Output**:
+
 ```javascript
-[123, 1235, 89, null, 20]
+[123, 1235, 89, null, 20];
 ```
 
 This updated solution now handles all cases including underscores separating numbers and works for strings with mixed content.

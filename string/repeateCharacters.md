@@ -1,6 +1,6 @@
 "Repeat Characters" can mean multiple interview problems. Here are the most common ones:
 
-***
+---
 
 # 1. Find First Repeating Character
 
@@ -13,7 +13,7 @@ const str = "javascript";
 ### Output
 
 ```js
-"a"
+"a";
 ```
 
 ### Solution
@@ -43,14 +43,14 @@ Time: O(n)
 Space: O(n)
 ```
 
-***
+---
 
 # 2. Count Repeated Characters
 
 ### Input
 
 ```js
-"programming"
+"programming";
 ```
 
 ### Output
@@ -84,25 +84,23 @@ function countRepeatedChars(str) {
   return result;
 }
 
-console.log(
-  countRepeatedChars("programming")
-);
+console.log(countRepeatedChars("programming"));
 ```
 
-***
+---
 
 # 3. Print Duplicate Characters
 
 ### Input
 
 ```js
-"programming"
+"programming";
 ```
 
 ### Output
 
 ```js
-["r", "g", "m"]
+["r", "g", "m"];
 ```
 
 ### Solution
@@ -123,25 +121,23 @@ function getDuplicateChars(str) {
   return [...duplicates];
 }
 
-console.log(
-  getDuplicateChars("programming")
-);
+console.log(getDuplicateChars("programming"));
 ```
 
-***
+---
 
 # 4. First Non-Repeating Character
 
 ### Input
 
 ```js
-"aabbccddefg"
+"aabbccddefg";
 ```
 
 ### Output
 
 ```js
-"e"
+"e";
 ```
 
 ### Solution
@@ -163,27 +159,23 @@ function firstNonRepeating(str) {
   return null;
 }
 
-console.log(
-  firstNonRepeating(
-    "aabbccddefg"
-  )
-);
+console.log(firstNonRepeating("aabbccddefg"));
 ```
 
-***
+---
 
 # 5. Compress Repeating Characters (Run-Length Encoding)
 
 ### Input
 
 ```js
-"aaabbccccd"
+"aaabbccccd";
 ```
 
 ### Output
 
 ```js
-"a3b2c4d1"
+"a3b2c4d1";
 ```
 
 ### Solution
@@ -205,25 +197,23 @@ function compress(str) {
   return result;
 }
 
-console.log(
-  compress("aaabbccccd")
-);
+console.log(compress("aaabbccccd"));
 ```
 
-***
+---
 
 # 6. Remove Repeated Characters
 
 ### Input
 
 ```js
-"programming"
+"programming";
 ```
 
 ### Output
 
 ```js
-"progamin"
+"progamin";
 ```
 
 ### Solution
@@ -233,25 +223,23 @@ function removeDuplicates(str) {
   return [...new Set(str)].join("");
 }
 
-console.log(
-  removeDuplicates("programming")
-);
+console.log(removeDuplicates("programming"));
 ```
 
-***
+---
 
 # Interview Favourite: Most Frequently Repeated Character
 
 ### Input
 
 ```js
-"javascript"
+"javascript";
 ```
 
 ### Output
 
 ```js
-"a"
+"a";
 ```
 
 ### Solution
@@ -275,9 +263,7 @@ function maxRepeatedChar(str) {
   return maxChar;
 }
 
-console.log(
-  maxRepeatedChar("javascript")
-);
+console.log(maxRepeatedChar("javascript"));
 ```
 
 ### Complexity

@@ -16,7 +16,7 @@ export function isValidMatrix(matrix) {
   const n = matrix.length;
 
   // Set to track the expected set of numbers in each row/column (assuming 1 to n for an n x n matrix)
-  const expectedSet = new Set([...Array(n).keys()].map(i => i + 1));
+  const expectedSet = new Set([...Array(n).keys()].map((i) => i + 1));
 
   // Check rows for uniqueness and match the expected set of numbers
   for (let i = 0; i < n; i++) {
@@ -48,10 +48,10 @@ function areSetsEqual(set1, set2) {
   }
   return true;
 }
-
 ```
 
 ### Key Changes:
+
 1. **Expected Set**: We use a set of numbers from `1` to `n` as the expected valid values for both rows and columns.
 2. **Matching Rows and Columns**: The function ensures that every row and every column contains the same unique elements from `1` to `n`.
 
@@ -77,7 +77,7 @@ console.log(isValidMatrix(matrix)); // Output: true
 const matrix1 = [
   [1, 2, 3],
   [2, 3, 1],
-  [3, 1, 2]
+  [3, 1, 2],
 ];
 console.log(isValidMatrix(matrix1)); // Output: true
 ```
@@ -91,7 +91,7 @@ console.log(isValidMatrix(matrix1)); // Output: true
 const matrix2 = [
   [1, 1, 1],
   [1, 2, 3],
-  [1, 2, 3]
+  [1, 2, 3],
 ];
 console.log(isValidMatrix(matrix2)); // Output: false
 ```
@@ -104,7 +104,7 @@ console.log(isValidMatrix(matrix2)); // Output: false
 ```javascript
 const matrix3 = [
   [1, 2],
-  [3, 4]
+  [3, 4],
 ];
 console.log(isValidMatrix(matrix3)); // Output: true
 ```
@@ -113,4 +113,5 @@ console.log(isValidMatrix(matrix3)); // Output: true
 - The output is `true`.
 
 ### Summary:
+
 The function now correctly checks both **row uniqueness** and **column uniqueness** while ensuring that the rows and columns contain exactly the same set of unique elements (in any order). This ensures the matrix is valid according to the problem's rules.

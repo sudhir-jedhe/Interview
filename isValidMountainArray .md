@@ -12,7 +12,7 @@ Your `isValidMountainArray` function is almost correct, but there are a few poin
 // isValidMountainArray.js
 export function isValidMountainArray(arr) {
   const n = arr.length;
-  
+
   // Edge case: If array has fewer than 3 elements, it can't be a mountain
   if (n < 3) return false;
 
@@ -39,6 +39,7 @@ export function isValidMountainArray(arr) {
 ```
 
 ### Key Enhancements:
+
 1. **Length Check**: If the array has fewer than 3 elements, it can't be a valid mountain array, as there must be at least one element on each side of the peak.
 2. **Strict Increase/Decrease**: The slopes must be strictly increasing and then strictly decreasing. This is validated by checking that adjacent elements are not equal.
 3. **Return After Complete Iteration**: The function returns `true` only if we've traversed the entire array, ensuring both slopes are correctly followed.
@@ -65,7 +66,6 @@ console.log(isValidMountainArray(arr5)); // Output: false
 ### Explanation of Test Cases:
 
 1. **Test Case 1 (`arr1 = [2, 1]`)**: The array has fewer than 3 elements, so it cannot form a mountain, and the output is `false`.
-   
 2. **Test Case 2 (`arr2 = [3, 5, 5]`)**: The array has adjacent equal values (`5` and `5`), which means there is no strictly increasing or strictly decreasing slope, so the output is `false`.
 
 3. **Test Case 3 (`arr3 = [0, 3, 2, 1]`)**: The array starts by strictly increasing (`0 -> 3`) and then strictly decreasing (`3 -> 2 -> 1`), forming a valid mountain, so the output is `true`.

@@ -16,12 +16,12 @@ In a controlled component, the form input's value is controlled by the state of 
 ### **Example: Simple Controlled Form**
 
 ```javascript
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function MyForm() {
   // Step 1: Declare state variables
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   // Step 2: Handle input changes
   const handleNameChange = (e) => {
@@ -61,12 +61,14 @@ export default MyForm;
 ```
 
 #### **Explanation:**
+
 1. **State Initialization**: The `useState` hook is used to create state variables `name` and `email` that hold the values of the form inputs.
 2. **Binding Inputs to State**: The `value` attribute of each input field is bound to the corresponding state variable. This ensures that the input field’s value is controlled by the React state.
 3. **Handling Input Changes**: The `onChange` event handlers (`handleNameChange` and `handleEmailChange`) are used to update the state whenever the user types in the input fields.
 4. **Form Submission**: The `onSubmit` event handler (`handleSubmit`) prevents the default form submission behavior (which would reload the page) and processes the form data.
 
 #### **Benefits of Controlled Components:**
+
 - **Full control over form data**: You can easily access and manipulate form data in the component’s state.
 - **Form validation**: You can perform real-time validation by checking the state value before submission.
 - **Conditional rendering**: You can conditionally disable or enable form inputs based on the state.
@@ -85,7 +87,7 @@ In contrast to controlled components, an **uncontrolled component** does not rel
 ### **Example: Simple Uncontrolled Form**
 
 ```javascript
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 
 function UncontrolledForm() {
   const nameRef = useRef();
@@ -120,15 +122,18 @@ export default UncontrolledForm;
 ```
 
 #### **Explanation:**
+
 - **Refs Initialization**: The `useRef` hook is used to create references (`nameRef` and `emailRef`) to the input elements.
 - **Accessing Data**: The values of the input fields are accessed directly from the DOM using `nameRef.current.value` and `emailRef.current.value` when the form is submitted.
 - **Form Submission**: The `handleSubmit` function prevents the default form submission and retrieves the input values through the refs.
 
 #### **Benefits of Uncontrolled Components:**
+
 - **Less boilerplate**: You don’t need to manage state for each input.
 - **More intuitive for simple forms**: Uncontrolled components are useful for simple forms where you don’t need to manipulate or validate input data frequently.
 
 #### **Drawbacks of Uncontrolled Components**:
+
 - **Less control** over the form data.
 - **No validation** before submission unless you access the values explicitly in the handler.
 - Not as "React-ish" because React is not directly managing the form’s state.
@@ -142,11 +147,11 @@ Form validation is an essential part of form handling. With **controlled compone
 #### **Example of Form Validation in Controlled Components:**
 
 ```javascript
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function ValidatedForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
 
   // Handle input changes
@@ -161,9 +166,9 @@ function ValidatedForm() {
   // Validate form fields
   const validateForm = () => {
     const newErrors = {};
-    if (!name) newErrors.name = 'Name is required';
-    if (!email) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = 'Email is invalid';
+    if (!name) newErrors.name = "Name is required";
+    if (!email) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = "Email is invalid";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -183,14 +188,14 @@ function ValidatedForm() {
           Name:
           <input type="text" value={name} onChange={handleNameChange} />
         </label>
-        {errors.name && <span style={{ color: 'red' }}>{errors.name}</span>}
+        {errors.name && <span style={{ color: "red" }}>{errors.name}</span>}
       </div>
       <div>
         <label>
           Email:
           <input type="email" value={email} onChange={handleEmailChange} />
         </label>
-        {errors.email && <span style={{ color: 'red' }}>{errors.email}</span>}
+        {errors.email && <span style={{ color: "red" }}>{errors.email}</span>}
       </div>
       <button type="submit">Submit</button>
     </form>
@@ -201,6 +206,7 @@ export default ValidatedForm;
 ```
 
 #### **Explanation:**
+
 - **Validation Logic**: In `validateForm()`, we check if the `name` and `email` are provided and if the email is valid.
 - **Error State**: If any validation fails, an error message is added to the `errors` state object, which is displayed next to the relevant input.
 - **Form Submission**: The form is submitted only if the validation passes, ensuring that the data meets the required criteria.
@@ -210,19 +216,19 @@ export default ValidatedForm;
 ### **4. Additional Considerations for Handling Forms**
 
 - **Handling Multiple Inputs**: For forms with many fields, you can use an object to manage state for each input.
-  
+
   ```javascript
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    age: ''
+    name: "",
+    email: "",
+    age: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
   ```
@@ -231,13 +237,13 @@ export default ValidatedForm;
 
 - **Form Libraries**: For complex forms (e.g., with validation, conditional fields, and complex interactions), you may want to use libraries like [Formik](https://formik.org/) or [React Hook Form](https://react-hook-form.com/). These libraries simplify
 
- handling forms, validation, and error messages.
+handling forms, validation, and error messages.
 
 ---
 
 ### **Conclusion**
 
-In React, form handling generally involves controlled components, where you manage form data using React state, or uncontrolled components, where form data is managed by the DOM and accessed using refs. 
+In React, form handling generally involves controlled components, where you manage form data using React state, or uncontrolled components, where form data is managed by the DOM and accessed using refs.
 
 - **Controlled components** provide full control over form data, which is ideal for most use cases where you need to validate, transform, or manipulate the input data.
 - **Uncontrolled components** are simpler to use for basic forms, but they offer less control over the form data.

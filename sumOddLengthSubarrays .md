@@ -1,8 +1,8 @@
 The problem you're trying to solve is calculating the sum of all subarrays of odd lengths in an array. The function `sumOddLengthSubarrays` is intended to accomplish this task, but there are a few issues in the current implementation that need to be addressed.
 
 ### Issues:
+
 1. **Incorrect Calculation of Odd-Length Subarrays**: The line `if (right - left + (1 % 2) === 1)` doesn't correctly identify odd-length subarrays. Specifically, the expression `(1 % 2)` always evaluates to `1`, so this condition doesn't behave as expected.
-   
 2. **Window Sum Calculation**: You're adding both `arr[left]` and `arr[right]` in the same iteration without considering the correct logic for subarray sums. For subarrays of odd lengths, you need to make sure you're summing up only the relevant elements in each subarray.
 
 ### Approach to Fix:
@@ -49,9 +49,7 @@ console.log(sumOddLengthSubarrays(arr)); // Output: 58
 ### Explanation:
 
 1. **Outer Loop (`start`)**: This loop iterates through every starting index in the array. For each `start` index, we consider all possible odd-length subarrays.
-   
 2. **Inner Loop (`length`)**: For each `start` index, this loop considers every odd length starting from `1` and increasing by `2` (i.e., `1, 3, 5, ...`). This ensures that we only consider odd-length subarrays.
-   
 3. **Subarray Sum Calculation (`windowSum`)**: For each subarray, we calculate its sum by iterating over its elements and adding them up.
 
 4. **Adding to Total (`sum`)**: Once the sum for an odd-length subarray is calculated, it's added to the overall `sum`.
@@ -88,7 +86,7 @@ Thus, the output is `58`.
 ### Time Complexity:
 
 - **Time Complexity**: `O(n^3)` (In the worst case)
-   - For each starting index, we compute sums of subarrays, and for each subarray, we compute the sum of its elements. This results in an `O(n^3)` time complexity, but there are ways to optimize this further using dynamic programming or a sliding window approach.
+  - For each starting index, we compute sums of subarrays, and for each subarray, we compute the sum of its elements. This results in an `O(n^3)` time complexity, but there are ways to optimize this further using dynamic programming or a sliding window approach.
 
 ### Potential Optimizations:
 

@@ -1,3 +1,4 @@
+```js
 // trim() method
 function trim(str) {
   // remove leading and trailing whitespace
@@ -37,39 +38,39 @@ console.log(extractedStr); // Output: "Hello"
 
 
 /****************************************** */
-<script> 
+<script>
 
-// Declare a whitespaces array 
-const whitespaces = [" ", "", "\s", "\t", "\n", "\u3000"]; 
+// Declare a whitespaces array
+const whitespaces = [" ", "", "\s", "\t", "\n", "\u3000"];
 
-const trim = (str) => { 
-    let stringBeg = 0, stringEnd = str.length; 
+const trim = (str) => {
+    let stringBeg = 0, stringEnd = str.length;
 
-    // Find the index from the beginning of the string 
-    // which is not a whitespace 
-    for (let i = 0; i < str.length; i++) { 
-        if (whitespaces.indexOf(str[i]) === -1) { 
-            stringBeg = i; 
-            break; 
-        } 
-    } 
+    // Find the index from the beginning of the string
+    // which is not a whitespace
+    for (let i = 0; i < str.length; i++) {
+        if (whitespaces.indexOf(str[i]) === -1) {
+            stringBeg = i;
+            break;
+        }
+    }
 
-    // Find the index from the end of the string 
-    // which is not a whitespace 
-    for (let j = str.length - 1; j >= 0; j--) { 
-        if (whitespaces.indexOf(str[j]) === -1) { 
-            stringEnd = j; 
-            break; 
-        } 
-    } 
+    // Find the index from the end of the string
+    // which is not a whitespace
+    for (let j = str.length - 1; j >= 0; j--) {
+        if (whitespaces.indexOf(str[j]) === -1) {
+            stringEnd = j;
+            break;
+        }
+    }
 
-    // Return the string between the 2 found indices 
-    return str.slice(stringBeg, stringEnd + 1); 
-} 
+    // Return the string between the 2 found indices
+    return str.slice(stringBeg, stringEnd + 1);
+}
 
-let s = " Geeksforgeeks"; 
-console.log(s); 
-console.log(trim(s)); 
+let s = " Geeksforgeeks";
+console.log(s);
+console.log(trim(s));
 </script>
 
 
@@ -84,7 +85,7 @@ console.log(trim(s));
          const spaces = ["\s", "\t", "", " ", "", "\u3000"];
          let start = 0;
          let end = this.length - 1;
-      
+
          // get the first index of the valid character from the start
          for (let m = 0; m < this.length; m++) {
             if (!spaces.includes(this[m])) {
@@ -92,7 +93,7 @@ console.log(trim(s));
                break;
             }
          }
-      
+
          // get the first index of valid characters from the last
          for (let n = this.length - 1; n > -1; n--) {
             if (!spaces.includes(this[n])) {
@@ -100,7 +101,7 @@ console.log(trim(s));
                break;
             }
          }
-      
+
          // slice the string
          return this.slice(start, end + 1);
       }
@@ -139,3 +140,4 @@ function trim(str) {
   }
   return str.slice(wordStart, wordEnd + 1);
 }
+```

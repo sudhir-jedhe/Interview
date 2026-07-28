@@ -28,79 +28,77 @@ From basic to advanced: test how well you know JavaScript, refresh your knowledg
 | 2   | [What is var let const](#Var-Let-Const)                                                                  |
 | 3   | [What are the differences between let, var or const](#what-are-the-differences-between-let-var-or-const) |
 
-   **[⬆ Back to Top](#table-of-contents)**
+**[⬆ Back to Top](#table-of-contents)**
 
-2. 
+2.  **[⬆ Back to Top](#table-of-contents)**
 
-   **[⬆ Back to Top](#table-of-contents)**
+    ### Can I redeclare let and const variables
 
-   ### Can I redeclare let and const variables
+    No, you cannot redeclare let and const variables. If you do, it throws below error
 
-   No, you cannot redeclare let and const variables. If you do, it throws below error
+    ```bash
+    Uncaught SyntaxError: Identifier 'someVariable' has already been declared
+    ```
 
-   ```bash
-   Uncaught SyntaxError: Identifier 'someVariable' has already been declared
-   ```
+    **Explanation:** The variable declaration with `var` keyword refers to a function scope and the variable is treated as if it were declared at the top of the enclosing scope due to hoisting feature. So all the multiple declarations contributing to the same hoisted variable without any error. Let's take an example of re-declaring variables in the same scope for both var and let/const variables.
 
-   **Explanation:** The variable declaration with `var` keyword refers to a function scope and the variable is treated as if it were declared at the top of the enclosing scope due to hoisting feature. So all the multiple declarations contributing to the same hoisted variable without any error. Let's take an example of re-declaring variables in the same scope for both var and let/const variables.
+    ```javascript
+    var name = "John";
+    function myFunc() {
+      var name = "Nick";
+      var name = "Abraham"; // Re-assigned in the same function block
+      alert(name); // Abraham
+    }
+    myFunc();
+    alert(name); // John
+    ```
 
-   ```javascript
-   var name = "John";
-   function myFunc() {
-     var name = "Nick";
-     var name = "Abraham"; // Re-assigned in the same function block
-     alert(name); // Abraham
-   }
-   myFunc();
-   alert(name); // John
-   ```
+    The block-scoped multi-declaration throws syntax error,
 
-   The block-scoped multi-declaration throws syntax error,
+    ```javascript
+    let name = "John";
+    function myFunc() {
+      let name = "Nick";
+      let name = "Abraham"; // Uncaught SyntaxError: Identifier 'name' has already been declared
+      alert(name);
+    }
 
-   ```javascript
-   let name = "John";
-   function myFunc() {
-     let name = "Nick";
-     let name = "Abraham"; // Uncaught SyntaxError: Identifier 'name' has already been declared
-     alert(name);
-   }
+    myFunc();
+    alert(name);
+    ```
 
-   myFunc();
-   alert(name);
-   ```
+    **[⬆ Back to Top](#table-of-contents)**
 
-   **[⬆ Back to Top](#table-of-contents)**
+3.  ### Is const variable makes the value immutable
 
-4. ### Is const variable makes the value immutable
+    No, the const variable doesn't make the value immutable. But it disallows subsequent assignments(i.e, You can declare with assignment but can't assign another value later)
 
-   No, the const variable doesn't make the value immutable. But it disallows subsequent assignments(i.e, You can declare with assignment but can't assign another value later)
+    ```javascript
+    const userList = [];
+    userList.push("John"); // Can mutate even though it can't re-assign
+    console.log(userList); // ['John']
+    ```
 
-   ```javascript
-   const userList = [];
-   userList.push("John"); // Can mutate even though it can't re-assign
-   console.log(userList); // ['John']
-   ```
+    **[⬆ Back to Top](#table-of-contents)**
 
-   **[⬆ Back to Top](#table-of-contents)**
+4.  ### What is the Temporal Dead Zone
 
-5. ### What is the Temporal Dead Zone
+    The Temporal Dead Zone(TDZ) is a specific period or area of a block where a variable is inaccessible until it has been intialized with a value. This behavior in JavaScript that occurs when declaring a variable with the let and const keywords, but not with var. In ECMAScript 6, accessing a `let` or `const` variable before its declaration (within its scope) causes a ReferenceError.
 
-   The Temporal Dead Zone(TDZ) is a specific period or area of a block where a variable is inaccessible until it has been intialized with a value. This behavior in JavaScript that occurs when declaring a variable with the let and const keywords, but not with var. In ECMAScript 6, accessing a `let` or `const` variable before its declaration (within its scope) causes a ReferenceError.
+    TDZ is a period during which let and const variables exist but are not yet accessible. It helps catch potential issues caused by accessing variables before their initialisation, ensuring more reliable and predictable code.
 
-   TDZ is a period during which let and const variables exist but are not yet accessible. It helps catch potential issues caused by accessing variables before their initialisation, ensuring more reliable and predictable code.
+    Let's see this behavior with an example,
 
-   Let's see this behavior with an example,
-
-   ```javascript
-   function somemethod() {
-     console.log(counter1); // undefined
-     console.log(counter2); // ReferenceError
-     console.log(counter3); // ReferenceError
-     var counter1 = 1;
-     let counter2 = 2;
-     const counter3 = 3;
-   }
-   ```
+    ```javascript
+    function somemethod() {
+      console.log(counter1); // undefined
+      console.log(counter2); // ReferenceError
+      console.log(counter3); // ReferenceError
+      var counter1 = 1;
+      let counter2 = 2;
+      const counter3 = 3;
+    }
+    ```
 
 In the example above, we try to access the variable counter2 before its declaration and initialization. This triggers the TDZ because the variable exists within the scope but has not been assigned a value yet. As a result, JavaScript throws a ReferenceError indicating that the variable counter2 cannot be accessed before initialization.
 
@@ -168,7 +166,6 @@ Due to lexical or block scoping let foo = (foo + 55) access the foo of the curre
 434. ### What is call stack and event loop
 
      Call Stack is a data structure for javascript interpreters to keep track of function calls(creates execution context) in the program. It has two major actions,
-
      1. Whenever you call a function for its execution, you are pushing it to the stack.
      2. Whenever the execution is completed, the function is popped out of the stack.
 
@@ -187,7 +184,6 @@ Due to lexical or block scoping let foo = (foo + 55) access the foo of the curre
      ```
 
      The above code processed in a call stack as below,
-
      1. Add the `hungry()` function to the call stack list and execute the code.
      2. Add the `eatFruits()` function to the call stack list and execute the code.
      3. Delete the `eatFruits()` function from our call stack list.
@@ -408,7 +404,5 @@ Due to lexical or block scoping let foo = (foo + 55) access the foo of the curre
      Creating race conditions or unexpected results by relying on the order of execution of different types of tasks. For example, if you use setTimeout to schedule some code after a promise, you cannot guarantee that the promise will resolve before the timeout.
 
      For example, if you use setTimeout with a delay of 0 milliseconds to defer some code execution, you might miss some events that happen in between.
-
-     
 
 **[⬆ Back to Top](#table-of-contents)**

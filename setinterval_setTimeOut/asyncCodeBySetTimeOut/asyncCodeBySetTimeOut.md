@@ -2,6 +2,8 @@
 // The asynchronous block of code can be a function which executes asynchronously
 // The execution of such function can be simulated using setTimeout to with delay
 // and execute different blocks of code inside each
+
+```js
 function asyncFunc() {
   console.log("Started asyncFunc1");
   //Async1 code
@@ -24,3 +26,4 @@ asyncFunc();
 // Notes
 
 // The nested blocks of statements shown in the comments which get executed one after the other in sequence
+```

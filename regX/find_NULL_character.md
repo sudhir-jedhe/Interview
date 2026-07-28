@@ -7,7 +7,7 @@ Let's break down the two examples where you're using the **null character `\0`**
 ```javascript
 function geek() {
   let str1 = "GeeksforGeeks@_123_$";
-  let regex4 = /\0/;  // Null character is represented as \0
+  let regex4 = /\0/; // Null character is represented as \0
   let match4 = str1.search(regex4);
 
   if (match4 == -1) {
@@ -44,8 +44,8 @@ geek(); // No Null characters present.
 
 ```javascript
 function geek() {
-  let str1 = "123ge\0eky456";  // String containing a null character at index 5
-  let regex4 = new RegExp("\\0");  // Regular expression to match the null character
+  let str1 = "123ge\0eky456"; // String containing a null character at index 5
+  let regex4 = new RegExp("\\0"); // Regular expression to match the null character
   let match4 = str1.search(regex4);
 
   console.log("Index of NULL character: " + match4);
@@ -85,6 +85,7 @@ geek(); // Index of NULL character: 5
 ### Outputs:
 
 1. **For the first example**:
+
    ```
    No Null characters present.
    ```

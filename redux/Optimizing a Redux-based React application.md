@@ -1,7 +1,7 @@
 Optimizing a **Redux-based React application** is crucial for ensuring that the app remains performant, especially as it scales. Redux helps in managing the state of the application, but improper handling of state updates or rendering can lead to **unnecessary re-renders** of components, which can significantly degrade the performance. Below are the key techniques to **optimize Redux-based React applications** and avoid unnecessary re-renders.
 
 ### 1. **Avoid Passing Large State to Components**
-   
+
 When passing large objects or arrays as props to child components, React will re-render the component every time the state changes, even if the specific part of the state the component depends on hasn't changed. To mitigate this:
 
 - **Use selectors** to retrieve only the relevant parts of the state.
@@ -13,7 +13,8 @@ Instead of selecting the entire `state.posts`, you can select only the needed da
 
 ```javascript
 // In your selector
-const selectPostTitles = (state) => state.posts.entities.map(post => post.title);
+const selectPostTitles = (state) =>
+  state.posts.entities.map((post) => post.title);
 
 // In the component
 const titles = useSelector(selectPostTitles);
@@ -48,11 +49,11 @@ React-Redux's `useSelector` hook subscribes the component to the Redux store and
 - **Select only the relevant part of the state**.
 - Use **shallow comparison** to ensure the component only re-renders when the actual state changes.
 
-#### Example: 
+#### Example:
 
 ```javascript
 // Avoid re-rendering by selecting only needed state
-const posts = useSelector(state => state.posts.list);
+const posts = useSelector((state) => state.posts.list);
 ```
 
 If the state changes but the `posts.list` hasn’t changed, the component won’t re-render.
@@ -68,21 +69,21 @@ Reselect is a library that helps create **memoized selectors** for Redux. Memoiz
 #### Example:
 
 ```javascript
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
-const selectPosts = state => state.posts.list;
-const selectFilter = state => state.filter;
+const selectPosts = (state) => state.posts.list;
+const selectFilter = (state) => state.filter;
 
 export const selectFilteredPosts = createSelector(
   [selectPosts, selectFilter],
   (posts, filter) => {
-    return posts.filter(post => post.category === filter);
-  }
+    return posts.filter((post) => post.category === filter);
+  },
 );
 ```
 
 - `selectFilteredPosts` will only recompute the filtered posts if `selectPosts` or `selectFilter` changes.
-  
+
 ---
 
 ### 5. **Avoid Inline Functions in JSX**
@@ -93,13 +94,13 @@ Inline functions in JSX cause a new function to be created on each render. This 
 
 ```javascript
 // Avoid passing inline functions like this
-<Button onClick={() => dispatch(fetchData())} />
+<Button onClick={() => dispatch(fetchData())} />;
 
 // Instead, define the function outside the JSX
 const handleFetchData = () => dispatch(fetchData());
 
 // Then use it like this
-<Button onClick={handleFetchData} />
+<Button onClick={handleFetchData} />;
 ```
 
 - This avoids the creation of a new function on each render, preventing unnecessary re-renders of components that depend on these props.
@@ -145,13 +146,13 @@ Instead of having a nested structure like:
   posts: [
     {
       id: 1,
-      title: 'Post 1',
+      title: "Post 1",
       comments: [
-        { id: 1, text: 'Great post!' },
-        { id: 2, text: 'Thanks for sharing!' }
-      ]
-    }
-  ]
+        { id: 1, text: "Great post!" },
+        { id: 2, text: "Thanks for sharing!" },
+      ],
+    },
+  ];
 }
 ```
 

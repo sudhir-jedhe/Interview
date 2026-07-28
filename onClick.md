@@ -19,44 +19,48 @@ function onClick(root, predicate, handler) {
     return;
   }
   allHandlers.set(root, [[predicate, handler]]);
-  
+
   // Attach the real handler
-  root.addEventListener('click', function(e) {
-    let el = e.target;
-    const handlers = allHandlers.get(root);
-    let isPropagationStopped = false;
-    e.stopPropagation = () => {
-      isPropagationStopped = true;
-    };
-    
-    // Bubble up the DOM tree and check predicates
-    while (el) {
-      let isImmediatePropagationStopped = false;
-      e.stopImmediatePropagation = () => {
-        isImmediatePropagationStopped = true;
+  root.addEventListener(
+    "click",
+    function (e) {
+      let el = e.target;
+      const handlers = allHandlers.get(root);
+      let isPropagationStopped = false;
+      e.stopPropagation = () => {
         isPropagationStopped = true;
       };
-      
-      for (const [predicate, handler] of handlers) {
-        if (predicate(el)) {
-          handler.call(el, e);
-          if (isImmediatePropagationStopped) {
-            break;
+
+      // Bubble up the DOM tree and check predicates
+      while (el) {
+        let isImmediatePropagationStopped = false;
+        e.stopImmediatePropagation = () => {
+          isImmediatePropagationStopped = true;
+          isPropagationStopped = true;
+        };
+
+        for (const [predicate, handler] of handlers) {
+          if (predicate(el)) {
+            handler.call(el, e);
+            if (isImmediatePropagationStopped) {
+              break;
+            }
           }
         }
+
+        if (el === root || isPropagationStopped) break;
+        el = el.parentElement;
       }
-      
-      if (el === root || isPropagationStopped) break;
-      el = el.parentElement;
-    }
-  }, false);
+    },
+    false,
+  );
 }
 ```
 
 - **Concept**: A global map `allHandlers` stores the predicates and handlers associated with each root element. When an event occurs, the event bubbles up from the target element to the root element, checking each handler along the way.
-- **`stopPropagation` and `stopImmediatePropagation`**: Custom implementations allow stopping event propagation at the appropriate points. 
-    - `stopPropagation`: Prevents further event propagation.
-    - `stopImmediatePropagation`: Prevents other handlers from being called on the same element.
+- **`stopPropagation` and `stopImmediatePropagation`**: Custom implementations allow stopping event propagation at the appropriate points.
+  - `stopPropagation`: Prevents further event propagation.
+  - `stopImmediatePropagation`: Prevents other handlers from being called on the same element.
 
 #### 2. **Second Version (Using `root.handlers`)**
 
@@ -70,13 +74,14 @@ function onClick(root, predicate, handler) {
   if (root.handlers) {
     root.handlers.push([predicate, handler]);
   } else {
-    const originalStopImmediatePropagation = Event.prototype.stopImmediatePropagation;
-    Event.prototype.stopImmediatePropagation = function() {
+    const originalStopImmediatePropagation =
+      Event.prototype.stopImmediatePropagation;
+    Event.prototype.stopImmediatePropagation = function () {
       this.immediatePropagationStopped = true;
       originalStopImmediatePropagation.apply(this, arguments);
     };
-    
-    root.addEventListener('click', function(e) {
+
+    root.addEventListener("click", function (e) {
       let node = e.target;
       while (node !== root) {
         for (const [p, h] of root.handlers) {
@@ -105,21 +110,21 @@ function onClick(root, predicate, handler) {
  */
 function onClick(root, predicate, handler) {
   if (!root.cache) {
-    Event.prototype.stopImmediatePropagation = (function(protoMethod) {
-      return function() {
+    Event.prototype.stopImmediatePropagation = (function (protoMethod) {
+      return function () {
         this.__stopPropagationImmediately = true;
         protoMethod.apply(this, arguments);
       };
     })(Event.prototype.stopImmediatePropagation);
-    
-    Event.prototype.stopPropagation = (function(protoMethod) {
-      return function() {
+
+    Event.prototype.stopPropagation = (function (protoMethod) {
+      return function () {
         this.__stopPropagation = true;
         protoMethod.apply(this, arguments);
       };
     })(Event.prototype.stopPropagation);
 
-    root.addEventListener('click', function(event) {
+    root.addEventListener("click", function (event) {
       let node = event.target;
       while (node !== root) {
         for (const { predicate, handler } of root.cache) {
@@ -130,11 +135,13 @@ function onClick(root, predicate, handler) {
         node = node.parentElement;
       }
     });
-    
-    root.cache = [{
-      predicate,
-      handler,
-    }];
+
+    root.cache = [
+      {
+        predicate,
+        handler,
+      },
+    ];
   } else {
     root.cache.push({ predicate, handler });
   }
@@ -143,8 +150,8 @@ function onClick(root, predicate, handler) {
 
 - **Concept**: This version uses `root.cache` to store handlers, and enhances the `stopPropagation` and `stopImmediatePropagation` methods by introducing custom flags (`__stopPropagationImmediately` and `__stopPropagation`) that control the flow of event propagation.
 - **Custom Flags**:
-    - `__stopPropagationImmediately`: Stops all handlers immediately after the first one that sets this flag is invoked.
-    - `__stopPropagation`: Stops the bubbling process after handlers on the current element are invoked, but allows other handlers to run if they haven't set the "immediate" flag.
+  - `__stopPropagationImmediately`: Stops all handlers immediately after the first one that sets this flag is invoked.
+  - `__stopPropagation`: Stops the bubbling process after handlers on the current element are invoked, but allows other handlers to run if they haven't set the "immediate" flag.
 
 ### Comparison and Key Differences:
 
@@ -171,5 +178,6 @@ All three versions offer a solution for attaching multiple handlers to an event 
 - **Version 3** is more advanced, using custom flags for event propagation, and could be more useful when fine-tuned control over propagation is needed.
 
 Choose the version based on your use case:
+
 - If you need a simple handler setup, use **Version 2** or **Version 1**.
 - If you need more precise control over event propagation, **Version 3** might be the best option.

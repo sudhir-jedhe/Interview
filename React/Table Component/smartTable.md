@@ -25,226 +25,228 @@ Below is a custom React table component — no MUI dependency — with many Data
 ✅ Basic pivot summary
 ✅ Optional server-side mode hooks
 
-1. App.jsx
-   import React, { useMemo, useState } from "react";
-   import SmartTable from "./SmartTable";
-   import "./SmartTable.css";
+```js
+// 1. App.jsx
+import React, { useMemo, useState } from "react";
+import SmartTable from "./SmartTable";
+import "./SmartTable.css";
 
 const initialRows = [
-{
-id: 1,
-name: "Sudhir Jedhe",
-role: "Project Lead",
-department: "Frontend",
-location: "Pune",
-salary: 180000,
-experience: 10,
-status: "Active",
-manager: "Apoorva",
-parentId: null
-},
-{
-id: 2,
-name: "Kunal Bhatia",
-role: "React Developer",
-department: "Frontend",
-location: "Pune",
-salary: 120000,
-experience: 5,
-status: "Active",
-manager: "Sudhir",
-parentId: 1
-},
-{
-id: 3,
-name: "Aakanksha Mahajan",
-role: "UI Developer",
-department: "Frontend",
-location: "Pune",
-salary: 110000,
-experience: 4,
-status: "Active",
-manager: "Sudhir",
-parentId: 1
-},
-{
-id: 4,
-name: "Mahendra Aanjna",
-role: "Backend Developer",
-department: "Backend",
-location: "Indore",
-salary: 130000,
-experience: 6,
-status: "Inactive",
-manager: "Apoorva",
-parentId: null
-},
-{
-id: 5,
-name: "Priyasmita Chatterjee",
-role: "QA Engineer",
-department: "QA",
-location: "Kolkata",
-salary: 95000,
-experience: 4,
-status: "Active",
-manager: "Apoorva",
-parentId: null
-},
-{
-id: 6,
-name: "Ajey Mattihal",
-role: "Automation Engineer",
-department: "QA",
-location: "Bengaluru",
-salary: 115000,
-experience: 5,
-status: "Active",
-manager: "Priyasmita",
-parentId: 5
-},
-{
-id: 7,
-name: "Vijay Sadashive",
-role: "DevOps Engineer",
-department: "Platform",
-location: "Hyderabad",
-salary: 145000,
-experience: 7,
-status: "Active",
-manager: "Apoorva",
-parentId: null
-},
-{
-id: 8,
-name: "Shrestha Gupta",
-role: "UX Designer",
-department: "Design",
-location: "Delhi",
-salary: 100000,
-experience: 3,
-status: "Active",
-manager: "Apoorva",
-parentId: null
-}
+  {
+    id: 1,
+    name: "Sudhir Jedhe",
+    role: "Project Lead",
+    department: "Frontend",
+    location: "Pune",
+    salary: 180000,
+    experience: 10,
+    status: "Active",
+    manager: "Apoorva",
+    parentId: null,
+  },
+  {
+    id: 2,
+    name: "Kunal Bhatia",
+    role: "React Developer",
+    department: "Frontend",
+    location: "Pune",
+    salary: 120000,
+    experience: 5,
+    status: "Active",
+    manager: "Sudhir",
+    parentId: 1,
+  },
+  {
+    id: 3,
+    name: "Aakanksha Mahajan",
+    role: "UI Developer",
+    department: "Frontend",
+    location: "Pune",
+    salary: 110000,
+    experience: 4,
+    status: "Active",
+    manager: "Sudhir",
+    parentId: 1,
+  },
+  {
+    id: 4,
+    name: "Mahendra Aanjna",
+    role: "Backend Developer",
+    department: "Backend",
+    location: "Indore",
+    salary: 130000,
+    experience: 6,
+    status: "Inactive",
+    manager: "Apoorva",
+    parentId: null,
+  },
+  {
+    id: 5,
+    name: "Priyasmita Chatterjee",
+    role: "QA Engineer",
+    department: "QA",
+    location: "Kolkata",
+    salary: 95000,
+    experience: 4,
+    status: "Active",
+    manager: "Apoorva",
+    parentId: null,
+  },
+  {
+    id: 6,
+    name: "Ajey Mattihal",
+    role: "Automation Engineer",
+    department: "QA",
+    location: "Bengaluru",
+    salary: 115000,
+    experience: 5,
+    status: "Active",
+    manager: "Priyasmita",
+    parentId: 5,
+  },
+  {
+    id: 7,
+    name: "Vijay Sadashive",
+    role: "DevOps Engineer",
+    department: "Platform",
+    location: "Hyderabad",
+    salary: 145000,
+    experience: 7,
+    status: "Active",
+    manager: "Apoorva",
+    parentId: null,
+  },
+  {
+    id: 8,
+    name: "Shrestha Gupta",
+    role: "UX Designer",
+    department: "Design",
+    location: "Delhi",
+    salary: 100000,
+    experience: 3,
+    status: "Active",
+    manager: "Apoorva",
+    parentId: null,
+  },
 ];
 
 export default function App() {
-const [rows, setRows] = useState(initialRows);
+  const [rows, setRows] = useState(initialRows);
 
-const columns = useMemo(
-() => [
-{
-field: "name",
-headerName: "Employee Name",
-width: 220,
-editable: true,
-sortable: true,
-filterable: true,
-pinned: "left",
-renderCell: ({ value, row }) => (
-<strong>
-{value}
-{row.role === "Project Lead" ? " ⭐" : ""}
-</strong>
-)
-},
-{
-field: "role",
-headerName: "Role",
-width: 180,
-editable: true,
-sortable: true,
-filterable: true
-},
-{
-field: "department",
-headerName: "Department",
-width: 160,
-editable: true,
-sortable: true,
-filterable: true,
-groupable: true
-},
-{
-field: "location",
-headerName: "Location",
-width: 140,
-editable: true,
-sortable: true,
-filterable: true,
-groupable: true
-},
-{
-field: "salary",
-headerName: "Salary",
-width: 140,
-type: "number",
-editable: true,
-sortable: true,
-filterable: true,
-aggregable: true,
-valueFormatter: value =>
-new Intl.NumberFormat("en-IN", {
-style: "currency",
-currency: "INR",
-maximumFractionDigits: 0
-}).format(Number(value || 0))
-},
-{
-field: "experience",
-headerName: "Experience",
-width: 140,
-type: "number",
-editable: true,
-sortable: true,
-filterable: true,
-aggregable: true,
-valueFormatter: value => `${value} yrs`
-},
-{
-field: "status",
-headerName: "Status",
-width: 130,
-editable: true,
-sortable: true,
-filterable: true,
-renderCell: ({ value }) => (
-<span className={`badge ${value === "Active" ? "success" : "danger"}`}>
-{value}
-</span>
-)
-}
-],
-[]
-);
+  const columns = useMemo(
+    () => [
+      {
+        field: "name",
+        headerName: "Employee Name",
+        width: 220,
+        editable: true,
+        sortable: true,
+        filterable: true,
+        pinned: "left",
+        renderCell: ({ value, row }) => (
+          <strong>
+            {value}
+            {row.role === "Project Lead" ? " ⭐" : ""}
+          </strong>
+        ),
+      },
+      {
+        field: "role",
+        headerName: "Role",
+        width: 180,
+        editable: true,
+        sortable: true,
+        filterable: true,
+      },
+      {
+        field: "department",
+        headerName: "Department",
+        width: 160,
+        editable: true,
+        sortable: true,
+        filterable: true,
+        groupable: true,
+      },
+      {
+        field: "location",
+        headerName: "Location",
+        width: 140,
+        editable: true,
+        sortable: true,
+        filterable: true,
+        groupable: true,
+      },
+      {
+        field: "salary",
+        headerName: "Salary",
+        width: 140,
+        type: "number",
+        editable: true,
+        sortable: true,
+        filterable: true,
+        aggregable: true,
+        valueFormatter: (value) =>
+          new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency: "INR",
+            maximumFractionDigits: 0,
+          }).format(Number(value || 0)),
+      },
+      {
+        field: "experience",
+        headerName: "Experience",
+        width: 140,
+        type: "number",
+        editable: true,
+        sortable: true,
+        filterable: true,
+        aggregable: true,
+        valueFormatter: (value) => `${value} yrs`,
+      },
+      {
+        field: "status",
+        headerName: "Status",
+        width: 130,
+        editable: true,
+        sortable: true,
+        filterable: true,
+        renderCell: ({ value }) => (
+          <span
+            className={`badge ${value === "Active" ? "success" : "danger"}`}
+          >
+            {value}
+          </span>
+        ),
+      },
+    ],
+    [],
+  );
 
-const localeText = {
-searchPlaceholder: "Search employees...",
-noRows: "No records found",
-rowsPerPage: "Rows per page",
-selected: "selected",
-exportCsv: "Export CSV",
-copy: "Copy",
-paste: "Paste",
-undo: "Undo",
-redo: "Redo",
-reset: "Reset",
-groupBy: "Group by",
-listView: "List view",
-tableView: "Table view",
-pivot: "Pivot summary"
-};
+  const localeText = {
+    searchPlaceholder: "Search employees...",
+    noRows: "No records found",
+    rowsPerPage: "Rows per page",
+    selected: "selected",
+    exportCsv: "Export CSV",
+    copy: "Copy",
+    paste: "Paste",
+    undo: "Undo",
+    redo: "Redo",
+    reset: "Reset",
+    groupBy: "Group by",
+    listView: "List view",
+    tableView: "Table view",
+    pivot: "Pivot summary",
+  };
 
-return (
-
-<div className="app">
-<h1>Custom React Smart Table</h1>
+  return (
+    <div className="app">
+      <h1>Custom React Smart Table</h1>
 
       <SmartTable
         rows={rows}
         columns={columns}
-        getRowId={row => row.id}
+        getRowId={(row) => row.id}
         onRowsChange={setRows}
         height={480}
         rowHeight={44}
@@ -266,11 +268,13 @@ return (
         enablePivot
       />
     </div>
-
-);
+  );
 }
+```
 
-2. SmartTable.jsx
+// 2. SmartTable.jsx
+
+```js
    import React, {
    useMemo,
    useRef,
@@ -496,6 +500,9 @@ const value = Number(row[valueField] || 0);
 
 return Array.from(map.values());
 }
+```
+
+```js
 
 export default function SmartTable({
 rows,
@@ -17141,3 +17148,9 @@ Renderer
 Senior React Interview Answer
 
 I build aggregation as a reusable engine rather than embedding calculations inside the UI. Columns declare aggregation types such as sum, avg, min, max, count, or custom functions. The aggregation engine operates on grouped, filtered, or hierarchical datasets and produces group totals, grand totals, and derived metrics such as percentage of total, variance, running totals, and weighted averages. For tree data and grouped data, aggregation runs recursively from leaf nodes upward so that parent nodes always reflect current child values. This architecture scales cleanly with row grouping, pivoting, filtering, editing, virtualisation, and server-side data models.
+
+```
+
+```
+
+```

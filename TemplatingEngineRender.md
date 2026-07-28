@@ -6,6 +6,7 @@ The function you have written is a simple templating engine that allows you to r
 However, there are a few things to note and improvements to consider:
 
 ### Issues:
+
 1. **The `{{else}}` block is not handled**: Your current code doesn't support `{{else}}` properly in conditionals.
 2. **HTML escaping**: In some cases, it's essential to escape the variable content to prevent XSS attacks or render HTML safely.
 3. **Nesting conditionals**: You might want to handle nested conditionals or more complex templating features.
@@ -20,7 +21,8 @@ function render(template, context) {
   // Regular expression to match variables in the template
   const variableRegex = /\{\{(.*?)\}\}/g;
   // Regular expression to match conditionals in the template (with else)
-  const conditionalRegex = /\{\{if (.*?)\}\}(.*?)\{\{else\}\}(.*?)\{\{\/if\}\}/gs;
+  const conditionalRegex =
+    /\{\{if (.*?)\}\}(.*?)\{\{else\}\}(.*?)\{\{\/if\}\}/gs;
 
   // Function to replace variables in the template
   function replaceVariables(match, variable) {
@@ -70,9 +72,9 @@ console.log(renderedTemplate); // Output: "Welcome, John!"
 ```
 
 ### Explanation of Changes:
+
 1. **Regular Expression for Conditionals**:  
    I updated the regex for conditionals to support `{{if condition}} ... {{else}} ... {{/if}}`. Now, the conditional part can include an `else` clause.
-   
 2. **Updated Conditional Evaluation**:  
    The `evaluateConditionals` function now handles both the `if` and `else` clauses. It checks whether the condition is truthy or falsy, and returns the appropriate block of content accordingly.
 
@@ -82,6 +84,7 @@ console.log(renderedTemplate); // Output: "Welcome, John!"
 ### Example Outputs:
 
 1. If the `loggedIn` context is `true`:
+
    ```javascript
    const context = { loggedIn: true, username: "John" };
    console.log(render(template, context)); // "Welcome, John!"
@@ -94,6 +97,7 @@ console.log(renderedTemplate); // Output: "Welcome, John!"
    ```
 
 ### Further Improvements:
+
 - **Escaping HTML**: Consider escaping HTML content inside variables to prevent potential security issues (XSS) when injecting values into the template.
 - **Support for Loops**: You could extend this templating engine to support looping constructs like `{{for item in array}}`.
 - **Nested Conditionals**: While this handles basic conditionals, nested conditionals can be tricky. You might need a more complex parser to handle them.

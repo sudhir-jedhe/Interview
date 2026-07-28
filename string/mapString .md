@@ -6,11 +6,13 @@ When working with arrays, the mapping function expects three arguments - the cur
 
 For the rest of the process, you can simply use String.prototype.split() to turn the string into an array. Then, use Array.prototype.map() to apply the mapping function to each character, taking extra care to pass the correct arguments. Finally, use Array.prototype.join() to turn the array back into a string.
 
+```js
 const mapString = (str, fn) =>
   str
-    .split('')
+    .split("")
     .map((c, i) => fn(c, i, str))
-    .join('');
+    .join("");
 
-mapString('lorem ipsum', c => c === ' ' ?  ' ' : c + c.toUpperCase() + c);
+mapString("lorem ipsum", (c) => (c === " " ? " " : c + c.toUpperCase() + c));
 // 'lLloOorRreEemMm iIipPpsSsuUumMm'
+```

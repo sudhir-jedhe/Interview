@@ -8,23 +8,23 @@ The task is to return a unique array of tag names in lowercase from a given DOM 
  * @return {string[]}
  */
 function getTags(tree) {
-    const result = {};
-    
-    const dfs = (node, result) => {
-      if (!node) return; // Stop if the node is null
-      result[node.tagName.toLowerCase()] = 1; // Store unique tags in result (as keys)
-      
-      // Recursively visit each child node
-      for (const child of node.children) {
-        dfs(child, result);
-      }
-    };
-    
-    // Start DFS traversal from the root node
-    dfs(tree, result);
-    
-    // Return the keys of the result object (unique tag names)
-    return Object.keys(result);
+  const result = {};
+
+  const dfs = (node, result) => {
+    if (!node) return; // Stop if the node is null
+    result[node.tagName.toLowerCase()] = 1; // Store unique tags in result (as keys)
+
+    // Recursively visit each child node
+    for (const child of node.children) {
+      dfs(child, result);
+    }
+  };
+
+  // Start DFS traversal from the root node
+  dfs(tree, result);
+
+  // Return the keys of the result object (unique tag names)
+  return Object.keys(result);
 }
 ```
 
@@ -41,19 +41,24 @@ function getTags(tree) {
  * @return {string[]}
  */
 function getTags(tree) {
-    // Create a TreeWalker to traverse the DOM tree
-    const treeWalker = document.createTreeWalker(tree, NodeFilter.SHOW_ELEMENT, null, false);
-    
-    const ans = new Set(); // Use a Set to ensure uniqueness
-    let cur = treeWalker.currentNode;
-    
-    // Iterate over all the elements in the tree
-    while (cur) {
-      ans.add(cur.tagName.toLowerCase()); // Add the tag name to the set
-      cur = treeWalker.nextNode(); // Move to the next node
-    }
-    
-    return Array.from(ans); // Convert the Set to an array and return
+  // Create a TreeWalker to traverse the DOM tree
+  const treeWalker = document.createTreeWalker(
+    tree,
+    NodeFilter.SHOW_ELEMENT,
+    null,
+    false,
+  );
+
+  const ans = new Set(); // Use a Set to ensure uniqueness
+  let cur = treeWalker.currentNode;
+
+  // Iterate over all the elements in the tree
+  while (cur) {
+    ans.add(cur.tagName.toLowerCase()); // Add the tag name to the set
+    cur = treeWalker.nextNode(); // Move to the next node
+  }
+
+  return Array.from(ans); // Convert the Set to an array and return
 }
 ```
 
@@ -71,16 +76,16 @@ function getTags(tree) {
  * @return {string[]}
  */
 function getTags(tree) {
-    const set = new Set(); // Use a Set to ensure uniqueness
-    const stack = [tree]; // Initialize the stack with the root node
-    
-    while (stack.length > 0) {
-      const top = stack.pop(); // Get the last node in the stack
-      set.add(top.tagName.toLowerCase()); // Add its tag name to the set
-      stack.push(...top.children); // Add its children to the stack for further traversal
-    }
-    
-    return [...set]; // Convert the Set to an array and return
+  const set = new Set(); // Use a Set to ensure uniqueness
+  const stack = [tree]; // Initialize the stack with the root node
+
+  while (stack.length > 0) {
+    const top = stack.pop(); // Get the last node in the stack
+    set.add(top.tagName.toLowerCase()); // Add its tag name to the set
+    stack.push(...top.children); // Add its children to the stack for further traversal
+  }
+
+  return [...set]; // Convert the Set to an array and return
 }
 ```
 

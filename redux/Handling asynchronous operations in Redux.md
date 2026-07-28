@@ -23,9 +23,9 @@ Let's walk through the most common approaches for handling async operations in R
    You need to apply the `redux-thunk` middleware to your store. This is typically done during store creation.
 
    ```javascript
-   import { createStore, applyMiddleware } from 'redux';
-   import thunk from 'redux-thunk';
-   import rootReducer from './reducers';
+   import { createStore, applyMiddleware } from "redux";
+   import thunk from "redux-thunk";
+   import rootReducer from "./reducers";
 
    const store = createStore(rootReducer, applyMiddleware(thunk));
    ```
@@ -44,9 +44,9 @@ Let's say you're fetching a list of users from an API.
 
    ```javascript
    // src/redux/actions/types.js
-   export const FETCH_USERS_REQUEST = 'FETCH_USERS_REQUEST';
-   export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
-   export const FETCH_USERS_FAILURE = 'FETCH_USERS_FAILURE';
+   export const FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST";
+   export const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS";
+   export const FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE";
    ```
 
 2. **Action Creators:**
@@ -55,7 +55,11 @@ Let's say you're fetching a list of users from an API.
 
    ```javascript
    // src/redux/actions/userActions.js
-   import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE } from './types';
+   import {
+     FETCH_USERS_REQUEST,
+     FETCH_USERS_SUCCESS,
+     FETCH_USERS_FAILURE,
+   } from "./types";
 
    export const fetchUsers = () => {
      return async (dispatch) => {
@@ -64,7 +68,9 @@ Let's say you're fetching a list of users from an API.
 
        try {
          // Perform the async operation (API call)
-         const response = await fetch('https://jsonplaceholder.typicode.com/users');
+         const response = await fetch(
+           "https://jsonplaceholder.typicode.com/users",
+         );
          const data = await response.json();
 
          // Dispatching the success action with the data
@@ -83,12 +89,16 @@ Let's say you're fetching a list of users from an API.
 
    ```javascript
    // src/redux/reducers/userReducer.js
-   import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE } from '../actions/types';
+   import {
+     FETCH_USERS_REQUEST,
+     FETCH_USERS_SUCCESS,
+     FETCH_USERS_FAILURE,
+   } from "../actions/types";
 
    const initialState = {
      loading: false,
      users: [],
-     error: '',
+     error: "",
    };
 
    const userReducer = (state = initialState, action) => {
@@ -113,9 +123,9 @@ Let's say you're fetching a list of users from an API.
 
    ```javascript
    // src/components/UserList.js
-   import React, { useEffect } from 'react';
-   import { useDispatch, useSelector } from 'react-redux';
-   import { fetchUsers } from '../redux/actions/userActions';
+   import React, { useEffect } from "react";
+   import { useDispatch, useSelector } from "react-redux";
+   import { fetchUsers } from "../redux/actions/userActions";
 
    const UserList = () => {
      const dispatch = useDispatch();
@@ -144,6 +154,7 @@ Let's say you're fetching a list of users from an API.
    ```
 
 In this example:
+
 - **`fetchUsers`** is an asynchronous action that dispatches multiple actions (`FETCH_USERS_REQUEST`, `FETCH_USERS_SUCCESS`, and `FETCH_USERS_FAILURE`) to handle loading, success, and error states.
 - The component uses **`useDispatch`** to dispatch the async action and **`useSelector`** to access the Redux state.
 
@@ -166,10 +177,10 @@ In this example:
    You will need to set up the middleware in the store just like Redux Thunk.
 
    ```javascript
-   import createSagaMiddleware from 'redux-saga';
-   import { createStore, applyMiddleware } from 'redux';
-   import rootReducer from './reducers';
-   import rootSaga from './sagas';
+   import createSagaMiddleware from "redux-saga";
+   import { createStore, applyMiddleware } from "redux";
+   import rootReducer from "./reducers";
+   import rootSaga from "./sagas";
 
    const sagaMiddleware = createSagaMiddleware();
    const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
@@ -187,20 +198,30 @@ In this example:
 
    ```javascript
    // src/redux/actions/types.js
-   export const FETCH_USERS_REQUEST = 'FETCH_USERS_REQUEST';
-   export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
-   export const FETCH_USERS_FAILURE = 'FETCH_USERS_FAILURE';
+   export const FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST";
+   export const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS";
+   export const FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE";
    ```
 
 2. **Action Creators:**
 
    ```javascript
    // src/redux/actions/userActions.js
-   import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE } from './types';
+   import {
+     FETCH_USERS_REQUEST,
+     FETCH_USERS_SUCCESS,
+     FETCH_USERS_FAILURE,
+   } from "./types";
 
    export const fetchUsersRequest = () => ({ type: FETCH_USERS_REQUEST });
-   export const fetchUsersSuccess = (users) => ({ type: FETCH_USERS_SUCCESS, payload: users });
-   export const fetchUsersFailure = (error) => ({ type: FETCH_USERS_FAILURE, error });
+   export const fetchUsersSuccess = (users) => ({
+     type: FETCH_USERS_SUCCESS,
+     payload: users,
+   });
+   export const fetchUsersFailure = (error) => ({
+     type: FETCH_USERS_FAILURE,
+     error,
+   });
    ```
 
 3. **Saga (Watcher and Worker Sagas):**
@@ -209,14 +230,24 @@ In this example:
 
    ```javascript
    // src/redux/sagas/userSaga.js
-   import { call, put, takeEvery } from 'redux-saga/effects';
-   import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE } from '../actions/types';
-   import { fetchUsersSuccess, fetchUsersFailure } from '../actions/userActions';
+   import { call, put, takeEvery } from "redux-saga/effects";
+   import {
+     FETCH_USERS_REQUEST,
+     FETCH_USERS_SUCCESS,
+     FETCH_USERS_FAILURE,
+   } from "../actions/types";
+   import {
+     fetchUsersSuccess,
+     fetchUsersFailure,
+   } from "../actions/userActions";
 
    // Worker saga: handles the async operation
    function* fetchUsers() {
      try {
-       const response = yield call(fetch, 'https://jsonplaceholder.typicode.com/users');
+       const response = yield call(
+         fetch,
+         "https://jsonplaceholder.typicode.com/users",
+       );
        const data = yield response.json();
        yield put(fetchUsersSuccess(data)); // Dispatch success action with data
      } catch (error) {
@@ -238,8 +269,8 @@ In this example:
 
    ```javascript
    // src/redux/sagas/index.js
-   import { all } from 'redux-saga/effects';
-   import watchFetchUsers from './userSaga';
+   import { all } from "redux-saga/effects";
+   import watchFetchUsers from "./userSaga";
 
    function* rootSaga() {
      yield all([watchFetchUsers()]);
@@ -270,53 +301,56 @@ In this example:
          return { ...state, loading: false, users: action.payload };
        case FETCH_USERS_FAILURE:
          return { ...state
+   ```
 
 , loading: false, error: action.error };
-       default:
-         return state;
-     }
-   };
+default:
+return state;
+}
+};
 
-   export default userReducer;
-   ```
+export default userReducer;
+
+````
 
 6. **Connecting the Component:**
 
-   The component remains mostly the same as with Thunk, but now you dispatch the action to trigger the saga.
+The component remains mostly the same as with Thunk, but now you dispatch the action to trigger the saga.
 
-   ```javascript
-   // src/components/UserList.js
-   import React, { useEffect } from 'react';
-   import { useDispatch, useSelector } from 'react-redux';
-   import { fetchUsersRequest } from '../redux/actions/userActions';
+```javascript
+// src/components/UserList.js
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsersRequest } from '../redux/actions/userActions';
 
-   const UserList = () => {
-     const dispatch = useDispatch();
-     const { loading, users, error } = useSelector((state) => state.user);
+const UserList = () => {
+  const dispatch = useDispatch();
+  const { loading, users, error } = useSelector((state) => state.user);
 
-     useEffect(() => {
-       dispatch(fetchUsersRequest());
-     }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchUsersRequest());
+  }, [dispatch]);
 
-     if (loading) return <p>Loading...</p>;
-     if (error) return <p>{error}</p>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
-     return (
-       <div>
-         <h1>User List</h1>
-         <ul>
-           {users.map((user) => (
-             <li key={user.id}>{user.name}</li>
-           ))}
-         </ul>
-       </div>
-     );
-   };
+  return (
+    <div>
+      <h1>User List</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
-   export default UserList;
-   ```
+export default UserList;
+````
 
 ### **Summary:**
+
 - **Redux Thunk** allows you to handle async actions in Redux by dispatching functions (thunks) instead of plain objects. The thunk function can perform async operations and dispatch actions based on the results.
 - **Redux Saga** provides a more powerful approach to handling async logic using generator functions to manage side effects like API calls, delays, or complex async flows.
 

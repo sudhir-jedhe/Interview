@@ -2,7 +2,7 @@ JavaScript provides powerful capabilities for manipulating the styles of HTML el
 
 ### **1. Retrieving Styles of an HTML Element**
 
-To retrieve the computed styles of an element, the `getComputedStyle()` method is used. It returns a `CSSStyleDeclaration` object, which gives you access to the computed values of the CSS properties applied to an element. 
+To retrieve the computed styles of an element, the `getComputedStyle()` method is used. It returns a `CSSStyleDeclaration` object, which gives you access to the computed values of the CSS properties applied to an element.
 
 #### **Example: Get a specific CSS property (like font-size)**
 
@@ -10,8 +10,8 @@ To retrieve the computed styles of an element, the `getComputedStyle()` method i
 const getStyle = (el, ruleName) => getComputedStyle(el)[ruleName];
 
 // Usage
-const fontSize = getStyle(document.querySelector('p'), 'font-size');
-console.log(fontSize);  // Example output: '16px'
+const fontSize = getStyle(document.querySelector("p"), "font-size");
+console.log(fontSize); // Example output: '16px'
 ```
 
 - `getComputedStyle(el)` retrieves the computed styles of the element `el`.
@@ -29,7 +29,7 @@ To change the inline styles of an element, you can use the `HTMLElement.style` p
 const setStyle = (el, rule, val) => (el.style[rule] = val);
 
 // Usage
-setStyle(document.querySelector('p'), 'font-size', '20px');
+setStyle(document.querySelector("p"), "font-size", "20px");
 // The first <p> element on the page will now have a font-size of 20px
 ```
 
@@ -48,10 +48,10 @@ Instead of setting styles one by one, you can add multiple styles to an element 
 const addStyles = (el, styles) => Object.assign(el.style, styles);
 
 // Usage
-addStyles(document.getElementById('my-element'), {
-  background: 'red',
-  color: '#ffff00',
-  fontSize: '3rem'
+addStyles(document.getElementById("my-element"), {
+  background: "red",
+  color: "#ffff00",
+  fontSize: "3rem",
 });
 ```
 
@@ -65,20 +65,21 @@ addStyles(document.getElementById('my-element'), {
 Here is a practical example that shows how you can retrieve, modify, and add styles to elements.
 
 #### **HTML:**
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Style Manipulation</title>
-</head>
-<body>
-  <p id="paragraph">This is a paragraph with dynamic styling.</p>
-  <div id="my-element">This element will have dynamic styles added.</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Style Manipulation</title>
+  </head>
+  <body>
+    <p id="paragraph">This is a paragraph with dynamic styling.</p>
+    <div id="my-element">This element will have dynamic styles added.</div>
 
-  <script src="styleManipulation.js"></script>
-</body>
+    <script src="styleManipulation.js"></script>
+  </body>
 </html>
 ```
 
@@ -95,46 +96,48 @@ const setStyle = (el, rule, val) => (el.style[rule] = val);
 const addStyles = (el, styles) => Object.assign(el.style, styles);
 
 // Use the functions
-const paragraph = document.getElementById('paragraph');
+const paragraph = document.getElementById("paragraph");
 
 // Retrieve and log the current font size of the paragraph
-console.log(getStyle(paragraph, 'font-size'));  // Output: (e.g.) '16px'
+console.log(getStyle(paragraph, "font-size")); // Output: (e.g.) '16px'
 
 // Set the font size of the paragraph to 20px
-setStyle(paragraph, 'font-size', '20px');
+setStyle(paragraph, "font-size", "20px");
 
 // Add multiple styles to the div element
-addStyles(document.getElementById('my-element'), {
-  background: 'blue',
-  color: '#fff',
-  fontSize: '2rem',
-  padding: '10px',
-  borderRadius: '5px'
+addStyles(document.getElementById("my-element"), {
+  background: "blue",
+  color: "#fff",
+  fontSize: "2rem",
+  padding: "10px",
+  borderRadius: "5px",
 });
 ```
 
 ### **Explanation of the Code:**
+
 1. **`getStyle()`** retrieves the current computed style of the specified property (`'font-size'`) for the `<p>` element.
 2. **`setStyle()`** sets the `font-size` property of the `<p>` element to `'20px'`.
 3. **`addStyles()`** applies multiple styles (background color, text color, font size, padding, and border radius) to the `div` with the ID `my-element`.
 
 ### **Bonus: Styling with Dynamic Behavior**
+
 You can also use JavaScript to style elements dynamically in response to user actions, like mouse events. Here's an example where we change the style of a `div` when the mouse hovers over it:
 
 ```javascript
 const dynamicStyle = (el) => {
-  el.addEventListener('mouseenter', () => {
-    el.style.backgroundColor = 'orange';
-    el.style.color = 'black';
+  el.addEventListener("mouseenter", () => {
+    el.style.backgroundColor = "orange";
+    el.style.color = "black";
   });
-  
-  el.addEventListener('mouseleave', () => {
-    el.style.backgroundColor = '';
-    el.style.color = '';
+
+  el.addEventListener("mouseleave", () => {
+    el.style.backgroundColor = "";
+    el.style.color = "";
   });
 };
 
-const dynamicDiv = document.getElementById('my-element');
+const dynamicDiv = document.getElementById("my-element");
 dynamicStyle(dynamicDiv);
 ```
 

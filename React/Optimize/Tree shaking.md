@@ -2,7 +2,6 @@ https://learnersbucket.com/examples/web/tree-shaking-javascript-and-how-it-helps
 
 Performance is the key to any successful web application, the user wants everything to be loaded fast and developers are relentlessly trying to make the application faster by applying different performance optimization techniques.
 
-
 What is Tree shaking in JavaScript?
 Tree shaking also known as unused exports is a process of removing unused code from the JavaScript bundles.
 
@@ -25,11 +24,11 @@ For example, let’s say we have this utility file that holds different utility 
 
 // utility.js
 export function foo() {
-    console.log("I am foo");
+console.log("I am foo");
 }
 
 export function bar() {
-    console.log("I am bar");
+console.log("I am bar");
 }
 Copy
 Now import the function foo in another file.
@@ -43,21 +42,21 @@ Assuming that were are here using Webpack as a bundler and that too in the devel
 
 In the final build, you will see something like,
 
-/* 1 */
-/***/ (function (module, __webpack_exports__, __webpack_require__) {
-  'use strict';
-  /* unused harmony export bar */
-  /* harmony export (immutable) */ __webpack_exports__['a'] = foo;
-  function bar() {
-    console.log("I am bar");
-  }
+/_ 1 _/
+/_\*\*/ (function (module, **webpack_exports**, **webpack_require**) {
+'use strict';
+/_ unused harmony export bar _/
+/_ harmony export (immutable) \*/ **webpack_exports**['a'] = foo;
+function bar() {
+console.log("I am bar");
+}
 
-  function foo() {
-    console.log("I am foo");
-  }
+function foo() {
+console.log("I am foo");
+}
 });
 Copy
-Even though we are not using the bar function it is included in the final build and it is annotated by the comment /* unused harmony export bar */ stating this is an unused function.
+Even though we are not using the bar function it is included in the final build and it is annotated by the comment /_ unused harmony export bar _/ stating this is an unused function.
 
 How does Tree shaking works?
 Import and Export modules introduced in ES6 lead to the major breakthrough for Tree Shaking. This is true since “static” modules are required for tree shaking to function.
@@ -67,9 +66,9 @@ Before ES6, The dynamic import of CommonJs module was used which allowed importi
 var module;
 
 if (condition) {
-    module = require("foo");
+module = require("foo");
 } else {
-    module = require("bar");
+module = require("bar");
 }
 Copy
 This approach was a hurdle for the Tree Shaking process as it was not possible to decide which module will be imported as the import was happening at the run time, and excluding the files at the build time was not practical.
@@ -85,8 +84,8 @@ The bundlers like Webpack are so efficient in Tree shaking that they remove almo
 
 // person.js
 export const Person = {
-    name: "Prashant Yadav",
-    passion: "Blogging"
+name: "Prashant Yadav",
+passion: "Blogging"
 }
 Copy
 // main.js
@@ -112,7 +111,7 @@ let numbers = [1, 2, 3];
 console.log(numbers); // (3) [1, 2, 3]
 
 const addNumber = function(num) {
-  numbers.push(num);
+numbers.push(num);
 };
 
 addNumber(4);
@@ -127,16 +126,16 @@ One way to solve this is by hinting to the Webpack that our code is side effects
 
 // package.json
 {
-  "sideEffects": false
+"sideEffects": false
 }
 Copy
 Alternatively, we can alert Webpack about which files have side effects.
 
 // package.json
 {
-  "sideEffects": [
-    "./polyfills.js"
-  ]
+"sideEffects": [
+"./polyfills.js"
+]
 }
 Copy
 I hope now you have a good understanding of the Tree Shaking process, if you liked the article please share it in your network.

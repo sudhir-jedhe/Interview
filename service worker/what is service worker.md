@@ -1,6 +1,6 @@
 ### Service Workers: An Overview
 
-A **service worker** is a script that runs in the background, separate from the web page, enabling features that don't need a web page or user interaction. Service workers are designed to enable features such as offline experiences, background sync, push notifications, and cache management. 
+A **service worker** is a script that runs in the background, separate from the web page, enabling features that don't need a web page or user interaction. Service workers are designed to enable features such as offline experiences, background sync, push notifications, and cache management.
 
 They allow web apps to be more reliable and responsive even when the network is unavailable.
 
@@ -36,13 +36,13 @@ However, service workers can still interact with the page and influence the DOM 
 
    ```js
    // Inside service worker
-   self.addEventListener('install', event => {
+   self.addEventListener("install", (event) => {
      event.waitUntil(
-       clients.matchAll().then(clients => {
-         clients.forEach(client => {
-           client.postMessage('Service worker installed');
+       clients.matchAll().then((clients) => {
+         clients.forEach((client) => {
+           client.postMessage("Service worker installed");
          });
-       })
+       }),
      );
    });
    ```
@@ -53,7 +53,7 @@ However, service workers can still interact with the page and influence the DOM 
    ```js
    // Inside the main page (JavaScript)
    if (navigator.serviceWorker.controller) {
-     navigator.serviceWorker.controller.postMessage('Hello from the page');
+     navigator.serviceWorker.controller.postMessage("Hello from the page");
    }
    ```
 
@@ -62,9 +62,9 @@ However, service workers can still interact with the page and influence the DOM 
 
    ```js
    // Inside the main page (JavaScript)
-   navigator.serviceWorker.addEventListener('message', event => {
-     console.log('Message from service worker:', event.data);
-     document.getElementById('status').textContent = event.data;
+   navigator.serviceWorker.addEventListener("message", (event) => {
+     console.log("Message from service worker:", event.data);
+     document.getElementById("status").textContent = event.data;
    });
    ```
 
@@ -83,15 +83,15 @@ However, service workers have access to several persistent storage mechanisms th
    // Storing data in IndexedDB
    function saveDataToIndexedDB(data) {
      return new Promise((resolve, reject) => {
-       const request = indexedDB.open('serviceWorkerDB', 1);
+       const request = indexedDB.open("serviceWorkerDB", 1);
 
        request.onsuccess = (event) => {
          const db = event.target.result;
-         const transaction = db.transaction('data', 'readwrite');
-         const store = transaction.objectStore('data');
-         store.put(data, 'key1');
+         const transaction = db.transaction("data", "readwrite");
+         const store = transaction.objectStore("data");
+         store.put(data, "key1");
 
-         transaction.oncomplete = () => resolve('Data saved');
+         transaction.oncomplete = () => resolve("Data saved");
          transaction.onerror = reject;
        };
 
@@ -102,13 +102,13 @@ However, service workers have access to several persistent storage mechanisms th
    // Retrieving data from IndexedDB
    function getDataFromIndexedDB() {
      return new Promise((resolve, reject) => {
-       const request = indexedDB.open('serviceWorkerDB', 1);
+       const request = indexedDB.open("serviceWorkerDB", 1);
 
        request.onsuccess = (event) => {
          const db = event.target.result;
-         const transaction = db.transaction('data', 'readonly');
-         const store = transaction.objectStore('data');
-         const dataRequest = store.get('key1');
+         const transaction = db.transaction("data", "readonly");
+         const store = transaction.objectStore("data");
+         const dataRequest = store.get("key1");
 
          dataRequest.onsuccess = () => resolve(dataRequest.result);
          dataRequest.onerror = reject;
@@ -127,18 +127,18 @@ However, service workers have access to several persistent storage mechanisms th
    ```js
    // Saving data to cache
    function cacheData(request, response) {
-     return caches.open('my-cache').then(cache => {
+     return caches.open("my-cache").then((cache) => {
        return cache.put(request, response);
      });
    }
 
    // Retrieving data from cache
    function fetchDataFromCache(request) {
-     return caches.match(request).then(response => {
+     return caches.match(request).then((response) => {
        if (response) {
-         return response;  // Return cached response
+         return response; // Return cached response
        }
-       return fetch(request);  // If no cached response, fetch from the network
+       return fetch(request); // If no cached response, fetch from the network
      });
    }
    ```

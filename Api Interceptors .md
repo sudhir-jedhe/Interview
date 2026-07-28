@@ -20,15 +20,15 @@ Example of how interceptors work in Axios:
 axios.interceptors.request.use(
   (config) => {
     // Modify the request before sending (e.g., add Authorization token)
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response Interceptor
@@ -44,10 +44,10 @@ axios.interceptors.response.use(
     // Handle errors (e.g., show notification on 401 error)
     if (error.response && error.response.status === 401) {
       // Handle Unauthorized Access
-      console.log('Unauthorized. Redirecting to login...');
+      console.log("Unauthorized. Redirecting to login...");
     }
     return Promise.reject(error);
-  }
+  },
 );
 ```
 
@@ -65,28 +65,27 @@ Example:
 // Custom Fetch Wrapper with Interceptors
 function fetchWithInterceptors(url, options = {}) {
   // Modify request (e.g., add Authorization header)
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem("authToken");
   if (token) {
     options.headers = {
       ...options.headers,
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     };
   }
 
   // Proceed with the request
-  return fetch(url, options)
-    .then((response) => {
-      // Handle response (e.g., transform data)
-      if (response.ok) {
-        return response.json();
-      } else {
-        // Handle errors (e.g., show notification for 401)
-        if (response.status === 401) {
-          console.log('Unauthorized access. Please log in again.');
-        }
-        return Promise.reject('Request failed');
+  return fetch(url, options).then((response) => {
+    // Handle response (e.g., transform data)
+    if (response.ok) {
+      return response.json();
+    } else {
+      // Handle errors (e.g., show notification for 401)
+      if (response.status === 401) {
+        console.log("Unauthorized access. Please log in again.");
       }
-    });
+      return Promise.reject("Request failed");
+    }
+  });
 }
 ```
 
@@ -99,10 +98,10 @@ function fetchWithInterceptors(url, options = {}) {
    - **Use Case**: In a secure web application, each API request to access resources should carry a valid authorization token. This is typically stored in the browser's `localStorage` or `sessionStorage`.
    - **Example**: Add a token to every API request:
      ```js
-     axios.interceptors.request.use(config => {
-       const token = localStorage.getItem('authToken');
+     axios.interceptors.request.use((config) => {
+       const token = localStorage.getItem("authToken");
        if (token) {
-         config.headers['Authorization'] = `Bearer ${token}`;
+         config.headers["Authorization"] = `Bearer ${token}`;
        }
        return config;
      });
@@ -114,13 +113,13 @@ function fetchWithInterceptors(url, options = {}) {
    - **Example**:
      ```js
      axios.interceptors.response.use(
-       (response) => response, 
+       (response) => response,
        (error) => {
          if (error.response && error.response.status === 401) {
-           window.location.href = '/login'; // Redirect to login page
+           window.location.href = "/login"; // Redirect to login page
          }
          return Promise.reject(error);
-       }
+       },
      );
      ```
 
@@ -128,14 +127,15 @@ function fetchWithInterceptors(url, options = {}) {
    - **When to use**: When you want to log all outgoing requests and their responses for debugging or monitoring purposes.
    - **Use Case**: In a development or production environment, logging API requests and responses helps trace the sequence of network events, track errors, and monitor performance.
    - **Example**:
+
      ```js
      axios.interceptors.request.use((config) => {
-       console.log('Request Sent:', config);
+       console.log("Request Sent:", config);
        return config;
      });
 
      axios.interceptors.response.use((response) => {
-       console.log('Response Received:', response);
+       console.log("Response Received:", response);
        return response;
      });
      ```
@@ -167,7 +167,7 @@ function fetchWithInterceptors(url, options = {}) {
            return axios(error.config); // Retry the request
          }
          return Promise.reject(error);
-       }
+       },
      );
      ```
 

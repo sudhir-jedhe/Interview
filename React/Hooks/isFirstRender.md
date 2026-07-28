@@ -1,3 +1,4 @@
+```js
 import React from "react";
 import { useRef } from "react";
 
@@ -27,4 +28,5 @@ function App() {
     // only true for the first render
     ...
   }
-  
+
+```

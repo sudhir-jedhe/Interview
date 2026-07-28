@@ -18,17 +18,14 @@ Rules:
 
 Semantic versions are defined as `MAJOR.MINOR.PATCH` and commonly compared using SemVer rules. The npm `semver` tooling supports comparison operations such as `gt`, `lt`, and `compare`. [\[persistent...epoint.com\]](https://persistentsystems.sharepoint.com/sites/POC94/Shared%20Documents/Source/node_modules/semver/README.md?web=1), [\[bing.com\]](https://bing.com/search?q=compare+semantic+versions+JavaScript+interview+problem+semantic+version+compare)
 
-***
+---
 
 ## Problem
 
 Implement:
 
 ```js
-compareVersions(
-  "1.2.3",
-  "1.3.0"
-)
+compareVersions("1.2.3", "1.3.0");
 ```
 
 Return:
@@ -39,32 +36,19 @@ Return:
  1 => v1 > v2
 ```
 
-***
+---
 
 ## Complete Solution
 
 ```js
-function compareVersions(
-  version1,
-  version2
-) {
-  const v1 =
-    version1.split(".").map(Number);
+function compareVersions(version1, version2) {
+  const v1 = version1.split(".").map(Number);
 
-  const v2 =
-    version2.split(".").map(Number);
+  const v2 = version2.split(".").map(Number);
 
-  const length =
-    Math.max(
-      v1.length,
-      v2.length
-    );
+  const length = Math.max(v1.length, v2.length);
 
-  for (
-    let i = 0;
-    i < length;
-    i++
-  ) {
+  for (let i = 0; i < length; i++) {
     const num1 = v1[i] || 0;
     const num2 = v2[i] || 0;
 
@@ -81,60 +65,45 @@ function compareVersions(
 }
 ```
 
-***
+---
 
 ## Example
 
 ```js
-console.log(
-  compareVersions(
-    "1.2.3",
-    "1.2.4"
-  )
-);
+console.log(compareVersions("1.2.3", "1.2.4"));
 ```
 
 Output:
 
 ```js
--1
+-1;
 ```
 
-***
+---
 
 ```js
-console.log(
-  compareVersions(
-    "2.0.0",
-    "1.9.9"
-  )
-);
+console.log(compareVersions("2.0.0", "1.9.9"));
 ```
 
 Output:
 
 ```js
-1
+1;
 ```
 
-***
+---
 
 ```js
-console.log(
-  compareVersions(
-    "1.0",
-    "1.0.0"
-  )
-);
+console.log(compareVersions("1.0", "1.0.0"));
 ```
 
 Output:
 
 ```js
-0
+0;
 ```
 
-***
+---
 
 ## Dry Run
 
@@ -148,8 +117,7 @@ Output:
 Arrays:
 
 ```js
-[1,10,2]
-[1,2,10]
+[1, 10, 2][(1, 2, 10)];
 ```
 
 Compare:
@@ -163,36 +131,22 @@ Compare:
 Return:
 
 ```js
-1
+1;
 ```
 
-***
+---
 
 # TypeScript Version
 
 ```ts
-function compareVersions(
-  version1: string,
-  version2: string
-): number {
-  const v1 = version1
-    .split(".")
-    .map(Number);
+function compareVersions(version1: string, version2: string): number {
+  const v1 = version1.split(".").map(Number);
 
-  const v2 = version2
-    .split(".")
-    .map(Number);
+  const v2 = version2.split(".").map(Number);
 
-  const maxLength = Math.max(
-    v1.length,
-    v2.length
-  );
+  const maxLength = Math.max(v1.length, v2.length);
 
-  for (
-    let i = 0;
-    i < maxLength;
-    i++
-  ) {
+  for (let i = 0; i < maxLength; i++) {
     const num1 = v1[i] ?? 0;
     const num2 = v2[i] ?? 0;
 
@@ -209,7 +163,7 @@ function compareVersions(
 }
 ```
 
-***
+---
 
 # Support Pre-Release Versions
 
@@ -239,18 +193,14 @@ release
 
 SemVer specifications also define handling for prerelease identifiers and version precedence. [\[persistent...epoint.com\]](https://persistentsystems.sharepoint.com/sites/POC94/Shared%20Documents/Source/node_modules/semver/README.md?web=1), [\[bing.com\]](https://bing.com/search?q=compare+semantic+versions+JavaScript+interview+problem+semantic+version+compare)
 
-***
+---
 
 ## Interview Follow-Up
 
 ### Sort Versions
 
 ```js
-const versions = [
-  "1.2.3",
-  "1.10.0",
-  "1.3.0",
-];
+const versions = ["1.2.3", "1.10.0", "1.3.0"];
 
 versions.sort(compareVersions);
 ```
@@ -258,14 +208,10 @@ versions.sort(compareVersions);
 Output:
 
 ```js
-[
- "1.2.3",
- "1.3.0",
- "1.10.0"
-]
+["1.2.3", "1.3.0", "1.10.0"];
 ```
 
-***
+---
 
 ## Complexity
 
@@ -277,7 +223,7 @@ Time  : O(n)
 Space : O(n)
 ```
 
-***
+---
 
 ## Senior-Level Answer
 

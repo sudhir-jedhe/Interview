@@ -1,3 +1,4 @@
+```js
 ************************User Implement custom SetInterval ************************ */
 
 function createSetIntervalPolyfill() {
@@ -114,3 +115,4 @@ setTimeout(() => {
   stopInterval(); // Cancel the interval after 3 seconds
   console.log('Interval canceled manually');
 }, 3000);
+```

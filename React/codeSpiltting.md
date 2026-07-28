@@ -3,7 +3,6 @@ It is the time of Single Page Applications. We bundle our code, send it to the c
 What are we going to build?
 So, we discussed the problem statement above. Before going to the solution, let's see what are we going to build in this blog post.
 
-
 As we can see in the video, we are going to examine an app that serves different Login Page UIs to different users depending upon their network connection type. It means that users with a strong connection will see a full heavy animated login UI else users with a weak connection will see a bare-bones login form. We are not going to send all the code at the initial load rather we lazy load the components as per different conditions.
 
 To see the live demo click here.
@@ -23,11 +22,11 @@ const LoginAdvanced = React.lazy(() => import("./LoginAvanced"));
 As you can see above, we are passing a function that dynamically imports LoginAdvanced. Now, we can use this component inside Suspense.
 
 function App() => {
-  return (
-    <Suspense fallback={<Loader />}>
-      <LoginAdvanced />
-    </Suspense>
-  );
+return (
+<Suspense fallback={<Loader />}>
+<LoginAdvanced />
+</Suspense>
+);
 }
 Suspense takes a fallback component which allows us to display any React element while waiting for the component to load. In our case, Loader will be shown while we wait for LoginAdvanced to finish loading.
 
@@ -46,23 +45,22 @@ Suppose, we want some sort of mechanism where we show different UIs to different
 import React, { Suspense, lazy } from 'react';
 import { useNetworkStatus } from 'react-adaptive-hooks/network';
 
-const LoginBasic = lazy(() => import(/* webpackChunkName: "loginBasic" */ './LoginBasic'));
-const LoginAdvanced = lazy(() => import(/* webpackChunkName: "loginAdvanced" */ './LoginAdvanced'));
+const LoginBasic = lazy(() => import(/_ webpackChunkName: "loginBasic" _/ './LoginBasic'));
+const LoginAdvanced = lazy(() => import(/_ webpackChunkName: "loginAdvanced" _/ './LoginAdvanced'));
 
 function App() {
-  const { effectiveConnectionType } = useNetworkStatus();
+const { effectiveConnectionType } = useNetworkStatus();
 
-  return (
-    <Suspense fallback={<Loader />}>
-      {effectiveConnectionType === '4g' ? <LoginAdvanced /> : <LoginBase />}
-    </Suspense>
-  );
+return (
+<Suspense fallback={<Loader />}>
+{effectiveConnectionType === '4g' ? <LoginAdvanced /> : <LoginBase />}
+</Suspense>
+);
 }
 ...
 We are importing the useNetworkStatus hook which will provide us with the type of user's internet connection. If it is a strong connection then we would render a full-fledged login page else a bare-bones login form. We are putting all this into Suspense and lazy loading our components which will allow us to create different bundles for different UIs and fetch them dynamically.
 
 Since we are showing a lighter version to weak connection users, it will lead to lower page load times, better performance and experience. This can be applied to any part of your app. Maybe you want different versions of the listing page, user feed or can be even applied for A/B testing. However, there are cons to this approach too. Any change or addition in functionality needs to be replicated across different versions.
-
 
 To see the live demo click here.
 

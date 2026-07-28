@@ -6,8 +6,8 @@ Here's a breakdown of how the code works:
 
 ```js
 window.addEventListener("beforeunload", function (e) {
-  e.preventDefault();  // Prevents the default action (which is closing or reloading the page).
-  e.returnValue = "";  // Sets the returnValue property to an empty string, which shows the confirmation dialog.
+  e.preventDefault(); // Prevents the default action (which is closing or reloading the page).
+  e.returnValue = ""; // Sets the returnValue property to an empty string, which shows the confirmation dialog.
 });
 ```
 
@@ -29,13 +29,12 @@ window.addEventListener("beforeunload", function (e) {
 ### Why is This Important?
 
 - This event is often used in situations where the user might lose data (for example, in a form) if they navigate away from the page. It gives the user a chance to confirm that they indeed want to leave the page.
-  
+
 ### Modern Browsers and Limitations:
 
-- **Dialog Customization**: 
+- **Dialog Customization**:
   - Most modern browsers no longer allow customization of the confirmation message. They display their own generic message (e.g., "Do you want to leave this page? Your changes may not be saved.").
   - The string passed to `returnValue` (such as `e.returnValue = "You have unsaved changes."`) is ignored in favor of the browser's default message.
-  
 - **User Interaction Requirement**:
   - Modern browsers often require some form of user interaction with the page (such as typing or clicking) before the dialog is shown. For example, it may not show the dialog if the user has not interacted with the page (like in a page that's been idle for a while or opened by a script).
 
@@ -63,4 +62,3 @@ In this example, if the user has modified the form but not saved their changes, 
 - **`beforeunload` event**: It triggers when the page is about to be unloaded (e.g., the user closes the tab or navigates away).
 - **`e.preventDefault()`** and **`e.returnValue`**: These are used to show a confirmation dialog to the user to ensure they don’t accidentally lose data.
 - **Browser limitations**: Modern browsers do not allow custom messages in the confirmation dialog and require some user interaction for the event to trigger.
-

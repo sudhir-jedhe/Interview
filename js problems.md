@@ -6,9 +6,9 @@ Here are solutions to the problems you listed:
 
 ```javascript
 function findLongestWord(sentence) {
-  let words = sentence.split(' ');
-  let longestWord = '';
-  
+  let words = sentence.split(" ");
+  let longestWord = "";
+
   for (let word of words) {
     if (word.length > longestWord.length) {
       longestWord = word;
@@ -24,7 +24,7 @@ console.log(findLongestWord("The quick brown fox jumps over the lazy dog"));
 
 ```javascript
 function isPalindrome(str) {
-  const reversed = str.split('').reverse().join('');
+  const reversed = str.split("").reverse().join("");
   return str === reversed;
 }
 
@@ -46,7 +46,7 @@ console.log(removeDuplicates([1, 2, 3, 4, 4, 5, 1, 2])); // [1, 2, 3, 4, 5]
 
 ```javascript
 function reverseString(str) {
-  let reversed = '';
+  let reversed = "";
   for (let i = str.length - 1; i >= 0; i--) {
     reversed += str[i];
   }
@@ -62,7 +62,7 @@ console.log(reverseString("hello")); // "olleh"
 function maxConsecutiveOnes(arr) {
   let maxCount = 0;
   let currentCount = 0;
-  
+
   for (let num of arr) {
     if (num === 1) {
       currentCount++;
@@ -107,7 +107,7 @@ console.log(mergeAndSort([0, 3, 4, 31], [4, 6, 30])); // [0, 3, 4, 4, 6, 30, 31]
 ```javascript
 function checkSquared(arr1, arr2) {
   if (arr1.length !== arr2.length) return false;
-  const arr2Squared = arr2.map(num => Math.sqrt(num)).sort();
+  const arr2Squared = arr2.map((num) => Math.sqrt(num)).sort();
   const arr1Sorted = arr1.sort();
   return arr1Sorted.every((num, idx) => num === arr2Squared[idx]);
 }
@@ -120,8 +120,8 @@ console.log(checkSquared([1, 2, 3], [4, 5, 6])); // false
 
 ```javascript
 function canFormString(str1, str2) {
-  const sortedStr1 = str1.split('').sort().join('');
-  const sortedStr2 = str2.split('').sort().join('');
+  const sortedStr1 = str1.split("").sort().join("");
+  const sortedStr2 = str2.split("").sort().join("");
   return sortedStr1 === sortedStr2;
 }
 
@@ -133,14 +133,19 @@ console.log(canFormString("hello", "world")); // false
 
 ```javascript
 function getUniqueObjects(arr) {
-  return arr.filter((value, index, self) => 
-    index === self.findIndex((obj) => (
-      obj.name === value.name
-    ))
+  return arr.filter(
+    (value, index, self) =>
+      index === self.findIndex((obj) => obj.name === value.name),
   );
 }
 
-const arr = [{name: "sai"},{name:"Nang"},{name: "sai"},{name:"Nang"},{name: "111111"}];
+const arr = [
+  { name: "sai" },
+  { name: "Nang" },
+  { name: "sai" },
+  { name: "Nang" },
+  { name: "111111" },
+];
 console.log(getUniqueObjects(arr)); // [{name: "sai"},{name:"Nang"},{name: "111111"}]
 ```
 
@@ -158,7 +163,7 @@ console.log(findMax([1, 2, 3, 5, 4])); // 5
 
 ```javascript
 function filterEvenNumbers(arr) {
-  return arr.filter(num => num % 2 === 0);
+  return arr.filter((num) => num % 2 === 0);
 }
 
 console.log(filterEvenNumbers([1, 2, 3, 4, 5, 6])); // [2, 4, 6]
@@ -176,7 +181,7 @@ function isPrime(num) {
 }
 
 console.log(isPrime(11)); // true
-console.log(isPrime(4));  // false
+console.log(isPrime(4)); // false
 ```
 
 ### **14. Find the largest element in a nested array:**
@@ -187,7 +192,13 @@ function findLargest(arr) {
   return Math.max(...flatArray);
 }
 
-console.log(findLargest([[3, 4, 58], [709, 8, 9, [10, 11]], [111, 2]])); // 709
+console.log(
+  findLargest([
+    [3, 4, 58],
+    [709, 8, 9, [10, 11]],
+    [111, 2],
+  ]),
+); // 709
 ```
 
 ### **15. Fibonacci sequence up to a given number of terms:**
@@ -242,13 +253,13 @@ console.log(sortArrayDesc([3, 1, 4, 1, 2])); // [4, 3, 2, 1, 1]
 
 ```javascript
 function reverseWords(sentence) {
-  const words = sentence.split(' ');
-  let reversedSentence = '';
-  
+  const words = sentence.split(" ");
+  let reversedSentence = "";
+
   for (let i = words.length - 1; i >= 0; i--) {
-    reversedSentence += words[i] + ' ';
+    reversedSentence += words[i] + " ";
   }
-  
+
   return reversedSentence.trim();
 }
 
@@ -269,7 +280,7 @@ console.log(flattenArray([1, [2, [3, 4], 5], 6])); // [1, 2, 3, 4, 5, 6]
 
 ```javascript
 function convertToObject(str, value) {
-  const keys = str.split('.');
+  const keys = str.split(".");
   let obj = {};
   keys.reduce((acc, key, index) => {
     if (index === keys.length - 1) {
@@ -279,11 +290,11 @@ function convertToObject(str, value) {
     }
     return acc[key];
   }, obj);
-  
+
   return obj;
 }
 
-console.log(convertToObject("a.b.c", "someValue")); 
+console.log(convertToObject("a.b.c", "someValue"));
 // Output: {a: {b: {c: "someValue"}}}
 ```
 

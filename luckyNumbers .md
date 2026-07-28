@@ -1,3 +1,4 @@
+```js
 // luckyNumbers.js
 export function luckyNumbers(matrix) {
   const luckyNumbers = [];
@@ -57,3 +58,4 @@ console.log(luckyNumbers(matrix)); // Output: [15]
 //   [15, 16, 17, 12],
 // ];
 // // Output: [12]
+```

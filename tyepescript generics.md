@@ -20,11 +20,12 @@ Generics are defined by using angle brackets (`<T>`) or any other identifier for
 
 ```typescript
 function example<T>(arg: T): T {
-    return arg;
+  return arg;
 }
 ```
 
 Here:
+
 - `T` is a **type parameter** that represents a placeholder for any type.
 - When you call `example`, you can specify the actual type for `T`.
 
@@ -38,14 +39,15 @@ You can define a function that accepts and returns a value of a generic type.
 
 ```typescript
 function identity<T>(value: T): T {
-    return value;
+  return value;
 }
 
-const result1 = identity("Hello");  // T is inferred to be string
-const result2 = identity(42);       // T is inferred to be number
+const result1 = identity("Hello"); // T is inferred to be string
+const result2 = identity(42); // T is inferred to be number
 ```
 
 In the above example:
+
 - The function `identity` takes an argument `value` of type `T` and returns a value of type `T`.
 - TypeScript infers the type of `T` based on the argument passed (either `string` or `number`).
 
@@ -55,7 +57,7 @@ You can use generics in interfaces to define flexible data structures.
 
 ```typescript
 interface Box<T> {
-    value: T;
+  value: T;
 }
 
 const stringBox: Box<string> = { value: "Hello" };
@@ -63,6 +65,7 @@ const numberBox: Box<number> = { value: 42 };
 ```
 
 In the example:
+
 - `Box` is a generic interface that accepts any type `T`.
 - When we create instances like `stringBox` or `numberBox`, TypeScript knows the specific types (`string` or `number`) of `value` in each case.
 
@@ -72,27 +75,28 @@ Generics can also be used in classes to define reusable and type-safe data struc
 
 ```typescript
 class Container<T> {
-    private items: T[] = [];
-    
-    add(item: T): void {
-        this.items.push(item);
-    }
+  private items: T[] = [];
 
-    getItems(): T[] {
-        return this.items;
-    }
+  add(item: T): void {
+    this.items.push(item);
+  }
+
+  getItems(): T[] {
+    return this.items;
+  }
 }
 
 const stringContainer = new Container<string>();
 stringContainer.add("Hello");
-console.log(stringContainer.getItems());  // Output: ["Hello"]
+console.log(stringContainer.getItems()); // Output: ["Hello"]
 
 const numberContainer = new Container<number>();
 numberContainer.add(42);
-console.log(numberContainer.getItems());  // Output: [42]
+console.log(numberContainer.getItems()); // Output: [42]
 ```
 
 In this example:
+
 - `Container` is a generic class that works with any type `T`.
 - We create instances of `Container` for `string` and `number`, and TypeScript ensures type safety when adding and retrieving items.
 
@@ -102,15 +106,16 @@ You can also constrain the types that can be used with generics, by using `exten
 
 ```typescript
 function logLength<T extends { length: number }>(item: T): void {
-    console.log(item.length);
+  console.log(item.length);
 }
 
-logLength("Hello");  // Works because string has a 'length' property
+logLength("Hello"); // Works because string has a 'length' property
 logLength([1, 2, 3]); // Works because arrays have a 'length' property
 // logLength(42);  // Error: number doesn't have a 'length' property
 ```
 
 In this example:
+
 - `T extends { length: number }` means that `T` must be a type that has a `length` property (e.g., `string`, `Array`).
 - We restrict `T` to types that include the `length` property, such as `string` or arrays.
 
@@ -120,21 +125,22 @@ You can also combine multiple constraints in generics.
 
 ```typescript
 interface Nameable {
-    name: string;
+  name: string;
 }
 
 function greet<T extends Nameable>(entity: T): void {
-    console.log(`Hello, ${entity.name}`);
+  console.log(`Hello, ${entity.name}`);
 }
 
 const person = { name: "Alice", age: 30 };
-greet(person);  // Works fine
+greet(person); // Works fine
 
 const animal = { name: "Buddy", breed: "Golden Retriever" };
-greet(animal);  // Works fine
+greet(animal); // Works fine
 ```
 
 Here:
+
 - The generic `T` extends the `Nameable` interface, meaning `T` must be an object with a `name` property.
 - You can pass any object with a `name` property (e.g., `person`, `animal`).
 
@@ -144,8 +150,8 @@ You can also define generic types using type aliases.
 
 ```typescript
 type Pair<T, U> = {
-    first: T;
-    second: U;
+  first: T;
+  second: U;
 };
 
 const pair1: Pair<string, number> = { first: "Hello", second: 42 };
@@ -153,6 +159,7 @@ const pair2: Pair<boolean, string> = { first: true, second: "World" };
 ```
 
 In this example:
+
 - `Pair` is a generic type alias that takes two type parameters: `T` and `U`.
 - You can create pairs of different types by specifying the types when you instantiate the `Pair`.
 

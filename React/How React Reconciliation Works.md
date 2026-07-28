@@ -59,6 +59,7 @@ React 16 introduced the **Fiber** architecture, which reworked how React handles
 Imagine a list of items that we want to render:
 
 1. **Before Update**: A list with three items.
+
    ```jsx
    <ul>
      <li key="1">Item 1</li>
@@ -72,7 +73,7 @@ Imagine a list of items that we want to render:
    <ul>
      <li key="1">Item 1</li>
      <li key="3">Item 3</li>
-     <li key="4">Item 4</li>  // New item added
+     <li key="4">Item 4</li> // New item added
    </ul>
    ```
 
@@ -86,7 +87,6 @@ This diffing algorithm allows React to efficiently update only the necessary par
 ### 8. **Why Reconciliation Matters**
 
 - **Performance Optimization**: Reconciliation minimizes the amount of direct DOM manipulation, reducing reflows and repaints, and optimizing performance. This is especially crucial for large-scale applications where frequent DOM updates could cause performance bottlenecks.
-  
 - **Predictable Updates**: React’s virtual DOM diffing mechanism ensures that components are updated in a predictable and optimized way. This helps in avoiding issues like unnecessary re-renders or inconsistencies between the state and the UI.
 
 ---
@@ -94,8 +94,6 @@ This diffing algorithm allows React to efficiently update only the necessary par
 ### Conclusion
 
 React's reconciliation process is central to its performance and the way it efficiently updates the DOM. By using the **virtual DOM** and the **diffing algorithm**, React minimizes the number of DOM updates and applies changes in a highly optimized manner. The introduction of **Fiber** further improved reconciliation by enabling concurrent rendering and better prioritization of updates. This makes React apps fast and responsive, even when dealing with complex UIs and frequent state updates.
-
-
 
 ### **Reconciliation in React**
 
@@ -126,10 +124,9 @@ When there is a change in state or props, React goes through a **reconciliation 
    - Keys are critical in ensuring that React can efficiently reconcile elements within a list by associating each list item with a unique identifier.
 
    Example:
+
    ```jsx
-   const listItems = items.map(item => (
-     <li key={item.id}>{item.name}</li>
-   ));
+   const listItems = items.map((item) => <li key={item.id}>{item.name}</li>);
    ```
 
    In this example, the `key` attribute helps React quickly determine which items need to be updated, added, or removed during reconciliation.
@@ -151,7 +148,6 @@ When there is a change in state or props, React goes through a **reconciliation 
 
 2. **Re-render the Component**:
    - React re-renders the component and creates a new virtual DOM tree based on the updated state and props.
-   
 3. **Diffing**:
    - React compares the old virtual DOM tree with the new one and determines what parts of the UI have changed.
    - React uses a **diffing algorithm** to compare the two trees at the **component** and **element** levels.
@@ -167,11 +163,9 @@ When there is a change in state or props, React goes through a **reconciliation 
 1. **Element Comparison**:
    - React first checks if the two elements are of the same type. If they are of different types, React will tear down the old component and mount a new one.
    - If the elements are of the same type, React will then compare the properties (props) of the two elements.
-   
 2. **Component Comparison**:
    - If a component’s state or props change, React will re-render the component and compare the new virtual DOM with the previous one.
    - React reuses components if their type and props are unchanged. If any prop or state changes, React will re-render the component.
-   
 3. **Re-rendering**:
    - React will re-render only the parts of the UI that have changed. It will update the virtual DOM and perform a minimal set of changes to the real DOM.
 
@@ -224,6 +218,7 @@ React’s diffing algorithm is optimized for performance and works under the ass
    - For functional components, use **`React.memo`** to memoize components and prevent unnecessary re-renders when props have not changed.
 
    Example of `React.memo`:
+
    ```jsx
    const MyComponent = React.memo(({ title }) => {
      return <h1>{title}</h1>;
@@ -246,9 +241,10 @@ React’s diffing algorithm is optimized for performance and works under the ass
 
 ### **Conclusion:**
 
-Reconciliation is the process through which React efficiently updates the real DOM based on changes in state or props. By using a diffing algorithm, React minimizes the amount of DOM manipulation required, making updates fast and efficient. Understanding the reconciliation process helps developers write more efficient React code, especially when dealing with large applications or complex UIs. 
+Reconciliation is the process through which React efficiently updates the real DOM based on changes in state or props. By using a diffing algorithm, React minimizes the amount of DOM manipulation required, making updates fast and efficient. Understanding the reconciliation process helps developers write more efficient React code, especially when dealing with large applications or complex UIs.
 
 Key strategies for optimizing reconciliation include:
+
 - Using **keys** in lists.
 - Memoizing components with `React.memo` or using `shouldComponentUpdate`.
 - Avoiding unnecessary state changes or inline functions.

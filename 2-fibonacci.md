@@ -15,16 +15,17 @@ var fib = function (n) {
 ```
 
 ### Explanation:
+
 - **Base cases:** The array `arr` starts with `[0, 1]`, representing `F(0)` and `F(1)`.
 - **Iteration:** A `for` loop runs from `2` to `n` to calculate the Fibonacci numbers and store them in the array `arr`.
 - **Efficiency:**
   - **Time complexity:** **O(n)**, because we iterate over `n` numbers.
   - **Space complexity:** **O(n)**, because we store all Fibonacci numbers up to `n` in an array.
-  
+
 #### Example:
 
 ```javascript
-console.log(fib(3));  // Output: 2 (F(3) = 2)
+console.log(fib(3)); // Output: 2 (F(3) = 2)
 ```
 
 ---
@@ -40,6 +41,7 @@ const fib = function (n) {
 ```
 
 ### Explanation:
+
 - **Base cases:** If `n` is `0` or `1`, return `n` (i.e., `F(0)` = 0, `F(1)` = 1).
 - **Recursive step:** Otherwise, it recursively calls `fib(n - 1)` and `fib(n - 2)` to calculate the Fibonacci numbers.
 - **Efficiency:**
@@ -51,7 +53,7 @@ This solution works but is **inefficient for larger values of `n`** due to exces
 #### Example:
 
 ```javascript
-console.log(fib(3));  // Output: 2 (F(3) = 2)
+console.log(fib(3)); // Output: 2 (F(3) = 2)
 ```
 
 ---
@@ -63,13 +65,14 @@ const fib = (n) => (n <= 1 ? n : fib(n - 1) + fib(n - 2));
 ```
 
 ### Explanation:
+
 - This is essentially the same as the recursive solution but condensed into a one-liner using a ternary operator for the base case.
 - The functionality and inefficiency are identical to the previous recursive solution.
 
 #### Example:
 
 ```javascript
-console.log(fib(3));  // Output: 2 (F(3) = 2)
+console.log(fib(3)); // Output: 2 (F(3) = 2)
 ```
 
 ---
@@ -80,22 +83,23 @@ You can improve the recursive solution with **memoization**, which stores the re
 
 ```javascript
 const fib = (n, memo = {}) => {
-  if (n in memo) return memo[n];  // Return the result if already computed
+  if (n in memo) return memo[n]; // Return the result if already computed
   if (n <= 1) return n;
-  
-  memo[n] = fib(n - 1, memo) + fib(n - 2, memo);  // Store the result in the memo object
+
+  memo[n] = fib(n - 1, memo) + fib(n - 2, memo); // Store the result in the memo object
   return memo[n];
 };
 ```
 
 ### Explanation:
+
 - **Memoization:** A `memo` object is used to store the Fibonacci numbers as they are computed.
 - **Efficiency:** By using memoization, we only compute each Fibonacci number once, thus reducing time complexity to **O(n)**.
-  
+
 #### Example:
 
 ```javascript
-console.log(fib(3));  // Output: 2 (F(3) = 2)
+console.log(fib(3)); // Output: 2 (F(3) = 2)
 ```
 
 ---
@@ -107,8 +111,9 @@ If you're concerned about space complexity, you can optimize the iterative solut
 ```javascript
 var fib = function (n) {
   if (n <= 1) return n;
-  
-  let a = 0, b = 1;
+
+  let a = 0,
+    b = 1;
   for (let i = 2; i <= n; i++) {
     let temp = a + b;
     a = b;
@@ -119,6 +124,7 @@ var fib = function (n) {
 ```
 
 ### Explanation:
+
 - **Space optimization:** We use two variables `a` and `b` to store only the last two Fibonacci numbers.
 - **Efficiency:**
   - **Time complexity:** **O(n)** (same as the previous iterative solution).
@@ -127,15 +133,15 @@ var fib = function (n) {
 #### Example:
 
 ```javascript
-console.log(fib(3));  // Output: 2 (F(3) = 2)
+console.log(fib(3)); // Output: 2 (F(3) = 2)
 ```
 
 ---
 
 ### Summary of Approaches:
 
-| Solution                     | Time Complexity | Space Complexity |
-|------------------------------|-----------------|------------------|
+| Solution                      | Time Complexity | Space Complexity |
+| ----------------------------- | --------------- | ---------------- |
 | **Iterative (Normal)**        | O(n)            | O(n)             |
 | **Naive Recursive**           | O(2^n)          | O(n)             |
 | **One-Liner Recursive**       | O(2^n)          | O(n)             |
@@ -143,6 +149,7 @@ console.log(fib(3));  // Output: 2 (F(3) = 2)
 | **Space-Optimized Iterative** | O(n)            | O(1)             |
 
 ### Recommended Solution:
+
 - **For small `n`:** The naive recursive solution or one-liner might be fine.
 - **For large `n`:** Use either **memoization** or the **space-optimized iterative solution**, as they offer the best time and space complexities.
 

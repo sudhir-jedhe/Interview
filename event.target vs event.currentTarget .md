@@ -6,7 +6,7 @@ For example, if you have a div element which is a parent that has a button eleme
 
 **Where this can be useful?**
 
-By using this you can achieve the great optimisation technique called event delegation. 
+By using this you can achieve the great optimisation technique called event delegation.
 
 Before event delegation you need to know event bubbling which in-short means events bubbles up untill the end.
 

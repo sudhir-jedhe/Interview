@@ -24,26 +24,28 @@ Absolutely! The pro tip you shared is a **fantastic** approach to debugging and 
 Let's walk through a simple example to illustrate the approach:
 
 #### Problem:
+
 You are working on a function that calculates the total price of a shopping cart. However, the function seems to miscalculate in certain scenarios, especially when there are discounts or taxes.
 
 **Your first instinct** might be to dive straight into the code to fix it, but **before** doing so, you should write a **test case** that replicates the issue.
 
 ### 1. **Write a Test Case First**:
+
 Let’s assume we’ve already discovered that the function is not properly calculating the total when there’s a discount.
 
 ```javascript
 // Test case for the issue
 function testCalculateTotal() {
   const cart = [
-    { name: 'Item 1', price: 100 },
-    { name: 'Item 2', price: 50 },
+    { name: "Item 1", price: 100 },
+    { name: "Item 2", price: 50 },
   ];
   const discount = 10; // 10% discount
-  
-  const expected = 135;  // Expected total = (100 + 50) - 10% of (100 + 50)
-  
+
+  const expected = 135; // Expected total = (100 + 50) - 10% of (100 + 50)
+
   const result = calculateTotal(cart, discount);
-  
+
   if (result === expected) {
     console.log("Test passed!");
   } else {
@@ -53,9 +55,11 @@ function testCalculateTotal() {
 ```
 
 #### 2. **Run the Test**:
+
 Before we even try fixing the function, we run the test to confirm how the bug is manifesting. Let's say it fails, which means there is indeed a bug in the function.
 
 ### 3. **Identify and Fix the Bug**:
+
 Now, after observing the failing test, we go ahead and fix the issue in the `calculateTotal` function.
 
 ```javascript
@@ -68,21 +72,25 @@ function calculateTotal(cart, discount) {
 ```
 
 #### 4. **Re-run the Test**:
+
 After applying the fix, you run the test again to ensure that the issue is resolved.
 
 ```javascript
-testCalculateTotal();  // Test should pass now
+testCalculateTotal(); // Test should pass now
 ```
 
 If the test now passes, we can be confident that we fixed the bug. The test case also ensures that if any future changes break the discount calculation, we’ll know about it immediately.
 
 ### 5. **Add More Test Cases**:
+
 After the fix, consider adding additional test cases for other scenarios, like:
+
 - No discount
 - Negative prices
 - Large discounts (e.g., 100% discount)
 
 ### 6. **Conclusion**:
+
 By writing the test case first, you not only pinpoint the exact problem but also ensure that once the fix is applied, it doesn’t break again in the future. Additionally, having test cases for various edge cases will help make the function even more reliable.
 
 ### A Final Example: The Tic Tac Toe Winner Function
@@ -90,6 +98,7 @@ By writing the test case first, you not only pinpoint the exact problem but also
 You could apply the same logic to the **Tic Tac Toe Winner** function from earlier. Here’s how you might approach debugging an issue with it:
 
 #### 1. **Write the Test Case First**:
+
 Let’s say you encounter an issue with the game not detecting a winner properly on the diagonals.
 
 ```javascript
@@ -111,9 +120,11 @@ function testTicTacToeWinner() {
 ```
 
 #### 2. **Run the Test**:
+
 Before fixing, you run the test to verify that the function doesn’t return `"Draw"` as expected.
 
 #### 3. **Fix the Bug**:
+
 You notice that your diagonal check is incorrectly implemented, or you’ve missed a case where the function doesn't properly check for a diagonal win.
 
 You fix the code and re-run the test.
@@ -127,6 +138,7 @@ export function ticTacToeWinner(board) {
 ```
 
 #### 4. **Re-run the Test**:
+
 Once the test passes, you're confident that the bug is resolved. Additionally, if someone else introduces new changes later, the test case will immediately highlight any regressions.
 
 ---

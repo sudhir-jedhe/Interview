@@ -65,6 +65,7 @@ export function ResponsiveNavbar() {
 const { width } = useWindowSize();
 
 return (
+
 <nav>
 {width < 768 ? (
 <button aria-label="Open Menu">☰ Mobile Menu</button>
@@ -86,6 +87,7 @@ export function ScreenDebugger() {
 const size = useWindowSize();
 
 return (
+
 <div className="debugger-panel">
 <h3>Screen Dimensions</h3>
 <p>Width: {size.width}px</p>

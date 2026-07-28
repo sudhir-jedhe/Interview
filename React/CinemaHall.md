@@ -2,16 +2,16 @@
 
 A **Cinema Hall Layout** problem is commonly asked in React/JavaScript interviews to test:
 
-* Grid rendering
-* State management
-* Seat selection
-* Booking validation
-* Dynamic layouts
-* Data-driven UI
+- Grid rendering
+- State management
+- Seat selection
+- Booking validation
+- Dynamic layouts
+- Data-driven UI
 
 Modern seat-booking UIs typically support rows, aisles, gaps, premium sections, booked seats, and screen positioning. Examples of seat-layout systems describe JSON-driven theatre configurations with seats, aisles, gaps, pricing sections, and selection/booking states. [\[github.com\]](https://github.com/Vidittamrakar21/Seat_Booking_Layout_UI), [\[github.com\]](https://github.com/Shreyash-SP80/cinema-seat-booking-react), [\[blog.stackademic.com\]](https://blog.stackademic.com/how-to-build-a-movie-theater-seat-booking-ui-with-react-and-tailwind-css-c1b81692ae3b)
 
-***
+---
 
 ## Typical Layout
 
@@ -37,7 +37,7 @@ F   🟨 🟨 🟨 🟨    🟨 🟨 🟨 🟨
 🟥 Booked
 ```
 
-***
+---
 
 # Recommended Data Structure
 
@@ -76,103 +76,58 @@ const layout = [
 ];
 ```
 
-***
+---
 
 # Seat Model
 
 ```ts
 interface Seat {
   id: string;
-  type:
-    | "REGULAR"
-    | "PREMIUM"
-    | "VIP";
+  type: "REGULAR" | "PREMIUM" | "VIP";
 
   booked: boolean;
 }
 ```
 
-***
+---
 
 # React Component
 
 ```tsx
 function CinemaHall() {
-  const [selectedSeats,
-    setSelectedSeats] =
-      useState([]);
+  const [selectedSeats, setSelectedSeats] = useState([]);
 
-  const toggleSeat = (
-    seatId
-  ) => {
-    setSelectedSeats(prev =>
-      prev.includes(
-        seatId
-      )
-        ? prev.filter(
-            id =>
-              id !== seatId
-          )
-        : [
-            ...prev,
-            seatId,
-          ]
+  const toggleSeat = (seatId) => {
+    setSelectedSeats((prev) =>
+      prev.includes(seatId)
+        ? prev.filter((id) => id !== seatId)
+        : [...prev, seatId],
     );
   };
 
   return (
     <div>
-      <div className="screen">
-        SCREEN
-      </div>
+      <div className="screen">SCREEN</div>
 
-      {layout.map(row => (
-        <div
-          key={row.row}
-          className="row"
-        >
-          <span>
-            {row.row}
-          </span>
+      {layout.map((row) => (
+        <div key={row.row} className="row">
+          <span>{row.row}</span>
 
-          {row.seats.map(
-            (
-              seat,
-              index
-            ) => {
-              if (
-                seat.type ===
-                "AISLE"
-              ) {
-                return (
-                  <div
-                    key={index}
-                    className="aisle"
-                  />
-                );
-              }
-
-              return (
-                <button
-                  key={
-                    seat.id
-                  }
-                  disabled={
-                    seat.booked
-                  }
-                  onClick={() =>
-                    toggleSeat(
-                      seat.id
-                    )
-                  }
-                >
-                  {
-                    seat.id
-                  }
-                </button>
-              );
+          {row.seats.map((seat, index) => {
+            if (seat.type === "AISLE") {
+              return <div key={index} className="aisle" />;
             }
-          )}
+
+            return (
+              <button
+                key={seat.id}
+                disabled={seat.booked}
+                onClick={() => toggleSeat(seat.id)}
+              >
+                {seat.id}
+              </button>
+            );
+          })}
         </div>
       ))}
     </div>
@@ -180,14 +135,13 @@ function CinemaHall() {
 }
 ```
 
-***
+---
 
 # Better Production Structure
 
 ```js
 const theatre = {
-  screenName:
-    "Screen 1",
+  screenName: "Screen 1",
 
   totalColumns: 14,
 
@@ -211,15 +165,13 @@ const theatre = {
   rows: [
     {
       rowLabel: "A",
-      section:
-        "Regular",
+      section: "Regular",
       seats: [],
     },
 
     {
       rowLabel: "E",
-      section:
-        "Premium",
+      section: "Premium",
       seats: [],
     },
   ],
@@ -228,7 +180,7 @@ const theatre = {
 
 JSON-based layouts are often recommended because different theatres can be rendered dynamically without changing frontend code. [\[github.com\]](https://github.com/Vidittamrakar21/Seat_Booking_Layout_UI), [\[madewithreactjs.com\]](https://madewithreactjs.com/react-seat-toolkit)
 
-***
+---
 
 # Seat States
 
@@ -244,7 +196,7 @@ VIP        ⭐
 PREMIUM    🟨
 ```
 
-***
+---
 
 # Booking Flow
 
@@ -262,7 +214,7 @@ Confirm Booking
 Mark Seats Booked
 ```
 
-***
+---
 
 # Complexity
 
@@ -284,7 +236,7 @@ O(1)
 
 (using Set)
 
-***
+---
 
 # Senior Interview Enhancements
 
@@ -339,13 +291,11 @@ Weekend: ₹300
 Weekday: ₹200
 ```
 
-***
+---
 
 ## Interview Answer
 
 > Model the cinema hall using a JSON configuration containing rows, seats, aisles, and pricing sections. Render it as a grid, maintain selected/booked seat state separately, and support validation, pricing, and booking through a data-driven architecture. This makes the solution scalable across different theatre layouts. [\[github.com\]](https://github.com/Vidittamrakar21/Seat_Booking_Layout_UI), [\[madewithreactjs.com\]](https://madewithreactjs.com/react-seat-toolkit), [\[blog.stackademic.com\]](https://blog.stackademic.com/how-to-build-a-movie-theater-seat-booking-ui-with-react-and-tailwind-css-c1b81692ae3b)
-
-
 
 For a **Cinema Hall / BookMyShow / Ticket Booking System**, the biggest challenge is:
 
@@ -367,13 +317,13 @@ Without concurrency control:
 
 This is a classic concurrency problem, and common solutions include **optimistic locking**, **distributed locking**, and **temporary seat holds with TTL**. [\[linkedin.com\]](https://www.linkedin.com/pulse/locking-seat-reservation-tauseef-rahaman-tnucc), [\[medium.com\]](https://medium.com/@abhishekranjandev/concurrency-conundrum-in-booking-systems-2e53dc717e8c), [\[linkedin.com\]](https://www.linkedin.com/posts/divyam-jain-a11b1a198_systemdesign-backendengineering-redis-activity-7314641555464564736-cOXh)
 
-***
+---
 
 # Wrong Approach
 
 ```js
 if (seat.available) {
-   seat.available = false;
+  seat.available = false;
 }
 ```
 
@@ -393,7 +343,7 @@ Now:
 Same seat sold twice
 ```
 
-***
+---
 
 # Solution 1: Optimistic Locking (Most Common)
 
@@ -417,7 +367,7 @@ status = AVAILABLE
 version = 1
 ```
 
-***
+---
 
 ### User A
 
@@ -431,7 +381,7 @@ AND version=1
 
 Success ✅
 
-***
+---
 
 ### User B
 
@@ -459,7 +409,7 @@ Seat already booked
 
 Only one booking succeeds. Optimistic locking relies on checking the version before update and rejecting conflicting changes. [\[linkedin.com\]](https://www.linkedin.com/pulse/locking-seat-reservation-tauseef-rahaman-tnucc), [\[medium.com\]](https://medium.com/@abhishekranjandev/concurrency-conundrum-in-booking-systems-2e53dc717e8c), [\[linkedin.com\]](https://www.linkedin.com/posts/divyam-jain-a11b1a198_systemdesign-backendengineering-redis-activity-7314641555464564736-cOXh)
 
-***
+---
 
 # Solution 2: Seat Hold (BookMyShow Style)
 
@@ -485,7 +435,7 @@ BOOKED
 
 Popular systems often use a temporary hold stored in Redis with a TTL so the seat is reserved while the user is paying. [\[github.com\]](https://github.com/Shravya493/FLASHTIX), [\[linkedin.com\]](https://www.linkedin.com/posts/divyam-jain-a11b1a198_systemdesign-backendengineering-redis-activity-7314641555464564736-cOXh)
 
-***
+---
 
 ### Redis Hold
 
@@ -512,7 +462,7 @@ If payment fails:
 AVAILABLE
 ```
 
-***
+---
 
 # Solution 3: Distributed Lock (Microservices)
 
@@ -556,7 +506,7 @@ Fail
 
 Real-world event-ticketing examples frequently combine Redis-based distributed locking with optimistic locking. [\[github.com\]](https://github.com/Praveen2535/EventTicketBooking-Application), [\[github.com\]](https://github.com/Shravya493/FLASHTIX)
 
-***
+---
 
 # Best Architecture
 
@@ -572,7 +522,7 @@ Payment
 Database Booking
 ```
 
-***
+---
 
 # Database Design
 
@@ -609,7 +559,7 @@ booking_id
 seat_id
 ```
 
-***
+---
 
 # Real-Time Updates
 
@@ -634,7 +584,7 @@ Server Sent Events
 
 Real-time seat reservation designs commonly use WebSockets and seat-state broadcasts to keep all users synchronized. [\[finlo.in\]](https://finlo.in/real-time-seat-reservation-system-design.html)
 
-***
+---
 
 # High-Level Design
 
@@ -664,7 +614,7 @@ Real-time seat reservation designs commonly use WebSockets and seat-state broadc
             └─────────────┘
 ```
 
-***
+---
 
 # Senior React/System Design Interview Answer
 

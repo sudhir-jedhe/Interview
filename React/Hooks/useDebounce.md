@@ -1,3 +1,4 @@
+```js
 import { useEffect, useState } from "react";
 import { useEffect, useRef, useState } from "react";
 
@@ -7,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 // function App() {
 //   const [value, setValue] = useState(...)
-//   // this value changes frequently, 
+//   // this value changes frequently,
 //   const debouncedValue = useDebounce(value, 1000)
 //   // now it is debounced
 // }
@@ -29,7 +30,7 @@ export function useDebounce<T>(value: T, delay: number): T {
 
 
 /*******************************************
- * 
+ *
  */
 
 
@@ -44,7 +45,7 @@ export function useDebounce<T>(value: T, delay: number) {
     currentTimer.current = setTimeout(()=>{
       setVal(value)
     },delay)
-    
+
   },[value])
   return val
 }
@@ -149,7 +150,7 @@ const Example = () => {
   const print = () => {
     console.log("hello");
   };
-  
+
   // immediate
   const debounced = useDebounce(print, 500, true);
 
@@ -167,3 +168,4 @@ const Example = () => {
 Output:
 "hello" //immediately only once till the mouse moving is not stopped
 "hello" //immediately again once till the mouse moving is not stopped
+```

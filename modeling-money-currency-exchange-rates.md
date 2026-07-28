@@ -5,7 +5,6 @@ The explanation you've provided covers a great foundational approach to modeling
 1. **Currency and Formatting**:
    - **Intl.NumberFormat**: This API provides an easy way to format numbers based on locale and style. By using `style: 'currency'`, you can format a number into a currency string for different currencies.
    - **Currency Codes**: ISO 4217 currency codes are used to represent various currencies. Each currency can have different properties like symbols (`$`, `€`) or names (`US Dollar`, `Euro`).
-   
 2. **Modeling Currency Information**:
    - The use of `Intl.supportedValuesOf('currency')` to get supported ISO 4217 currency codes is a great idea to automatically handle currency information. This ensures that you work with a dynamic and up-to-date list of supported currencies.
 
@@ -66,7 +65,7 @@ Here's a modified version of your code with **Decimal.js** for precise decimal o
 
 ```javascript
 // Assuming you have Decimal.js installed
-const Decimal = require('decimal.js');
+const Decimal = require("decimal.js");
 
 class Currency {
   static get(code) {
@@ -85,19 +84,19 @@ class Money {
     this.currency = Currency.wrap(currency);
   }
 
-  format(currencyDisplay = 'symbol') {
+  format(currencyDisplay = "symbol") {
     return this.currency.format(currencyDisplay)(this.value.toNumber());
   }
 
   add(money) {
     if (this.currency !== money.currency)
-      throw new Error('Cannot add money with different currencies');
+      throw new Error("Cannot add money with different currencies");
     return new Money(this.value.plus(money.value), this.currency);
   }
 
   subtract(money) {
     if (this.currency !== money.currency)
-      throw new Error('Cannot subtract money with different currencies');
+      throw new Error("Cannot subtract money with different currencies");
     return new Money(this.value.minus(money.value), this.currency);
   }
 
@@ -111,24 +110,27 @@ class Money {
 
   round() {
     // Assuming currency uses 2 decimal places for cent-based currencies
-    return new Money(this.value.toDecimalPlaces(2, Decimal.ROUND_HALF_UP), this.currency);
+    return new Money(
+      this.value.toDecimalPlaces(2, Decimal.ROUND_HALF_UP),
+      this.currency,
+    );
   }
 
   equals(money) {
     if (this.currency !== money.currency)
-      throw new Error('Cannot compare money with different currencies');
+      throw new Error("Cannot compare money with different currencies");
     return this.value.equals(money.value);
   }
 
   greaterThan(money) {
     if (this.currency !== money.currency)
-      throw new Error('Cannot compare money with different currencies');
+      throw new Error("Cannot compare money with different currencies");
     return this.value.greaterThan(money.value);
   }
 
   lessThan(money) {
     if (this.currency !== money.currency)
-      throw new Error('Cannot compare money with different currencies');
+      throw new Error("Cannot compare money with different currencies");
     return this.value.lessThan(money.value);
   }
 }
@@ -143,7 +145,10 @@ class Bank {
     // Assuming Currency.wrap() works for currency code and returns the currency object
     const fromCurrency = Currency.wrap(from);
     const toCurrency = Currency.wrap(to);
-    this.exchangeRates.set(`${fromCurrency.code} -> ${toCurrency.code}`, new Decimal(rate));
+    this.exchangeRates.set(
+      `${fromCurrency.code} -> ${toCurrency.code}`,
+      new Decimal(rate),
+    );
   }
 
   getRate(from, to) {
@@ -158,18 +163,20 @@ class Bank {
 
     const exchangeRate = this.getRate(money.currency, toCurrency);
     if (!exchangeRate)
-      throw new Error(`No exchange rate found for ${money.currency} to ${toCurrency.code}`);
+      throw new Error(
+        `No exchange rate found for ${money.currency} to ${toCurrency.code}`,
+      );
     return new Money(money.value.times(exchangeRate), toCurrency);
   }
 }
 
 const bank = new Bank();
-bank.setRate('usd', 'eur', 0.85);
+bank.setRate("usd", "eur", 0.85);
 
 Bank.defaultBank = bank;
 
-const money = new Money(1000, 'usd');
-const moneyInEUR = money.exchangeTo('eur');
+const money = new Money(1000, "usd");
+const moneyInEUR = money.exchangeTo("eur");
 
 console.log(moneyInEUR.format()); // '€850.00'
 ```

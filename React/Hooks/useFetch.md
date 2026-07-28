@@ -8,7 +8,7 @@ A **`useFetch`** hook is one of the most common Senior React interview questions
 ✅ Prevent memory leaks  
 ✅ Optional dependencies
 
-***
+---
 
 # Basic useFetch Hook
 
@@ -18,9 +18,7 @@ import { useEffect, useState } from "react";
 export function useFetch<T>(url: string) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(
-    null
-  );
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -54,7 +52,7 @@ export function useFetch<T>(url: string) {
 }
 ```
 
-***
+---
 
 # Usage
 
@@ -65,12 +63,8 @@ type User = {
 };
 
 function Users() {
-  const {
-    data,
-    loading,
-    error,
-  } = useFetch<User[]>(
-    "https://jsonplaceholder.typicode.com/users"
+  const { data, loading, error } = useFetch<User[]>(
+    "https://jsonplaceholder.typicode.com/users",
   );
 
   if (loading) return <p>Loading...</p>;
@@ -80,32 +74,26 @@ function Users() {
   return (
     <ul>
       {data?.map((user) => (
-        <li key={user.id}>
-          {user.name}
-        </li>
+        <li key={user.id}>{user.name}</li>
       ))}
     </ul>
   );
 }
 ```
 
-***
+---
 
 # Production Ready Version
 
 Supports:
 
-* AbortController
-* Refetch
-* Generic types
-* Proper cleanup
+- AbortController
+- Refetch
+- Generic types
+- Proper cleanup
 
 ```tsx
-import {
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface UseFetchState<T> {
   data: T | null;
@@ -113,16 +101,12 @@ interface UseFetchState<T> {
   error: Error | null;
 }
 
-export function useFetch<T>(
-  url: string,
-  options?: RequestInit
-) {
-  const [state, setState] =
-    useState<UseFetchState<T>>({
-      data: null,
-      loading: true,
-      error: null,
-    });
+export function useFetch<T>(url: string, options?: RequestInit) {
+  const [state, setState] = useState<UseFetchState<T>>({
+    data: null,
+    loading: true,
+    error: null,
+  });
 
   const fetchData = useCallback(
     async (signal?: AbortSignal) => {
@@ -139,13 +123,10 @@ export function useFetch<T>(
         });
 
         if (!response.ok) {
-          throw new Error(
-            `HTTP Error: ${response.status}`
-          );
+          throw new Error(`HTTP Error: ${response.status}`);
         }
 
-        const result =
-          await response.json();
+        const result = await response.json();
 
         setState({
           data: result,
@@ -153,10 +134,7 @@ export function useFetch<T>(
           error: null,
         });
       } catch (err) {
-        if (
-          err instanceof DOMException &&
-          err.name === "AbortError"
-        ) {
+        if (err instanceof DOMException && err.name === "AbortError") {
           return;
         }
 
@@ -167,12 +145,11 @@ export function useFetch<T>(
         }));
       }
     },
-    [url, options]
+    [url, options],
   );
 
   useEffect(() => {
-    const controller =
-      new AbortController();
+    const controller = new AbortController();
 
     fetchData(controller.signal);
 
@@ -188,44 +165,31 @@ export function useFetch<T>(
 }
 ```
 
-***
+---
 
 # Usage with Refetch
 
 ```tsx
 function Users() {
-  const {
-    data,
-    loading,
-    error,
-    refetch,
-  } = useFetch<User[]>(
-    "/api/users"
-  );
+  const { data, loading, error, refetch } = useFetch<User[]>("/api/users");
 
   return (
     <>
-      <button onClick={() => refetch()}>
-        Refresh
-      </button>
+      <button onClick={() => refetch()}>Refresh</button>
 
       {loading && <p>Loading...</p>}
 
-      {error && (
-        <p>{error.message}</p>
-      )}
+      {error && <p>{error.message}</p>}
 
       {data?.map((user) => (
-        <div key={user.id}>
-          {user.name}
-        </div>
+        <div key={user.id}>{user.name}</div>
       ))}
     </>
   );
 }
 ```
 
-***
+---
 
 # Interview-Level Enhancements
 
@@ -243,17 +207,16 @@ if (cache.has(url)) {
 
 Useful for:
 
-* Search APIs
-* Dropdown APIs
-* Autocomplete
+- Search APIs
+- Dropdown APIs
+- Autocomplete
 
-***
+---
 
 ## 2. Request Deduplication
 
 ```tsx
-const pendingRequests =
-  new Map();
+const pendingRequests = new Map();
 ```
 
 Avoids multiple requests:
@@ -266,14 +229,12 @@ Avoids multiple requests:
 
 Only one network call.
 
-***
+---
 
 ## 3. Retry Logic
 
 ```tsx
-async function retryFetch(
-  retries = 3
-) {
+async function retryFetch(retries = 3) {
   try {
     return await fetch(url);
   } catch {
@@ -286,7 +247,7 @@ async function retryFetch(
 }
 ```
 
-***
+---
 
 ## 4. Polling
 
@@ -298,7 +259,7 @@ setInterval(() => {
 
 Useful for dashboards.
 
-***
+---
 
 ## 5. Stale-While-Revalidate (SWR Pattern)
 
@@ -312,7 +273,7 @@ Update UI
 
 Very common in enterprise applications.
 
-***
+---
 
 # Advanced Generic API Hook
 
@@ -320,13 +281,9 @@ Instead of hardcoding `fetch`, create a reusable API layer.
 
 ```tsx
 const apiClient = {
-  get: (url: string) =>
-    fetch(url).then((r) => r.json()),
+  get: (url: string) => fetch(url).then((r) => r.json()),
 
-  post: (
-    url: string,
-    body: unknown
-  ) =>
+  post: (url: string, body: unknown) =>
     fetch(url, {
       method: "POST",
       body: JSON.stringify(body),
@@ -337,12 +294,10 @@ const apiClient = {
 Hook:
 
 ```tsx
-const { data } = useFetch<User[]>(
-  "/api/users"
-);
+const { data } = useFetch<User[]>("/api/users");
 ```
 
-***
+---
 
 # Senior React Interview Discussion
 
@@ -350,27 +305,27 @@ When discussing `useFetch`, mention:
 
 ### Performance
 
-* Caching (LRU Cache)
-* Request Deduplication
-* Memoization
+- Caching (LRU Cache)
+- Request Deduplication
+- Memoization
 
 ### Reliability
 
-* AbortController
-* Retry Mechanism
-* Error Boundaries
+- AbortController
+- Retry Mechanism
+- Error Boundaries
 
 ### UX
 
-* Loading States
-* Empty States
-* Skeleton Loaders
+- Loading States
+- Empty States
+- Skeleton Loaders
 
 ### Scalability
 
-* SWR Pattern
-* React Query / TanStack Query
-* Server State vs Client State
+- SWR Pattern
+- React Query / TanStack Query
+- Server State vs Client State
 
 ### Complexity
 
