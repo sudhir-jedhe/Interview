@@ -1,0 +1,61 @@
+High-specificity prompting treats the LLM as an **execution engine** rather than a product manager. When a prompt lacks detail, the model fills in the gaps by guessing component structure, state management, and error handling—which leads to hours spent refactoring hallucinated edge cases.
+
+---
+
+## The High-Specificity Prompting Framework
+
+### 1. Scope & Targeted Boundaries
+
+Instead of asking to "fix" or "build" a feature, isolate the exact function, file, or component subtree.
+
+* ❌ **Vague:** *"Fix the discount calculation bug."*
+* ✅ **Specific:** *"Fix the calculation in `calculateCartTotal()` where applying a percentage coupon ignores item-level quantity multipliers."*
+
+### 2. Behavioral Specifications Over Feature Names
+
+Detail the state changes, event triggers, timing constraints (e.g., debouncing), and fallback/empty states.
+
+* ❌ **Vague:** *"Add an autocomplete search bar."*
+* ✅ **Specific:** *"Add a search input that filters `itemList` on `onChange`, debounced at 300ms. Display a spinner in the input trailing slot during queries, and render `<EmptyState/>` if the API returns an empty array."*
+
+### 3. Concrete Guardrails & Invariants
+
+Explicitly specify what the model **must not** change or break. AI models are aggressive refactorers unless bounded.
+
+* *"Do not alter existing API response TypeScript interfaces."*
+* *"Use existing UI library primitive components (`<Button/>`, `<Typography/>`) rather than writing raw HTML/CSS."*
+* *"Do not remove existing error boundary wrappers."*
+
+### 4. Codebase Reference Points
+
+Leverage in-repo pattern matching. Mention specific files or components that demonstrate the desired styling or architecture.
+
+* *"Model the modal transition animation after the slide-over pattern in `@/components/common/Drawer.tsx`."*
+
+### 5. Persistent Context via Rules & Skills
+
+To prevent repeating global standards in every prompt, leverage persistent instruction files in your workspace:
+
+| Mechanism        | Storage Location                          | Best Used For                                                                                              |
+| ---------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Cursor Rules** | `.cursor/rules/*.mdc` or `AGENTS.md`      | Architectural rules, style guides, and constraints that auto-attach based on file globs or global context. |
+| **Agent Skills** | `.cursor/skills/*/SKILL.md` or `SKILL.md` | Multi-step procedures, runbooks, and task workflows loaded dynamically on demand.                          |
+
+---
+
+## Anatomy of a Production-Ready Prompt
+
+```markdown
+### Task
+Refactor the API error handler in `src/features/checkout/PaymentForm.tsx`.
+
+### Requirements
+1. Extract errors using the keys defined in `APIErrorResponse` (`error.code`, `error.message`).
+2. Pass the extracted string to the existing `<Alert variant="danger" />` component above the submit button.
+3. Add a 3-second disabled state on the `<Button />` upon error to prevent rapid re-submission.
+
+### Guardrails
+- Do not modify `usePaymentMutation` hook signatures.
+- Do not introduce inline styles; use Tailwind utility classes consistent with the existing form elements.
+
+```

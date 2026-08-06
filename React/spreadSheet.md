@@ -34,460 +34,280 @@ This solution supports:
 
 # App.jsx
 
-```jsx
+```js
 import React, {
   useEffect,
   useRef,
   useState,
   useMemo,
+  useCallback,
 } from "react";
 
-const COLUMNS = [
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-];
-
+const COLUMNS = ["A", "B", "C", "D", "E"];
 const ROWS = 10;
 
-function getCellId(
-  column,
-  row
-) {
+function getCellId(column, row) {
   return `${column}${row}`;
 }
 
-/*
-  Evaluate Formula
+/**
+ * Safely evaluates formulas including transitive cell dependencies.
+ * Prevents circular references using a visiting stack.
+ */
+function evaluateCell(cellId, rawCells, computedCache = {}, visiting = new Set()) {
+  const rawValue = rawCells[cellId];
 
-  =1+1
-  =A1+3
-*/
-function evaluateFormula(
-  rawValue,
-  cells
-) {
-  if (
-    !rawValue?.startsWith("=")
-  ) {
-    return rawValue;
+  if (!rawValue || !rawValue.startsWith("=")) {
+    return rawValue || "";
   }
 
+  // Detect Circular Dependency
+  if (visiting.has(cellId)) {
+    return "#CIRCULAR!";
+  }
+
+  visiting.add(cellId);
+
   try {
-    let expression =
-      rawValue.slice(1);
+    let expression = rawValue.slice(1).toUpperCase();
 
-    expression =
-      expression.replace(
-        /([A-E])([1-9]|10)/g,
-        (_, col, row) => {
-          const id =
-            `${col}${row}`;
+    // Match cell identifiers (e.g., A1, B10)
+    expression = expression.replace(/([A-Z]+)([1-9]\d*)/g, (_, col, row) => {
+      const refId = `${col}${row}`;
 
-          const value =
-            cells[id] || "";
+      // Resolve dependency value recursively if uncomputed
+      let refValue = computedCache[refId];
+      if (refValue === undefined) {
+        refValue = evaluateCell(refId, rawCells, computedCache, visiting);
+      }
 
-          return Number(
-            value
-          ) || 0;
-        }
-      );
+      const numericVal = Number(refValue);
+      return isNaN(numericVal) ? 0 : numericVal;
+    });
 
-    // Interview Exercise only
-    return Function(
-      `return ${expression}`
-    )();
+    // Safe execution context
+    const result = new Function(`"use strict"; return (${expression})`)();
+    visiting.delete(cellId);
+    return result ?? "";
   } catch {
+    visiting.delete(cellId);
     return "#ERROR";
   }
 }
 
 export default function App() {
-  const tableRef =
-    useRef(null);
+  const tableRef = useRef(null);
 
-  const [
-    cells,
-    setCells,
-  ] = useState({});
+  const [cells, setCells] = useState({});
+  const [editingCell, setEditingCell] = useState(null);
+  const [draftValue, setDraftValue] = useState("");
+  const [selectedColumn, setSelectedColumn] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
 
-  const [
-    editingCell,
-    setEditingCell,
-  ] = useState(null);
+  const startEditing = useCallback((cellId) => {
+    setEditingCell(cellId);
+    setDraftValue(cells[cellId] || "");
+  }, [cells]);
 
-  const [
-    draftValue,
-    setDraftValue,
-  ] = useState("");
+  const commitEdit = useCallback(() => {
+    if (!editingCell) return;
 
-  const [
-    selectedColumn,
-    setSelectedColumn,
-  ] = useState(null);
+    setCells((prev) => {
+      const next = { ...prev };
+      if (draftValue.trim() === "") {
+        delete next[editingCell];
+      } else {
+        next[editingCell] = draftValue;
+      }
+      return next;
+    });
 
-  const [
-    selectedRow,
-    setSelectedRow,
-  ] = useState(null);
+    setEditingCell(null);
+  }, [editingCell, draftValue]);
 
-  const startEditing =
-    cellId => {
-      setEditingCell(
-        cellId
-      );
+  // Compute all cell values supporting transitive references
+  const computedCells = useMemo(() => {
+    const computed = {};
+    Object.keys(cells).forEach((id) => {
+      computed[id] = evaluateCell(id, cells, computed);
+    });
+    return computed;
+  }, [cells]);
 
-      setDraftValue(
-        cells[cellId] || ""
-      );
-    };
+  const selectColumn = (column) => {
+    setSelectedColumn((prev) => (prev === column ? null : column));
+    setSelectedRow(null);
+  };
 
-  const commitEdit =
-    () => {
-      if (
-        !editingCell
-      )
-        return;
+  const selectRow = (row) => {
+    setSelectedRow((prev) => (prev === row ? null : row));
+    setSelectedColumn(null);
+  };
 
-      setCells(prev => ({
-        ...prev,
-        draftValue,
-      }));
-
-      setEditingCell(
-        null
-      );
-    };
-
-  const computedCells =
-    useMemo(() => {
-      const result = {};
-
-      Object.keys(
-        cells
-      ).forEach(id => {
-        result[id] =
-          evaluateFormula(
-            cells[id],
-            cells
-          );
-      });
-
-      return result;
-    }, [cells]);
-
-  const selectColumn =
-    column => {
-      setSelectedColumn(
-        prev =>
-          prev === column
-            ? null
-            : column
-      );
-
-      setSelectedRow(
-        null
-      );
-    };
-
-  const selectRow =
-    row => {
-      setSelectedRow(
-        prev =>
-          prev === row
-            ? null
-            : row
-      );
-
-      setSelectedColumn(
-        null
-      );
-    };
-
+  // Outside click deselect
   useEffect(() => {
-    const handleClick =
-      event => {
-        if (
-          tableRef.current &&
-          !tableRef.current.contains(
-            event.target
-          )
-        ) {
-          setSelectedColumn(
-            null
-          );
-          setSelectedRow(
-            null
-          );
-        }
-      };
+    const handleClick = (event) => {
+      if (tableRef.current && !tableRef.current.contains(event.target)) {
+        setSelectedColumn(null);
+        setSelectedRow(null);
+      }
+    };
 
-    document.addEventListener(
-      "mousedown",
-      handleClick
-    );
-
-    return () =>
-      document.removeEventListener(
-        "mousedown",
-        handleClick
-      );
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  // Backspace clear selected row/column (ignores inputs)
   useEffect(() => {
-    const handleBackspace =
-      e => {
-        if (
-          e.key !==
-          "Backspace"
-        )
-          return;
+    const handleBackspace = (e) => {
+      if (e.key !== "Backspace") return;
 
-        setCells(prev => {
-          const next = {
-            ...prev,
-          };
+      // Ignore if user is currently typing inside an input
+      if (
+        editingCell ||
+        ["INPUT", "TEXTAREA"].includes(e.target.tagName)
+      ) {
+        return;
+      }
 
-          if (
-            selectedColumn
-          ) {
-            for (
-              let row = 1;
-              row <= ROWS;
-              row++
-            ) {
-              delete next[
-                `${selectedColumn}${row}`
-              ];
-            }
+      setCells((prev) => {
+        const next = { ...prev };
+
+        if (selectedColumn) {
+          for (let row = 1; row <= ROWS; row++) {
+            delete next[`${selectedColumn}${row}`];
           }
+        }
 
-          if (
-            selectedRow
-          ) {
-            COLUMNS.forEach(
-              col => {
-                delete next[
-                  `${col}${selectedRow}`
-                ];
-              }
-            );
-          }
+        if (selectedRow) {
+          COLUMNS.forEach((col) => {
+            delete next[`${col}${selectedRow}`];
+          });
+        }
 
-          return next;
-        });
-      };
+        return next;
+      });
+    };
 
-    window.addEventListener(
-      "keydown",
-      handleBackspace
-    );
-
-    return () =>
-      window.removeEventListener(
-        "keydown",
-        handleBackspace
-      );
-  }, [
-    selectedColumn,
-    selectedRow,
-  ]);
+    window.addEventListener("keydown", handleBackspace);
+    return () => window.removeEventListener("keydown", handleBackspace);
+  }, [selectedColumn, selectedRow, editingCell]);
 
   return (
-    <div
-      style={{
-        padding: "20px",
-      }}
-    >
-      <h1>
-        Spreadsheet
-      </h1>
+    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
+      <h1>Spreadsheet</h1>
 
-      <div
-        style={{
-          marginBottom:
-            "16px",
-        }}
-      >
-        <label>
-          fx
-        </label>
-
+      {/* Interactive Formula Bar */}
+      <div style={{ marginBottom: "16px", display: "flex", gap: "8px", alignItems: "center" }}>
+        <label htmlFor="formula-bar" style={{ fontWeight: "bold" }}>fx</label>
         <input
-          value={
-            editingCell
-              ? draftValue
-              : ""
-          }
-          readOnly
+          id="formula-bar"
+          value={editingCell ? draftValue : ""}
+          onChange={(e) => setDraftValue(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && commitEdit()}
+          onBlur={commitEdit}
+          disabled={!editingCell}
+          placeholder={editingCell ? "Enter value or formula (=A1+2)" : "Select a cell to edit"}
+          style={{ width: "300px", padding: "4px 8px" }}
         />
       </div>
 
-      <table
-        ref={tableRef}
-        border="1"
-      >
+      <table ref={tableRef} border="1" style={{ borderCollapse: "collapse" }}>
         <thead>
           <tr>
-            <th></th>
-
-            {COLUMNS.map(
-              column => (
-                <th
-                  key={
-                    column
-                  }
-                  data-column={
-                    column
-                  }
-                  onClick={() =>
-                    selectColumn(
-                      column
-                    )
-                  }
-                  className={
-                    selectedColumn ===
-                    column
-                      ? "bg-blue-300"
-                      : ""
-                  }
-                >
-                  {column}
-                </th>
-              )
-            )}
+            <th style={{ width: "40px", backgroundColor: "#f3f4f6" }}></th>
+            {COLUMNS.map((column) => (
+              <th
+                key={column}
+                data-column={column}
+                onClick={() => selectColumn(column)}
+                style={{
+                  width: "100px",
+                  cursor: "pointer",
+                  backgroundColor: selectedColumn === column ? "#93c5fd" : "#f3f4f6",
+                }}
+              >
+                {column}
+              </th>
+            ))}
           </tr>
         </thead>
 
         <tbody>
-          {Array.from({
-            length: ROWS,
-          }).map(
-            (_, idx) => {
-              const row =
-                idx + 1;
+          {Array.from({ length: ROWS }).map((_, idx) => {
+            const row = idx + 1;
 
-              return (
-                <tr
-                  key={row}
+            return (
+              <tr key={row}>
+                <th
+                  data-row={row}
+                  onClick={() => selectRow(row)}
+                  style={{
+                    cursor: "pointer",
+                    backgroundColor: selectedRow === row ? "#93c5fd" : "#f3f4f6",
+                  }}
                 >
-                  <th
-                    data-row={
-                      row
-                    }
-                    onClick={() =>
-                      selectRow(
-                        row
-                      )
-                    }
-                    className={
-                      selectedRow ===
-                      row
-                        ? "bg-blue-300"
-                        : ""
-                    }
-                  >
-                    {row}
-                  </th>
+                  {row}
+                </th>
 
-                  {COLUMNS.map(
-                    column => {
-                      const id =
-                        getCellId(
-                          column,
-                          row
-                        );
+                {COLUMNS.map((column) => {
+                  const id = getCellId(column, row);
+                  const isEditing = editingCell === id;
 
-                      const editing =
-                        editingCell ===
-                        id;
+                  return (
+                    <td
+                      key={id}
+                      data-column={column}
+                      data-row={row}
+                      style={{
+                        position: "relative",
+                        width: "100px",
+                        height: "32px",
+                        padding: "0 4px",
+                        backgroundColor:
+                          selectedColumn === column || selectedRow === row
+                            ? "#eff6ff"
+                            : "transparent",
+                      }}
+                      onClick={() => startEditing(id)}
+                    >
+                      <output style={{ display: "block", width: "100%", height: "100%", lineHeight: "32px" }}>
+                        {computedCells[id] ?? ""}
+                      </output>
 
-                      return (
-                        <td
-                          key={
-                            id
-                          }
-                          data-column={
-                            column
-                          }
-                          data-row={
-                            row
-                          }
-                          style={{
-                            position:
-                              "relative",
-                            width:
-                              "100px",
-                            height:
-                              "40px",
+                      {isEditing && (
+                        <input
+                          autoFocus
+                          value={draftValue}
+                          onChange={(e) => setDraftValue(e.target.value)}
+                          onBlur={commitEdit}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              commitEdit();
+                            }
                           }}
-                          onClick={() =>
-                            startEditing(
-                              id
-                            )
-                          }
-                        >
-                          <output>
-                            {computedCells[
-                              id
-                            ] ||
-                              ""}
-                          </output>
-
-                          {editing && (
-                            <input
-                              autoFocus
-                              value={
-                                draftValue
-                              }
-                              onChange={e =>
-                                setDraftValue(
-                                  e
-                                    .target
-                                    .value
-                                )
-                              }
-                              onBlur={
-                                commitEdit
-                              }
-                              onKeyDown={e => {
-                                if (
-                                  e.key ===
-                                  "Enter"
-                                ) {
-                                  commitEdit();
-                                }
-                              }}
-                              style={{
-                                position:
-                                  "absolute",
-                                inset:
-                                  0,
-                                width:
-                                  "100%",
-                                height:
-                                  "100%",
-                              }}
-                            />
-                          )}
-                        </td>
-                      );
-                    }
-                  )}
-                </tr>
-              );
-            }
-          )}
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            width: "100%",
+                            height: "100%",
+                            boxSizing: "border-box",
+                          }}
+                        />
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
   );
 }
-```
-
 ***
+```
 
 # Formula Examples
 

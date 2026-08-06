@@ -1,3 +1,4 @@
+```js
 // IT will accept a list of components
 // based on the size of the list
 // it will generate steps
@@ -50,3 +51,4 @@ const Stepper = ({ list }) => {
 };
 
 export default Stepper;
+```

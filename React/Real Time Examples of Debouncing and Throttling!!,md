@@ -1,0 +1,29 @@
+Real Time Examples of Debouncing and Throttling!!
+
+Debouncing → Wait until input stops, then react.
+Think about real life:
+• In interviews, we usually wait until the interviewer finishes the question before answering.
+• During meetings, we don’t respond after every sentence.
+• Doctors let patients explain symptoms before giving suggestions.
+• Parents hear the whole story before reacting.
+• Customer support waits for the complete issue.
+• Friends finish telling the story before hearing your opinion.
+• Teachers complete the question before students answer.
+• Voice assistants wait for silence before processing.
+• Moderators allow one person to finish before moving ahead.
+• Negotiations happen after hearing the full offer.
+
+Throttling → Allow continuous input, but control how often you react.
+Again, real life examples:
+• Managers ask for updates weekly, not every minute.
+• Teachers monitor noise periodically.
+• News channels provide updates every few minutes.
+• Sports commentators don’t narrate every movement.
+• Conference hosts announce at intervals.
+• Parents check homework progress occasionally.
+• Traffic announcements repeat after some time.
+• Team leads take scheduled status checks.
+• Cricket score updates happen periodically.
+• GPS updates location every few seconds.
+
+![alt text](image-10.png)

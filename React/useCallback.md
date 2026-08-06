@@ -870,7 +870,7 @@ Nothing changes → existing callback reused
 
 The dependency array works similarly to useMemo: React reuses the cached value/function until dependencies change.
 
-2. Understanding the Stale Closure Problem
+1. Understanding the Stale Closure Problem
 
 This is one of the most common React interview questions.
 
@@ -949,7 +949,7 @@ latest count available
 
 ✅ Correct output
 
-3. Another Common Stale Closure Bug
+1. Another Common Stale Closure Bug
    Wrong
    const increment =
    useCallback(() => {
@@ -972,7 +972,7 @@ Using a functional update removes the dependency on count.
 
 ✅ No dependency needed
 
-4. Tips for Managing useCallback Dependencies
+1. Tips for Managing useCallback Dependencies
    ✅ Tip 1: Include Everything Used Inside
    Bad
    const save =

@@ -1,6 +1,7 @@
 Single Sign-On (SSO) allows users to authenticate once and gain access to multiple applications without needing to log in again for each application. In this implementation, we'll demonstrate how to set up an SSO system using **React** (for the frontend) and **Node.js** (for the backend). We'll use **OAuth2** or **OpenID Connect** as the authentication protocol, which are the common standards for SSO integrations.
 
 We’ll cover:
+
 1. **Frontend (React)**: How to initiate the authentication flow (redirecting to an identity provider, such as Google or Auth0).
 2. **Backend (Node.js)**: How to set up the backend to handle the OAuth2/OpenID authentication callback and issue JWT tokens to the frontend.
 
@@ -38,7 +39,7 @@ npm init -y
 npm install express axios passport passport-google-oauth20 cookie-session
 ```
 
-2. **Backend Code (Node.js - Express)**:
+1. **Backend Code (Node.js - Express)**:
 
 Create a file named `server.js`:
 
@@ -130,7 +131,7 @@ Now, let’s set up the **React frontend** to initiate the login flow and handle
 npm install axios
 ```
 
-2. **React Code (Frontend)**:
+1. **React Code (Frontend)**:
 
 Create a simple React component to start the authentication process:
 
@@ -213,15 +214,15 @@ app.get('/logout', (req, res) => {
 node server.js
 ```
 
-2. Start your React application:
+1. Start your React application:
 
 ```bash
 npm start
 ```
 
-3. Visit `http://localhost:3000` in your browser.
-4. Click "Login with Google" to initiate the authentication flow.
-5. After logging in with Google, you should see the user's profile displayed in the React frontend.
+1. Visit `http://localhost:3000` in your browser.
+2. Click "Login with Google" to initiate the authentication flow.
+3. After logging in with Google, you should see the user's profile displayed in the React frontend.
 
 ---
 

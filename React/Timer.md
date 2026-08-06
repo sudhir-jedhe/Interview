@@ -81,6 +81,7 @@ export default Timer;
    - The **Stop** button is disabled when the timer is not running.
 
 ### **Features:**
+
 - **Start**: Begins counting the seconds.
 - **Stop**: Pauses the counting of seconds.
 - **Reset**: Stops the timer and resets the time to 0.
