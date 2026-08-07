@@ -60,6 +60,7 @@ console.log(myFunction(15)); // Does not log anything
    - The stored result (`10`) is returned again without logging anything.
 
 ### **Output:**
+
 ```javascript
 Function called with: 5  // First call logs this
 10                       // Returned result of first call
@@ -67,8 +68,72 @@ Function called with: 5  // First call logs this
 ```
 
 ### **Key Points:**
+
 - The function only executes once, and subsequent calls return the same cached result.
 - `func.apply(this, args)` ensures the function is executed with the correct `this` context and arguments.
 - The `hasBeenCalled` flag prevents the function from being executed more than once.
 
 This pattern is useful when you want to run an expensive or important function (like an API call, initialization, or logging) only once and avoid redundant executions.
+
+The explanation and code for `customOnce` (a classic implementation of `once` or `memoizeOnce`) are accurate and cover all the key mechanics: **closures**, **cached state**, and **preserving context with `func.apply(this, args)**`.
+
+To see how this pattern is extended in production JavaScript libraries (like Lodash or Underscore), here are two common enhancements:
+
+### 1. Handling Reset Capabilities
+
+If you ever need the ability to "clear" the cached state so the function can run again (e.g., during testing or after a cache invalidation), you can attach a `.reset()` method directly to the returned function:
+
+```javascript
+function customOnceWithReset(func) {
+    let hasBeenCalled = false;
+    let result;
+
+    const wrapper = function(...args) {
+        if (!hasBeenCalled) {
+            hasBeenCalled = true;
+            result = func.apply(this, args);
+        }
+        return result;
+    };
+
+    wrapper.reset = function() {
+        hasBeenCalled = false;
+        result = undefined;
+    };
+
+    return wrapper;
+}
+
+```
+
+### 2. Handling Exceptions (Errors)
+
+In your original code, if `func` throws an error on the first execution, `hasBeenCalled` is set to `true` before execution finishes, meaning subsequent calls will return `undefined` (or whatever `result` was initialized to) instead of re-attempting or re-throwing.
+
+If you want the function to re-throw the original error on subsequent calls, you can cache the error state as well:
+
+```javascript
+function customOnceWithErrorHandling(func) {
+    let hasBeenCalled = false;
+    let result;
+    let error;
+
+    return function(...args) {
+        if (!hasBeenCalled) {
+            hasBeenCalled = true;
+            try {
+                result = func.apply(this, args);
+            } catch (err) {
+                error = err;
+            }
+        }
+
+        if (error) {
+            throw error;
+        }
+
+        return result;
+    };
+}
+
+```

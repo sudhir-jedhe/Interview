@@ -12,7 +12,7 @@ Your implementation of `customPartial` is a clever way to create a partially app
 
 3. **Combining Arguments:**
    Inside the returned function:
-   - It creates a new array, `finalArgs`, by combining the preset arguments (`partialArgs`) and the new arguments (`args`). 
+   - It creates a new array, `finalArgs`, by combining the preset arguments (`partialArgs`) and the new arguments (`args`).
    - If a preset argument is `undefined`, it gets replaced by the new arguments from `args` in the order they are provided.
 
 4. **Function Call:**
@@ -112,6 +112,7 @@ console.log(addWithDefault(15)); // Output: 30 (5 + 15 + 10)
 ### **Further Improvements:**
 
 If you want a more robust solution, you could:
+
 1. Handle cases where `undefined` is passed in the partial arguments array but is not needed, or where `null` or other values should be allowed.
 2. Add support for curried partial application, where you can partially apply multiple arguments one by one over different function calls.
 

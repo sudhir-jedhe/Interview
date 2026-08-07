@@ -243,7 +243,7 @@ console.log(topKFrequent([1, 1, 1, 2, 2, 3], 2));
 - `buckets[3] = [1]` _(1 appears 3 times)_
 - `buckets[4..6] = []`
 
-3. **Collect from Right**:
+1. **Collect from Right**:
 
 - Inspect `buckets[3]`: Add `1` $\rightarrow$ `result = [1]`
 - Inspect `buckets[2]`: Add `2` $\rightarrow$ `result = [1, 2]`
@@ -536,3 +536,30 @@ Let's trace the stream processing for input characters: `'a' -> 'a' -> 'b' -> 'c
 - Each distinct character is pushed onto the queue at most once and shifted out at most once throughout the entire lifecycle.
 
 - **Space Complexity:** **$\mathcal{O}(\Sigma)$** where $\Sigma$ is the alphabet size (e.g., 26 for lowercase English letters). The queue never holds more elements than the total number of unique characters in the alphabet.
+
+```js
+function leastFrequent(arr) {
+    if (arr.length === 0) return null;
+
+    const freqCounter = {};
+    for (const item of arr) {
+        freqCounter[item] = (freqCounter[item] || 0) + 1;
+    }
+
+    let minFrequency = Infinity;
+    let leastFrequentItem = null;
+
+    for (const item in freqCounter) {
+        if (freqCounter[item] < minFrequency) {
+            minFrequency = freqCounter[item];
+            leastFrequentItem = item;
+        }
+    }
+
+    return leastFrequentItem;
+}
+
+// Example usage:
+console.log(leastFrequent([1, 3, 2, 1, 2, 2, 3, 1]));
+
+```

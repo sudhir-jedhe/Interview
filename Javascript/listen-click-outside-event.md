@@ -131,7 +131,7 @@ export const ClickOutside: React.FC<ClickOutsideProps> = ({
 };
 ```
 
-#### Usage:
+#### Usage
 
 ```tsx
 <ClickOutside onClickOutside={() => setIsOpen(false)}>

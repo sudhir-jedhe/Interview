@@ -251,24 +251,6 @@ console.log(rotateLeft([1, 2, 3, 4, 5], 2)); // Output: [3, 4, 5, 1, 2]
 
 ---
 
-### 51. Reverse the words in a string while maintaining their order
-
-To reverse the words in a string without changing their order, split the string by spaces, reverse each word, and then join them back.
-
-```javascript
-function reverseWords(str) {
-  return str.split(" ").reverse().join(" ");
-}
-```
-
-- `reverseWords`: Reverses the words in a string while keeping their original order.
-
-Example usage:
-
-```javascript
-console.log(reverseWords("Hello World! How are you?")); // Output: 'you? are How World! Hello'
-```
-
 ---
 
 These implementations cover a variety of array and object manipulation tasks, such as deep equality checking, grouping, sorting, rotating, and even string manipulation like reversing words. These utilities provide core functionality useful in many JavaScript applications.

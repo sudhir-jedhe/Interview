@@ -120,3 +120,78 @@ console.log(findLastKey(data, x => x['active']));  // Output: 'pebbles'
 ### Conclusion
 
 These utilities provide an elegant way to find keys in JavaScript objects based on specific conditions, whether you need all matching keys, the first match, or the last match. By leveraging `Object.keys()` and array methods like `filter()`, `find()`, and `findLast()`, you can efficiently perform searches on your objects.
+
+This is a clean, idiomatic breakdown of object key lookup utilities in JavaScript. Leveraging built-in array methods on `Object.keys()` keeps the code concise and declarative.
+
+To make these patterns fully production-ready, there are three key technical nuances worth adding to your toolkit:
+
+---
+
+### 1. Object Key Ordering Caveat
+
+While `findKey` and `findLastKey` rely on order, JavaScript object keys are **not strictly insertion-ordered** if they resemble integer indices.
+
+JavaScript orders keys in the following sequence:
+
+1. **Integer-like keys** in ascending numerical order.
+2. **String keys** in insertion order.
+3. **Symbol keys** in insertion order.
+
+```js
+const numericObj = { "10": "a", "2": "b", "first": "c" };
+console.log(Object.keys(numericObj)); 
+// Output: ['2', '10', 'first'] -> '2' comes first, regardless of insertion!
+
+```
+
+> **Takeaway:** If strict insertion order matters for key lookup, use a JavaScript `Map` instead of a plain object, as `Map` preserves insertion order for all key types.
+
+---
+
+### 2. Guarding `findLastKey` Fallback Mutation
+
+In the ES2019 fallback snippet:
+
+```js
+Object.keys(obj).reverse().find(...)
+
+```
+
+Because `Object.keys()` returns a **new array**, `.reverse()` mutates that fresh array harmlessly without affecting `obj`. However, keep in mind that `.toReversed()` (ES2023) offers a non-mutating alternative if working with existing arrays:
+
+```js
+const findLastKey = (obj, fn) =>
+  Object.keys(obj).toReversed().find(key => fn(obj[key], key, obj));
+
+```
+
+---
+
+### 3. Alternative for High Performance or Large Datasets
+
+`Object.keys()` creates an intermediate array in memory containing every key. For huge objects (100,000+ properties), creating this array overhead can hit garbage collection.
+
+When searching for **just the first match** in a massive flat object, a standard `for...in` loop with `Object.hasOwn()` short-circuits instantly with zero array allocation:
+
+```js
+const findKeyPerformance = (obj, fn) => {
+  for (const key in obj) {
+    if (Object.hasOwn(obj, key) && fn(obj[key], key, obj)) {
+      return key; // Exits immediately without allocating an array
+    }
+  }
+  return undefined;
+};
+
+```
+
+---
+
+### Comparison of Approaches
+
+| Method                       | Best Used For                               | Memory Overhead        | Order Guarantee         |
+| ---------------------------- | ------------------------------------------- | ---------------------- | ----------------------- |
+| **`Object.keys().filter()`** | General purpose, medium/small objects       | $O(N)$ key array       | String/Symbol keys only |
+| **`Object.keys().find()`**   | Short-circuiting early matches cleanly      | $O(N)$ key array       | String/Symbol keys only |
+| **`for...in` loop**          | Memory-critical performance on huge objects | $O(1)$ zero allocation | String/Symbol keys only |
+| **`Map.prototype`**          | Ordering critical across numeric/mixed keys | Built-in methods       | 100% insertion order    |

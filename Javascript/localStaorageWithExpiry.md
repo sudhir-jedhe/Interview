@@ -467,7 +467,7 @@ request.onsuccess = (event) => {
 
 ## Recommended Abstraction: `localForage`
 
-If you want the **simple key-value API of `localStorage**`combined with the **asynchronous performance and high capacity of`IndexedDB\*\*`, use [`localForage`](https://github.com/localForage/localForage).
+If you want the **simple key-value API of `localStorage**`combined with the**asynchronous performance and high capacity of`IndexedDB\*\*`, use [`localForage`](https://github.com/localForage/localForage).
 
 `localForage` automatically uses IndexedDB in modern browsers, falls back to WebSQL or `localStorage` when unavailable, and uses a clean Promise API:
 
@@ -487,3 +487,101 @@ const data = await localforage.getItem("large_dataset");
 
 - Use **`localStorage`** ONLY for small, non-sensitive string key-value configurations under ~100 KB (e.g., `theme: "dark"`, UI state flags, language preferences).
 - Use **`IndexedDB`** for all large datasets, API response caching, offline app data, media files, or anything requiring querying or background worker access.
+
+Here is a utility implementation for **`localStorage` (or `sessionStorage`) with an expiration time** in JavaScript. This allows you to store data that automatically expires and returns `null` or a default value once the TTL (Time-To-Live) has passed.
+
+---
+
+### Implementation (`storageWithExpiry.js`)
+
+```javascript
+const StorageWithExpiry = {
+  /**
+   * Set an item in localStorage with an expiration time.
+   * @param {string} key - The key for the storage item.
+   * @param {any} value - The value to store (will be JSON stringified).
+   * @param {number} ttlMinutes - Time-to-live in minutes.
+   */
+  setItem(key, value, ttlMinutes) {
+    const now = new Date();
+    const item = {
+      value: value,
+      expiry: now.getTime() + ttlMinutes * 60 * 1000, // Convert minutes to milliseconds
+    };
+    try {
+      localStorage.setItem(key, JSON.stringify(item));
+    } catch (error) {
+      console.error('Error saving to localStorage', error);
+    }
+  },
+
+  /**
+   * Get an item from localStorage, validating its expiration.
+   * @param {string} key - The key for the storage item.
+   * @returns {any|null} The stored value, or null if expired/non-existent.
+   */
+  getItem(key) {
+    const itemStr = localStorage.getItem(key);
+    
+    // If the item doesn't exist, return null
+    if (!itemStr) {
+      return null;
+    }
+
+    try {
+      const item = JSON.parse(itemStr);
+      const now = new Date();
+
+      // Compare current time with the expiry time
+      if (now.getTime() > item.expiry) {
+        // Expired: remove the item from storage and return null
+        localStorage.removeItem(key);
+        return null;
+      }
+
+      return item.value;
+    } catch (error) {
+      console.error('Error reading from localStorage', error);
+      return null;
+    }
+  },
+
+  /**
+   * Remove an item from localStorage.
+   * @param {string} key - The key for the storage item.
+   */
+  removeItem(key) {
+    localStorage.removeItem(key);
+  }
+};
+
+export default StorageWithExpiry;
+
+```
+
+---
+
+### Example Usage
+
+```javascript
+// 1. Store data that expires in 5 minutes
+StorageWithExpiry.setItem('user_session', { userId: 42, role: 'admin' }, 5);
+
+// 2. Retrieve the data (returns the object if valid, or null if expired)
+const sessionData = StorageWithExpiry.getItem('user_session');
+
+if (sessionData) {
+  console.log('Active session:', sessionData);
+} else {
+  console.log('Session expired or not found.');
+}
+
+```
+
+---
+
+### Key Features
+
+- **Automatic Cleanup:** If a user requests an expired item, it is automatically purged from `localStorage` on the spot.
+- **JSON Serialization:** Safely handles complex data types like objects and arrays.
+- **Framework Agnostic:** Works seamlessly in vanilla JavaScript, React, Vue, or Angular. *(Note: Swap `localStorage` for `sessionStorage` inside the utility if you want session-only persistence).*

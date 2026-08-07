@@ -169,7 +169,7 @@ console.log(rest); // [5, 6]
 - You can skip elements by leaving a blank space in the array destructuring.
 - The `rest` syntax collects the remaining elements of the array.
 
-### Summary of Key Concepts:
+### Summary of Key Concepts
 
 - **Array Destructuring**: Unpacks values from an array into variables.
 - **Object Destructuring**: Unpacks values from an object into variables by key.
@@ -364,3 +364,151 @@ console.log(countNodes(tree)); // 4
 ```
 
 ---
+
+**JavaScript Destructuring** is a convenient syntax introduced in ES6 that allows you to extract values from arrays or properties from objects and assign them directly into distinct variables.
+
+Here is a complete guide covering Array Destructuring, Object Destructuring, Nested Destructuring, and Function Parameter Destructuring with 3 concrete code examples for each.
+
+---
+
+## 1. Array Destructuring
+
+Array destructuring unpacks elements sequentially based on their index position.
+
+```javascript
+// Example 1: Basic array destructuring
+const colors = ["red", "green", "blue"];
+const [firstColor, secondColor] = colors;
+console.log(firstColor, secondColor); 
+// Output: "red" "green"
+
+// Example 2: Skipping elements using extra commas
+const numbers = [10, 20, 30, 40];
+const [first, , third] = numbers;
+console.log(first, third); 
+// Output: 10 30
+
+// Example 3: Variable swapping without a temporary variable
+let a = 1;
+let b = 2;
+[a, b] = [b, a];
+console.log(a, b); 
+// Output: 2 1
+
+```
+
+---
+
+## 2. Object Destructuring
+
+Object destructuring extracts properties matching key names, regardless of their order.
+
+```javascript
+// Example 1: Basic object destructuring
+const user = { name: "Alice", age: 25, role: "Admin" };
+const { name, role } = user;
+console.log(name, role); 
+// Output: "Alice" "Admin"
+
+// Example 2: Renaming variables using property aliases
+const product = { id: 101, title: "Laptop" };
+const { id: productId, title: productName } = product;
+console.log(productId, productName); 
+// Output: 101 "Laptop"
+
+// Example 3: Setting default values for missing properties
+const settings = { theme: "dark" };
+const { theme, language = "English" } = settings;
+console.log(theme, language); 
+// Output: "dark" "English"
+
+```
+
+---
+
+## 3. Rest Operator in Destructuring (`...`)
+
+The rest syntax collects remaining elements or properties into a new array or object.
+
+```javascript
+// Example 1: Array rest elements
+const [head, ...tail] = [1, 2, 3, 4, 5];
+console.log(head, tail); 
+// Output: 1 [2, 3, 4, 5]
+
+// Example 2: Object rest properties
+const car = { make: "Toyota", model: "Camry", year: 2026, color: "Black" };
+const { make, model, ...details } = car;
+console.log(make, details); 
+// Output: "Toyota" { year: 2026, color: "Black" }
+
+// Example 3: Extracting first element and gathering the rest
+const scores = [95, 80, 85, 90];
+const [topScore, ...otherScores] = scores;
+console.log(topScore, otherScores.length); 
+// Output: 95 3
+
+```
+
+---
+
+## 4. Nested Destructuring
+
+Extract values directly from nested objects or multi-dimensional arrays.
+
+```javascript
+// Example 1: Destructuring nested object properties
+const employee = {
+  id: 1,
+  profile: { firstName: "Jane", lastName: "Doe" }
+};
+const { profile: { firstName, lastName } } = employee;
+console.log(firstName, lastName); 
+// Output: "Jane" "Doe"
+
+// Example 2: Destructuring nested arrays
+const matrix = [[1, 2], [3, 4]];
+const [[a, b], [c, d]] = matrix;
+console.log(a, d); 
+// Output: 1 4
+
+// Example 3: Combining nested object and array destructuring
+const response = {
+  status: 200,
+  data: [{ id: 1, text: "Message 1" }]
+};
+const { data: [{ text }] } = response;
+console.log(text); 
+// Output: "Message 1"
+
+```
+
+---
+
+## 5. Function Parameter Destructuring
+
+Destructure objects or arrays directly within function signatures for cleaner code.
+
+```javascript
+// Example 1: Unpacking object arguments in functions
+function displayUser({ name, age }) {
+  console.log(`${name} is ${age} years old.`);
+}
+displayUser({ name: "Bob", age: 30 }); 
+// Output: "Bob is 30 years old."
+
+// Example 2: Function parameter destructuring with default values
+function connect({ host = "localhost", port = 8080 } = {}) {
+  console.log(`Connecting to ${host}:${port}`);
+}
+connect(); 
+// Output: "Connecting to localhost:8080"
+
+// Example 3: Unpacking array coordinates in functions
+function calculateDistance([x1, y1], [x2, y2]) {
+  return Math.hypot(x2 - x1, y2 - y1);
+}
+console.log(calculateDistance([0, 0], [3, 4])); 
+// Output: 5
+
+```

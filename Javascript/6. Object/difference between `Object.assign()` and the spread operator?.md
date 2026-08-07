@@ -116,3 +116,37 @@ console.log(spreadCopy.user.name); // "Bob"
 
 * **Use the Spread Operator (`...`)** as your default choice for merging or copying objects. Its syntax is cleaner, safer against accidental mutation, handles `null`/`undefined` gracefully, and avoids setter side effects.
 * **Use `Object.assign()**` when you specifically want to **mutate an existing target object in place** (e.g., updating a class instance or extending a prototype object).
+
+This breakdown accurately highlights the core structural and runtime distinctions between `Object.assign()` and object spread (`...`).
+
+Here are two technical details that complement what you've documented:
+
+### 1. Prototype Property Access on Sources
+
+While spread bypasses setters on the *target*, both methods invoke **getters** when reading from source objects. However, their lookup mechanisms differ slightly when reading non-own properties:
+
+* **Spread (`...`)** uses the `[[GetOwnProperty]]` internal method followed by `[[Get]]`. It reads enumerable own properties directly from source objects.
+* **`Object.assign()`** retrieves enumerable own properties via `Object.keys()` / `Reflect.ownKeys()` and invokes the `[[Get]]` operation on the source object, which triggers getter functions on the source's prototype chain if the property isn't directly on the instance.
+
+### 2. Symbol and Enumerable Property Handling
+
+Both methods treat non-enumerable properties and `Symbol` keys identically:
+
+* Non-enumerable properties are **ignored** by both.
+* Enumerable `Symbol` properties are **copied** by both (`Object.getOwnPropertySymbols()` behavior).
+
+```javascript
+const sym = Symbol("id");
+const obj = { [sym]: 123 };
+Object.defineProperty(obj, "hidden", { value: 456, enumerable: false });
+
+console.log({ ...obj });            // { [Symbol(id)]: 123 }
+console.log(Object.assign({}, obj)); // { [Symbol(id)]: 123 }
+
+```
+
+---
+
+### When to prefer `structuredClone()` over both
+
+Since both perform shallow copies, any requirement for deep copying nested objects or preserving data types like `Map`, `Set`, `Date`, or `ArrayBuffer` without external libraries is best handled via the global `structuredClone()` API (supported in all modern JS runtimes).

@@ -31,3 +31,51 @@ let escapeString = (string) => {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 ```
+
+Your snippets provide a great overview of basic string manipulation using `split()`, `join()`, `replace()`, and escaping special characters for regular expressions.
+
+Here are a few quick technical notes and modern additions to refine your code.
+
+---
+
+### Key Observations & Refinements
+
+#### 1. Native Polyfill via `split().join()`
+
+Using `.split('prashant').join('golu')` to replace a substring is a classic, zero-regex technique that works across all JavaScript versions.
+
+Modern engines (ES2021+) also offer the native `replaceAll` method:
+
+```javascript
+let str = 'I am prashant yadav'.replaceAll('prashant', 'golu');
+console.log(str); // 'I am golu yadav'
+
+```
+
+---
+
+#### 2. Case-Insensitive Replacements with Dynamic Values
+
+When combining your `escapeString` function with a case-insensitive match (`/gi`), you can dynamically replace string variations using the `RegExp` constructor:
+
+```javascript
+const escapeString = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const replaceCaseInsensitive = (str, target, replacement) => {
+  const safeTarget = escapeString(target);
+  return str.replace(new RegExp(safeTarget, 'gi'), replacement);
+};
+
+let text = 'String first, string second';
+console.log(replaceCaseInsensitive(text, 'string', 'random')); 
+// Output: 'random first, random second'
+
+```
+
+---
+
+#### 3. Regex Performance Tip (`/g` vs `/gi`)
+
+* **`g` (Global Flag):** Scans the string linearly in $\mathcal{O}(N)$ time.
+* **`i` (Ignore Case Flag):** Requires lowercasing characters in memory during comparison, making it slightly slower than strict ASCII matching on massive text bodies.
+* **Special Character Escaping (`\\$&`):** Ensures that characters like `.`, `*`, `?`, `[`, and `$` are treated as literal text instead of active regex wildcards or capture group references.

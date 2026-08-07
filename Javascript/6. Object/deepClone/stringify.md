@@ -25,8 +25,9 @@ You're absolutely right that using `JSON.stringify` and `JSON.parse` is a simple
      - `Function`: Functions are excluded from the output.
      - `undefined`: Any `undefined` values in the object are omitted.
      - `Symbol`: Symbols are not serialized.
-   
+
    For example:
+
    ```js
    const obj = {
      date: new Date(),
@@ -38,12 +39,13 @@ You're absolutely right that using `JSON.stringify` and `JSON.parse` is a simple
    const clonedObj = JSON.parse(JSON.stringify(obj));
    console.log(clonedObj); // { date: "2021-03-15T16:30:00.000Z", regex: {}, func: {}, undefinedVal: undefined }
    ```
+
    - As you can see, `Date` is serialized into an ISO string, `RegExp` is lost (represented as an empty object), and `undefined` is not present.
 
 2. **Loses Prototype Chain**:
    - It **ignores prototypes**, meaning any custom methods or properties from a prototype chain are lost during cloning.
    - If the original object is an instance of a class or has inherited properties, the cloned object will be a plain object without the prototype chain.
-   
+
    ```js
    class Person {
      constructor(name) {
@@ -60,6 +62,7 @@ You're absolutely right that using `JSON.stringify` and `JSON.parse` is a simple
 
    console.log(clonedPerson.greet()); // TypeError: clonedPerson.greet is not a function
    ```
+
    - The method `greet()` is lost in the cloned object because the prototype chain is not copied.
 
 3. **Circular References**:
@@ -74,7 +77,7 @@ You're absolutely right that using `JSON.stringify` and `JSON.parse` is a simple
 
 4. **NaN, Infinity, and -0**:
    - Values like `NaN`, `Infinity`, and `-0` get converted into `null`.
-   
+
    ```js
    const obj = {
      num: NaN,
@@ -169,3 +172,77 @@ console.log(cloned); // Deep cloned object with all edge cases handled
 - **Lodash's `cloneDeep`** is a robust, well-tested solution for deep cloning objects, and it’s a good option if you're looking for reliability and maintainability in a production environment.
 
 Ultimately, you should choose the approach based on the complexity of the objects you're dealing with and the specific use cases in your application.
+
+Your summary of `JSON.parse(JSON.stringify(...))` is thorough and captures the core tradeoffs well. However, there are three important corrections and additions to note:
+
+---
+
+### 1. Correction in Your Example Code
+
+In your example output for non-serializable types, you wrote:
+
+```javascript
+// Your example output:
+// { date: "2021-03-15T...", regex: {}, func: {}, undefinedVal: undefined }
+
+```
+
+In actual JavaScript execution, `JSON.stringify` handles functions and `undefined` differently:
+
+- **Functions** are **completely removed** (not set to `{}`).
+- **`undefined` properties** are **omitted entirely** from the object (not preserved as `undefined`).
+- **`RegExp`** turns into `{}`.
+
+**Actual Output:**
+
+```javascript
+console.log(clonedObj); 
+// Output: { date: "2021-03-15T16:30:00.000Z", regex: {} }
+
+```
+
+---
+
+### 2. The Native Standard: `structuredClone()`
+
+The modern JavaScript alternative to both `JSON.parse(JSON.stringify(...))` and custom/Lodash deep-clone utilities is **`structuredClone()`**, which is natively available in all browsers and Node.js (v17+).
+
+`structuredClone()` runs in native C++ at the engine level, meaning it is significantly faster than userland JavaScript recursive functions while addressing almost every limitation of JSON serialization:
+
+```javascript
+const original = {
+  date: new Date(),
+  regex: /hello/g,
+  map: new Map([['a', 1]]),
+  set: new Set([1, 2, 3]),
+  big: 100n
+};
+original.self = original; // Circular reference!
+
+// Native deep clone in one call:
+const cloned = structuredClone(original);
+
+console.log(cloned.date instanceof Date); // true
+console.log(cloned.map instanceof Map);   // true
+console.log(cloned.self === cloned);      // true (Circular reference preserved!)
+
+```
+
+---
+
+### 3. Special Types in Your Custom `deepClone`
+
+In the custom recursive `deepClone` function you provided, `new Date()` and `/regex/` instances are cloned as **plain empty objects (`{}`)** because the function falls through to `const clone = Array.isArray(value) ? [] : {};`.
+
+To preserve `Date` and `RegExp` in custom recursive clones, you need explicit type checks before creating the object shell:
+
+```javascript
+// Add explicit constructor checks in your recursion:
+if (value instanceof Date) return new Date(value);
+if (value instanceof RegExp) return new RegExp(value.source, value.flags);
+if (value instanceof Map) return new Map(Array.from(value, ([k, v]) => [k, deepClone(v, seen)]));
+if (value instanceof Set) return new Set(Array.from(value, v => deepClone(v, seen)));
+
+```
+
+---

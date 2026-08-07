@@ -86,3 +86,39 @@ console.log(isSalaryExist);
 
 - The **conditional property inclusion** is achieved using the **short-circuiting behavior of `&&`** with the spread operator. If `includeSalary` is `true`, the property `salary` gets added; if it's `false`, no property is added.
 - This technique is concise and helps conditionally add properties to objects without needing an `if` statement or manual property assignment.
+
+Your explanation is clear, accurate, and breaks down the logic effectively.
+
+To make your breakdown even stronger, there is one under-the-hood mechanic worth pointing out regarding **why** this works when `includeSalary` is `false`:
+
+### The Mechanics of Spreading `false`
+
+When `includeSalary` is `false`, the short-circuit expression evaluates to `false`:
+
+```javascript
+{ id: 1, name: "Sudhir", ...false }
+
+```
+
+In JavaScript, spreading `false`, `null`, `undefined`, or numbers inside an object literal does **not** throw an error. JavaScript coercion rules simply ignore non-objects during an object spread operation, resulting in an empty contribution (`{}`).
+
+---
+
+### Alternative Patterns to Keep in Mind
+
+#### 1. Ternary Operator (Handling Default/Fallback Values)
+
+If you want to conditionally include a property with a fallback default instead of omitting it entirely:
+
+```javascript
+const employee = {
+  id: 1,
+  name: "Sudhir",
+  ...(includeSalary ? { salary: 5000 } : { salary: 0 }),
+};
+
+```
+
+#### 2. TypeScript Nuance
+
+If using TypeScript, `...(includeSalary && { salary: 5000 })` marks `salary` as an optional property (`salary?: number`). If you check `employee.salary` without checking for existence or narrowing, TypeScript will warn you that `salary` might be `undefined`.

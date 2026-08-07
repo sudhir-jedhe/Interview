@@ -85,3 +85,59 @@ new String("Hello") instanceof String; // true
 * **Use `typeof**` when validating **primitives** (strings, numbers, booleans, symbols, `undefined`) or checking if a variable is a **function**.
 * **Use `instanceof**` when verifying custom **class instances**, custom prototype inheritance, or built-in complex types like `Error`, `Date`, or `RegExp`.
 * **Use `Array.isArray(val)**` specifically for arrays, as it is safer than both `typeof` and `instanceof` (works reliably across iframes).
+
+This is a clean, accurate comparison of `typeof` vs. `instanceof`. The decision rules at the bottom offer practical takeaways for daily frontend work.
+
+A few advanced mechanics and modern edge cases refine this mental model even further:
+
+---
+
+### 1. How `instanceof` Works Under the Hood: `Symbol.hasInstance`
+
+In modern JavaScript (ES6+), `instanceof` doesn't just inspect prototype references—it actually calls the internal `[Symbol.hasInstance]` method on the right-hand constructor if present.
+
+This allows you to customize or override `instanceof` behavior for custom classes:
+
+```javascript
+class SpecialType {
+  static [Symbol.hasInstance](instance) {
+    // Custom check: treat any object with a custom flag as an instance
+    return Boolean(instance && instance.isSpecial);
+  }
+}
+
+const obj = { isSpecial: true };
+console.log(obj instanceof SpecialType); // true (even without prototype inheritance!)
+
+```
+
+---
+
+### 2. The `Symbol.hasInstance` Primitive Caveat
+
+Because `Symbol.hasInstance` intercepts the operator, you can use it to force `instanceof` to work with primitives if desired:
+
+```javascript
+class MyNumber {
+  static [Symbol.hasInstance](instance) {
+    return typeof instance === 'number';
+  }
+}
+
+console.log(42 instanceof MyNumber); // true!
+
+```
+
+---
+
+### 3. Comparing All 4 Main Type-Checking Approaches
+
+To tie together our previous topics (`typeof`, `instanceof`, `Object.hasOwn`, `Object.prototype.toString`), here is the ultimate evaluation reference:
+
+| Check Target           | `typeof`               | `instanceof`              | `Array.isArray()` / Custom | `Object.prototype.toString`                 |
+| ---------------------- | ---------------------- | ------------------------- | -------------------------- | ------------------------------------------- |
+| **Primitives**         | ✅ Best choice          | ❌ Returns `false`         | N/A                        | Returns `"[object String]"`, etc.           |
+| **Functions**          | ✅ Returns `"function"` | ✅ `f instanceof Function` | N/A                        | Returns `"[object Function]"`               |
+| **Arrays**             | ❌ Returns `"object"`   | ❌ Fails across iframes    | ✅ `Array.isArray()` (Safe) | Returns `"[object Array]"`                  |
+| **Custom Class**       | ❌ Returns `"object"`   | ✅ Best choice             | N/A                        | Returns `"[object Object]"` (or custom Tag) |
+| **Cross-Realm/Iframe** | ✅ Safe                 | ❌ Fails on constructors   | ✅ Safe for Arrays          | ✅ Safe for built-ins                        |

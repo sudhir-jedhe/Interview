@@ -1,6 +1,6 @@
 In JavaScript, `null` and `undefined` are both distinct primitive values that are often confused. Let me explain the differences and provide an example.
 
-### Key Differences Between `null` and `undefined`:
+### Key Differences Between `null` and `undefined`
 
 1. **`null`**:
    - Represents the intentional absence of any object value.
@@ -29,7 +29,7 @@ function test() {
 console.log(test()); // Output: undefined (function returns undefined by default)
 ```
 
-### Comparison:
+### Comparison
 
 ```javascript
 console.log(null === undefined); // Output: false
@@ -39,14 +39,14 @@ console.log(null == undefined);  // Output: true
 - `null` and `undefined` are **not strictly equal** (`===`) because they are different types.
 - But `null` and `undefined` **are loosely equal** (`==`) because both represent the absence of a value in different ways.
 
-### More Details:
+### More Details
 
 - **`null`** is a value that can be explicitly assigned to a variable to indicate the absence of any object or value.
 - **`undefined`** is the default value for uninitialized variables and represents the absence of any assigned value.
 
 ---
 
-### Final Example: Debugging `null` and `undefined`:
+### Final Example: Debugging `null` and `undefined`
 
 ```javascript
 let obj = null; // A variable set to null
@@ -57,9 +57,9 @@ console.log(arr); // Output: undefined
 ```
 
 In summary:
+
 - **`null`** is used to represent "no value" intentionally (usually for objects).
 - **`undefined`** means a variable or property hasn't been assigned a value yet.
-
 
 Sure! Here are multiple examples illustrating the differences between `null` and `undefined`, as well as how they behave in different scenarios:
 
@@ -252,14 +252,14 @@ console.log(null === undefined);  // Output: false (strict equality)
 
 ---
 
-### Summary of Differences:
+### Summary of Differences
 
-| Feature               | `null`                          | `undefined`                        |
-|-----------------------|----------------------------------|------------------------------------|
-| **Type**              | `object` (due to a historical bug in JS) | `undefined`                       |
-| **Meaning**           | Represents intentional absence of a value | Represents a variable that has been declared but not assigned a value |
-| **Default value**     | Used to indicate "no value" explicitly | Default value for uninitialized variables |
-| **Equality with `==`**| `null == undefined` is `true`    | `undefined` is not equal to anything except itself and `null` |
-| **Usage**             | Typically used for objects or when a value is intentionally absent | Used when a variable has not been initialized or a function does not return anything |
+| Feature                | `null`                                                             | `undefined`                                                                          |
+| ---------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| **Type**               | `object` (due to a historical bug in JS)                           | `undefined`                                                                          |
+| **Meaning**            | Represents intentional absence of a value                          | Represents a variable that has been declared but not assigned a value                |
+| **Default value**      | Used to indicate "no value" explicitly                             | Default value for uninitialized variables                                            |
+| **Equality with `==`** | `null == undefined` is `true`                                      | `undefined` is not equal to anything except itself and `null`                        |
+| **Usage**              | Typically used for objects or when a value is intentionally absent | Used when a variable has not been initialized or a function does not return anything |
 
 This should help you understand `null` and `undefined` in different scenarios and how they behave in JavaScript.

@@ -1,0 +1,168 @@
+The **`Reflect` API** is a built-in global object in JavaScript (introduced in ES6) that provides methods for **interception and introspection** of JavaScript operations.
+
+Unlike constructor objects like `Object`, `Array`, or `Map`, `Reflect` is **not a constructor**. You cannot instantiate it with `new` or invoke it as a function. All of its methods are static, mirroring the exact internal traps available in **`Proxy`**.
+
+---
+
+## 1. Why `Reflect` Was Introduced
+
+Prior to `Reflect`, reflective operations were scattered across various global functions, operators, and methods on `Object`. `Reflect` solves four major design problems in JavaScript:
+
+### A. Cleaner Return Values (Booleans vs. Errors)
+
+Many `Object` methods throw `TypeError` exceptions when an operation fails. `Reflect` methods return `true` or `false` indicating success or failure, allowing cleaner control flow without `try...catch` blocks.
+
+```javascript
+const obj = Object.freeze({ name: "Alice" });
+
+// ❌ Old Object way: Throws a TypeError in strict mode
+// Object.defineProperty(obj, "age", { value: 30 }); 
+
+// ✅ Reflect way: Returns false cleanly
+const success = Reflect.defineProperty(obj, "age", { value: 30 });
+if (!success) {
+  console.log("Failed to define property on frozen object.");
+}
+
+```
+
+---
+
+### B. Functional Alternatives to Keywords and Operators
+
+`Reflect` provides functional equivalents for operators like `in`, `delete`, `new`, and `instanceof`.
+
+```javascript
+const user = { name: "Bob", role: "admin" };
+
+// Operator syntax vs. Reflect function syntax
+console.log("role" in user);            // true
+console.log(Reflect.has(user, "role")); // true
+
+delete user.role;                       // true
+Reflect.deleteProperty(user, "role");   // true
+
+```
+
+---
+
+### C. Standardized Object Inspection
+
+Static methods on `Object` historically varied in how they handled non-object primitives (some coerced values, others threw errors). `Reflect` methods strictly require the target argument to be an object, throwing consistent errors if it isn't.
+
+---
+
+### D. Perfect Pairing with `Proxy` Traps
+
+For every `Proxy` trap handler (e.g., `get`, `set`, `has`, `deleteProperty`), there is a corresponding `Reflect` method with the exact same name and signature. This lets you intercept an operation inside a Proxy and easily delegate the default behavior back to the target engine.
+
+---
+
+## 2. All 13 `Reflect` Static Methods
+
+`Reflect` contains exactly 13 static methods, corresponding 1-to-1 with `Proxy` traps:
+
+| `Reflect` Method                                    | Equivalent Operator / Method               | Primary Purpose                                            |
+| --------------------------------------------------- | ------------------------------------------ | ---------------------------------------------------------- |
+| **`Reflect.get(target, key, receiver)`**            | `target[key]`                              | Read a property value.                                     |
+| **`Reflect.set(target, key, value, receiver)`**     | `target[key] = value`                      | Set a property value (returns boolean).                    |
+| **`Reflect.has(target, key)`**                      | `key in target`                            | Check if a property exists.                                |
+| **`Reflect.deleteProperty(target, key)`**           | `delete target[key]`                       | Delete a property (returns boolean).                       |
+| **`Reflect.construct(target, args, newTarget)`**    | `new target(...args)`                      | Instantiate a constructor with an array of arguments.      |
+| **`Reflect.apply(target, thisArg, args)`**          | `fn.apply(thisArg, args)`                  | Invoke a function with specified `this` context.           |
+| **`Reflect.getPrototypeOf(target)`**                | `Object.getPrototypeOf(target)`            | Get prototype of target object.                            |
+| **`Reflect.setPrototypeOf(target, prototype)`**     | `Object.setPrototypeOf(...)`               | Set prototype of target object (returns boolean).          |
+| **`Reflect.defineProperty(target, key, desc)`**     | `Object.defineProperty(...)`               | Define property descriptor (returns boolean).              |
+| **`Reflect.getOwnPropertyDescriptor(target, key)`** | `Object.getOwnPropertyDescriptor(...)`     | Get property descriptor object.                            |
+| **`Reflect.isExtensible(target)`**                  | `Object.isExtensible(target)`              | Check if object can have new properties added.             |
+| **`Reflect.preventExtensions(target)`**             | `Object.preventExtensions(target)`         | Prevent new properties from being added (returns boolean). |
+| **`Reflect.ownKeys(target)`**                       | `Object.getOwnPropertyNames()` + `Symbols` | Get all keys (String + Symbol) as an array.                |
+
+---
+
+## 3. Key Practical Use Cases
+
+### Use Case 1: Preserving Correct Prototype Getters (`receiver` parameter)
+
+The `receiver` parameter in `Reflect.get(target, prop, receiver)` ensures that if a property is a getter on a prototype, `this` inside the getter points to the proxy instance rather than the raw underlying target object.
+
+```javascript
+const parent = {
+  name: "Parent",
+  get greeting() {
+    return `Hello, I am ${this.name}`;
+  }
+};
+
+const child = Object.create(parent);
+child.name = "Child";
+
+const proxy = new Proxy(child, {
+  get(target, prop, receiver) {
+    // Passing 'receiver' ensures `this` inside parent.greeting points to 'child' (proxy)
+    return Reflect.get(target, prop, receiver);
+  }
+});
+
+console.log(proxy.greeting); // "Hello, I am Child" (Without receiver, it would return "Hello, I am Parent")
+
+```
+
+---
+
+### Use Case 2: Clean `Proxy` Forwarding
+
+`Reflect` makes writing transparent or custom Proxy traps concise and error-free:
+
+```javascript
+const user = { firstName: "Jane", lastName: "Doe" };
+
+const autoLoggerProxy = new Proxy(user, {
+  get(target, prop, receiver) {
+    console.log(`[READ ACCESS]: Reading property '${String(prop)}'`);
+    return Reflect.get(target, prop, receiver);
+  },
+  
+  set(target, prop, value, receiver) {
+    console.log(`[WRITE ACCESS]: Setting property '${String(prop)}' = ${value}`);
+    return Reflect.set(target, prop, value, receiver); // Returns boolean automatically
+  }
+});
+
+autoLoggerProxy.firstName;          // Logs: [READ ACCESS]: Reading property 'firstName'
+autoLoggerProxy.lastName = "Smith"; // Logs: [WRITE ACCESS]: Setting property 'lastName' = Smith
+
+```
+
+---
+
+### Use Case 3: Flexible Constructor Instantiation (`Reflect.construct`)
+
+`Reflect.construct` allows you to instantiate an object using an array of dynamic arguments, or override the `new.target` prototype constructor.
+
+```javascript
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+}
+
+// Dynamically pass arguments as an array (similar to Function.prototype.apply for constructors)
+const args = ["Charlie", 28];
+const person = Reflect.construct(Person, args);
+
+console.log(person.name); // "Charlie"
+
+```
+
+---
+
+## `Object` vs `Reflect` Comparison
+
+| Feature                 | `Object` Static Methods                                             | `Reflect` Static Methods                       |
+| ----------------------- | ------------------------------------------------------------------- | ---------------------------------------------- |
+| **Failure Handling**    | Often throws `TypeError` on failure.                                | Returns `false` on failure (no thrown error).  |
+| **Primitive Arguments** | Coerces primitives (e.g. `Object.keys('abc')` → `['0', '1', '2']`). | Throws `TypeError` if target is not an object. |
+| **Return Values**       | Returns the modified object (e.g. `Object.defineProperty`).         | Returns `boolean` status indicator.            |
+| **Proxy Traps**         | No 1-to-1 match.                                                    | Exact 1-to-1 match with all Proxy traps.       |

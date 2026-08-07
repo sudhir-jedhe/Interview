@@ -132,5 +132,99 @@ You can run this code in a browser's JavaScript console, or embed it in an HTML 
 When you open the page in a browser, the virtualized HTML content will be rendered inside the body as the original structure.
 
 ### **Final Notes**
+
 - **Virtual DOM Concept**: This process mirrors how libraries like React handle DOM updates. React "virtualizes" the UI into JavaScript objects (the Virtual DOM), compares the virtual representation to the actual DOM, and then updates the actual DOM only when necessary.
 - **Edge Cases**: This simple example doesn't handle some special cases like self-closing tags (e.g., `img`, `input`), and it only works with the basic structure of HTML. You could extend it to handle more edge cases and additional attributes (like `style`, event listeners, etc.).
+
+Your implementation provides a solid baseline for converting between DOM elements and a lightweight Virtual DOM structure. However, there are a few key edge cases and bugs in the current implementation that will cause issues in practical DOM scenarios:
+
+### Key Issues & Fixes
+
+1. **Handling Empty Text Nodes / Whitespace:**
+
+* In `virtualize`, iterating over `element.childNodes` includes empty text nodes created by formatting/newlines in HTML. You should filter out empty or whitespace-only text nodes (`node.textContent.trim() === ''`).
+
+1. **Handling `undefined` or Missing Children in `render`:**
+
+* If an element has no children (e.g., `<div></div>`), `children` inside `props` will be `undefined`. Passing `undefined` to `Array.isArray` or mapping over `[children]` will attempt to call `render(undefined)`, causing a runtime crash.
+
+1. **Handling Class Names Properly:**
+
+* Using `element.classList.add(value)` can fail or throw errors if `value` contains multiple space-separated classes (e.g., `class="btn primary"`). Assigning directly via `element.className = value` is safer and supports multiple class names seamlessly.
+
+1. **Attributes Handling:**
+
+* `setAttribute` works well for standard HTML attributes, but boolean attributes or special React-style properties might need additional checks if expanded.
+
+---
+
+### Refactored Code
+
+Here is the updated implementation fixing those edge cases:
+
+```javascript
+// 1. Virtualize Function
+function virtualize(element) {
+  const result = {
+    type: element.tagName.toLowerCase(),
+    props: {}
+  };
+
+  // Convert attributes to props
+  for (let attr of element.attributes) {
+    const name = attr.name === 'class' ? 'className' : attr.name;
+    result.props[name] = attr.value;
+  }
+
+  // Handle children
+  const children = [];
+  for (let node of element.childNodes) {
+    if (node.nodeType === 3) { // Text node
+      // Omit empty/whitespace-only text nodes
+      if (node.textContent.trim() !== '') {
+        children.push(node.textContent);
+      }
+    } else if (node.nodeType === 1) { // Element node
+      children.push(virtualize(node));
+    }
+  }
+
+  if (children.length > 0) {
+    result.props.children = children.length === 1 ? children[0] : children;
+  }
+
+  return result;
+}
+
+// 2. Render Function
+function render(json) {
+  // If input is text/primitive
+  if (typeof json === 'string' || typeof json === 'number') {
+    return document.createTextNode(String(json));
+  }
+
+  const { type, props = {} } = json;
+  const { children, ...attrs } = props;
+  const element = document.createElement(type);
+
+  // Set attributes
+  for (let [attr, value] of Object.entries(attrs)) {
+    if (attr === 'className') {
+      element.className = value; // Handles space-separated classes safely
+    } else {
+      element.setAttribute(attr, value);
+    }
+  }
+
+  // Handle children safely when present
+  if (children !== undefined) {
+    const childrenArr = Array.isArray(children) ? children : [children];
+    childrenArr.forEach(child => {
+      element.append(render(child));
+    });
+  }
+
+  return element;
+}
+
+```

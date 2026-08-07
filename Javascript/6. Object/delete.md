@@ -79,3 +79,47 @@ console.log(user);
 
 - **`delete`** can be useful when you need to remove properties from an object, but it is destructive because it mutates the original object.
 - Using the **rest operator** (`...`) is a cleaner and non-mutating approach to exclude properties, which is beneficial when working with immutable patterns or when you want to retain the original object without modification.
+
+Your walkthrough cleanly highlights the core difference between mutating an object in place vs. treating data immutably using modern destructuring.
+
+To round out your understanding, there are two crucial details regarding **performance** and **prototype behavior** when deciding between `delete` and the rest operator (`...`):
+
+---
+
+### 1. The Hidden Cost of `delete` (V8 Hidden Classes)
+
+While `delete` seems like a simple operation, it can negatively impact performance in hot code paths.
+
+- JavaScript engines (like Chrome's V8) assign a hidden class ("shape") to objects to optimize property access in memory.
+- Using `delete` changes the shape of the object dynamically, forcing the engine to drop optimizations and switch the object into **hash-table / dictionary mode**.
+- **Rule of Thumb:** If performance is critical, setting a property to `undefined` (`employee.salary = undefined`) is significantly faster than using `delete`, as it preserves the hidden class shape.
+
+---
+
+### 2. `delete` Operates ONLY on Own Properties
+
+`delete` cannot remove properties higher up the prototype chain.
+
+```javascript
+const parent = { role: "admin" };
+const child = Object.create(parent);
+child.name = "Alice";
+
+delete child.role; // Returns true, but DOES NOT delete parent's role!
+
+console.log(child.role); // "admin" (still inherited)
+
+```
+
+If you call `delete child.role`, the operator checks if `role` exists directly as an **own property** on `child`. Since it doesn't, it returns `true` without removing `role` from `parent`.
+
+---
+
+### Comparison Matrix
+
+| Aspect                | `delete obj.prop`                              | `{ prop, ...rest } = obj`    | `obj.prop = undefined`                |
+| --------------------- | ---------------------------------------------- | ---------------------------- | ------------------------------------- |
+| **Immutability**      | Mutates original                               | Preserves original           | Mutates original                      |
+| **Property Presence** | Completely removed (`'prop' in obj === false`) | Excluded in copy             | Key exists (`'prop' in obj === true`) |
+| **V8 Engine Speed**   | Slow (triggers shape mutation)                 | Fast (allocates new object)  | Fast (retains object shape)           |
+| **Use Case**          | Cleaning dynamic keys                          | React state / Redux reducers | High-performance loops                |

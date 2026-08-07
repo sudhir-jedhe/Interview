@@ -132,3 +132,42 @@ function arrayToObject(array, keyProperty) {
 ---
 
 Let me know if you need explanations, examples, or refinements for any of these functions!
+
+Your collection covers the most common object manipulation tasks in modern JavaScript clean, concise implementations.
+
+Here is a quick code review highlighting edge cases and modern performance alternatives for a few of these implementations:
+
+### Key Observations & Refined Alternatives
+
+#### 1. Task 8: `deepCopy`
+
+* **Limitation:** `JSON.parse(JSON.stringify(obj))` drops `undefined` values, functions, `Symbol` keys, `Map`/`Set` instances, and converts `Date` objects into ISO strings. It also throws an error if the object has circular references.
+* **Modern Solution:** Modern browsers and Node.js (17+) natively support `structuredClone()`:
+
+```javascript
+function deepCopy(obj) {
+  return structuredClone(obj);
+}
+
+```
+
+#### 2. Task 9: `keyExists`
+
+* **Limitation:** Using `key in obj` returns `true` for inherited properties on the prototype chain (e.g., `'toString' in {}` is `true`).
+* **Refined Solution:** If you only want to check for the object's **own** properties, use `Object.hasOwn`:
+
+```javascript
+function keyExists(obj, key) {
+  return Object.hasOwn(obj, key);
+}
+
+```
+
+#### 3. Task 2: `deepEqual`
+
+* **Limitation:** Arrays are technically `typeof === "object"`. Comparing an array to an plain object with matching index keys (`{0: 'a', length: 1}` vs `['a']`) might incorrectly evaluate or cause missing prototype behavior depending on how deep recursion is structured.
+* **Refined Solution:** Add an array constructor check if strict array matching is required, or rely on `Array.isArray()` checks.
+
+#### 4. Task 10: `arrayToObject`
+
+* **Alternative:** JavaScript modern syntax provides `Object.groupBy()` for grouping, but for key-indexed maps, `Map.groupBy` or your current `.reduce()` approach works well.

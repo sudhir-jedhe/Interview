@@ -37,7 +37,8 @@ console.log(flattenedObj);
 // }
 ```
 
-#### Explanation:
+#### Explanation
+
 - **`Object.keys(obj)`**: Iterates over the keys of the object.
 - **`reduce()`**: Accumulates the results into a single object.
 - **`typeof obj[k] === "object"`**: Checks if the value is an object. If true, it recursively flattens the nested object by concatenating the current key with the `prefix`.
@@ -76,12 +77,13 @@ const flatten = (obj, prefix) => {
 };
 ```
 
-#### Key Enhancements:
+#### Key Enhancements
+
 - **Array Handling**: If a value is an array, it flattens the array by iterating over each item and appending the index to the key.
 - **Object Handling**: If the value is an object, it recursively flattens the object.
 - **Value Handling**: If the value is neither an object nor an array, it adds the value with its respective flattened key.
 
-### Example:
+### Example
 
 ```js
 const nested = {
@@ -107,7 +109,8 @@ console.log(flatten(nested));
 // }
 ```
 
-#### Explanation:
+#### Explanation
+
 - The array `C.Q` is flattened with the keys `"C.Q.0"` and `"C.Q.1"`, and nested objects like `C.O` are flattened into dot notation.
 
 ### 3. **Flattening with a Custom Delimiter (Third Method)**
@@ -125,11 +128,12 @@ const flattenObject = (obj, delimiter = '.', prefix = '') =>
   }, {});
 ```
 
-#### Key Enhancements:
+#### Key Enhancements
+
 - **Custom Delimiter**: The delimiter (e.g., `.` or `/`) is customizable, allowing you to adjust the key format in the flattened result.
 - **Non-Null Objects**: Ensures that the function only recursively flattens objects, and skips over `null` values or empty objects.
 
-### Example:
+### Example
 
 ```js
 const fileSizes = {
@@ -166,7 +170,8 @@ console.log(flattenObject(fileSizes, '/'));
 // }
 ```
 
-#### Explanation:
+#### Explanation
+
 - This time the delimiter `/` is used to separate keys in the flattened output, resulting in paths like `src/index` instead of `src.index`.
 
 ### 4. **Unflattening an Object (Reversing Flattening)**
@@ -190,12 +195,13 @@ const unflattenObject = (obj, delimiter = '.') =>
   }, {});
 ```
 
-#### Explanation:
+#### Explanation
+
 - **Splitting Keys**: The keys are split at the delimiter (e.g., `.`) to create an array of key segments.
 - **Reducing to Object**: Using `reduce()`, the segments are traversed to recreate the original object structure.
 - **Handling Arrays**: If the next segment is a number (array index), it creates an array.
 
-### Example:
+### Example
 
 ```js
 const flattenedFileSizes = {
@@ -232,12 +238,13 @@ console.log(unflattenObject(flattenedFileSizes));
 // }
 ```
 
-#### Explanation:
+#### Explanation
+
 - The function successfully reconstructs the nested object by using the flattened keys and their values.
 
 ---
 
-### Summary of Functions:
+### Summary of Functions
 
 1. **Flatten Object**:
    - Converts a nested object into a single-level object with keys represented in dot notation.
@@ -249,3 +256,136 @@ console.log(unflattenObject(flattenedFileSizes));
    - Handles arrays by checking for numeric keys.
 
 Both flattening and unflattening techniques are essential when dealing with data transformation, especially when working with APIs or when the data structure needs to be compacted for storage or transmission.
+
+These implementation patterns cover the essentials of object transformation in JavaScript. Flattening and unflattening objects are fundamental techniques when serializing data for URL query strings, processing form fields, or handling document databases (like MongoDB update paths).
+
+To make these utility implementations fully robust for production, there are a few edge cases and performance considerations to keep in mind.
+
+---
+
+### Hidden Pitfalls in the Provided Implementations
+
+#### 1. `typeof null === "object"` Trap (Method 1)
+
+In JavaScript, `typeof null` evaluates to `"object"`. In Method 1:
+
+```js
+typeof obj[k] === "object"
+
+```
+
+If any property value is `null`, it will attempt to recurse into `flattenObject(null)`, throwing a `TypeError: Cannot convert undefined or null to object` on `Object.keys(null)`.
+
+- **Fix:** Method 3 correctly guards against this by adding `&& obj[k] !== null`.
+
+#### 2. Shallow Copy Overhead with `...` Spread in `reduce` (Method 1 & 2)
+
+In Method 1:
+
+```js
+return { ...acc, ...flattenObject(obj[k], pre + k) };
+
+```
+
+Using the spread operator `{ ...acc }` inside an array `.reduce()` or recursive step creates a **new object clone on every iteration**, scaling the complexity to $O(N^2)$ in time and memory.
+
+- **Fix:** Mutating a single accumulator object across recursive frames (like Method 3's `Object.assign(acc, ...)` or standard assignment) drops performance back down to linear time $O(N)$.
+
+#### 3. Prototype Pollution Risk in `unflattenObject`
+
+When dynamically setting properties based on key segments (`acc[e] = ...`), if an untrusted string key contains `__proto__` or `constructor.prototype`, it can pollute the global Object prototype.
+
+- **Fix:** Add a quick check to skip restricted properties when unflattening input:
+
+```js
+if (e === '__proto__' || e === 'constructor' || e === 'prototype') return acc;
+
+```
+
+---
+
+### Modern Production-Ready Pair
+
+Here is a streamlined, performant pair for flattening and unflattening that handles:
+
+- `null` and `undefined` primitives safely
+- Nested arrays
+- Custom delimiters
+- Prototype safety during reconstruction
+- Linear $O(N)$ execution speed
+
+```js
+// Production-Ready Flatten
+const flatten = (obj, delimiter = '.', prefix = '') => {
+  const result = {};
+
+  for (const [key, val] of Object.entries(obj)) {
+    const newKey = prefix ? `${prefix}${delimiter}${key}` : key;
+
+    if (val && typeof val === 'object') {
+      // Recurse for nested objects and arrays
+      Object.assign(result, flatten(val, delimiter, newKey));
+    } else {
+      result[newKey] = val;
+    }
+  }
+
+  return result;
+};
+
+// Production-Ready Unflatten
+const unflatten = (obj, delimiter = '.') => {
+  const result = {};
+
+  for (const [flatKey, value] of Object.entries(obj)) {
+    const keys = flatKey.split(delimiter);
+    let current = result;
+
+    keys.forEach((key, index) => {
+      // Guard against Prototype Pollution
+      if (key === '__proto__' || key === 'constructor' || key === 'prototype') return;
+
+      const isLast = index === keys.length - 1;
+
+      if (isLast) {
+        current[key] = value;
+      } else {
+        // Look ahead to check if the next key is an array index
+        const nextKeyIsNum = !isNaN(Number(keys[index + 1]));
+        if (!current[key]) {
+          current[key] = nextKeyIsNum ? [] : {};
+        }
+        current = current[key];
+      }
+    });
+  }
+
+  return result;
+};
+
+```
+
+### Quick Verification
+
+```js
+const data = {
+  user: {
+    name: "Alex",
+    roles: ["admin", "editor"],
+    metadata: null
+  }
+};
+
+const flat = flatten(data);
+console.log(flat);
+// {
+//   'user.name': 'Alex',
+//   'user.roles.0': 'admin',
+//   'user.roles.1': 'editor',
+//   'user.metadata': null
+// }
+
+console.log(unflatten(flat));
+// Restores original object structure safely
+
+```

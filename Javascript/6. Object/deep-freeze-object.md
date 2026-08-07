@@ -166,3 +166,80 @@ console.log(newState);
 ---
 
 This approach mimics the **Immer** library’s behavior but gives you full control over the freezing process and object immutability. It ensures that you can modify objects in an immutable way while still adhering to the principles of immutability and preventing direct mutations.
+
+This is a clear, step-by-step breakdown of implementing a custom `produce` helper. It captures the core motivation behind Immer: enabling mutative syntax on a draft while producing a completely immutable result.
+
+To refine this implementation, there are three important edge cases and performance limitations to keep in mind:
+
+## Key Technical Nuances & Edge Cases
+
+### 1. `deepFreeze` Infinite Loop on Circular References
+
+If an object contains a circular reference (e.g., `obj.self = obj`), calling `deepFreeze(obj)` will cause a `RangeError: Maximum call stack size exceeded`.
+
+To handle self-referencing objects safely, track visited objects using a `Set`:
+
+```javascript
+function deepFreeze(object, visited = new Set()) {
+  if (!object || typeof object !== "object" || visited.has(object)) {
+    return object;
+  }
+
+  visited.add(object);
+  
+  const propNames = Object.getOwnPropertyNames(object);
+  for (const name of propNames) {
+    const value = object[name];
+    if (value && typeof value === "object") {
+      deepFreeze(value, visited);
+    }
+  }
+
+  return Object.freeze(object);
+}
+
+```
+
+---
+
+### 2. Limitations of `JSON.parse(JSON.stringify(base))`
+
+Using JSON serialization for deep cloning is fast and simple, but it drops or corrupts non-JSON types:
+
+- **`Date` objects** are converted to ISO strings (`"2026-08-07T..."`).
+- **`undefined`**, **`Symbol`**, and **functions** are completely stripped.
+- **`Map`**, **`Set`**, and **`RegExp`** objects are reduced to empty objects or lose their methods.
+- **Circular references** throw an Uncaught `TypeError`.
+
+**Modern alternative:** Use `structuredClone(base)` for cloning non-circular and rich JS data types natively, or implement structural sharing.
+
+---
+
+### 3. Full Deep Copy vs. Structural Sharing (Performance)
+
+The biggest difference between this implementation and actual Immer is **structural sharing**:
+
+- **JSON Clone approach:** Clones the *entire object tree* on every update, regardless of how small the change is. If only `draft.a.b.c` changes, top-level `draft.x.y` is also cloned into a brand-new object reference.
+- **Immer's Proxy approach:** Uses JavaScript `Proxy` objects to trap read and write operations. It only clones the exact path of nodes that changed, leaving unchanged subtrees pointing to the exact same memory references as `base`.
+
+```javascript
+// With Structural Sharing (Immer):
+newState.unchangedBranch === oldState.unchangedBranch // true (preserves reference for React memoization)
+
+// With Full Deep Clone:
+newState.unchangedBranch === oldState.unchangedBranch // false (breaks React React.memo / PureComponent)
+
+```
+
+---
+
+## Comparison Summary
+
+| Feature                | Full JSON Clone + `deepFreeze`     | Proxy-based `produce` (Immer)             |
+| ---------------------- | ---------------------------------- | ----------------------------------------- |
+| **Complexity**         | Extremely low / pure JS            | Higher (requires `Proxy` traps)           |
+| **Data Types**         | Plain objects & primitives only    | `Map`, `Set`, `Date`, Arrays, Objects     |
+| **Structural Sharing** | ❌ No (clones entire tree)          | ✅ Yes (reuses unchanged branches)         |
+| **React Optimization** | Can trigger unnecessary re-renders | Ideal for `React.memo` reference equality |
+
+Would you like to explore how to implement a basic `Proxy`-based `produce` function to add structural sharing?

@@ -16,3 +16,88 @@ const mapString = (str, fn) =>
 mapString("lorem ipsum", (c) => (c === " " ? " " : c + c.toUpperCase() + c));
 // 'lLloOorRreEemMm iIipPpsSsuUumMm'
 ```
+
+Your implementation of `mapString` is clean, functional, and correctly passes `(character, index, originalString)` to the mapping callback.
+
+While `str.split('')` works well for basic ASCII strings, there are **two key nuances** worth keeping in mind when mapping strings in modern JavaScript: **Unicode handling** and **alternative syntax choices**.
+
+---
+
+### 1. Unicode & Emoji Handling (The `split('')` Trap)
+
+Using `str.split('')` breaks surrogate pairs (like multi-byte Unicode characters, emojis, or accented characters) into incomplete code units.
+
+#### The Issue
+
+```javascript
+mapString("a🤖b", (c) => c + "-");
+// Output: 'a---b-' (The emoji was broken into two invalid UTF-16 surrogate halves!)
+
+```
+
+#### The Fix (Using Array Spread `[...str]` or `Array.from`)
+
+The spread operator `[...str]` and `Array.from(str)` are **Unicode-aware** and iterate over full Unicode code points:
+
+```javascript
+/**
+ * Unicode-safe string mapping
+ * @param {string} str
+ * @param {function(string, number, string): string} fn
+ * @return {string}
+ */
+const mapStringUnicode = (str, fn) =>
+  [...str]
+    .map((char, index) => fn(char, index, str))
+    .join("");
+
+// Verification with Emojis
+console.log(mapStringUnicode("a🤖b", (c) => c + "-"));
+// Output: 'a-🤖-b-' (Preserves emoji correctly!)
+
+```
+
+---
+
+### 2. Micro-Optimization: Using `Array.from()` Directly
+
+`Array.from()` accepts a mapping function directly as its second argument, eliminating the need for separate `.split()` / `[...str]` and `.map()` passes:
+
+```javascript
+const mapStringFast = (str, fn) =>
+  Array.from(str, (char, index) => fn(char, index, str)).join("");
+
+// Example usage:
+console.log(
+  mapStringFast("lorem ipsum", (c) => (c === " " ? " " : c + c.toUpperCase() + c))
+);
+// Output: 'lLloOorRreEemMm iIipPpsSsuUumMm'
+
+```
+
+---
+
+### 3. Alternative: Extending `String.prototype`
+
+If you prefer a method-style syntax similar to `Array.prototype.map`:
+
+```javascript
+String.prototype.map = function (fn) {
+  return Array.from(this, (char, index) => fn(char, index, this)).join("");
+};
+
+// Usage:
+console.log("hello".map((c, i) => `${c}${i}`)); 
+// Output: 'h0e1l2l3o4'
+
+```
+
+---
+
+### Comparison Summary
+
+| Method                                   | Unicode / Emoji Safe?         | Performance                      | Syntax                 |
+| ---------------------------------------- | ----------------------------- | -------------------------------- | ---------------------- |
+| **`str.split('').map(...)` (Your Code)** | ❌ No (Breaks surrogate pairs) | Moderate                         | Array chaining         |
+| **`[...str].map(...)`**                  | ✅ Yes                         | Good                             | Modern JS spread       |
+| **`Array.from(str, fn).join('')`**       | ✅ Yes                         | **Best** (Single iteration pass) | Functional & idiomatic |

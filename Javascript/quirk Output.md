@@ -117,7 +117,7 @@ console.log(a[b]);
 ```
 <!-- prettier-ignore-end -->
 ---
-What will be the output? 
+What will be the output?
 <!-- prettier-ignore-start -->
 ```javascript
 ['11','11','11','11'].map(parseInt)
@@ -244,7 +244,7 @@ alert(typeof foo.length);
 ```
 <!-- prettier-ignore-end -->
 ---
-output ? 
+output ?
 <!-- prettier-ignore-start -->
 ```javascript
 var f = function g(){ return 23; };
@@ -303,7 +303,7 @@ var a = (1,5 - 1) * 2
 ```
 <!-- prettier-ignore-end -->
 ---
-output? 
+output?
 <!-- prettier-ignore-start -->
 ```javascript
 // http://stackoverflow.com/questions/39277394/why-settimeout-calls-make-different-result
@@ -601,15 +601,17 @@ Elevator.prototype = {
 <!-- prettier-ignore-end -->
 ---
 Implement chain map-method which can work with async functions ( promises-based )
-Like: 
+Like:
 <!-- prettier-ignore-start -->
 ```javascript
 Chain([link1,link2,link3]).mapAsync(link => get(link)).mampAsync(page => printPage)
 ```
 <!-- prettier-ignore-end -->
 ---
+
 Write code which will output itself into console/document
 ---
+
 We want to write calculations using functions and get the results. Let's have a look at some examples:
 <!-- prettier-ignore-start -->
 ```javascript
@@ -712,8 +714,10 @@ Game where everyone win. Output?
 <!-- prettier-ignore-end -->
 ---
 Define a spacify function which takes a string as an argument, and returns the same string but with each character separated by a space
- - `spacify('hello world') // => 'h e l l o  w o r l d'`
- - `'hello world'.spacify() //  => 'h e l l o  w o r l d'`
+
+- `spacify('hello world') // => 'h e l l o  w o r l d'`
+- `'hello world'.spacify() //  => 'h e l l o  w o r l d'`
+
 ---
 Write a program that prints all the numbers from 1 to 100.  For multiples of 3, instead of the number, print "Fizz", for multiples of 5 print "Buzz". For numbers which are multiples of both 3 and 5, print "FizzBuzz".
 
@@ -721,6 +725,7 @@ Option: do it without conditional statements (if/switch/?:)
 Option: do not use logical operators (&& / ||)
 Option: do not use loops (for/do/while/etc)
 ---
+
 Create lazy-evaluations POC
 <!-- prettier-ignore-start -->
 ```javascript
@@ -1122,7 +1127,7 @@ METHODS:
 
 QUESTIONS:
 
-1.  Create a basic test application in your chosen programming language that
+1. Create a basic test application in your chosen programming language that
     performs the following functions:
 
     a) creates an instance of SimplePlayer
@@ -1131,10 +1136,10 @@ QUESTIONS:
 
     c) logs the playback status to the console
 
-2.  Extend the code you have written with a "bufferMonitor" function which prints
+2. Extend the code you have written with a "bufferMonitor" function which prints
     "too much buffering" to the console when the player is buffering continuously
     for more than one minute
-3.  If necessary refactor your code so that it is possible to unit test the
+3. If necessary refactor your code so that it is possible to unit test the
     bufferMonitor function (without mocking of setTimeout via testing frameworks and using of fake timers), then write appropriate unit tests.
 
 ---
@@ -1635,24 +1640,6 @@ const dividedBy = (b) => (a) => Math.floor(a / b);
 ```
 
 ---
-
-### 7. Reverse Words in Sentence Preserving Non-Letters
-
-```javascript
-function reverseWords(str) {
-  return str
-    .split(" ")
-    .map((word) => {
-      let chars = word.split("");
-      let letters = chars.filter((c) => /[a-zA-Z]/.test(c)).reverse();
-      let ptr = 0;
-      return chars
-        .map((c) => (/[a-zA-Z]/.test(c) ? letters[ptr++] : c))
-        .join("");
-    })
-    .join(" ");
-}
-```
 
 ---
 

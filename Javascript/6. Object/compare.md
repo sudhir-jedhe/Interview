@@ -306,3 +306,197 @@ console.log(keysInLoop);
 // Output: ['cProp', 'pProp', 'gProp']
 
 ```
+
+Your breakdown of property ownership and property detection methods (`Object.hasOwn`, `Object.keys`, etc.) is precise and accurate. However, there are two important issues in your proposed implementation of `equals` that need to be addressed:
+
+### 1. Prototype Comparison Flaw
+
+In JavaScript, **instances do not have a `.prototype` property** (unless manually assigned). A function or class has a `.prototype` property, but standard plain objects, arrays, or instances use `Object.getPrototypeOf(obj)`.
+
+```javascript
+// In your code:
+a.prototype !== b.prototype // undefined !== undefined evaluates to FALSE (they match)
+
+// Correct approach:
+Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)
+
+```
+
+Because `a.prototype` evaluates to `undefined` for standard objects, the prototype check in your implementation was accidentally passing for almost every object type.
+
+### 2. The Array vs. Plain Object Equivalence
+
+Your example output showed:
+
+```javascript
+equals([1, 2, 3], { 0: 1, 1: 2, 2: 3 }) // returns true in your snippet
+
+```
+
+In standard JavaScript deep equality (e.g., Lodash `_.isEqual` or standard test assertions), **an Array is not equal to a Plain Object**, even if their indices match. Fixing the prototype/constructor check automatically fixes this issue, ensuring `[1, 2, 3]` and `{ 0: 1, 1: 2, 2: 3 }` evaluate to `false`.
+
+---
+
+### Refined Deep Equality Implementation
+
+Here is the corrected `equals` function with fixes for prototype evaluation, type checking, and proper handling of edge cases (such as `null` and non-enumerable properties):
+
+```javascript
+const equals = (a, b) => {
+  // 1. Same reference or primitive equality
+  if (a === b) return true;
+
+  // 2. Handle null or non-object primitive values
+  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
+    return a === b;
+  }
+
+  // 3. Date instances check
+  if (a instanceof Date && b instanceof Date) {
+    return a.getTime() === b.getTime();
+  }
+
+  // 4. Prototype & Constructor check (ensures Array !== Plain Object)
+  if (Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) {
+    return false;
+  }
+
+  // 5. Compare number of own keys
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+
+  if (keysA.length !== keysB.length) return false;
+
+  // 6. Recursive deep check for each property key
+  return keysA.every(key => Object.hasOwn(b, key) && equals(a[key], b[key]));
+};
+
+// --- Tests ---
+
+// Primitive & Undefined
+console.log(equals({ name: 'John' }, { name: 'John', age: undefined })); // false
+
+// Key order independence
+console.log(equals({ a: 1, b: 2 }, { b: 2, a: 1 })); // true
+
+// Nested structural equality
+const obj1 = { a: [2, { e: 3 }], b: [4], c: 'foo' };
+const obj2 = { a: [2, { e: 3 }], b: [4], c: 'foo' };
+console.log(equals(obj1, obj2)); // true
+
+// Array vs Object strictness check
+console.log(equals([1, 2, 3], { 0: 1, 1: 2, 2: 3 })); // false
+
+```
+
+How can we extend the deep equality function to handle special JavaScript objects like Map, Set, and RegExp?
+
+To extend `equals` to handle `Map`, `Set`, and `RegExp`, we need to address how each type stores and represents its data:
+
+1. **`RegExp`**: Two regular expressions are equal if they have the same pattern string (`.source`) and the exact same flags (`.flags`).
+2. **`Set`**: Two sets are equal if they have the same size and every item in Set $A$ has a deep-equal match in Set $B$. (Since sets can contain nested objects, we can't just use `setB.has(item)`).
+3. **`Map`**: Two maps are equal if they have the same size, matching keys, and deep-equal values for each key.
+
+---
+
+### Extended Deep Equality Function
+
+```javascript
+const equals = (a, b) => {
+  // 1. Strict primitive / reference equality
+  if (a === b) return true;
+
+  // 2. Handle null or non-objects
+  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
+    return a === b;
+  }
+
+  // 3. Prototype check (Ensures identical object types)
+  if (Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) {
+    return false;
+  }
+
+  // 4. Date comparison
+  if (a instanceof Date && b instanceof Date) {
+    return a.getTime() === b.getTime();
+  }
+
+  // 5. RegExp comparison
+  if (a instanceof RegExp && b instanceof RegExp) {
+    return a.source === b.source && a.flags === b.flags;
+  }
+
+  // 6. Map comparison
+  if (a instanceof Map && b instanceof Map) {
+    if (a.size !== b.size) return false;
+
+    for (const [key, value] of a) {
+      // Find matching key in Map B using deep equality (handles object keys)
+      let foundMatchingKey = false;
+      for (const [bKey, bValue] of b) {
+        if (equals(key, bKey)) {
+          if (!equals(value, bValue)) return false;
+          foundMatchingKey = true;
+          break;
+        }
+      }
+      if (!foundMatchingKey) return false;
+    }
+    return true;
+  }
+
+  // 7. Set comparison
+  if (a instanceof Set && b instanceof Set) {
+    if (a.size !== b.size) return false;
+
+    for (const aItem of a) {
+      let hasMatch = false;
+      for (const bItem of b) {
+        if (equals(aItem, bItem)) {
+          hasMatch = true;
+          break;
+        }
+      }
+      if (!hasMatch) return false;
+    }
+    return true;
+  }
+
+  // 8. Plain Object & Array comparison (using own properties)
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+
+  if (keysA.length !== keysB.length) return false;
+
+  return keysA.every(key => Object.hasOwn(b, key) && equals(a[key], b[key]));
+};
+
+```
+
+---
+
+### Example Usage & Edge Cases
+
+```javascript
+// --- RegExp ---
+console.log(equals(/abc/gi, /abc/gi)); // true
+console.log(equals(/abc/g, /abc/i));   // false
+
+// --- Set with Nested Objects ---
+const setA = new Set([1, { x: 10 }]);
+const setB = new Set([{ x: 10 }, 1]);
+console.log(equals(setA, setB)); // true (Order doesn't matter, deep objects match)
+
+// --- Map with Object Keys ---
+const mapA = new Map([[{ id: 1 }, "user1"]]);
+const mapB = new Map([[{ id: 1 }, "user1"]]);
+console.log(equals(mapA, mapB)); // true (Deeply matches object keys)
+
+```
+
+---
+
+### Key Design Considerations
+
+- **Set / Map Order Independence**: JavaScript `Set` and `Map` maintain insertion order, but mathematically two sets containing `{1, 2}` and `{2, 1}` are equivalent. Iterating and checking for deep-matching elements ensures order independence.
+- **Complex Map Keys**: Standard `Map.prototype.has()` uses same-value-zero equality (reference checks for objects). By comparing keys via `equals(aKey, bKey)`, two maps using distinct object references as keys (e.g., `{ id: 1 }`) will still evaluate as equal.

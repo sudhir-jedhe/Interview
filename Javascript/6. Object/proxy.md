@@ -165,3 +165,52 @@ Proxies provide a flexible way to extend existing objects or arrays, and they ca
 ### 27. What is a `Proxy` in JavaScript, and how is it used?
 
 A **Proxy** is an object that wraps another object to intercept and modify its behavior. It can be used to create custom behavior for operations like property access, method calls, etc.
+
+A few crucial nuances in your JavaScript Proxy implementations need attention—specifically regarding array methods, type checks, and receiver passing:
+
+### Important Corrections & Edge Cases
+
+#### 1. Native Array Methods Fail on Negative Index Proxies
+
+In your second example:
+
+```javascript
+get(target, index) {
+  if (index < 0) { index = target.length + index; }
+  return Reflect.get(target, index);
+}
+
+```
+
+If you call built-in array methods like `proxy.map(...)`, `proxy.push(...)`, or `proxy.slice()`, `index` will be string property names (e.g., `'map'`, `'length'`, `'slice'`).
+
+- `index < 0` evaluates to `false` for string method names, so it happens to pass through here, but converting properties via `Number(prop)` in the third example can break symbol accesses (`Symbol.iterator`) or native methods if not guarded against non-numeric property access.
+
+**Fixed `get` trap pattern:**
+
+```javascript
+get(target, prop, receiver) {
+  // Check if prop is a valid integer string or number (e.g., "-1", "0")
+  const index = Number(prop);
+  if (Number.isInteger(index) && index < 0) {
+    prop = String(target.length + index);
+  }
+  return Reflect.get(target, prop, receiver);
+}
+
+```
+
+#### 2. Target vs Receiver in `Reflect.get/set`
+
+Always pass `receiver` to `Reflect.get(target, prop, receiver)`. Skipping `receiver` breaks the `this` binding inside getters defined on target objects or inherited prototypes.
+
+---
+
+### Key Summary of JavaScript Proxies
+
+| Feature          | Description                                                                                |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| **Target**       | The original underlying object wrapped by the proxy.                                       |
+| **Handler**      | The configuration object containing traps (interceptor functions).                         |
+| **Common Traps** | `get`, `set`, `has` (`in` operator), `deleteProperty`, `ownKeys`, `apply` (for functions). |
+| **Reflect API**  | Companion object used inside traps to forward default behavior cleanly to the target.      |

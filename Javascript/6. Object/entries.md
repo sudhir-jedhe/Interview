@@ -150,3 +150,44 @@ And `Object.entries(video)` will return the array of key-value pairs:
 - **`Object.values(obj)`**: Returns an array of the object's values.
 
 You’ve demonstrated some effective uses of these methods for transforming and interacting with objects in JavaScript!
+
+Your breakdown is spot-on, accurate, and covers the core mechanisms of working with key-value pairs in modern JavaScript. A few extra insights expand on what you've compiled:
+
+### 1. `iterateObject()` & Choosing the Right Array Method
+
+You rightly pointed out that `.map()` is an anti-pattern here because it creates a new unused array in memory. In addition to `.forEach()`, modern JavaScript clean-ups often use **array destructuring directly in the callback signature**:
+
+```js
+// Cleaner parameter handling
+Object.entries(exampleObj).forEach(([key, value]) => {
+  console.log(key, value);
+});
+
+```
+
+### 2. Manual Object Creation vs. Native Standard
+
+Your custom `createObjectFromKeyValuePairs` function is a great imperative demonstration of how key-value conversion works under the hood. In modern ES2019+ codebases, this helper function is completely replaced by the native **`Object.fromEntries()`** method you showed in section 4.
+
+### 3. Key Method Comparison Summary
+
+| Method                        | Input                 | Output                  | Common Use Case                                                 |
+| ----------------------------- | --------------------- | ----------------------- | --------------------------------------------------------------- |
+| `Object.entries(obj)`         | Object                | `[[key, value], ...]`   | Filtering or mapping over object properties using array methods |
+| `Object.fromEntries(entries)` | `[[key, value], ...]` | Object                  | Reconstructing an object after performing array transformations |
+| `Object.keys(obj)`            | Object                | `['key1', 'key2', ...]` | Checking property count or validating keys                      |
+| `Object.values(obj)`          | Object                | `['val1', 'val2', ...]` | Summing numeric values or checking data existence               |
+
+### Typical Workflow Pattern
+
+A common real-world pattern is chaining these methods together to transform an object's values:
+
+```js
+const prices = { apple: 1.5, banana: 0.8, cherry: 2.5 };
+
+// Apply 10% tax to all prices in one fluent chain
+const pricesWithTax = Object.fromEntries(
+  Object.entries(prices).map(([item, price]) => [item, price * 1.1])
+);
+
+```

@@ -16,7 +16,7 @@ The `Object.is()` method in JavaScript is designed to provide a more precise equ
 
 To replicate `Object.is()` functionality using custom code, you can use the following implementations:
 
-### 1. **First Implementation**:
+### 1. **First Implementation**
 
 This approach manually handles the special cases for `NaN` and `0`/`-0`.
 
@@ -44,7 +44,7 @@ function is(a, b) {
 - **NaN check**: Since `NaN` is not equal to itself, we check if both values are `NaN` using `a !== a` (this will be true only for `NaN`), then we check if `b !== b` to confirm that both values are `NaN`.
 - **Handling `+0` vs `-0`**: `1 / a` and `1 / b` will produce distinct results for `+0` and `-0`, which can be used to distinguish them.
 
-### 2. **Second Implementation**:
+### 2. **Second Implementation**
 
 This is a more straightforward approach using `Number.isNaN()` to detect `NaN`.
 
@@ -71,7 +71,7 @@ function is(a, b) {
 - **`Number.isNaN()`**: This is used to check for `NaN` explicitly, which is more reliable than using `a !== a`.
 - **`+0` vs `-0` check**: Again, we use `1 / a !== 1 / b` to handle `+0` and `-0`.
 
-### 3. **Third Implementation**:
+### 3. **Third Implementation**
 
 This version adds a more explicit number type check and handles special cases of `NaN` and `+0`/`-0`.
 
@@ -147,7 +147,8 @@ Object.is = function (x, y) {
 };
 ```
 
-#### How it works:
+#### How it works
+
 - **Object comparison**: This version also handles cases where both `x` and `y` are objects by recursively checking their properties.
 - **Handling `NaN`**: It ensures that two `NaN` values are considered equal.
 - **Handling `null` and `undefined`**: If either value is `null` or `undefined`, it returns `false`.
@@ -165,7 +166,7 @@ Object.is(NaN, NaN);    // true
 ---
 
 ### **Summary**
+
 - `Object.is()` is a method that works similarly to `===`, with special handling for `NaN` and `+0`/`-0`.
 - The examples and polyfill implementations show different approaches for replicating the behavior of `Object.is()` manually.
 - The polyfill covers the edge cases and the behavior of `Object.is()`, while the different manual implementations use various ways of checking `NaN`, `0`, and `-0`.
-

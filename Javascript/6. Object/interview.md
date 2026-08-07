@@ -1170,3 +1170,75 @@ Vue 3 instrumentally rewrites lookup methods (`indexOf`, `lastIndexOf`, `include
 | **Lookup Methods**          | `indexOf()`, `lastIndexOf()`, `includes()`            | Wrapped to check both reactive proxies and raw target objects.                                                   |
 | **Direct Index Assignment** | `arr[0] = 'new'`                                      | Handled natively by Proxy `set` trap. Checks if the index exists to decide between `ADD` or `SET` trigger types. |
 | **Length Assignment**       | `arr.length = 0`                                      | Handled natively by Proxy `set` trap. Triggers effects for all deleted indices $\ge \text{newLength}$.           |
+
+What is the difference between shallow copy and deep copy when copying an array of objects in JavaScript? Use `structuredClone` and the spread operator to demonstrate.
+
+In JavaScript, arrays are objects stored by reference in memory. When you copy an array containing objects, the copy's behavior depends entirely on whether top-level array elements or nested object references are duplicated:
+
+- **Shallow Copy (Spread Operator `...`):** Creates a new top-level array instance in memory, but **copies references to nested objects/elements**. Mutating a top-level array element (e.g., adding/removing items) won't affect the original array, but **mutating properties of an object inside the array will alter both arrays**.
+- **Deep Copy (`structuredClone`):** Creates a brand-new top-level array AND recursively duplicates every object inside it. The copy becomes a completely isolated memory clone—mutating nested object properties in the copy will never affect the original array.
+
+---
+
+### Code Demonstration
+
+```javascript
+// Original array containing nested objects
+const originalUsers = [
+  { id: 101, name: 'Alice', settings: { theme: 'dark' } },
+  { id: 102, name: 'Bob', settings: { theme: 'light' } }
+];
+
+// ==========================================
+// 1. SHALLOW COPY (Spread Operator)
+// ==========================================
+const shallowUsers = [...originalUsers];
+
+// A. Top-level array structural change: ISOLATED
+shallowUsers.push({ id: 103, name: 'Charlie', settings: { theme: 'dark' } });
+console.log(originalUsers.length); // 2 (Original array structure remains untouched)
+
+// B. Mutating a nested object property: SHARED REFERENCE!
+shallowUsers[0].name = 'Alice (Updated)';
+shallowUsers[0].settings.theme = 'system';
+
+console.log(originalUsers[0].name);           // "Alice (Updated)" 🚨 (Mutated!)
+console.log(originalUsers[0].settings.theme); // "system"          🚨 (Mutated!)
+
+// ==========================================
+// 2. DEEP COPY (structuredClone)
+// ==========================================
+const deepUsers = structuredClone(originalUsers);
+
+// Mutating a nested object property in the deep copy: ISOLATED
+deepUsers[0].name = 'Alice (Deep Clone)';
+deepUsers[0].settings.theme = 'cyberpunk';
+
+console.log(originalUsers[0].name);           // "Alice (Updated)" ✅ (Original preserved!)
+console.log(originalUsers[0].settings.theme); // "system"          ✅ (Original preserved!)
+console.log(deepUsers[0].settings.theme);     // "cyberpunk"       ✅ (Independent clone)
+
+```
+
+---
+
+### Memory Layout Comparison
+
+```
+Original Array: [ Object_A_Ref, Object_B_Ref ]
+                     │             │
+Shallow Copy:   [ Object_A_Ref, Object_B_Ref ]  (Shared pointers to identical objects in memory)
+
+
+Original Array: [ Object_A_Ref, Object_B_Ref ]
+                     │             │
+Deep Copy:      [ Object_C_Ref, Object_D_Ref ]  (Pointers to brand-new, duplicated objects)
+
+```
+
+---
+
+### Key Takeaway Rules
+
+1. Use **Spread (`[...]`)** when your array contains **only primitive values** (numbers, strings, booleans) or when you explicitly want shared mutations on object elements across lists.
+2. Use **`structuredClone()`** whenever your array contains **nested objects or arrays** and you need complete immutability guarantees.

@@ -1,6 +1,6 @@
 Let's go over the code you provided and understand the key concepts around `Object.isPrototypeOf()` and `super` usage in JavaScript.
 
-### **Understanding `Object.isPrototypeOf()`**:
+### **Understanding `Object.isPrototypeOf()`**
 
 The method `Object.isPrototypeOf()` checks if an object exists in another object's prototype chain. It's used to determine whether an object is part of the prototype chain of another object.
 
@@ -18,6 +18,7 @@ console.log(obj2.prototype.isPrototypeOf(obj3)); // true
 ```
 
 **Explanation**:
+
 - `obj1.prototype` inherits from `obj2.prototype` (because `obj1.prototype = Object.create(obj2.prototype);`).
 - So, when we check if `obj1.prototype` is in `obj3`'s prototype chain, it returns `true` because `obj3` was created from `obj1`.
 - Likewise, `obj2.prototype` is also in `obj3`'s prototype chain because `obj1.prototype` itself inherits from `obj2.prototype`.
@@ -41,6 +42,7 @@ console.log(Object.prototype.isPrototypeOf(c)); // true
 ```
 
 **Explanation**:
+
 - Here, `C` inherits from `B`, and `B` inherits from `A`. The prototype chain for `c` is `C.prototype → B.prototype → A.prototype → Object.prototype`.
 - `C.prototype.isPrototypeOf(c)` is `true` because `c` was created from `C`.
 - `B.prototype.isPrototypeOf(c)` is `true` because `c`'s prototype chain goes through `B.prototype`.
@@ -70,6 +72,7 @@ obj1.foo(); // "bar"
 ```
 
 **Explanation**:
+
 - `obj1` has a method `foo` that calls `super.foo()`. This means it is looking for a method `foo` in its prototype chain.
 - We use `Object.setPrototypeOf` to set the prototype of `obj1` to an object with a method `foo` that returns `"bar"`.
 - When `obj1.foo()` is called, it invokes `super.foo()`, which looks for `foo` in `obj1`'s prototype, finds it, and returns `"bar"`.
@@ -93,19 +96,90 @@ obj2.foo(); // "bar"
 ```
 
 **Explanation**:
+
 - Similar to Case 1, but here the `foo` method is defined using the traditional function expression syntax (`foo: function()`).
 - The result is the same, where `super.foo()` invokes the `foo` method from the prototype, which returns `"bar"`.
 
-#### **Why `super` works in these cases**:
+#### **Why `super` works in these cases**
 
 - `super` works in both cases because the prototype of the object (`obj1` or `obj2`) has been set explicitly using `Object.setPrototypeOf`.
 - When `super` is called, it checks the prototype chain, looking for the method or property on the parent object (or prototype). In this case, `foo` exists on the prototype, so it is accessed correctly.
 
-### **Important Notes on `super` and Object Literals**:
+### **Important Notes on `super` and Object Literals**
+
 1. **Using `super` in object methods** works because the method itself is invoked from the context of an object that has a prototype chain. This allows `super` to find properties or methods on the parent object, assuming `super` is called within the method of an object created with `Object.setPrototypeOf`.
-   
+
 2. **`super` in object literals**: When `super` is used inside a method of an object, it refers to the parent object or prototype in the chain. It behaves similarly to how it works in classes, but with an object literal context.
 
-### **Conclusion**:
+### **Conclusion**
+
 - `Object.isPrototypeOf()` helps us check if an object exists in another object's prototype chain.
 - The `super` keyword is used to call methods or access properties from a parent object in a prototype chain. You can use `Object.setPrototypeOf` to dynamically set the prototype of an object, which is a key part of inheritance in JavaScript.
+
+There is a critical technical error in **Case 2** of your `super` explanation.
+
+In JavaScript, **traditional function expressions (`foo: function() {}`) do NOT support the `super` keyword**. Executing Case 2 will throw a runtime **`SyntaxError: 'super' keyword unexpected here`**.
+
+Here is why that happens, along with how `super` actually works under the hood with internal slots like `[[HomeObject]]`.
+
+---
+
+### Why Case 2 Fails (`SyntaxError`)
+
+```javascript
+const obj2 = {
+  // ❌ SyntaxError: 'super' keyword unexpected here
+  foo: function () {
+    console.log(super.foo());
+  }
+};
+
+```
+
+#### The Internal Mechanics: `[[HomeObject]]`
+
+When JavaScript compiles an object method, `super` needs to know *which* object defined the method so it can navigate up its prototype chain. It does this using a hidden, immutable internal slot called **`[[HomeObject]]`**.
+
+1. **Method Shorthand Syntax (`foo() {}`):** Creates an internal `[[HomeObject]]` pointer pointing to `obj1`. When `super.foo()` is invoked, JavaScript looks at `Object.getPrototypeOf([[HomeObject]])` to locate the parent method.
+2. **Function Expression Syntax (`foo: function() {}`):** Standard `function` expressions **do not receive a `[[HomeObject]]` slot**. Because there is no `[[HomeObject]]`, the JavaScript engine cannot resolve where `super` should start searching, so it throws a `SyntaxError` at parse time.
+
+---
+
+### `isPrototypeOf()` vs `instanceof`: A Crucial Difference
+
+While `Object.isPrototypeOf()` checks objects in a prototype chain, developers often confuse it with the **`instanceof`** operator:
+
+```javascript
+function Person() {}
+const alice = new Person();
+
+// 1. isPrototypeOf checks if AN OBJECT is in the prototype chain
+console.log(Person.prototype.isPrototypeOf(alice)); // true
+
+// 2. instanceof checks if a CONSTRUCTOR'S .prototype property is in the prototype chain
+console.log(alice instanceof Person); // true
+
+```
+
+#### Why `isPrototypeOf` is More Robust
+
+`instanceof` relies on constructor functions. If an object is created using `Object.create()` without a constructor function, `instanceof` cannot be used directly, but `isPrototypeOf()` works seamlessly:
+
+```javascript
+const animal = { eats: true };
+const dog = Object.create(animal);
+
+console.log(animal.isPrototypeOf(dog)); // true
+// dog instanceof animal; 🚨 TypeError: Right-hand side of 'instanceof' is not callable
+
+```
+
+---
+
+### Summary of `super` Rules in Object Literals
+
+| Syntax                   | Has `[[HomeObject]]`?                   | `super` Allowed?                 | Example                                             |
+| ------------------------ | --------------------------------------- | -------------------------------- | --------------------------------------------------- |
+| **ES6 Method Shorthand** | ✅ **Yes**                               | ✅ **Yes**                        | `{ foo() { super.foo(); } }`                        |
+| **Function Expression**  | ❌ **No**                                | ❌ **`SyntaxError`**              | `{ foo: function() { super.foo(); } }`              |
+| **Arrow Function**       | ❌ **No** (inherits outer scope `super`) | ⚠️ **Only inside a valid method** | `{ foo() { const fn = () => super.foo(); fn(); } }` |

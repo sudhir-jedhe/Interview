@@ -180,3 +180,71 @@ console.log(Object.isFrozen(obj.nested)); // true
 - **`Object.seal()`** is useful when you want to prevent adding or deleting properties but still allow modifying the property values.
 - **`Object.freeze()`** is useful when you need complete immutability, preventing changes to the object itself and its properties.
 - **`deepSeal()` and `deepFreeze()`** can be used to apply sealing or freezing recursively on nested objects to make sure everything is immutable.
+
+Your breakdown accurately captures the differences between `Object.seal()` and `Object.freeze()`, as well as the need for recursive traversals when dealing with nested structures.
+
+However, there are a few notable **bugs, performance issues, and modern edge cases** in the custom `deepSeal` / `deepFreeze` implementations that are important to catch before using them in production.
+
+---
+
+### Critical Bug: Handling Circular References & Null
+
+1. **`null` throws a TypeError:**
+In JavaScript, `typeof null === "object"`. In your implementation:
+
+```javascript
+object[name] = value && typeof value === "object" ? deepSeal(value) : value;
+
+```
+
+If `value` is `null`, `typeof value === "object"` evaluates to `true`, and it passes `null` into `deepSeal(null)`. `Object.getOwnPropertyNames(null)` immediately throws a `TypeError: Cannot convert undefined or null to object`.
+2. **Infinite Loops on Circular References:**
+If an object references itself (`obj.self = obj`), both functions will hit maximum call stack size exceptions.
+3. **Function / Built-in Objects Over-recursion:**
+`typeof value === "object"` will skip functions (which have `typeof value === "function"`), meaning properties attached to functions won't be frozen or sealed. Conversely, it will attempt to recurse into objects like `Date`, `RegExp`, or `Map`, which shouldn't have their prototype/internal slots processed this way.
+
+---
+
+### Improved Robust Implementation
+
+Here is a robust version of `deepFreeze` (the same pattern applies to `deepSeal`) that safely handles `null`, prevents infinite recursion using a `WeakSet`, and accurately includes functions:
+
+```javascript
+function deepFreeze(obj, visited = new WeakSet()) {
+  // 1. Guard against non-objects, null, and already processed objects
+  if (obj === null || (typeof obj !== 'object' && typeof obj !== 'function')) {
+    return obj;
+  }
+
+  if (visited.has(obj)) {
+    return obj; // Prevents infinite loop on circular references
+  }
+  visited.add(obj);
+
+  // 2. Freeze nested properties recursively
+  const propNames = Reflect.ownKeys(obj); // Covers String keys AND Symbol keys
+
+  for (const name of propNames) {
+    const value = Reflect.getOwnPropertyDescriptor(obj, name)?.value;
+    
+    if (value && (typeof value === 'object' || typeof value === 'function')) {
+      deepFreeze(value, visited);
+    }
+  }
+
+  // 3. Freeze top-level object
+  return Object.freeze(obj);
+}
+
+```
+
+---
+
+### Key Technical Differences To Keep in Mind
+
+- **Reflect.ownKeys vs Object.getOwnPropertyNames:**
+`Object.getOwnPropertyNames()` ignores `Symbol` keys. Using `Reflect.ownKeys()` guarantees that properties keyed by `Symbol` are also discovered and deeply frozen/sealed.
+- **Property Descriptors over Direct Assignment:**
+In strict mode (`"use strict";`), reassigning `object[name] = ...` on a read-only getter property throws an error. Inspecting via descriptors avoids unwanted setter triggers.
+- **Performance Note:**
+Freezing deeply nested, large data structures can noticeably impact runtime performance. For state management in large application trees, libraries using **Structural Sharing** (like Immer or Immutable.js) are typically preferred over recursively calling `Object.freeze()` on every mutation.

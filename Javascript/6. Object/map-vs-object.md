@@ -5,10 +5,12 @@ You're absolutely right—while JavaScript objects are ubiquitous and widely use
 ### **Key Differences Between Objects and Maps**
 
 #### 1. **Key Types**
-   - **Objects**: Only allow `strings` or `symbols` as keys. Even if you use a number or other type as a key, JavaScript will automatically convert it to a string.
-   - **Maps**: Can use any **data type** as keys, including objects, functions, and primitive types like strings, numbers, and symbols.
+
+- **Objects**: Only allow `strings` or `symbols` as keys. Even if you use a number or other type as a key, JavaScript will automatically convert it to a string.
+- **Maps**: Can use any **data type** as keys, including objects, functions, and primitive types like strings, numbers, and symbols.
 
    **Example:**
+
    ```javascript
    const obj = {};
    const objKey = { id: 1 };
@@ -23,10 +25,12 @@ You're absolutely right—while JavaScript objects are ubiquitous and widely use
 ---
 
 #### 2. **Iteration**
-   - **Objects**: You need to manually iterate over object keys, values, or entries using `Object.keys()`, `Object.values()`, or `Object.entries()`. These methods return **arrays**, so you can't use them directly in a `for...of` loop unless you convert them.
-   - **Maps**: Maps are **iterable by default**, meaning you can directly use them in a `for...of` loop or with other iteration techniques. Additionally, Map provides built-in methods like `entries()`, `keys()`, and `values()` that are more efficient since they return **iterators**.
+
+- **Objects**: You need to manually iterate over object keys, values, or entries using `Object.keys()`, `Object.values()`, or `Object.entries()`. These methods return **arrays**, so you can't use them directly in a `for...of` loop unless you convert them.
+- **Maps**: Maps are **iterable by default**, meaning you can directly use them in a `for...of` loop or with other iteration techniques. Additionally, Map provides built-in methods like `entries()`, `keys()`, and `values()` that are more efficient since they return **iterators**.
 
    **Example (Iteration in Objects and Maps):**
+
    ```javascript
    const obj = { a: 1, b: 2, c: 3 };
 
@@ -44,16 +48,19 @@ You're absolutely right—while JavaScript objects are ubiquitous and widely use
    ```
 
    **Advantages of Map Iteration:**
-   - **Performance**: Map's iteration is **more efficient** than objects because Maps store their keys in an insertion order and are optimized for frequent additions and deletions.
-   - **No need for conversion**: You can use Map methods like `map.keys()`, `map.values()`, and `map.entries()` directly in loops.
+
+- **Performance**: Map's iteration is **more efficient** than objects because Maps store their keys in an insertion order and are optimized for frequent additions and deletions.
+- **No need for conversion**: You can use Map methods like `map.keys()`, `map.values()`, and `map.entries()` directly in loops.
 
 ---
 
 #### 3. **Size**
-   - **Objects**: You need to manually compute the size of an object, typically using `Object.keys(obj).length`, which can be error-prone if there are inherited properties.
-   - **Maps**: Maps have a **`size`** property that directly returns the number of entries in the map.
+
+- **Objects**: You need to manually compute the size of an object, typically using `Object.keys(obj).length`, which can be error-prone if there are inherited properties.
+- **Maps**: Maps have a **`size`** property that directly returns the number of entries in the map.
 
    **Example:**
+
    ```javascript
    const obj = { a: 1, b: 2 };
    console.log(Object.keys(obj).length); // 2 (needs manual computation)
@@ -65,10 +72,12 @@ You're absolutely right—while JavaScript objects are ubiquitous and widely use
 ---
 
 #### 4. **Key Existence Check**
-   - **Objects**: You can check if a key exists in an object using the `in` operator or `Object.prototype.hasOwnProperty()`.
-   - **Maps**: Maps have a built-in `has()` method that checks for key existence directly.
+
+- **Objects**: You can check if a key exists in an object using the `in` operator or `Object.prototype.hasOwnProperty()`.
+- **Maps**: Maps have a built-in `has()` method that checks for key existence directly.
 
    **Example:**
+
    ```javascript
    // Object check
    const obj = { a: 1 };
@@ -85,10 +94,12 @@ You're absolutely right—while JavaScript objects are ubiquitous and widely use
 ---
 
 #### 5. **Clearing**
-   - **Objects**: Clearing an object requires manually setting its properties to `null` or creating a new empty object.
-   - **Maps**: Maps have a built-in `clear()` method that removes all key-value pairs.
+
+- **Objects**: Clearing an object requires manually setting its properties to `null` or creating a new empty object.
+- **Maps**: Maps have a built-in `clear()` method that removes all key-value pairs.
 
    **Example:**
+
    ```javascript
    // Object clear
    const obj = { a: 1, b: 2 };
@@ -103,10 +114,12 @@ You're absolutely right—while JavaScript objects are ubiquitous and widely use
 ---
 
 #### 6. **Prototype Inheritance**
-   - **Objects**: Objects have a prototype, so they can inherit properties from `Object.prototype` (e.g., `toString`, `hasOwnProperty`).
-   - **Maps**: Maps do not inherit from `Object.prototype`, so they are free from any unwanted inherited properties or methods. This makes Maps more predictable when iterating over them.
+
+- **Objects**: Objects have a prototype, so they can inherit properties from `Object.prototype` (e.g., `toString`, `hasOwnProperty`).
+- **Maps**: Maps do not inherit from `Object.prototype`, so they are free from any unwanted inherited properties or methods. This makes Maps more predictable when iterating over them.
 
    **Example:**
+
    ```javascript
    // Object
    const obj = { a: 1 };

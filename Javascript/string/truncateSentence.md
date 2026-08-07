@@ -288,7 +288,7 @@ console.log(truncateSentence(s, k)); // Call the function and log the result
 // Output: "Hello how are"
 ````
 
-### Explanation:
+### Explanation
 
 - `const s = "Hello how are you doing today";`: Defines the sentence you want to truncate.
 - `const k = 3;`: Specifies that you want the first 3 words of the sentence.
@@ -302,7 +302,7 @@ When you run the above code, the output will be:
 Hello how are
 ```
 
-### Additional Considerations:
+### Additional Considerations
 
 1. **Edge Case - `k` is greater than the number of words in the sentence:**
    - If `k` exceeds the number of words in `s`, the `slice` method will simply return all the words.
@@ -325,6 +325,241 @@ export function truncateSentence(s, k) {
 
 This would handle the case where `k` is non-positive and return an empty string instead of potentially slicing an empty array.
 
-### Summary:
+### Summary
 
 Your implementation is clean and concise. It correctly truncates the sentence to the specified number of words, and the modular structure using ES6 imports and exports makes it reusable across different parts of your project. Keep up the great work!
+
+Your breakdown of the LeetCode 1816 (`Truncate Sentence`) solution is well-structured and easy to follow!
+
+To help make your `truncateSentence` function even more robust in real-world scenarios, here are two important edge cases and how to address them:
+
+---
+
+### 1. Handling Multiple Consecutive Spaces
+
+If the input string contains extra spaces (e.g., `"Hello   how are  you"`), standard `s.split(" ")` creates empty strings `""` in the array.
+
+Using the regular expression `/\s+/` ensures that multiple spaces are treated as a single delimiter:
+
+```javascript
+// ❌ Standard split creates empty elements if extra spaces exist
+"Hello   world".split(" "); 
+// Output: ["Hello", "", "", "world"]
+
+// ✅ Regex split handles multiple spaces cleanly
+"Hello   world".split(/\s+/); 
+// Output: ["Hello", "world"]
+
+```
+
+---
+
+### 2. Guarding Against Empty Inputs
+
+If `s` is empty or `null`, calling `s.split()` will throw a `TypeError`. Adding a simple guard clause at the start of your function keeps it safe.
+
+---
+
+### Refactored `truncateSentence.js`
+
+Here is an updated, production-ready version of your module:
+
+```javascript
+// truncateSentence.js
+
+/**
+ * Truncates a sentence to the first k words.
+ *
+ * @param {string} s - The input sentence
+ * @param {number} k - The number of words to keep
+ * @returns {string} Truncated sentence
+ */
+export function truncateSentence(s, k) {
+  // Guard clause for invalid or non-positive k values, or empty strings
+  if (!s || typeof s !== "string" || k <= 0) {
+    return "";
+  }
+
+  // Split by one or more whitespace characters
+  const words = s.trim().split(/\s+/);
+
+  // Return original string if k exceeds total word count
+  if (k >= words.length) {
+    return s.trim();
+  }
+
+  // Slice first k words and join with a single space
+  return words.slice(0, k).join(" ");
+}
+
+```
+
+---
+
+### Verification Matrix
+
+```javascript
+// main.js
+import { truncateSentence } from "./truncateSentence.js";
+
+console.log(truncateSentence("Hello how are you doing today", 4));
+// Output: "Hello how are you"
+
+console.log(truncateSentence("What is the solution to this problem", 2));
+// Output: "What is"
+
+console.log(truncateSentence("chopper is  a   good  bear", 5));
+// Output: "chopper is a good bear" (Cleans extra spaces)
+
+console.log(truncateSentence("Hello", 10));
+// Output: "Hello" (k > word count)
+
+console.log(truncateSentence("Hello world", 0));
+// Output: "" (k = 0)
+
+```
+
+The time and space complexity of `String.prototype.split()` and `String.prototype.slice()` depend on string length, delimiter complexity, and underlying JavaScript engine mechanics (like V8).
+
+---
+
+### Summary Table
+
+| Method                                                   | Time Complexity                                | Space Complexity                                                                         |
+| -------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **`String.prototype.slice(start, end)`**                 | $\mathcal{O}(M)$                               | $\mathcal{O}(M)$ auxiliary space (or $\mathcal{O}(1)$ in engine-internal sliced strings) |
+| **`String.prototype.split(separator)` (Literal String)** | $\mathcal{O}(N)$                               | $\mathcal{O}(N)$ auxiliary space                                                         |
+| **`String.prototype.split(regex)` (Regex Separator)**    | $\mathcal{O}(N \cdot K)$ to $\mathcal{O}(2^N)$ | $\mathcal{O}(N)$ auxiliary space                                                         |
+
+*Where $N$ is the length of the source string, $M$ is the length of the sliced substring, and $K$ is the complexity of the regular expression match.*
+
+---
+
+### 1. `String.prototype.slice(start, end)`
+
+`slice()` creates a new substring from index `start` up to (but not including) `end`. Let $M = \text{end} - \text{start}$.
+
+#### Time Complexity: $\mathcal{O}(M)$
+
+- Finding the start and end offsets takes $\mathcal{O}(1)$ pointer arithmetic.
+- The engine copies $M$ character bytes into a new memory location, resulting in linear time relative to the **sliced substring length** $M$, not the original string length.
+
+#### Space Complexity: $\mathcal{O}(M)$
+
+- In JavaScript, strings are immutable primitive values. `slice()` allocates a new string in memory of length $M$.
+- **Engine Optimization Note (V8 Sliced Strings):** Modern JS engines (like Chrome/Node.js V8) sometimes optimize short-lived or large slices by creating a internal "Sliced String" object. This object holds a pointer back to the parent string plus start/end offsets without copying underlying bytes immediately ($\mathcal{O}(1)$ time/space). However, for algorithmic complexity analysis and long-term GC behavior, it is treated as $\mathcal{O}(M)$.
+
+---
+
+### 2. `String.prototype.split(separator, limit)`
+
+`split()` searches a string for a separator, extracts all matching segments, and returns them inside a newly allocated array.
+
+#### Time Complexity
+
+1. **String Separator (e.g., `str.split(",")`): $\mathcal{O}(N)$**
+
+* Uses fast string-matching algorithms (like Boyer-Moore-Horspool or simple byte scans) to find delimiters in a single pass over $N$ characters.
+
+1. **Regex Separator (e.g., `str.split(/\s+/)`): $\mathcal{O}(N \cdot K)$**
+
+* The engine's regex parser evaluates the match at each position. For standard linear patterns, it runs in $\mathcal{O}(N)$ time.
+- **ReDoS Warning:** If using an unoptimized or complex regex with nested quantifiers (e.g. `/(a+)+/`), performance can degrade to exponential time $\mathcal{O}(2^N)$ due to catastrophic backtracking.
+
+#### Space Complexity: $\mathcal{O}(N)$
+
+- `split()` must allocate memory for:
+
+1. A new `Array` object holding $K$ element references.
+2. The individual substring elements extracted from the original string.
+
+- The combined memory usage of all generated array elements equals $N$ characters plus array pointer overhead, giving $\mathcal{O}(N)$ space complexity.
+
+---
+
+### Algorithmic Optimization Tip
+
+If you only need to process a string token-by-token or extract the first $k$ items (like in `truncateSentence`), calling `str.split(" ")` allocates memory for **all** $N$ characters upfront.
+
+To optimize space to $\mathcal{O}(1)$ auxiliary memory, use a manual index-scanning loop instead of `split()`:
+
+```javascript
+// ❌ Split approach: O(N) space (creates full array of all words)
+function truncateSplit(str, k) {
+  return str.split(" ").slice(0, k).join(" ");
+}
+
+// ✅ Pointer approach: O(M) time, O(M) space (allocates ONLY the result string)
+function truncatePointer(str, k) {
+  let wordCount = 0;
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] === " ") {
+      wordCount++;
+      if (wordCount === k) {
+        return str.slice(0, i); // Slice once when target count is reached
+      }
+    }
+  }
+  return str;
+}
+
+```
+
+To solve **LeetCode 1816: Truncate Sentence** without allocating a temporary array (which `str.split()` normally does in $\mathcal{O}(N)$ space), you can iterate through the string using a single pointer to count space characters.
+
+Once you encounter the $k$-th space, you return a slice of the string from index `0` up to that point.
+
+---
+
+### $\mathcal{O}(1)$ Extra Space Solution
+
+```javascript
+/**
+ * @param {string} s
+ * @param {number} k
+ * @return {string}
+ */
+var truncateSentence = function(s, k) {
+  let spacesSeen = 0;
+  
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === ' ') {
+      spacesSeen++;
+      // As soon as we hit the k-th space, slice the prefix
+      if (spacesSeen === k) {
+        return s.slice(0, i);
+      }
+    }
+  }
+  
+  // If we didn't encounter k spaces, return the entire string as-is
+  return s;
+};
+
+// --- Tests ---
+console.log(truncateSentence("Hello how are you doing today", 4)); 
+// Output: "Hello how are you"
+
+console.log(truncateSentence("What is the solution to this problem", 2)); 
+// Output: "What is"
+
+console.log(truncateSentence("Chopper", 1)); 
+// Output: "Chopper"
+
+```
+
+---
+
+### How It Works
+
+1. **Pointer Tracking:** Instead of splitting the string into an array of words, we loop through the string index-by-index (`i`).
+2. **Space Counter:** We increment `spacesSeen` every time `s[i]` is a space `' '`.
+3. **Early Exit:** When `spacesSeen === k`, index `i` is located right at the delimiter after the $k$-th word. `s.slice(0, i)` returns the exact $k$-word prefix.
+4. **Fallback:** If `k` is equal to or greater than the number of words in the sentence, the loop finishes without reaching `spacesSeen === k`. We return `s` directly.
+
+---
+
+### Complexity Analysis
+
+- **Time Complexity:** $\mathcal{O}(N)$ where $N$ is the length of string `s`. In the worst case, we scan the string once.
+- **Space Complexity:** $\mathcal{O}(1)$ auxiliary space. Unlike `.split()`, we do not allocate a new array or array pointers in memory. (Returning the result string takes $\mathcal{O}(M)$ space where $M \le N$, which is required by output constraints in JavaScript strings).

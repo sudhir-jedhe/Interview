@@ -1202,3 +1202,80 @@ module.exports = {
   plugins: [require("@tailwindcss/line-clamp")],
 };
 ```
+
+Here is a clean, reusable React component that handles text truncation with a **"Load More" / "Show Less"** (or expandable) toggle.
+
+---
+
+### Component Implementation (`TruncatedText.jsx`)
+
+```jsx
+import React, { useState } from 'react';
+
+const TruncatedText = ({ text, maxLength = 100 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // If text is shorter than the max length, just render it normally
+  if (text.length <= maxLength) {
+    return <p className="text-gray-700">{text}</p>;
+  }
+
+  // Determine what text to display
+  const displayedText = isExpanded ? text : text.slice(0, maxLength) + '...';
+
+  return (
+    <div className="text-gray-700 leading-relaxed">
+      <p className="inline">{displayedText}</p>
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="ml-2 text-blue-600 font-medium hover:underline focus:outline-none"
+      >
+        {isExpanded ? 'Show Less' : 'Load More'}
+      </button>
+    </div>
+  );
+};
+
+export default TruncatedText;
+
+```
+
+---
+
+### Example Usage (`App.jsx`)
+
+```jsx
+import React from 'react';
+import TruncatedText from './TruncatedText';
+
+function App() {
+  const longDescription = 
+    "React is a free and open-source front-end JavaScript library for building user interfaces based on components. It is maintained by Meta and a community of individual developers and companies. React can be used as a base in the development of single-page or mobile applications.";
+
+  return (
+    <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">
+      <h2 className="text-xl font-bold text-black">Product Overview</h2>
+      <TruncatedText text={longDescription} maxLength={80} />
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+---
+
+### Alternative: Word-Based Truncation (Instead of Characters)
+
+If you prefer cutting off text by a specific **number of words** instead of characters (which prevents cutting words right in the middle), use this alternative logic for the `displayedText`:
+
+```jsx
+const words = text.split(' ');
+const isTooLong = words.length > maxLength; // here maxLength acts as maxWords
+
+const displayedText = isExpanded || !isTooLong
+  ? text
+  : words.slice(0, maxLength).join(' ') + '...';
+
+```

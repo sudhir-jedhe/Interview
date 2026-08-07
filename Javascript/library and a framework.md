@@ -36,12 +36,12 @@ The terms **library** and **framework** are often used interchangeably, but they
 - **Framework**:
   - A framework typically has a defined structure, and customization is possible, but it’s often done within the framework’s conventions and limitations.
 
-### 5. **Example to Illustrate**:
+### 5. **Example to Illustrate**
 
 - **React** (Library): React provides you with the tools to build components and manage state, but it doesn't enforce any application structure. You can choose how to structure your app.
 - **Angular** (Framework): Angular provides an entire structure for building single-page applications, including routing, templating, forms, and more. It also dictates how you should organize your code.
 
-### Summary:
+### Summary
 
 - **Library**: A collection of functions you call to perform tasks, and you control the flow of the application.
 - **Framework**: A structure with predefined rules and workflows, and the framework controls the flow of the application, calling your code at specific points.
@@ -57,6 +57,7 @@ In the context of frameworks like Angular, **templates** and **components** serv
    - Templates define how the data in the component should be displayed to the user.
    - It can include **HTML**, **Angular directives**, **bindings**, and **expressions**.
    - **Example**: In Angular, the `template` is often the HTML file that is associated with a component.
+
      ```html
      <!-- Template Example -->
      <div>
@@ -70,6 +71,7 @@ In the context of frameworks like Angular, **templates** and **components** serv
    - A component includes the **template**, as well as the **logic** to handle user interactions, lifecycle hooks, and data updates.
    - In Angular, a component is defined using the `@Component` decorator, which links the class to the template.
    - **Example**: A component in Angular would look like this:
+
      ```typescript
      // Component Example (Angular)
      @Component({
@@ -133,13 +135,14 @@ Both **Promises** and **Observables** are used to handle asynchronous operations
      ```
 
 **Key Differences**:
-| **Feature** | **Promise** | **Observable** |
-|----------------------|-----------------------------------------------|----------------------------------------------|
-| **Type of Result** | Single value (resolved or rejected) | Multiple values (can emit values over time) |
-| **Execution** | Eager (executes immediately) | Lazy (executes when subscribed to) |
-| **Cancellation** | Cannot cancel once started | Can be cancelled or unsubscribed at any time |
-| **Multiple Values** | Cannot emit multiple values | Can emit multiple values (streams of data) |
-| **API** | `.then()`, `.catch()` | `.subscribe()`, `.unsubscribe()` |
+
+| **Feature**         | **Promise**                         | **Observable**                               |
+| ------------------- | ----------------------------------- | -------------------------------------------- |
+| **Type of Result**  | Single value (resolved or rejected) | Multiple values (can emit values over time)  |
+| **Execution**       | Eager (executes immediately)        | Lazy (executes when subscribed to)           |
+| **Cancellation**    | Cannot cancel once started          | Can be cancelled or unsubscribed at any time |
+| **Multiple Values** | Cannot emit multiple values         | Can emit multiple values (streams of data)   |
+| **API**             | `.then()`, `.catch()`               | `.subscribe()`, `.unsubscribe()`             |
 
 **Summary**:
 
@@ -151,6 +154,7 @@ Both **Promises** and **Observables** are used to handle asynchronous operations
 To implement geolocation in a web application, you can use the **Geolocation API**, which provides access to the user's geographic position.
 
 - **Example**:
+
   ```javascript
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
@@ -221,6 +225,7 @@ Push notifications in web applications can be implemented using the **Push API**
 - Cookies are automatically sent with every HTTP request to the server (via the `Cookie` header).
 - Cookies can be set with an expiration date and can be either **session cookies** (deleted after the session ends) or **persistent cookies**.
 - **Example** of setting a cookie:
+
   ```javascript
   document.cookie =
     "user=JohnDoe; expires=Thu, 31 Dec 2025 12:00:00 UTC; path=/";
@@ -263,6 +268,7 @@ Web browsers provide several storage options for client-side data:
    - **Persistent storage** that can store up to 5MB of data.
    - Data persists even after the user closes the browser.
    - **Example**:
+
      ```javascript
      localStorage.setItem("key", "value");
      const value = localStorage.getItem("key");
@@ -271,6 +277,7 @@ Web browsers provide several storage options for client-side data:
 2. **sessionStorage**:
    - Similar to **localStorage**, but data is cleared when the browser window is closed.
    - **Example**:
+
      ```javascript
      sessionStorage.setItem("sessionKey", "sessionValue");
      const sessionValue = sessionStorage.getItem("sessionKey");
@@ -288,12 +295,14 @@ Caching is important for improving performance by reducing unnecessary requests 
 
 1. **Cache-Control Headers**:
    - HTTP headers can be set by the server to control caching behavior. For example, you can set cache expiration or specify that resources should be revalidated.
+
      ```http
      Cache-Control: max-age=3600
      ```
 
 2. **Service Workers**:
    - Service workers can cache network requests, allowing for **offline access** and faster page loads by intercepting requests and returning cached responses.
+
      ```javascript
      self.addEventListener("fetch", function (event) {
        event.respondWith(
@@ -334,6 +343,7 @@ Both **web workers** and **service workers** allow for background processing in 
 - A **Service Worker** is a special type of web worker that acts as a proxy between the browser and the network. It can intercept and cache network requests, enabling features like **offline access** and **push notifications**.
 - Service workers are used in progressive web apps (PWAs) for features like background sync and push notifications.
 - **Example** of registering a service worker:
+
   ```javascript
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
@@ -351,12 +361,13 @@ Both **web workers** and **service workers** allow for background processing in 
   ```
 
 **Key Differences**:
-| **Feature** | **Web Worker** | **Service Worker** |
-|-----------------------|---------------------------------------|-----------------------------------------------|
-| **Purpose** | Run background tasks (no UI blocking) | Manage network requests, enable offline use |
-| **Access to DOM** | Cannot access DOM | Cannot access DOM |
-| **Use Case** | Background computation and processing | Caching, push notifications, background sync |
-| **Life Cycle** | Runs while the page is open | Runs independently of the page (even in background) |
+
+| **Feature**       | **Web Worker**                        | **Service Worker**                                  |
+| ----------------- | ------------------------------------- | --------------------------------------------------- |
+| **Purpose**       | Run background tasks (no UI blocking) | Manage network requests, enable offline use         |
+| **Access to DOM** | Cannot access DOM                     | Cannot access DOM                                   |
+| **Use Case**      | Background computation and processing | Caching, push notifications, background sync        |
+| **Life Cycle**    | Runs while the page is open           | Runs independently of the page (even in background) |
 
 **Summary**:
 

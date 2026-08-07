@@ -249,23 +249,6 @@ function sortArrayDesc(arr) {
 console.log(sortArrayDesc([3, 1, 4, 1, 2])); // [4, 3, 2, 1, 1]
 ```
 
-### **19. Reverse the order of words in a sentence without using the built-in `reverse()` method:**
-
-```javascript
-function reverseWords(sentence) {
-  const words = sentence.split(" ");
-  let reversedSentence = "";
-
-  for (let i = words.length - 1; i >= 0; i--) {
-    reversedSentence += words[i] + " ";
-  }
-
-  return reversedSentence.trim();
-}
-
-console.log(reverseWords("The quick brown fox")); // "fox brown quick The"
-```
-
 ### **20. Flatten a nested array into a single-dimensional array:**
 
 ```javascript

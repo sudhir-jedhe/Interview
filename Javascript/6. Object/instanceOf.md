@@ -13,7 +13,7 @@ console.log(Function instanceof Function); // true
 console.log(Object instanceof Object); // true
 ```
 
-#### Explanation:
+#### Explanation
 
 - **`Function instanceof Object`**: `Function` is an object in JavaScript, so `Function` itself is an instance of `Object`. Therefore, the result is `true`.
   
@@ -25,7 +25,7 @@ console.log(Object instanceof Object); // true
 
 ---
 
-### 2. `typeof null`, `null instanceof Object`, `typeof 1`, `1 instanceof Number`, `1 instanceof Object`, `Number(1) instanceof Object`, etc.
+### 2. `typeof null`, `null instanceof Object`, `typeof 1`, `1 instanceof Number`, `1 instanceof Object`, `Number(1) instanceof Object`, etc
 
 ```javascript
 console.log(typeof null); // "object"
@@ -45,7 +45,7 @@ console.log([] instanceof Object); // true
 console.log((() => {}) instanceof Object); // true
 ```
 
-#### Explanation:
+#### Explanation
 
 - **`typeof null`**: This is a historical bug in JavaScript. `typeof null` returns `"object"`, but `null` is not actually an object. It's a special primitive value representing no value or a null reference.
 
@@ -104,7 +104,7 @@ function instanceOfClass(obj, targetClass) {
 }
 ```
 
-#### Explanation:
+#### Explanation
 
 - **What is `instanceOfClass`?**
 
@@ -113,7 +113,7 @@ function instanceOfClass(obj, targetClass) {
   - **Base Case**: If the object's prototype matches the class's prototype, it returns `true`.
   - **Recursive Case**: If the prototype doesn't match, it continues checking the object's prototype (parent class).
 
-#### How it works:
+#### How it works
 
 - `objB` is an instance of `B`, and `B` extends `A`. So, `objB` is also an instance of `A`, due to inheritance.
   
@@ -123,7 +123,7 @@ function instanceOfClass(obj, targetClass) {
 
 - `instanceOfClass(objB, C)` returns `false` because `objB` does not inherit from `C`.
 
-#### Key Points:
+#### Key Points
 
 - **Prototype Chain**: The function checks if the object's prototype matches the `prototype` of the target class. If not, it checks the prototype of the prototype, and so on.
   
@@ -131,22 +131,21 @@ function instanceOfClass(obj, targetClass) {
 
 ---
 
-### Summary of Key Concepts:
+### Summary of Key Concepts
 
-1. **`typeof` and `instanceof`**: 
+1. **`typeof` and `instanceof`**:
    - `typeof` checks the type of a value (such as `"object"`, `"number"`, `"boolean"`, etc.).
    - `instanceof` checks if an object is an instance of a particular class or constructor function by looking at the prototype chain.
 
-2. **Prototype Chain**: 
+2. **Prototype Chain**:
    - In JavaScript, objects are linked through prototypes. An object inherits properties and methods from its prototype, and this can form a chain of objects.
    - The `instanceOfClass` function demonstrates how to manually traverse this prototype chain to check if an object is an instance of a class.
 
 ---
 
-### Conclusion:
+### Conclusion
 
 The quiz touches on some fundamental concepts in JavaScript, including the differences between primitive values and objects, as well as the way inheritance works in both classical and prototype-based OOP. The `instanceOfClass` function is an example of how JavaScript's prototype-based inheritance can be manually traversed, showing how `instanceof` works behind the scenes.
-
 
 /********************************** */
 class A {}
@@ -158,7 +157,6 @@ instanceOfClass(objB, A) // true
 
 class C {}
 instanceOfClass(objB, C) // false
-
 
 function instanceOfClass(obj, targetClass) {
     if (!obj || typeof obj !== 'object') return false

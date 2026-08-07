@@ -679,3 +679,81 @@ class Locator {
 | **Cypress**    | Managed async command queueing          | Internal runner processes queue              |
 | **Lodash**     | Data transformation pipeline            | Explicit `.value()` call                     |
 | **Playwright** | Lazy element locating with auto-waiting | Async action promise (e.g. `await .click()`) |
+
+Using a JavaScript **`Proxy`** allows you to intercept property lookups and dynamically return functions on the fly, entirely bypassing the need to predefine methods.
+
+This technique is frequently used for building query builders, styling wrappers, or mock utility APIs where method names aren't known ahead of time.
+
+---
+
+### Dynamic Method Chaining Implementation
+
+The core trick relies on the **`get` trap** of a `Proxy`. Whenever any method (like `.anything()`) is accessed, the proxy intercepts the call, returns an executable function that mutates state, and then returns **itself** (wrapped in the proxy again) to maintain the chain.
+
+```javascript
+function createDynamicCalculator(initialValue = 0) {
+  const state = {
+    value: initialValue,
+    operations: []
+  };
+
+  const handler = {
+    get(target, prop) {
+      // 1. If the user calls .value(), exit the chain and return the final result
+      if (prop === "valueOf" || prop === "getValue") {
+        return () => target.value;
+      }
+
+      // 2. Dynamically return a function for ANY method name called
+      return function (...args) {
+        // Record or execute the operation dynamically based on the method name (`prop`)
+        target.operations.push({ method: prop, args });
+
+        // Perform basic mock math operations based on the method name dynamically
+        if (prop === "add") target.value += args[0];
+        if (prop === "subtract") target.value -= args[0];
+        if (prop === "multiply") target.value *= args[0];
+        if (prop === "divide") target.value /= args[0];
+
+        // 3. Return the proxy object itself to keep the method chain alive
+        return new Proxy(target, handler);
+      };
+    }
+  };
+
+  return new Proxy(state, handler);
+}
+
+```
+
+---
+
+### Usage Example
+
+Notice that methods like `.add()`, `.multiply()`, or even completely custom methods like `.customOperation()` can be chained seamlessly without writing explicit class definitions for them:
+
+```javascript
+const calc = createDynamicCalculator(10);
+
+const result = calc
+  .add(30)       // 10 + 30 = 40
+  .multiply(3)   // 40 * 3 = 120
+  .subtract(20)  // 120 - 20 = 100
+  .divide(4)     // 100 / 4 = 25
+  .getValue();   // Terminal method to unwrap
+
+console.log(result); // 25
+
+```
+
+---
+
+### How It Works Under the Hood
+
+1. **Trap Interception (`get`)**: When you invoke `.add(30)` on the proxy, JavaScript triggers the `get` trap where `prop` equals `"add"`.
+2. **Dynamic Function Generation**: Instead of checking if an `add` method exists on an object, the trap dynamically returns a wrapper function that accepts arguments (`...args`).
+3. **Maintaining the Chain**: That wrapper function executes the logic and returns `new Proxy(target, handler)` (the proxy instance), allowing the next dot-notation call to execute immediately.
+
+[Learn JS METHOD CHAINING in 5 minutes!](https://www.youtube.com/watch?v=J4YhlDsNqeE)
+
+This video provides a quick foundational look at how standard method chaining works sequentially in JavaScript code.

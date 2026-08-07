@@ -12,12 +12,12 @@ data && data.showNotifications && data.showNotifications();
   - For `userName`: First, we check if `data` is truthy (`data &&`). If `data` exists, we check if `data.user` is also truthy (`data.user &&`). If both are valid, we can then safely access `data.user.name`.
   - Similarly, we do the same for `userType` and for calling `showNotifications` method. If any part of the chain is `undefined` or `null`, the whole expression will short-circuit and return `undefined`.
 
-#### Advantages:
+#### Advantages
 
 - This method is compatible with all JavaScript versions (even before ECMAScript 2020, which introduced optional chaining).
 - It works well for nested objects where some properties might be missing or undefined.
 
-#### Disadvantages:
+#### Disadvantages
 
 - It can become verbose and harder to read, especially for deeply nested structures.
 - If you need to check multiple nested properties, you have to repeat the `&&` checks at each level.
@@ -35,13 +35,13 @@ data.showNotifications?.();
   - Similarly, for `userType`, `data?.user?.type` works the same way.
   - For the `showNotifications` method call, `data.showNotifications?.()` checks if `showNotifications` exists before invoking it. If it's `undefined` or `null`, it safely does nothing without an error.
 
-#### Advantages:
+#### Advantages
 
 - It greatly simplifies code by reducing repetitive `&&` checks.
 - It improves readability and is more concise, especially when dealing with deeply nested objects.
 - It handles `null` and `undefined` more gracefully without throwing runtime errors, providing cleaner, more maintainable code.
 
-#### Disadvantages:
+#### Disadvantages
 
 - It is **not supported in older JavaScript environments**, so you'd need to transpile the code if you're targeting older browsers or environments that don't support ES2020 features.
 - It might hide some bugs if you accidentally expect non-null/undefined values but use optional chaining, which silently fails.
@@ -186,8 +186,8 @@ function UserAvatar({ user }) {
 user?.name = "Alice";
 ```
 
-2. **Short-circuiting behavior:** If the left side is `null` or `undefined`, the rest of the expression to the right is **not** evaluated.
-3. **Event Handler Gotcha:** Don't forget parentheses when calling optional handlers:
+1. **Short-circuiting behavior:** If the left side is `null` or `undefined`, the rest of the expression to the right is **not** evaluated.
+2. **Event Handler Gotcha:** Don't forget parentheses when calling optional handlers:
 
 ```jsx
 // ❌ Returns the function without invoking it
@@ -197,3 +197,66 @@ user?.name = "Alice";
 <button onClick={() => props.onSave?.()}>Save</button>
 
 ```
+
+You've put together an exhaustive guide! The way you highlighted optional calls (`?.()`), array access (`?.[0]`), and the interaction between `?.` and the nullish coalescing operator (`??`) directly addresses where most React developers hit runtime errors.
+
+To make this analysis complete, there are three critical edge cases worth noting that often catch developers off guard in production:
+
+### 1. Falsy Value Pitfall: `&&` vs `?.` in JSX Rendering
+
+One major advantage of `?.` over the traditional `&&` chain in React JSX is avoiding **unintended renders of falsy values**.
+
+When using `&&` for defensive checks with numerical values, JavaScript evaluates to the falsy value itself, causing React to render `0` or `NaN` directly onto the DOM:
+
+```jsx
+// ❌ Renders "0" to the screen if items array is empty!
+{data && data.items && data.items.length && <List items={data.items} />}
+
+// ✅ Correct: Only renders when the length condition evaluates to true
+{data?.items?.length > 0 && <List items={data.items} />}
+
+```
+
+### 2. Optional Chaining on Non-Existent Top-Level Variables
+
+Optional chaining **only checks properties on objects**, not whether a top-level variable itself has been declared.
+
+```javascript
+// ❌ ReferenceError: myVariable is not defined
+const result = myVariable?.property; 
+
+// ✅ Correct for global checks
+const result = typeof myVariable !== 'undefined' ? myVariable?.property : undefined;
+
+```
+
+### 3. Deep Nesting & Modern Transpilation Cost
+
+While modern browsers support `?.` natively (c. ~2020), if you transpile your React code to older targets via Babel or SWC, deeply nested optional chains expand into multiple temporary variables and conditional checks behind the scenes:
+
+```javascript
+// Input
+const city = a?.b?.c?.d;
+
+// Output (Transpiled ES5 equivalent)
+var _a, _a$b, _a$b$c;
+var city = (_a = a) === null || _a === void 0 
+  ? void 0 
+  : (_a$b = _a.b) === null || _a$b === void 0 
+    ? void 0 
+    : (_a$b$c = _a$b.c) === null || _a$b$c === void 0 
+      ? void 0 
+      : _a$b$c.d;
+
+```
+
+For 99% of apps this has zero noticeable performance impact, but keeping chains strictly to expected potential nullish boundaries (rather than adding `?.` to *every* single dot out of habit) keeps output bundles cleaner.
+
+### Summary Checklist for React Component Design
+
+| Task                   | Best Practice                                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------ |
+| **Component Props**    | Use `props.onCustomEvent?.()` to invoke optional handlers cleanly.                   |
+| **Fallback Values**    | Combine `user?.name ?? 'Guest'` (preserves empty strings `""`).                      |
+| **Array Mapping**      | Safely map over optional API arrays with `data?.items?.map(...)`.                    |
+| **Conditional Layout** | Check explicit boolean/length comparisons: `data?.list?.length > 0 && <Component/>`. |

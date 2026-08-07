@@ -98,6 +98,124 @@ console.log(reverseWords(sentence)); // Output: "javascript love I"
    - **More verbose** and potentially less readable.
    - Uses more complex logic with `substr()` and two while loops to handle word reversal.
 
-### Final Note:
+### Final Note
 
 If you're focusing on performance and simplicity, the first approach (`reverseWords` using built-in methods) is preferable in most cases. The second approach is more educational and gives you a deeper understanding of how you could manipulate strings manually without relying on built-in functions.
+
+This breakdown clearly compares the **high-level functional approach** against the **low-level pointer approach** for **LeetCode 151: Reverse Words in a String**.
+
+However, there are two important technical flaws in the analysis for **Solution 2 (Manual String Reversal)** that are critical for JavaScript interviews:
+
+---
+
+### Critical Corrections for Solution 2
+
+#### 1. JavaScript Strings are Immutable ($O(N^2)$ Time Bug)
+
+In JavaScript, strings cannot be modified in place. Executing `sentence.substr(...)` inside a character loop creates a brand-new string on every swap iteration ($O(N)$ work per character).
+
+- **Claimed Time Complexity:** $O(N)$
+- **Actual Time Complexity:** **$O(N^2)$** due to `substr()` string allocations inside the loop.
+
+#### 2. Space Complexity is NOT $O(1)$
+
+Because `substr()` and `split("").reverse().join("")` allocate new strings and character arrays in heap memory, the manual solution actually uses **$O(N)$ space**, not $O(1)$.
+
+---
+
+### How to Implement True $O(N)$ Time & $O(1)$ Auxiliary Space
+
+To achieve true $O(1)$ auxiliary space in JavaScript, you must convert the string into a **character array** (`char[]`) once at the start, perform all pointer manipulations on the array in place, and join it back at the end.
+
+#### 3-Step In-Place Algorithm
+
+1. **Clean Extra Spaces:** Remove leading, trailing, and multiple middle spaces in a single $O(N)$ pass using a write pointer.
+2. **Reverse the Entire Array:** Reverses the order of words (and the character order inside each word).
+3. **Reverse Each Word Individually:** Restores correct letter ordering within each word.
+
+```javascript
+/**
+ * True O(N) Time & O(1) Auxiliary Space Solution (using character array)
+ * @param {string} s
+ * @return {string}
+ */
+function reverseWordsOptimal(s) {
+  // 1. Convert to character array for true in-place mutations
+  const chars = s.split('');
+  
+  // 2. Remove extra spaces in-place
+  let write = 0;
+  let read = 0;
+  const n = chars.length;
+
+  while (read < n) {
+    // Skip leading/extra spaces
+    while (read < n && chars[read] === ' ') read++;
+    
+    // Copy word characters
+    if (read < n && write > 0) {
+      chars[write++] = ' '; // Add single space separator between words
+    }
+    
+    while (read < n && chars[read] !== ' ') {
+      chars[write++] = chars[read++];
+    }
+  }
+
+  // Trim array to valid length
+  chars.length = write;
+
+  // Helper function to reverse array segment in-place
+  function reverseRange(arr, start, end) {
+    while (start < end) {
+      const temp = arr[start];
+      arr[start] = arr[end];
+      arr[end] = temp;
+      start++;
+      end--;
+    }
+  }
+
+  // 3. Reverse the entire cleaned character array
+  reverseRange(chars, 0, chars.length - 1);
+
+  // 4. Reverse each individual word back to original letter order
+  let start = 0;
+  for (let end = 0; end <= chars.length; end++) {
+    if (end === chars.length || chars[end] === ' ') {
+      reverseRange(chars, start, end - 1);
+      start = end + 1;
+    }
+  }
+
+  return chars.join('');
+}
+
+// Verification
+console.log(reverseWordsOptimal("  a good   example  ")); // "example good a"
+
+```
+
+---
+
+### Simplified Functional Alternative (Regex Split)
+
+For Solution 1, you can simplify the chain by passing a regular expression directly to `.split(/\s+/)` and filtering empty tokens, avoiding `.trim()` and `.replace()` entirely:
+
+```javascript
+const reverseWordsConcise = (s) => 
+  s.trim().split(/\s+/).reverse().join(" ");
+
+console.log(reverseWordsConcise("a good   example")); // "example good a"
+
+```
+
+---
+
+### Revised Complexity Comparison
+
+| Solution                            | Time Complexity | Auxiliary Space                           | Readability        | Best Used For                           |
+| ----------------------------------- | --------------- | ----------------------------------------- | ------------------ | --------------------------------------- |
+| **Regex Split + Reverse**           | $O(N)$          | $O(N)$                                    | ⭐⭐⭐⭐⭐ (Cleanest)   | Production JS Code & Web Apps           |
+| **Original Manual Code (`substr`)** | **$O(N^2)$**    | $O(N)$                                    | ⭐⭐ (Verbose/Buggy) | ❌ Avoid in Interviews                   |
+| **In-Place Char Array Pointer**     | **$O(N)$**      | **$O(1)$** *(excluding array conversion)* | ⭐⭐⭐ (Low-level)    | LeetCode / Low-Level Memory Constraints |

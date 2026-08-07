@@ -102,3 +102,62 @@ console.log(findNested(elements, "foo", "bar"));
 - **Space Complexity**: The space complexity is O(d), where `d` is the depth of recursion (the depth of nesting in your object), as the call stack will grow proportionally to the depth.
 
 This solution is efficient for most use cases where you're looking for a deeply nested property in JavaScript.
+
+Your solution correctly identifies and fixes the primary issues with object iteration and recursion context.
+
+There are, however, **three subtle edge cases** in this implementation that could cause runtime errors or unexpected behavior in production code:
+
+---
+
+### Key Edge Cases to Watch Out For
+
+1. **Top-Level `null` / Non-Object Guard**
+If `findNested(null, 'key', 'value')` or `findNested("string", 'key', 'value')` is called directly, `obj[key]` will throw a `TypeError` before hitting the loop.
+2. **Prototype Inheritance Overhead (`for...in`)**
+The `for...in` loop iterates over enumerable properties in the **prototype chain**. If your objects inherit from a standard base or custom prototype, it can lead to redundant checks or unintended recursions. `Object.keys()` or `Object.values()` prevents this.
+3. **Breadth vs. Depth Search (Short-circuiting in Arrays)**
+When searching `elements` for `"icon": "edit"`, `for...in` dives straight down into index `0`'s nested `elements` array before checking index `1`. In your test data, `"nested_element"` also has `"icon": "edit"`. Because it performs a **Depth-First Search (DFS)**, it returns `"nested_element"` rather than the second top-level object:
+
+```javascript
+// Actual output for console.log(findNested(elements, "icon", "edit")):
+{ id_base: "nested_element", icon: "edit", name: "nested_container" }
+// (Not the second top-level element as noted in the example comment)
+
+```
+
+---
+
+### Robust ES6+ Refactored Version
+
+Here is a modernized version that addresses top-level null checks, skips inherited prototype properties, and uses `Object.entries()` for cleaner key-value traversal:
+
+```javascript
+function findNested(obj, key, value) {
+  // 1. Guard against null, undefined, or non-object primitives
+  if (!obj || typeof obj !== "object") {
+    return undefined;
+  }
+
+  // 2. Base case check
+  if (obj[key] === value) {
+    return obj;
+  }
+
+  // 3. Iteration over own enumerable properties
+  for (const val of Object.values(obj)) {
+    if (val && typeof val === "object") {
+      const found = findNested(val, key, value);
+      if (found) return found;
+    }
+  }
+
+  return undefined;
+}
+
+```
+
+### Summary of Enhancements
+
+- **Safety**: Safe against initial `null`/`undefined` arguments.
+- **Cleaner Traversal**: `Object.values(obj)` avoids prototype pollution without needing manual `hasOwnProperty` checks.
+- **Flexibility**: Works seamlessly across plain objects, arrays, and multi-level nested structures.

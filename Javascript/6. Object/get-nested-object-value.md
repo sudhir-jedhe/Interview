@@ -1,6 +1,7 @@
 Your code examples provide different ways of working with deeply nested data structures in JavaScript. Let’s break down each of your functions and explain how they work and how you can optimize or fix them if necessary.
 
 ### 1. **`deepGet` Function**
+
 The `deepGet` function allows you to access a nested property of an object using an array of keys.
 
 ```javascript
@@ -17,12 +18,13 @@ deepGet(data, ['foo', 'foz', 2]); // 3
 deepGet(data, ['foo', 'bar', 'baz', 8, 'foz']); // null
 ```
 
-- **How it works**: 
+- **How it works**:
   - The function uses `reduce` to iterate over the keys and access the nested properties.
   - If a key doesn't exist at any level, it returns `null` (thanks to `??` nullish coalescing).
   - The optional chaining (`?.`) ensures that if the intermediate object is `null` or `undefined`, it doesn’t throw an error and just returns `null`.
 
 ### 2. **`deepGetByPaths` Function**
+
 This function is an extension of `deepGet`, allowing you to process multiple paths at once. It also supports paths that are written with square brackets, commonly used for array indices.
 
 ```javascript
@@ -56,6 +58,7 @@ deepGetByPaths(data, 'foo.foz[2]', 'foo.bar.baz.1', 'foo[8]');
 The result is an array of values for each path, with `null` returned if the path is not found.
 
 ### 3. **`dig` Function (Searching Deeply for a Key)**
+
 This function searches for a key in an object and all its nested properties.
 
 ```javascript
@@ -84,6 +87,7 @@ dig(data, 'baz'); // ['a', 'b', 'c']
   - It returns the first found value or `undefined` if the key is not found.
 
 ### 4. **`get` Function for Path Handling**
+
 This function retrieves the value at a path, which can either be a string with dot/array index notation or an array of keys.
 
 ```javascript
@@ -129,7 +133,8 @@ console.log(get(obj, 'a.c')); // undefined
 
 ---
 
-### Issues and Improvements:
+### Issues and Improvements
+
 1. **Handling Array Indices in `get()`**:
    The `get()` function doesn’t currently handle arrays inside paths correctly. For example, paths like `'a.b.c[1]'` would break because it’s only filtering out square brackets, but doesn’t split the array indices into individual steps.
 
@@ -157,6 +162,139 @@ console.log(get(obj, ['a', 'b', 'c', 2])); // 3
 - This update handles both dot notation and array indices properly by first converting `foo[1]` into `foo.1` and then splitting at both dots and array indices.
 
 ### Conclusion
-The functions you’ve provided (e.g., `deepGet`, `deepGetByPaths`, `dig`, `get`) are useful for accessing deeply nested properties in objects in a flexible manner. However, when working with paths that include array indices, it's important to account for both dot notation and square brackets. The updated `get()` function fixes that issue by handling array indices and dot notation uniformly. 
+
+The functions you’ve provided (e.g., `deepGet`, `deepGetByPaths`, `dig`, `get`) are useful for accessing deeply nested properties in objects in a flexible manner. However, when working with paths that include array indices, it's important to account for both dot notation and square brackets. The updated `get()` function fixes that issue by handling array indices and dot notation uniformly.
 
 By refining these functions and accounting for edge cases, they can become powerful utilities for navigating and accessing complex data structures.
+
+This breakdown captures the evolution of deep property retrieval—from lightweight `Array.prototype.reduce` single-liners to path-parsing utilities similar to Lodash's `_.get`.
+
+Your refactored `get()` function addresses the path-parsing limitations effectively. To make these utilities completely production-ready, there are **three critical edge cases** in the provided snippets that can cause unexpected bugs:
+
+---
+
+### 1. Multi-Digit Keys and Character Loss in `get()`
+
+In the original `get()` implementation loop:
+
+```javascript
+for (let i = 0; i < path.length; i++) {
+  if (path[i] !== '[' && path[i] !== ']' && path[i] !== '.') {
+    exactPath.push(path[i]);
+  }
+}
+
+```
+
+Because `exactPath` pushes individual string characters (`path[i]`), any multi-digit array index or multi-character property name gets shattered into single characters:
+
+- `'a.b.c[12]'` becomes `['a', 'b', 'c', '1', '2']` instead of `['a', 'b', 'c', '12']`.
+- `'a.items.title'` becomes `['a', 'i', 't', 'e', 'm', 's', ...]` and fails instantly.
+
+> **Takeaway:** Your regex-based fix (`.replace(/\[(\d+)\]/g, '.$1').split('.')`) resolves this by preserving whole key names and multi-digit indices.
+
+---
+
+### 2. The `dig()` Infinite Loop Risk (Circular References)
+
+In `dig()`, searching recursively through `Object.values(obj)` can trigger a **`RangeError: Maximum call stack size exceeded`** if the target object contains circular references or DOM node references:
+
+```javascript
+const circular = {};
+circular.self = circular;
+
+dig(circular, 'targetKey'); // ❌ Uncaught RangeError: Maximum call stack size exceeded
+
+```
+
+Furthermore, `typeof null === 'object'`, so if any property contains `null`, `dig()` will execute `dig(null, target)` and throw a `TypeError: Cannot use 'in' operator to search for 'targetKey' in null`.
+
+#### Safe `dig()` Refactor
+
+```javascript
+const dig = (obj, target, visited = new WeakSet()) => {
+  if (!obj || typeof obj !== 'object') return undefined;
+  if (target in obj) return obj[target];
+  if (visited.has(obj)) return undefined; // Guard against circular loops
+
+  visited.add(obj);
+
+  for (const val of Object.values(obj)) {
+    if (val && typeof val === 'object') {
+      const found = dig(val, target, visited);
+      if (found !== undefined) return found;
+    }
+  }
+
+  return undefined;
+};
+
+```
+
+---
+
+### 3. Falsy Value Coercion (`value ? value : undefined`)
+
+In the original `get()` implementation:
+
+```javascript
+const value = exactPath.reduce((source, path) => source[path], obj);
+return value ? value : undefined;
+
+```
+
+Ternary evaluation (`value ? ...`) forcibly converts valid falsy values to `undefined`:
+
+- **Booleans:** `get({ active: false }, 'active')` returns `undefined` instead of `false`.
+- **Numbers:** `get({ count: 0 }, 'count')` returns `undefined` instead of `0`.
+- **Strings:** `get({ label: "" }, 'label')` returns `undefined` instead of `""`.
+
+#### Fix
+
+Use **Nullish Coalescing (`??`)** or direct return so that `false`, `0`, and `""` are preserved as valid return values:
+
+```javascript
+return value ?? undefined;
+
+```
+
+---
+
+### Modern Benchmark Reference Pair
+
+Here is a clean pair for nested path access that covers string paths, array keys, falsy values, and index parsing:
+
+```javascript
+// Universal Path Normalizer
+const parsePath = (path) =>
+  Array.isArray(path)
+    ? path
+    : String(path)
+        .replace(/\[([^\[\]]*)\]/g, '.$1.')
+        .split('.')
+        .filter(Boolean);
+
+// Production-Grade Deep Get
+const get = (obj, path, defaultValue = undefined) => {
+  const keys = parsePath(path);
+  let current = obj;
+
+  for (const key of keys) {
+    if (current === null || current === undefined) {
+      return defaultValue;
+    }
+    current = current[key];
+  }
+
+  return current === undefined ? defaultValue : current;
+};
+
+// Usage:
+const data = { users: [{ name: "Alex", count: 0, active: false }] };
+
+console.log(get(data, 'users[0].name'));       // "Alex"
+console.log(get(data, 'users[0].count'));      // 0 (Preserved correctly)
+console.log(get(data, 'users[0].active'));     // false (Preserved correctly)
+console.log(get(data, 'users[0].missing', 42));// 42 (Fallback default)
+
+```

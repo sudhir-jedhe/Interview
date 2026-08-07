@@ -72,7 +72,7 @@ const clone = { ...person };
 console.log(clone.socialSecurityNumber); // undefined
 ```
 
-### Key Observations:
+### Key Observations
 
 1. **Checking Existence**:
    - `person.hasOwnProperty('socialSecurityNumber')` returns `true` because the property exists directly on the object.
@@ -85,7 +85,47 @@ console.log(clone.socialSecurityNumber); // undefined
 3. **Cloning with Spread Operator**:
    - When using the spread operator (`{ ...person }`), the `socialSecurityNumber` property is **not copied** because it is non-enumerable. This highlights how the spread operator only copies **enumerable** properties.
 
-### Summary:
+### Summary
+
 - **Non-enumerable properties** are properties that are excluded from enumeration methods like `Object.keys()`, `for...in` loops, and the spread operator.
 - You can make properties non-enumerable using `Object.defineProperty()` with the `enumerable: false` option.
 - Methods like `Object.getOwnPropertyNames()` and `hasOwnProperty()` can still detect non-enumerable properties, but methods like `Object.keys()` will omit them.
+
+Your breakdown of non-enumerable properties is thorough and accurate. To make this complete, there are two subtle edge cases regarding `Object.defineProperty` and `propertyIsEnumerable` that often trip developers up:
+
+### Crucial Nuances & Defaults
+
+#### 1. Default Attributes in `Object.defineProperty`
+
+When you define a **new** property on an object via `Object.defineProperty()`, property attributes default to `false` if omitted:
+
+```javascript
+const obj = {};
+
+Object.defineProperty(obj, 'secret', {
+  value: 42
+  // Missing enumerable, writable, and configurable!
+});
+
+console.log(obj.propertyIsEnumerable('secret')); // false (defaults to false!)
+console.log(Object.keys(obj));                   // []
+
+```
+
+In your example, `socialSecurityNumber` was already defined on literal creation as `enumerable: true`, so passing `{ enumerable: false }` to `Object.defineProperty` modified only that specific attribute. However, creating properties from scratch with `Object.defineProperty` makes them non-enumerable, non-writable, and non-configurable by default unless explicitly specified as `true`.
+
+#### 2. `propertyIsEnumerable` Ignores Symbol Keys and Prototype Chain
+
+- `obj.propertyIsEnumerable(key)` only checks **own properties**. Inherited enumerable properties will return `false`.
+- `propertyIsEnumerable` works with Symbols if passed as a Symbol reference, but standard iteration constructs (`for...in`, `Object.keys`) treat Symbols separately regardless of enumerability.
+
+### Property Operations Quick Reference
+
+| Method / Construct                   | Enumerable String Keys | Non-Enumerable String Keys | Symbol Keys       | Prototype Chain |
+| ------------------------------------ | ---------------------- | -------------------------- | ----------------- | --------------- |
+| **`for...in`**                       | ✅                      | ❌                          | ❌                 | ✅               |
+| **`Object.keys()`**                  | ✅                      | ❌                          | ❌                 | ❌               |
+| **`Object.getOwnPropertyNames()`**   | ✅                      | ✅                          | ❌                 | ❌               |
+| **`Object.getOwnPropertySymbols()`** | ❌                      | ❌                          | ✅                 | ❌               |
+| **`Reflect.ownKeys()`**              | ✅                      | ✅                          | ✅                 | ❌               |
+| **Spread (`{ ...obj }`)**            | ✅                      | ❌                          | ✅ (if enumerable) | ❌               |

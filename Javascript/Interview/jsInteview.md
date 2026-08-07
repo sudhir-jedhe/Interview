@@ -1295,20 +1295,6 @@ console.log(twoSum([2, 7, 11, 15], 9)); // [0, 1]
 
 ---
 
-### **Q14: Given a string, reverse each word in the sentence**
-
-```javascript
-function reverseWords(sentence) {
-  return sentence
-    .split(" ")
-    .map((word) => word.split("").reverse().join(""))
-    .join(" ");
-}
-
-// Example:
-console.log(reverseWords("Hello World")); // "olleH dlroW"
-```
-
 ---
 
 ### **Q15: How to empty an array in JavaScript?**
@@ -2510,7 +2496,7 @@ const obj = {
 obj.greet(); // "Alice"
 ```
 
-2. **Explicit Binding (`call`, `apply`, `bind`):**
+1. **Explicit Binding (`call`, `apply`, `bind`):**
 
 ```javascript
 function greet() {
@@ -2519,7 +2505,7 @@ function greet() {
 greet.call({ name: "Bob" }); // "Bob"
 ```
 
-3. **Arrow Function (Lexical `this`):**
+1. **Arrow Function (Lexical `this`):**
 
 ```javascript
 const obj2 = {

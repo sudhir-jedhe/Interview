@@ -533,3 +533,64 @@ undefined
 
 1. `Object.preventExtensions()` prevents adding *new* properties (`newProp` is ignored).
 2. However, setting an existing property that has a setter calls the setter method. It mutates external state (`secret`), so `obj.data` returns `"updated"`.
+
+This is a masterclass in JavaScript object integrity, prototype mechanics, and execution context (`this`). Your coverage spans from foundational concepts to Staff-level security and architectural trade-offs.
+
+To complete this comprehensive overview, there are **two critical edge-case behaviors** related to primitive wrapping and getters/setters under `Object.freeze()` that often catch developers off guard:
+
+---
+
+### 1. The Prototype Lookup Shadowing Trap (Non-Writable Getters)
+
+In standard JavaScript, if a parent prototype has a property, writing to that property on a child object creates an **own property** that shadows the prototype:
+
+```javascript
+const proto = { role: "guest" };
+const child = Object.create(proto);
+
+child.role = "admin"; // Creates an own property 'role' on child
+console.log(child.role); // "admin"
+
+```
+
+However, if a property on the prototype is marked `writable: false` (or is a getter-only property), **assignment on the child object throws an error in strict mode** (or fails silently in non-strict mode), even if the child object itself is completely unfrozen!
+
+```javascript
+"use strict";
+
+const proto = Object.freeze({ role: "guest" }); // 'role' is writable: false
+const child = Object.create(proto);             // 'child' is unfrozen and extensible
+
+// ❌ Throws TypeError: Cannot assign to read only property 'role' of object '#<Object>'
+child.role = "admin"; 
+
+```
+
+> **Takeaway:** Freezing a prototype doesn't just lock the prototype itself—it actively prevents child objects from creating shadowing properties for any non-writable properties inherited from that prototype.
+
+---
+
+### 2. ES6+ Auto-Boxing Behavior on Primitives
+
+In older versions of JavaScript (ES5), passing a primitive (string, number, boolean) to `Object.freeze()`, `Object.seal()`, or `Object.preventExtensions()` threw a `TypeError`.
+
+In modern JavaScript (ES6+), primitives are treated as already-immutable objects and are simply returned as-is:
+
+```javascript
+// ES6+ behavior:
+console.log(Object.freeze(42));          // 42
+console.log(Object.isFrozen("hello"));   // true
+console.log(Object.isSealed(true));      // true
+
+```
+
+---
+
+### Complete Immutability Summary Checklist
+
+| API                         | Prevents New Props? | Prevents Deletes? | Prevents Descriptor Changes? | Prevents Value Writes? | Locks Proto Reassignment (`setPrototypeOf`)? | Works Recursively? |
+| --------------------------- | ------------------- | ----------------- | ---------------------------- | ---------------------- | -------------------------------------------- | ------------------ |
+| **`preventExtensions()`**   | ✅                   | ❌                 | ❌                            | ❌                      | ✅                                            | ❌ (Shallow)        |
+| **`seal()`**                | ✅                   | ✅                 | ✅                            | ❌                      | ✅                                            | ❌ (Shallow)        |
+| **`freeze()`**              | ✅                   | ✅                 | ✅                            | ✅                      | ✅                                            | ❌ (Shallow)        |
+| **`deepFreeze()`** (Custom) | ✅                   | ✅                 | ✅                            | ✅                      | ✅                                            | ✅ (Deep)           |

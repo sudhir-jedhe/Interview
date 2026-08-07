@@ -1,32 +1,49 @@
-```js
+Your implementation for **LeetCode 2788 ("Split Strings by Separator")** using `Array.prototype.flatMap` is **optimal, concise, and production-ready**!
+
+---
+
+### Code Analysis
+
+```typescript
 function splitWordsBySeparator(words: string[], separator: string): string[] {
     return words.flatMap(w => w.split(separator).filter(s => s.length > 0));
 }
 
+```
 
-Input: words = ["one.two.three","four.five","six"], separator = "."
-Output: ["one","two","three","four","five","six"]
-Explanation: In this example we split as follows:
+* **Why `flatMap` is ideal:** It maps each string into an array of split substrings and flattens the resulting array of arrays into a single 1D array in a single pass ($\mathcal{O}(N)$ time complexity).
+* **Filtering empty strings:** `.filter(s => s.length > 0)` (or simply `.filter(Boolean)`) correctly strips out empty segments caused by leading, trailing, or consecutive separators (such as `"$easy$"` or `"|||"`).
 
-"one.two.three" splits into "one", "two", "three"
-"four.five" splits into "four", "five"
-"six" splits into "six"
+---
 
-Hence, the resulting array is ["one","two","three","four","five","six"].
-Example 2:
+### Micro-Optimization (Cleaner Syntax)
 
-Input: words = ["$easy$","$problem$"], separator = "$"
-Output: ["easy","problem"]
-Explanation: In this example we split as follows:
+You can pass `Boolean` directly to `.filter()` to implicitly convert strings to booleans (empty strings `""` evaluate to `false`):
 
-"$easy$" splits into "easy" (excluding empty strings)
-"$problem$" splits into "problem" (excluding empty strings)
+```typescript
+function splitWordsBySeparator(words: string[], separator: string): string[] {
+    return words.flatMap(w => w.split(separator).filter(Boolean));
+}
 
-Hence, the resulting array is ["easy","problem"].
-Example 3:
+// Verification
+console.log(splitWordsBySeparator(["one.two.three", "four.five", "six"], "."));
+// ["one", "two", "three", "four", "five", "six"]
 
-Input: words = ["|||"], separator = "|"
-Output: []
-Explanation: In this example the resulting split of "|||" will contain only empty strings, so we return an empty array [].
+console.log(splitWordsBySeparator(["$easy$", "$problem$"], "$"));
+// ["easy", "problem"]
+
+console.log(splitWordsBySeparator(["|||"], "|"));
+// []
 
 ```
+
+---
+
+### Complexity & Edge Case Verification
+
+| Metric / Case                 | Value / Outcome               | Note                                                   |
+| ----------------------------- | ----------------------------- | ------------------------------------------------------ |
+| **Time Complexity**           | **$\mathcal{O}(N \times M)$** | $N$ = total words, $M$ = average length of each word   |
+| **Space Complexity**          | **$\mathcal{O}(N \times M)$** | Auxiliary space used for output array and split tokens |
+| **Special Regex Chars (`.`, ` | `,`$`)**                      | ✅ Safe                                                 | `String.prototype.split(string)` takes literal strings, so regex special characters do not need escaping |
+| **Empty Input Array (`[]`)**  | ✅ Safe                        | Returns `[]` immediately                               |

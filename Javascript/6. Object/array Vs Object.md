@@ -579,3 +579,72 @@ console.log(Object.is(-0, +0)); // false (-0 === +0 is true)
 | **Convert entries back to Object** | `Object.fromEntries(array)`          |
 | **Iterate over keys and values**   | `Object.entries(obj)`                |
 | **Make object non-mutable**        | `Object.freeze(obj)`                 |
+
+While both JavaScript **Objects** and **Maps** store data in key-value pairs, they were designed for entirely different use cases. Choosing the right one can significantly impact performance, safety, and code readability.
+
+---
+
+### Core Comparison
+
+| Feature                | Object                                                                                            | Map                                                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **Key Types**          | Strings and Symbols only (other types are coerced to strings)                                     | **Any type** (objects, functions, primitives, etc.)  |
+| **Key Order**          | Insertion order is mostly preserved for strings/symbols, but not designed for iteration sequences | **Strictly preserves insertion order**               |
+| **Size Determination** | Manual (e.g., `Object.keys(obj).length`)                                                          | Built-in property (`map.size`)                       |
+| **Performance**        | Optimized for static structures and property lookups                                              | Optimized for **frequent additions and removals**    |
+| **Default Keys**       | Inherits prototype keys (e.g., `toString`, `constructor`)                                         | Clean slate (no default keys or prototype pollution) |
+| **Serialization**      | Native support (`JSON.stringify()`)                                                               | Requires conversion (e.g., `Object.fromEntries()`)   |
+
+---
+
+### Key Differences in Detail
+
+#### 1. Flexibility of Keys
+
+- **Objects:** Keys are restricted to strings and symbols. If you pass a number or an object as a key, JavaScript implicitly converts it into a string (e.g., `obj[{}] = 'val'` becomes `obj['[object Object]'] = 'val'`).
+- **Maps:** Keys can be **anything**. You can use a DOM element, a function, a boolean, or even another object as a key without type coercion.
+
+```javascript
+const map = new Map();
+const myObjKey = { id: 1 };
+
+map.set(myObjKey, "Associated Data");
+console.log(map.get(myObjKey)); // "Associated Data"
+
+```
+
+#### 2. Security and Prototype Pollution
+
+- **Objects:** Because standard objects inherit from `Object.prototype`, checking for keys like `"constructor"` or `"toString"` can lead to bugs or security vulnerabilities (prototype pollution).
+- **Maps:** A Map is a pure hash map. It contains no predefined keys, meaning user-inputted keys will never accidentally collide with built-in prototype methods.
+
+```javascript
+const map = new Map();
+console.log(map.has("constructor")); // false (safe out of the box)
+
+```
+
+---
+
+### When to Use a Map
+
+Use a **Map** when:
+
+- **Keys are dynamic or non-string:** You need to map objects or primitives (like numbers) directly to values.
+- **Performance matters for frequent updates:** Your application frequently adds and removes key-value pairs at runtime.
+- **Order and Size matter:** You need to easily track the exact `.size` of the collection and rely heavily on predictable insertion-order iteration.
+- **You are building a cache or dictionary:** Where keys come from external, untrusted sources and safety from prototype collision is required.
+
+---
+
+### When to Use an Object
+
+Use an **Object** when:
+
+- **Working with JSON:** You need to serialize or deserialize data structure payloads sent to/from an API.
+- **Representing a structured entity:** You are modeling a real-world entity with a fixed schema or known property names (e.g., a user profile with `id`, `name`, and `email`).
+- **Using prototype methods:** You explicitly want to leverage methods or inheritance models unique to class instances.
+
+---
+
+Would you like to see a performance benchmark or code example comparing how they handle large-scale dynamic lookups?

@@ -1,11 +1,12 @@
 Your code is a good example of how to flatten nested JavaScript objects into a flat structure. It handles different types of data structures, such as objects and arrays, by recursively iterating through the input and flattening it. Let's break down the various approaches in your code and understand the key concepts.
 
-### Key Concepts:
+### Key Concepts
+
 1. **Flattening Nested Objects**: The primary objective is to transform a deeply nested object into a flat object where each key is a concatenation of the path of keys from the original object, separated by a delimiter (`_` or `.`).
 2. **Recursive Functions**: Flattening requires recursive functions to dive into nested objects and apply the flattening logic on each level.
 3. **Handling Arrays**: When flattening an object, arrays are usually treated as atomic values and their indexes are used to build the keys.
 
-### Code Walkthrough:
+### Code Walkthrough
 
 #### 1. **First Flattening Approach (`flattenObject`)**
 
@@ -32,6 +33,7 @@ const flattenObject = (input, separator) => {
 ```
 
 **Key Points**:
+
 - Recursively processes each key of the object.
 - If the value is an object, the function calls itself recursively to flatten that object.
 - If the value is a primitive or array, it directly assigns the value to the `result` object.
@@ -65,6 +67,7 @@ function transform(collection, prefix) {
 ```
 
 **Key Points**:
+
 - The `prefix` parameter is used to build the keys recursively. Each time a nested object is encountered, the function calls itself, passing the updated prefix.
 - If the value is not an object, it assigns the flattened key-value pair directly to the result object.
 - If the value is an object, it recursively flattens it by adding the current key (`prefix + key`).
@@ -153,11 +156,129 @@ solve(data, 'data', result);
 console.log(result);
 ```
 
-#### Final Notes:
+#### Final Notes
+
 1. **Handling Arrays**: Arrays are handled by appending the index to the flattened key, like `data_channel_platform_resources_pages.0`.
 2. **Prefixing**: The `prefix` ensures that each nested key in the object is properly concatenated to form a unique key path.
 3. **Recursive Flattening**: All methods use recursion to traverse the nested structure and flatten it, making the code flexible for arbitrarily deep objects.
 
-### Conclusion:
+### Conclusion
 
 This approach is ideal for flattening nested objects, especially when you need to represent deeply nested data in a flat format (for instance, when preparing data for APIs or databases that require non-nested key-value pairs). The recursive method allows you to handle objects with varying depths and complexities efficiently.
+
+You've highlighted a crucial evolution in flattening strategies—moving from basic key concatenation to handling edge cases like `null`, custom prefixes, and array leaf nodes.
+
+To round out these examples, there are **two subtle bugs** in the `transform` and `solve` code snippets above that will trip up developers in real-world applications, along with how to fix them.
+
+---
+
+### Bug Analysis & Fixes
+
+#### 1. The Leading Delimiter Bug (`solve` function)
+
+In the `solve` implementation:
+
+```js
+solve(collection[key], prefix + '_' + key, ds);
+
+```
+
+If you pass `'data'` as the initial `prefix`, the first iteration builds `data_name`, which is fine. However, if you start with an empty string `""` as the default prefix, every key in the resulting object will start with an unwanted leading underscore (e.g., `_name`, `_channel_youtube_link`).
+
+#### 2. The Unhandled Array Recursion (`solve` function)
+
+In `solve`:
+
+```js
+if (typeof collection !== 'object' || Array.isArray(collection)) {
+  ds[prefix] = collection;
+  return;
+}
+
+```
+
+Checking `Array.isArray(collection)` here treats arrays as **atomic primitives**. Instead of flattening `pages: ['/questions', '/resources']` into individual keys (`data_pages_0` and `data_pages_1`), it keeps the entire array intact at `ds['data_pages'] = ['/questions', '/resources']`.
+
+If the objective is to flatten array indices into the path, the function must traverse arrays like plain objects.
+
+---
+
+### Combined & Corrected `solve` Implementation
+
+Here is a corrected version that:
+
+- Handles `null` safely.
+- Traverses both plain objects and arrays recursively.
+- Automatically formats prefixes without leaving leading/trailing delimiters.
+
+```js
+function solve(collection, prefix = '', result = {}, delimiter = '_') {
+  // 1. Base Case: Primitives or null
+  if (collection === null || typeof collection !== 'object') {
+    result[prefix] = collection;
+    return result;
+  }
+
+  // 2. Traversal: Works uniformly for both Objects and Arrays
+  const keys = Object.keys(collection);
+
+  for (const key of keys) {
+    // Build path cleanly without leading delimiter
+    const newPrefix = prefix ? `${prefix}${delimiter}${key}` : key;
+    solve(collection[key], newPrefix, result, delimiter);
+  }
+
+  return result;
+}
+
+```
+
+### Verification with Your Example Data
+
+```js
+const data = {
+  name: 'Devtools Tech',
+  channel: {
+    youtube: {
+      link: 'bit.ly/devtools-yt',
+      name: 'Devtools Tech',
+      subscribe: "true"
+    },
+    platform: {
+      link: 'devtools.tech',
+      resources: {
+        pages: ['/questions', '/resources']
+      },
+    }
+  }
+};
+
+console.log(solve(data, 'data'));
+
+```
+
+#### Output
+
+```js
+{
+  "data_name": "Devtools Tech",
+  "data_channel_youtube_link": "bit.ly/devtools-yt",
+  "data_channel_youtube_name": "Devtools Tech",
+  "data_channel_youtube_subscribe": "true",
+  "data_channel_platform_link": "devtools.tech",
+  "data_channel_platform_resources_pages_0": "/questions",
+  "data_channel_platform_resources_pages_1": "/resources"
+}
+
+```
+
+---
+
+### Comparison Matrix for Object Flattening Patterns
+
+| Feature                  | Basic Recursion              | Prefix Accumulator (`solve`)           | Generator Iterative (Stack)     |
+| ------------------------ | ---------------------------- | -------------------------------------- | ------------------------------- |
+| **Max Depth Handling**   | Limited by Call Stack (~10k) | Limited by Call Stack (~10k)           | **Unlimited** (Heap allocation) |
+| **Array Behavior**       | Ignored / Overwritten        | Index appended to path                 | Index appended to path          |
+| **Performance ($O(N)$)** | Slow if using `{...acc}`     | **Fast** (Mutates single `result` ref) | **Fastest** for deep trees      |
+| **`null` Safe**          | Requires manual check        | Handled natively                       | Handled natively                |

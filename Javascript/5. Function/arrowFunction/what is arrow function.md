@@ -6,9 +6,9 @@
 
 ---
 
-### The Example Breakdown:
+### The Example Breakdown
 
-#### 1. **Regular Function (`function() {}`) with `this`**:
+#### 1. **Regular Function (`function() {}`) with `this`**
 
 In this case, a regular function is used as an event listener:
 
@@ -25,7 +25,7 @@ toggleElements.forEach((el) => {
 
 ---
 
-#### 2. **Arrow Function with `this`**:
+#### 2. **Arrow Function with `this`**
 
 Now, when we use an arrow function, we face an issue:
 
@@ -44,7 +44,7 @@ toggleElements.forEach((el) => {
 
 ---
 
-#### 3. **Correct Usage with `e.currentTarget`**:
+#### 3. **Correct Usage with `e.currentTarget`**
 
 To ensure that we correctly target the clicked element, we can use the `currentTarget` property of the event object (`e`), which always refers to the element to which the event handler is attached:
 
@@ -61,7 +61,7 @@ toggleElements.forEach((el) => {
 
 ---
 
-### Conclusion:
+### Conclusion
 
 - **Arrow functions**: `this` inside an arrow function refers to the **lexical context**, so it will inherit `this` from the surrounding scope where the function is defined.
 - **Regular functions**: `this` is dynamically set based on how the function is called. In an event listener, it will refer to the element that fired the event.
@@ -258,11 +258,11 @@ users.map((user) => console.log(user));
 
 | Feature            | Arrow Function | Normal Function |
 | ------------------ | -------------- | --------------- |
-| Short Syntax       | ✅             | ❌              |
-| Own `this`         | ❌             | ✅              |
-| Constructor        | ❌             | ✅              |
-| Arguments Object   | ❌             | ✅              |
-| Best for Callbacks | ✅             | ✅              |
+| Short Syntax       | ✅              | ❌               |
+| Own `this`         | ❌              | ✅               |
+| Constructor        | ❌              | ✅               |
+| Arguments Object   | ❌              | ✅               |
+| Best for Callbacks | ✅              | ✅               |
 
 ---
 
@@ -640,12 +640,12 @@ Benefits:
 
 | Feature                                      | Arrow Function | Normal Function |
 | -------------------------------------------- | -------------- | --------------- |
-| Short Syntax                                 | ✅             | ❌              |
-| Own `this`                                   | ❌             | ✅              |
-| Needs `bind(this)` in React Class Components | ❌             | ✅              |
-| Constructor (`new`)                          | ❌             | ✅              |
-| `arguments` object                           | ❌             | ✅              |
-| Great for map/filter/reduce                  | ✅             | ✅              |
+| Short Syntax                                 | ✅              | ❌               |
+| Own `this`                                   | ❌              | ✅               |
+| Needs `bind(this)` in React Class Components | ❌              | ✅               |
+| Constructor (`new`)                          | ❌              | ✅               |
+| `arguments` object                           | ❌              | ✅               |
+| Great for map/filter/reduce                  | ✅              | ✅               |
 
 ---
 
@@ -710,7 +710,7 @@ const multiply = (a, b) => a * b; // Automatically returns the result of a * b
 
 In traditional functions, `this` changes depending on the execution context, which often led to bugs in event handlers or callbacks inside classes. Arrow functions solve this by inheriting `this` directly from their surrounding parent scope.
 
-### Traditional Function Problem:
+### Traditional Function Problem
 
 ```javascript
 const counter = {
@@ -725,7 +725,7 @@ const counter = {
 };
 ```
 
-### Arrow Function Solution:
+### Arrow Function Solution
 
 ```javascript
 const counter = {
@@ -790,7 +790,7 @@ const user = {
 };
 ```
 
-2. **DOM Event Listeners (when using `this`):** Standard listeners bind `this` to the target element. Arrow functions break this behavior.
+1. **DOM Event Listeners (when using `this`):** Standard listeners bind `this` to the target element. Arrow functions break this behavior.
 
 ```javascript
 button.addEventListener("click", () => {

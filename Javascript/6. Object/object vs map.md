@@ -5,6 +5,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Object**:
   - Keys are always **strings** or **symbols**. If you use a non-string value as a key, JavaScript will convert it to a string.
   - Example:
+
     ```javascript
     let obj = {};
     obj["key"] = "value";
@@ -15,6 +16,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Map**:
   - Keys can be of **any type** (primitive types like `number`, `string`, `boolean`, as well as objects, functions, and other maps).
   - Example:
+
     ```javascript
     let map = new Map();
     map.set("key", "value");
@@ -32,6 +34,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Map**:
   - A `Map` **remembers the insertion order** of keys. The keys are iterated in the order they were added.
   - Example:
+
     ```javascript
     let map = new Map();
     map.set("a", 1);
@@ -55,6 +58,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Object**:
   - To iterate over an object's properties, you typically use `for...in`, `Object.keys()`, `Object.values()`, or `Object.entries()`.
   - Example:
+
     ```javascript
     let obj = { a: 1, b: 2, c: 3 };
     for (let key in obj) {
@@ -67,6 +71,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Map**:
   - Maps have built-in methods for iterating directly over keys, values, or both as key-value pairs using `forEach()`, `map.keys()`, `map.values()`, or `map.entries()`.
   - Example:
+
     ```javascript
     let map = new Map([
       ["a", 1],
@@ -83,6 +88,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Object**:
   - Objects don’t have a built-in `size` property. To get the number of properties in an object, you would need to use `Object.keys(obj).length`.
   - Example:
+
     ```javascript
     let obj = { a: 1, b: 2, c: 3 };
     console.log(Object.keys(obj).length); // 3
@@ -91,6 +97,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Map**:
   - Maps have a built-in `size` property that directly gives the number of key-value pairs in the map.
   - Example:
+
     ```javascript
     let map = new Map([
       ["a", 1],
@@ -104,6 +111,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Object**:
   - You can check if a property exists in an object using `in` or `hasOwnProperty()`.
   - Example:
+
     ```javascript
     let obj = { a: 1 };
     console.log("a" in obj); // true
@@ -113,6 +121,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Map**:
   - You can check if a key exists in a map using the `has()` method.
   - Example:
+
     ```javascript
     let map = new Map([["a", 1]]);
     console.log(map.has("a")); // true
@@ -123,6 +132,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Object**:
   - If you access a property that doesn’t exist in an object, it returns `undefined`.
   - Example:
+
     ```javascript
     let obj = { a: 1 };
     console.log(obj.b); // undefined
@@ -131,6 +141,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 - **Map**:
   - If you access a key that doesn’t exist in a `Map`, it also returns `undefined`. However, you can safely differentiate between a non-existent key and a key that explicitly has the value `undefined`.
   - Example:
+
     ```javascript
     let map = new Map([["a", 1]]);
     console.log(map.get("b")); // undefined
@@ -155,7 +166,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 
 ---
 
-### Summary Table:
+### Summary Table
 
 | Feature                            | **Object**                                               | **Map**                                       |
 | ---------------------------------- | -------------------------------------------------------- | --------------------------------------------- |
@@ -169,7 +180,7 @@ In JavaScript, both **objects** and **maps** are used to store key-value pairs, 
 | **Inheritance**                    | Inherits from `Object.prototype` by default              | Does not inherit from `Object.prototype`      |
 | **Use Case**                       | Simple key-value pairs, string keys                      | Complex key-value pairs, non-string keys      |
 
-### Conclusion:
+### Conclusion
 
 - Use **Objects** when you need a simple collection of key-value pairs with string keys, and you don’t need the advanced features of `Map`.
 - Use **Maps** when you need more flexibility with key types, insertion order, and better performance for larger or dynamic datasets.
@@ -237,13 +248,13 @@ console.log(userMap.has("name")); // Has key
 
 ## When Should You Use Which?
 
-### Use an **Object** when:
+### Use an **Object** when
 
 - You have a **fixed, static structure** with known keys (e.g., config options, user records).
 - You need to serialize data to/from **JSON**.
 - You are writing standard component props or state objects.
 
-### Use a **Map** when:
+### Use a **Map** when
 
 - Keys are **not known at compile time** or are dynamically added/removed at runtime.
 - You need **non-string keys** (e.g., mapping DOM elements or object instances to metadata).

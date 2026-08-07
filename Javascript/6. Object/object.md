@@ -3,17 +3,20 @@
 JavaScript allows multiple ways to create objects. Here's a breakdown of the most common methods:
 
 #### a. **Using the Object Constructor**
+
 ```javascript
 const obj = new Object();
 obj.key = "value";
 ```
 
 #### b. **Using Object Literal**
+
 ```javascript
 const obj = { key: "value" };
 ```
 
 #### c. **Using Constructor Function and `new` keyword**
+
 ```javascript
 function getObject(key, value) {
   this[key] = value;
@@ -22,6 +25,7 @@ const obj = new getObject("key", "value");
 ```
 
 #### d. **Using Class Syntax**
+
 ```javascript
 class Obj {
   constructor(key, value) {
@@ -32,6 +36,7 @@ const obj = new Obj("key", "value");
 ```
 
 #### e. **Using `Object.create`**
+
 ```javascript
 const obj = Object.create({ key: "value" });
 ```
@@ -41,11 +46,13 @@ const obj = Object.create({ key: "value" });
 The keys of an object can be obtained using `Object.keys` or a `for...in` loop.
 
 #### a. **Using `Object.keys()`**
+
 ```javascript
 Object.keys(obj).forEach((key) => console.log(key));
 ```
 
 #### b. **Using `for...in` loop (Only Own Properties)**
+
 ```javascript
 for (let key in obj) {
   if (obj.hasOwnProperty(key)) {
@@ -59,11 +66,13 @@ for (let key in obj) {
 The values of an object can be obtained using `Object.values` or by iterating over the object.
 
 #### a. **Using `Object.values()`**
+
 ```javascript
 console.log(Object.values(obj));
 ```
 
 #### b. **Using `for...in` loop**
+
 ```javascript
 for (let key in obj) {
   if (obj.hasOwnProperty(key)) {
@@ -99,6 +108,7 @@ const obj = Object.create(null);
 `Object.fromEntries()` converts an array or map of key-value pairs into an object.
 
 #### a. **From Array of Key-Value Pairs**
+
 ```javascript
 const arr = [
   ["0", "a"],
@@ -109,6 +119,7 @@ const obj = Object.fromEntries(arr);
 ```
 
 #### b. **From a Map**
+
 ```javascript
 const map = new Map([
   ["foo", "bar"],
@@ -167,18 +178,21 @@ Object.defineProperty(obj, "prop", {
 You can prevent modification to an object using `Object.preventExtensions`, `Object.seal`, or `Object.freeze`.
 
 #### a. **Prevent Extensions** (Prevent addition of properties)
+
 ```javascript
 Object.preventExtensions(obj);
 console.log(Object.isExtensible(obj)); // false
 ```
 
 #### b. **Seal** (Prevent addition and deletion of properties)
+
 ```javascript
 Object.seal(obj);
 console.log(Object.isSealed(obj)); // true
 ```
 
 #### c. **Freeze** (Prevent addition, deletion, or modification)
+
 ```javascript
 Object.freeze(obj);
 console.log(Object.isFrozen(obj)); // true
@@ -210,11 +224,13 @@ for (let i of obj) {
 Regular expressions can be created using either the literal form or the `RegExp` constructor.
 
 #### a. **Literal Form**
+
 ```javascript
 let re = /ab+c/g;
 ```
 
 #### b. **Constructor Form**
+
 ```javascript
 let re = new RegExp("ab+c", "g");
 ```

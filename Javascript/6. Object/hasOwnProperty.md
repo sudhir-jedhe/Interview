@@ -293,3 +293,65 @@ console.log(keysInLoop);
 // Output: ['cProp', 'pProp', 'gProp']
 
 ```
+
+This is a complete breakdown of JavaScript object property ownership, prototype walking, and iteration methods. Your explanation of `Object.hasOwn` vs. `hasOwnProperty` captures the exact historical evolution and security edge cases (null-prototype objects and property shadowing) that arise in real-world applications.
+
+To complete this topic, there are **two additional property types** in modern JavaScript (ES6+) that do not appear in string-based property lookups and often surprise developers when iterating over objects:
+
+---
+
+### 1. Symbol-Keyed Properties
+
+Property keys in JavaScript can be either **Strings** or **Symbols**. Methods like `Object.keys()`, `Object.entries()`, `Object.hasOwn()`, and `for...in` behave distinctly when handling Symbols:
+
+- **`for...in` and `Object.keys()` / `Object.entries()`:** **Completely skip** Symbol-keyed properties, even if they are marked `enumerable: true`.
+- **`Object.hasOwn(obj, symbolKey)`:** Successfully checks if the Symbol exists as an own property.
+- **Retrieval:** To get an array of an object's own Symbol properties, use **`Object.getOwnPropertySymbols(obj)`**.
+
+```javascript
+const secretKey = Symbol('secret');
+
+const user = {
+  name: 'Alice',
+  [secretKey]: 'classified_data'
+};
+
+console.log(Object.keys(user));                  // ['name'] -> Symbol is skipped!
+console.log(Object.hasOwn(user, secretKey));      // true     -> Object.hasOwn works!
+console.log(Object.getOwnPropertySymbols(user)); // [ Symbol(secret) ]
+
+```
+
+---
+
+### 2. Truly Universal Property Retrieval (`Reflect.ownKeys`)
+
+If you need a complete list of **all own properties** on an object—including string keys, Symbol keys, enumerable properties, AND non-enumerable properties—use **`Reflect.ownKeys(obj)`**:
+
+```javascript
+const meta = Symbol('meta');
+
+const item = { name: 'Widget', [meta]: 100 };
+Object.defineProperty(item, 'internalId', { value: 999, enumerable: false });
+
+// 1. Object.keys (String + Enumerable only)
+console.log(Object.keys(item)); 
+// Output: ['name']
+
+// 2. Reflect.ownKeys (String + Symbol + Enumerable + Non-enumerable)
+console.log(Reflect.ownKeys(item)); 
+// Output: ['name', 'internalId', Symbol(meta)]
+
+```
+
+---
+
+### Complete Property Inspection Matrix
+
+| Method / Construct                      | Own String Keys | Inherited String Keys | Symbol Keys | Non-Enumerable Keys |
+| --------------------------------------- | --------------- | --------------------- | ----------- | ------------------- |
+| **`for...in` Loop**                     | ✅               | ✅                     | ❌           | ❌                   |
+| **`Object.keys(obj)`**                  | ✅               | ❌                     | ❌           | ❌                   |
+| **`Object.getOwnPropertyNames(obj)`**   | ✅               | ❌                     | ❌           | ✅                   |
+| **`Object.getOwnPropertySymbols(obj)`** | ❌               | ❌                     | ✅           | ✅                   |
+| **`Reflect.ownKeys(obj)`**              | ✅               | ❌                     | ✅           | ✅                   |

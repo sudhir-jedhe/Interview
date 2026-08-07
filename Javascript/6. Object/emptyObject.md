@@ -91,3 +91,62 @@ console.log(isEmpty(obj)); // true
 | **`JSON.stringify(obj)`**            | ECMAScript 5+ | Converts the object to a JSON string and compares it to an empty object string `JSON.stringify({})`.                    | Simple but not the most efficient method, and can have unexpected behavior with non-enumerable properties or functions. |
 
 Each of these methods is valid and can be chosen based on your requirements (ECMAScript version, performance needs, etc.). The most modern approaches are `Object.entries()` or `Object.keys()`, with the `for-in` loop and `hasOwnProperty()` being a fallback for compatibility with older environments.
+
+In JavaScript, an "empty object" (`{}`) has no own enumerable properties. How you check for it depends on your environment and use case.
+
+### 1. Most Popular: `Object.keys()`
+
+Checks if the object has zero own key names.
+
+```javascript
+const isEmpty = (obj) => Object.keys(obj).length === 0;
+
+isEmpty({}); // true
+isEmpty({ a: 1 }); // false
+
+```
+
+### 2. Best Performance: `for...in` loop
+
+Returns `false` as soon as it finds the first property, avoiding the memory overhead of creating an array of keys.
+
+```javascript
+function isEmpty(obj) {
+  for (let key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+```
+
+### 3. Utility Libraries
+
+If you already use **Lodash** or **Ramda**, use their built-in functions, which also safely handle `null` and `undefined`:
+
+```javascript
+// Lodash
+_.isEmpty({}); // true
+
+```
+
+---
+
+### Important Edge Cases
+
+- **`null` or `undefined`:** `Object.keys(null)` throws a `TypeError`. Handle non-objects first:
+
+```javascript
+const isEmpty = (obj) => 
+  obj && Object.keys(obj).length === 0 && obj.constructor === Object;
+
+```
+
+- **Symbols:** `Object.keys()` ignores Symbol keys. If your object might contain Symbols, use `Reflect.ownKeys()`:
+
+```javascript
+const isEmpty = (obj) => Reflect.ownKeys(obj).length === 0;
+
+```

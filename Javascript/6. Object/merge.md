@@ -1,6 +1,7 @@
 Your code demonstrates a variety of ways to merge JavaScript objects, including both shallow and deep merging. Let's walk through each approach and explain their functionality, starting from simple merges and moving to more advanced merging with deep recursion.
 
 ### 1. **Basic Merge Using Spread Operator (`...`)**
+
 This is the simplest and most common way to merge objects in JavaScript, but it only performs a **shallow** merge.
 
 ```javascript
@@ -14,6 +15,7 @@ console.log(merged); // { a: 1, b: 3, c: 4 }
 - **How it works**: The spread operator (`...`) copies the properties of `obj1` and `obj2` into a new object. If there are overlapping keys, the properties from the second object (`obj2`) will overwrite those from the first object (`obj1`).
 
 ### 2. **Merge Using `Object.assign()`**
+
 `Object.assign()` is another method to perform a shallow merge of two or more objects.
 
 ```javascript
@@ -27,6 +29,7 @@ console.log(merged); // { a: 1, b: 3, c: 4 }
 - **How it works**: `Object.assign()` takes one or more source objects and copies their properties to the target object (the first argument). Like the spread operator, it performs a shallow merge.
 
 ### 3. **Merging Values with Same Key**
+
 If you want to combine values for the same key (instead of overwriting them), you can manually handle this scenario by checking for existing keys and combining their values.
 
 ```javascript
@@ -56,6 +59,7 @@ console.log(merge(obj1, obj2));
 - **How it works**: This solution uses the `reduce` method to iterate through all objects and keys. When it finds a key that exists in the accumulator (`acc`), it concatenates the new value to the existing one. If the key doesn't exist, it simply adds the key and value.
 
 ### 4. **Deep Merging Objects**
+
 If you need to merge objects that contain **nested objects**, a **deep merge** is needed. This ensures that nested objects or arrays are merged recursively instead of being overwritten.
 
 ```javascript
@@ -97,6 +101,7 @@ console.log(deepMerge(obj1, obj2, concatFn));
 - **How it works**: The `deepMerge` function ensures that for each key, if the values are both objects, it will recursively merge them. If they are arrays, it will concatenate them. For other data types (like strings), it will join them or pick the value from the second object (`b`).
 
 ### 5. **Shallow vs Deep Merge with Flags**
+
 You can use a flag to specify whether the merge should be shallow or deep. Here's an example of how you might implement that:
 
 ```javascript
@@ -154,7 +159,8 @@ console.log(merge(true, obj1, obj2));
 
 - **How it works**: The merge function checks if the first argument is a boolean flag indicating a **deep merge**. If it is, it recursively merges objects. If not, it performs a **shallow merge** by copying the values directly.
 
-### Key Takeaways:
+### Key Takeaways
+
 1. **Shallow Merge**: The spread operator (`...`) or `Object.assign()` are the easiest ways to merge objects, but they only perform shallow merging, meaning nested objects will be overwritten.
 2. **Combining Values**: If you want to combine values of the same key (e.g., arrays), you can manually handle this by checking if the key already exists in the result and merging values.
 3. **Deep Merge**: For nested objects, you need a recursive approach to ensure that nested values are merged instead of being overwritten.

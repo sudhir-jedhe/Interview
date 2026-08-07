@@ -56,7 +56,7 @@ function licenseKeyFormatting(s: string, k: number): string {
 
 ### **Test Cases:**
 
-#### Example 1:
+#### Example 1
 
 ```typescript
 const result = licenseKeyFormatting("5F3Z-2e-9-w", 4);
@@ -70,7 +70,7 @@ console.log(result); // Output: "5F3Z-2E9W"
 - The remaining characters form the second group: `"2E9W"`.
 - The result is `"5F3Z-2E9W"`.
 
-#### Example 2:
+#### Example 2
 
 ```typescript
 const result2 = licenseKeyFormatting("2-5g-3-J", 2);

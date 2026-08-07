@@ -10,33 +10,36 @@ The problem involves dealing with `undefined` values inside an object or array a
 
 This solution leverages the built-in `JSON.stringify()` and `JSON.parse()` functions in combination with a `replacer` function to handle the conversion of `undefined` to `null`.
 
-#### Code:
+#### Code
 
 ```javascript
 const replacer = (key, val) => (typeof val === "undefined" ? null : val);
 const undefinedToNull = (arg) => JSON.parse(JSON.stringify(arg, replacer));
 ```
 
-#### Explanation:
+#### Explanation
+
 - **`JSON.stringify()`**: Serializes the object, but allows you to specify a `replacer` function that can modify values during the serialization.
 - **`replacer` function**: Checks if the value is `undefined` and replaces it with `null`. Otherwise, it keeps the value as-is.
 - **`JSON.parse()`**: Converts the string back into a JavaScript object after serialization. This ensures that the object with `undefined` values gets transformed into a valid structure.
 
-#### Pros:
+#### Pros
+
 - **Simple and concise**: Very clean and easy-to-understand solution.
 - **Handles deep structures**: Works well with nested objects and arrays.
 
-#### Cons:
+#### Cons
+
 - **Relies on JSON serialization**: This approach might fail when dealing with non-JSON-safe data types like `Date`, `Map`, `Set`, `undefined` in arrays, or functions.
 - **Might be inefficient** for complex or large objects because of the serialization and deserialization steps.
 
 ---
 
-2. **Second Implementation: Recursively Modify Object and Array**
+1. **Second Implementation: Recursively Modify Object and Array**
 
 This implementation directly manipulates the object (or array) in a more explicit, manual way. It replaces `undefined` with `null` during a deep traversal.
 
-#### Code:
+#### Code
 
 ```javascript
 function undefinedToNull(arg) {
@@ -56,26 +59,29 @@ function undefinedToNull(arg) {
 }
 ```
 
-#### Explanation:
+#### Explanation
+
 - **Check object type**: The function checks if the argument is an object or array. If it's not an object (i.e., primitive), it returns `null` if the value is `undefined`.
 - **Deeply traverse the object**: The function loops through object keys and recursively calls `undefinedToNull()` on nested objects/arrays.
 - **Replace `undefined`**: If a value is `undefined`, it is replaced with `null`.
 
-#### Pros:
+#### Pros
+
 - **Direct and customizable**: It handles objects and arrays in a very manual way, making it easy to extend for specific cases.
 - **No reliance on JSON serialization**, making it suitable for more complex data types.
   
-#### Cons:
+#### Cons
+
 - **More verbose**: Requires explicit traversal logic and handling.
 - **Mutates the original object**: This version mutates the input object directly, which might not be desirable if you want to preserve immutability.
 
 ---
 
-3. **Third Implementation: Handle Arrays and Objects Recursively**
+1. **Third Implementation: Handle Arrays and Objects Recursively**
 
 This version handles both arrays and objects and recursively traverses nested structures, replacing `undefined` with `null`.
 
-#### Code:
+#### Code
 
 ```javascript
 function undefinedToNull(arg) {
@@ -95,16 +101,19 @@ function undefinedToNull(arg) {
 }
 ```
 
-#### Explanation:
+#### Explanation
+
 - **Handle Arrays**: If the argument is an array, the function uses `.map()` to recursively apply `undefinedToNull()` to each element.
 - **Handle Objects**: For objects, it checks if each value is `undefined` and replaces it with `null`. If it's not `undefined`, it recurses into the nested object or array.
 
-#### Pros:
+#### Pros
+
 - **Handles both arrays and objects**: This approach explicitly supports arrays and objects, which makes it more general.
 - **No reliance on `JSON.parse()`/`JSON.stringify()`**: It's a more flexible solution that doesn't require serialization.
 - **Avoids mutation of the original**: By using recursion, the function can handle deep structures without mutating the original input (with proper modifications).
 
-#### Cons:
+#### Cons
+
 - **Still modifies the input object**: Like the second implementation, this one also mutates the input object.
 - **More complex than the first solution**: The code is more involved due to its handling of both arrays and objects.
 
@@ -116,7 +125,7 @@ function undefinedToNull(arg) {
   
 - If you're working with more complex data or don't want to rely on JSON serialization, the **third implementation** is preferable as it handles both arrays and objects recursively. However, you may want to consider **returning a new object** to avoid mutations of the original data (you can use `Object.assign()` or the spread operator to make a shallow copy before modifying).
 
-### **Modified Third Implementation (to avoid mutation)**:
+### **Modified Third Implementation (to avoid mutation)**
 
 ```javascript
 function undefinedToNull(arg) {
@@ -154,5 +163,39 @@ console.log(undefinedToNull(obj2));
 ```
 
 In summary:
+
 - If you don't need to mutate the original object and need deep handling for arrays and objects, the **third solution** (with a small tweak) is the most flexible.
 - For simpler cases with JSON-safe data, **first solution** is the most elegant.
+
+This breakdown is clear, well-structured, and does a great job comparing trade-offs such as mutability, performance, and JSON safety.
+
+To refine this analysis further, consider these edge cases and technical nuances across the implementations:
+
+### 1. Root `undefined` throws an error in Implementation 1
+
+If `arg` itself is `undefined` (e.g., `undefinedToNull(undefined)`), `JSON.stringify(undefined)` returns `undefined` directly without executing the `replacer`. Passing `undefined` into `JSON.parse()` triggers a runtime `SyntaxError: Unexpected token u in JSON at position 0`.
+
+### 2. Prototype properties and non-plain objects in Implementation 3
+
+Using `for (let key in arg)` iterates over inherited enumerable properties along the prototype chain rather than just the object's own properties. Additionally, it misses `Symbol` keys and converts non-plain object instances (like `Date`, `RegExp`, or custom classes) into plain `{}` objects.
+
+A safer non-mutating traversal uses `Object.keys()` or `Reflect.ownKeys()`:
+
+```javascript
+function undefinedToNull(arg) {
+  if (arg === undefined) return null;
+  if (typeof arg !== "object" || arg === null) return arg;
+  if (Array.isArray(arg)) return arg.map(undefinedToNull);
+
+  // Preserve non-array objects immutably
+  return Object.keys(arg).reduce((acc, key) => {
+    acc[key] = undefinedToNull(arg[key]);
+    return acc;
+  }, {});
+}
+
+```
+
+### 3. Circular references
+
+If the target object contains self-referential structures (e.g., `obj.self = obj`), any recursive approach will throw `RangeError: Maximum call stack size exceeded`. Passing a `WeakMap` tracker through the recursive calls avoids infinite recursion when processing complex or graph-like objects.

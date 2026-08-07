@@ -1,23 +1,28 @@
 Your problem statement is to implement a deep equality check (similar to `_.isEqual` in lodash) for various data types, including primitives, objects, arrays, and handling circular references.
 
-### **Key Requirements**:
+### **Key Requirements**
+
 - Support for primitive values like strings, numbers, booleans, `null`, and `undefined`.
 - Deep comparison of objects (including handling circular references).
 - Arrays need to be compared element by element.
 - Objects should be compared based on their **own properties**, not inherited ones.
 - Handle circular references to avoid infinite recursion.
 
-### **Steps for Solution**:
+### **Steps for Solution**
+
 1. **Primitive Values**: Directly compare them (e.g., `1 === 1` or `"hello" === "hello"`).
 2. **Objects and Arrays**: Iterate through their keys and values, comparing them recursively.
 3. **Circular References**: Use a `Map` to keep track of objects we've already compared. If an object is encountered again, we avoid further recursion (this can also be done using a `WeakMap`).
 4. **Handle `null`**: `null` is an object in JavaScript, so special care is needed to differentiate between `null` and other objects.
 
-### **Your Solutions**:
+### **Your Solutions**
+
 Let's walk through the approaches you've outlined and finalize a complete solution.
 
 ### **Approach 1: Handle Circular References and Object Comparison**
+
 The main idea behind the deep comparison is:
+
 - Check if the values are **strictly equal** first (`===`).
 - If they are not, recursively compare their properties if they are objects (including arrays).
 
@@ -58,6 +63,7 @@ function isEqual(a, b, map = new Map()) {
 ```
 
 ### **Explanation:**
+
 - **Strict Equality Check**: If both values are strictly equal (`===`), we return `true` immediately. This covers primitive values and identical object references.
 - **Null or Primitive**: If either `a` or `b` is `null` or not an object, return `false` since primitives (like numbers or strings) cannot be deeply equal to objects.
 - **Circular Reference Handling**: We use a `Map` to track visited objects. If an object is encountered that has been seen before with the same reference, we return `true` to prevent infinite recursion.
@@ -83,10 +89,12 @@ const b = { self: a };
 console.log(isEqual(a, b)); // true
 ```
 
-### **Handling Circular References**:
+### **Handling Circular References**
+
 Circular references (where objects reference themselves directly or indirectly) are common in complex data structures. The `Map` ensures that each object is only compared once during the recursion.
 
-### **Approach 2: Simplified `areObjectsEqual` for Shallow Comparison**:
+### **Approach 2: Simplified `areObjectsEqual` for Shallow Comparison**
+
 You also have a simplified function `areObjectsEqual` which compares objects **shallowly** (i.e., only their immediate properties, not nested ones).
 
 ```javascript
@@ -110,12 +118,14 @@ export const areObjectsEqual = (obj1, obj2) => {
 
 This approach is useful for **non-nested objects** but doesn't handle deep comparisons like arrays and nested objects. You can use this as a helper function if needed.
 
-### **Additional Edge Cases**:
+### **Additional Edge Cases**
+
 - **NaN**: `NaN !== NaN`, so you might need a special check for `NaN` values.
 - **Date objects**: `new Date(2021, 0, 1)` needs to be compared by value (i.e., `getTime()`).
 - **RegExp**: Should be compared by their source and flags.
 
 If you need to extend the function to handle these, you can add specific checks for these types.
 
-### **Conclusion**:
+### **Conclusion**
+
 The implementation of `isEqual` ensures that the objects are deeply compared, supporting circular references and proper type handling. The function recursively checks all properties, handles arrays, objects, and ensures correct behavior for objects with circular references.

@@ -2,7 +2,7 @@ The functions you've written (`setValueByPath`, `set`, etc.) are all designed to
 
 Let’s break down the code you provided in the following parts:
 
-### 1. **`setValueByPath` Function**:
+### 1. **`setValueByPath` Function**
 
 ```javascript
 function setValueByPath(obj, path, value) {
@@ -23,6 +23,7 @@ function setValueByPath(obj, path, value) {
 ```
 
 #### **Explanation:**
+
 - This function works by splitting the `path` string into an array (using `"."` as the separator).
 - It then iterates through each part of the path, and if any intermediate property doesn't exist or is not an object, it creates an empty object to fill in that gap.
 - Finally, the function sets the value at the target location (`lastKey`).
@@ -101,6 +102,7 @@ function set(object, path, value) {
 ```
 
 #### **Explanation:**
+
 - First, the function checks if the `object` is valid and if the `path` is not an empty string.
 - If the `path` is a string, it replaces `[` and `]` with `.` to properly handle array-like paths (like `obj["arr[0]"]` becomes `obj.arr.0`).
 - Then, the path is split by `.` into an array, and empty elements are filtered out.
@@ -158,6 +160,7 @@ function set(object, path, value) {
 ```
 
 #### **Explanation:**
+
 - The function first checks if the `object` is valid and if the `path` is a non-empty string.
 - It processes the path string by converting array-style indexing (e.g., `obj["arr[0]"]`) to a dot notation (`obj.arr.0`).
 - If `path` is an array, it directly processes it.
@@ -181,3 +184,104 @@ console.log(obj);
 - The functions ensure that, if any part of the path doesn't exist, it is created dynamically, whether it's an object or an array, before finally setting the value at the end of the path.
 
 These functions are helpful for setting values in deeply nested objects without worrying about whether the intermediate keys or arrays already exist.
+
+Here is an analysis of the key trade-offs, potential runtime bugs, and edge cases present in these implementations.
+
+---
+
+## Technical Comparison & Vulnerability Breakdown
+
+| Feature / Consideration            | Implementation 1 (`setValueByPath`) | Implementation 2 (`set`)       | Implementation 3 (`set`)       |
+| ---------------------------------- | ----------------------------------- | ------------------------------ | ------------------------------ |
+| **Path Formats Supported**         | Dot notation only                   | Dot, brackets, Array inputs    | Dot, brackets, Array inputs    |
+| **Array Creation Support**         | ❌ None (Creates `{}`)               | ✅ Yes (`path[i + 1]` check)    | ✅ Yes (`parseInt` check)       |
+| **Prototype Pollution Vulnerable** | ⚠️ Yes                               | ⚠️ Yes                          | ⚠️ Yes                          |
+| **Primitive Path Traversal Bug**   | ❌ Overwrites non-objects blindly    | ❌ Throws TypeErrors            | ❌ Throws TypeErrors            |
+| **Array Mutability Safety**        | ❌ N/A                               | ❌ Alters array input reference | ❌ Alters array input reference |
+
+---
+
+## Critical Edge Cases & Common Pitfalls
+
+### 1. Prototype Pollution (Security Risk)
+
+All three implementations allow setting properties on `__proto__`, `constructor`, or `prototype`. If an untrusted user input is passed as a path string (e.g., `setValueByPath(obj, "__proto__.polluted", true)`), it modifies the global Object prototype.
+
+- **Fix:** Explicitly guard against dangerous keys before traversal:
+
+```javascript
+const UNSAFE_KEYS = ["__proto__", "constructor", "prototype"];
+if (UNSAFE_KEYS.includes(key)) return object;
+
+```
+
+### 2. Traversal Over Non-Object Primitives
+
+Consider what happens if an intermediate path property already exists as a primitive value (like a string or boolean):
+
+- **In Implementation 1:** It converts existing primitive values into empty objects (`{}`), mutating state unexpectedly.
+- **In Implementations 2 & 3:** Traversal attempts to read properties on a primitive in the next iteration. In strict mode or when assigning properties, accessing/setting fields on primitives fails or throws a `TypeError`.
+
+### 3. Array Mutation in Implementation 3
+
+In Implementation 3, when an array is passed directly as `path`, `paths = path` assigns it by reference. Any internal filtering or string manipulation will mutate the caller's array directly.
+
+### 4. Index Check Edge Cases
+
+Implementation 3 uses `parseInt(paths[index + 1]) >= 0`. This creates false positives for keys that start with numbers (e.g., `"10th_item"` turns into `10`, incorrectly instantiating an array instead of an object).
+
+Implementation 2 handles this better by validating if the entire segment is a valid numeric string, but fails if `path[i + 1]` is `"0"`, as `Number("0")` evaluates to `0`, which is falsy in JavaScript boolean checks.
+
+---
+
+## Production-Ready Reference Implementation
+
+Here is a robust version that handles security, array creation, string/array paths, and safe traversal over primitive overrides:
+
+```javascript
+function set(object, path, value) {
+  if (object == null || typeof object !== "object") {
+    return object;
+  }
+
+  // Normalize path into an array of key strings
+  const keys = Array.isArray(path)
+    ? path
+    : path
+        .replaceAll("[", ".")
+        .replaceAll("]", "")
+        .split(".")
+        .filter(Boolean);
+
+  let current = object;
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+
+    // Security check: Guard against prototype pollution
+    if (key === "__proto__" || key === "constructor" || key === "prototype") {
+      return object;
+    }
+
+    // Target key reached: assign value
+    if (i === keys.length - 1) {
+      current[key] = value;
+      break;
+    }
+
+    // Check if the next segment represents an array index
+    const nextKey = keys[i + 1];
+    const isNextKeyIndex = /^\d+$/.test(nextKey);
+
+    // If key missing or not a plain object/array, initialize it correctly
+    if (current[key] == null || typeof current[key] !== "object") {
+      current[key] = isNextKeyIndex ? [] : {};
+    }
+
+    current = current[key];
+  }
+
+  return object;
+}
+
+```

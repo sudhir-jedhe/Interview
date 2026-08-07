@@ -1,12 +1,15 @@
 To validate object keys against an array or another object, the methods you've provided are great starting points. Let's break down the approach and explain the different validations with examples.
 
 ### 1. **Validate against an array of keys**
+
 You can use various methods to compare the keys of an object to a predefined array of keys. Depending on your needs, you may need to:
+
 - Ensure all keys of the object are present in the array.
 - Ensure all keys in the array are present in the object.
 - Check if the object keys exactly match the array.
 
 ### **1.1. Validate if all keys in the object are present in the array**
+
 This will check if **all the keys of the object** are in the provided keys array.
 
 ```javascript
@@ -22,10 +25,12 @@ console.log(keysAreValid(obj, [...keys, 'quantity'])); // true
 ```
 
 **Explanation:**
+
 - **`Object.keys(obj)`**: Get the keys of the object.
 - **`.every()`**: Iterate through the object's keys and check if every key is present in the provided `keys` array using `.includes()`.
 
 ### **1.2. Validate if all keys in the array are present in the object**
+
 This will check if **all the keys in the array** are present in the object.
 
 ```javascript
@@ -40,9 +45,11 @@ console.log(allKeysArePresent(obj, [...keys, 'quantity'])); // false
 ```
 
 **Explanation:**
+
 - **`keys.every()`**: Iterate through the array `keys` and check if every key is present in the object using `objKeys.includes(key)`.
 
 ### **1.3. Validate if keys exactly match the specified array**
+
 This checks that the object has the exact same keys as the array, with no extra or missing keys.
 
 ```javascript
@@ -55,15 +62,18 @@ console.log(keysMatch(obj, [...keys, 'quantity'])); // false
 ```
 
 **Explanation:**
+
 - **`keysAreValid`** ensures the object only contains keys from the `keys` array.
 - **`allKeysArePresent`** ensures the object contains all keys from the `keys` array, without any extra keys.
 
 ---
 
 ### 2. **Validate against another object**
+
 If you want to check if one object has the same keys as another object, you can compare the keys directly.
 
 ### **2.1. Validate if all keys in the target object are present in the source object**
+
 This checks if the target object contains **only the keys present in the source object**.
 
 ```javascript
@@ -79,10 +89,12 @@ console.log(objectKeysAreValid(target, { ...source, quantity: 10 })); // true
 ```
 
 **Explanation:**
+
 - **`Object.keys(source)`**: Get the keys from the source object.
 - **`keysAreValid()`**: Check if all the keys from the target object are present in the source object.
 
 ### **2.2. Validate if all keys in the source object are present in the target object**
+
 This checks if the **source object's keys** are present in the target object.
 
 ```javascript
@@ -95,10 +107,12 @@ console.log(objectKeysArePresent(target, { ...source, quantity: 10 })); // false
 ```
 
 **Explanation:**
+
 - **`Object.keys(source)`**: Get the keys from the source object.
 - **`allKeysArePresent()`**: Check if all the keys from the source object are present in the target object.
 
 ### **2.3. Validate if the keys of both objects exactly match**
+
 This checks if the **keys of the target object match exactly** the keys of the source object.
 
 ```javascript
@@ -111,6 +125,7 @@ console.log(objectKeysMatch(target, { ...source, quantity: 10 })); // false
 ```
 
 **Explanation:**
+
 - **`keysMatch()`**: Ensures both objects have the exact same keys.
 
 ---
@@ -156,3 +171,53 @@ This `deepEqual` function compares both keys and values recursively, ensuring th
 - **`objectKeysAreValid`**, **`objectKeysArePresent`**, and **`objectKeysMatch`** check keys between two objects.
   
 By combining these functions, you can handle various key validation scenarios when working with JavaScript objects.
+
+This guide is thorough, clear, and covers all the key validation scenarios effectively.
+
+To improve performance and leverage modern JavaScript standards, consider the following optimizations:
+
+### 1. Optimize lookup time with `Set` or `Object.hasOwn`
+
+- **`keysAreValid`**: Using `keys.includes(key)` inside `.every()` results in $O(m \times n)$ time complexity because `.includes()` scans the array sequentially. Converting `keys` to a `Set` drops lookup time to $O(1)$, giving $O(m + n)$ total time:
+
+```javascript
+const keysAreValid = (obj, keys) => {
+  const validKeys = new Set(keys);
+  return Object.keys(obj).every(key => validKeys.has(key));
+};
+
+```
+
+- **`allKeysArePresent`**: Instead of getting `Object.keys(obj)` and calling `.includes()`, use `Object.hasOwn(obj, key)` (or `key in obj`) for $O(1)$ key checks without extra array allocations:
+
+```javascript
+const allKeysArePresent = (obj, keys) =>
+  keys.every(key => Object.hasOwn(obj, key));
+
+```
+
+---
+
+### 2. Streamline `keysMatch` with a length check
+
+Rather than running both `keysAreValid` and `allKeysArePresent` (which iterates over the keys twice), compare the key counts first before doing a single-pass Set lookup:
+
+```javascript
+const keysMatch = (obj, keys) => {
+  const objKeys = Object.keys(obj);
+  if (objKeys.length !== keys.length) return false;
+  
+  const targetKeys = new Set(keys);
+  return objKeys.every(key => targetKeys.has(key));
+};
+
+```
+
+---
+
+### 3. Edge cases in `deepEqual`
+
+The `deepEqual` implementation handles nested plain objects well. If you plan to use it in production, keep these edge cases in mind:
+
+- **`NaN` handling**: `NaN === NaN` evaluates to `false`. If values might be `NaN`, use `Object.is(obj1[key], obj2[key])`.
+- **Non-plain objects**: Objects like `Date`, `RegExp`, or `Set` are type `"object"` but won't be compared accurately by key enumeration alone.

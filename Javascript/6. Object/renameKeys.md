@@ -53,7 +53,8 @@ console.log(renamedUser);
 // }
 ```
 
-#### Explanation:
+#### Explanation
+
 - The `renameKeys` function:
   - Creates a new object `renamed`.
   - Iterates through all the keys of the original object (`obj`).
@@ -92,7 +93,8 @@ console.log(renamedObj);
 // { location: 'Kanpur', region: 'UP' }
 ```
 
-#### Explanation:
+#### Explanation
+
 - **`Object.entries(originalObj)`** converts the object into an array of key-value pairs.
 - **`map`** iterates over each pair and uses the `mapping` object to find the new key. If a new key exists in `mapping`, it is used; otherwise, the original key is retained.
 - **`Object.fromEntries`** is used to convert the array of modified key-value pairs back into an object.
@@ -119,7 +121,8 @@ console.log(renamedObj);
 // { fullName: 'John', age: 30 }
 ```
 
-#### Explanation:
+#### Explanation
+
 - The `for...in` loop iterates through all keys of `originalObj`.
 - A **conditional check** is applied: if the key is `"name"`, it gets renamed to `"fullName"`. Otherwise, the key remains unchanged.
 - The result is stored in a new object `renamedObj`.
@@ -149,7 +152,8 @@ console.log(renamedProduct);
 // { name: 'T-Shirt', price: 20, discountedPrice: 20 }
 ```
 
-#### Explanation:
+#### Explanation
+
 - **Spread operator (`...product`)** copies all properties from the `product` object to `renamedProduct`.
 - A conditional expression is used to determine the new property name. If the `discount` is greater than 0, the new property is named `"discountedPrice"`, otherwise, it keeps the original `"price"`.
 - This method is concise and works well when you need to rename or replace a property conditionally.
@@ -185,3 +189,60 @@ console.log(renamedProduct);
 - If you need a **general solution** that works with multiple properties, go with the **`keyMap` method** or the **`Object.entries` approach**.
 - For **conditional renaming** (like changing only one property based on a condition), **`for...in`** or the **spread operator** method are great choices.
 - If you want to ensure the **original object is not mutated**, prefer using **`Object.entries`** or the **spread operator** approach.
+
+Your breakdown and analysis of these key-renaming patterns in JavaScript are well-structured, but there are **two critical technical inaccuracies** in your comparison section regarding object mutation.
+
+---
+
+### Clarification on Object Mutation
+
+In the **Comparison of Approaches** and **Summary**, methods 1 and 3 are marked as mutating the original object. In your provided code, **none of the four approaches mutate the original object**.
+
+Here is why:
+
+1. **Approach 1 (`keyMap` + `for...in`):**
+
+* It creates `const renamed = {};` and populates this new instance while leaving `obj` untouched.
+
+1. **Approach 3 (Conditional `for...in`):**
+
+* It initializes `const renamedObj = {};` and populates the new object without modifying `originalObj`.
+
+#### How True Mutation Looks vs. Immutability
+
+- **Immutable (New Object Created):** All four provided approaches create a distinct memory reference for the output object. The original object remains intact.
+- **Mutating In-Place (Destructive):** To actually mutate the original object in-place, you modify its keys using `delete` and re-assign properties directly on the same reference:
+
+```javascript
+// Example of true in-place mutation:
+const user = { firstName: 'John', age: 30 };
+
+// Mutates 'user' directly
+user.name = user.firstName;
+delete user.firstName;
+
+console.log(user); // { age: 30, name: 'John' }
+
+```
+
+---
+
+### Revised Comparison Matrix
+
+| Approach                        | Functional Style | Best Used For                                               | Immutability                          |
+| ------------------------------- | ---------------- | ----------------------------------------------------------- | ------------------------------------- |
+| **1. `keyMap` + `for...in**`    | Imperative       | Reusable utility functions with dynamic key maps.           | **Non-mutating** (returns new object) |
+| **2. `Object.entries` + `map**` | Functional       | Declarative, modern ES6+ data transformation pipelines.     | **Non-mutating** (returns new object) |
+| **3. `for...in` + Conditional** | Imperative       | Simple, one-off programmatic checks on known keys.          | **Non-mutating** (returns new object) |
+| **4. Spread Operator (`...`)**  | Functional       | Concise inline object creation with dynamic key evaluation. | **Non-mutating** (returns new object) |
+
+---
+
+### Additional Edge Cases to Consider
+
+When implementing key renaming in production code, keep two nuances in mind:
+
+1. **Prototype Pollution & Inheritance:**
+In Approach 1, `if (obj.hasOwnProperty(key))` correctly guards against inherited prototype properties. In modern JavaScript (ES2022+), prefer `Object.hasOwn(obj, key)` over `obj.hasOwnProperty(key)` to prevent crashes if `obj` was created via `Object.create(null)`.
+2. **Key Collisions:**
+When mapping keys (e.g., mapping `{ a: 'b', b: 'c' }`), ensure the order of operations or map structure doesn't overwrite values unintentionally during iteration.

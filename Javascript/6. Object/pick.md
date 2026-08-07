@@ -132,3 +132,52 @@ function pick(object, keys) {
 ```
 
 Both versions are valid, and the choice between them comes down to performance needs and coding style preferences. If performance is a critical factor and you're working with large data, the first approach might be better. If you're working in a functional programming style, and immutability matters, the second approach is a good choice.
+
+Your breakdown is spot on! Spotting the falsy value bug in the original imperative version and highlighting the $O(n^2)$ time-complexity penalty of object spreading in `reduce` are key takeaways for reviewing modern JavaScript utility functions.
+
+Beyond what you’ve outlined, there are three important nuances worth considering for an enterprise-ready implementation:
+
+### 1. Prototype Pollution & Inverted Check (`in` vs `Object.hasOwn`)
+
+Using `key in object` checks properties up the entire prototype chain. This introduces two potential bugs:
+
+- **Inherited Properties:** It picks inherited properties (e.g., `toString`, `valueOf`, or prototype methods) even if they aren't direct properties of `object`.
+- **Null-prototype Objects:** It throws a `TypeError` if `object` is created with `Object.create(null)`.
+
+**Modern fix:** Use `Object.hasOwn(object, key)` (or `Object.prototype.hasOwnProperty.call(object, key)` for older environments).
+
+### 2. Defending Against Nullish Objects
+
+Both functions throw an unhandled `TypeError: Cannot use 'in' operator to search for...` if `object` is `null` or `undefined`. Adding a nullish check at the top guarantees safety:
+
+```javascript
+if (object == null) return {};
+
+```
+
+### 3. Mutating the Accumulator in `reduce` (Best of Both Worlds)
+
+If you prefer the functional signature of `reduce` without the $O(n^2)$ memory churn caused by object spread `{ ...acc }`, you can safely mutate `acc` inside `reduce` because `acc` is a local reference created exclusively inside the reducer:
+
+```javascript
+function pick(object, keys) {
+  if (object == null || !Array.isArray(keys)) return {};
+
+  return keys.reduce((acc, key) => {
+    if (Object.hasOwn(object, key)) {
+      acc[key] = object[key];
+    }
+    return acc;
+  }, {});
+}
+
+```
+
+### Quick Comparison Matrix
+
+| Approach                                        | Prototype Safe     | Performance | Immutability         | Handles Falsy Values          |
+| ----------------------------------------------- | ------------------ | ----------- | -------------------- | ----------------------------- |
+| **Original Imperative** (`object[key]`)         | ❌ No               | ⚡ $O(n)$    | ✅ Returns new object | ❌ Fails on `0`, `false`, `""` |
+| **`key in object`**                             | ❌ Checks prototype | ⚡ $O(n)$    | ✅ Returns new object | ✅ Yes                         |
+| **`reduce` + Spread** (`{...acc}`)              | ❌ Checks prototype | 🐢 $O(n^2)$  | ✅ Returns new object | ✅ Yes                         |
+| **Optimal** (`Object.hasOwn` + single mutation) | ✅ Yes              | ⚡ $O(n)$    | ✅ Returns new object | ✅ Yes                         |

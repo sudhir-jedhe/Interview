@@ -974,3 +974,108 @@ export const App: React.FC = () => {
 | **Token Refresh Queue**  | Axios Interceptor + Promise Queue (`failedQueue`)  | Prevents parallel API race conditions when multiple requests hit `401`.                         |
 | **Cross-Tab Token Sync** | `BroadcastChannel` with `'TOKEN_REFRESHED'`        | Avoids redundant refresh calls from multiple tabs.                                              |
 | **Proactive Expiration** | `useTokenExpiration` with `setTimeout`             | Auto-refreshes tokens before expiration, avoiding `401` errors entirely during active sessions. |
+
+## 1. Create a Global Logout Hook
+
+Create a custom hook called `useCrossTabLogout` that listens for the `storage` event. If the authentication token is removed from `localStorage` (or a specific logout flag is triggered) in another tab, it dispatches your Redux logout action and redirects the user via React Router.
+
+```jsx
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout } from './authSlice'; // Path to your Redux auth slice
+
+export const useCrossTabLogout = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      // Check if the logout key or auth token was cleared/changed
+      if (event.key === 'auth_token' && event.newValue === null) {
+        // 1. Clear Redux state
+        dispatch(logout());
+        
+        // 2. Redirect to login screen
+        navigate('/login', { replace: true });
+      }
+    };
+
+    // Listen for storage changes across tabs
+    window.addEventListener('storage', handleStorageChange);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [dispatch, navigate]);
+};
+
+```
+
+---
+
+## 2. Initialize the Hook in Your App Layout
+
+To ensure the listener is active across all authenticated pages, invoke the hook inside a root layout component or router wrapper that renders after the user logs in.
+
+```jsx
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import { useCrossTabLogout } from './useCrossTabLogout';
+
+const AuthAppLayout = () => {
+  // Activates the cross-tab listener globally for all child routes
+  useCrossTabLogout();
+
+  return (
+    <div className="app-layout">
+      {/* Your main dashboard navbar, sidebar, etc. */}
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  );
+};
+
+export default AuthAppLayout;
+
+```
+
+---
+
+## 3. Triggering the Logout
+
+When a user clicks "Logout" in **Tab A**, clear the tracked storage key. This will automatically broadcast the `storage` event to **Tab B**, **Tab C**, etc., executing the hook logic everywhere simultaneously.
+
+```jsx
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout } from './authSlice';
+
+const UserProfile = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // 1. Clear LocalStorage (This triggers the event in other tabs)
+    localStorage.removeItem('auth_token');
+
+    // 2. Clear local Redux state for the current tab
+    dispatch(logout());
+
+    // 3. Redirect current tab to login
+    navigate('/login', { replace: true });
+  };
+
+  return (
+    <button onClick={handleLogout} className="bg-red-600 text-white px-4 py-2 rounded">
+      Log Out
+    </button>
+  );
+};
+
+export default UserProfile;
+
+```

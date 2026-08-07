@@ -183,3 +183,218 @@ convertCase('mixed_string with spaces_underscores-and-hyphens', 'title');
 convertCase('mixed_string with spaces_underscores-and-hyphens', 'sentence');
 // 'Mixed string with spaces underscores and hyphens'
 ```
+
+This is a well-crafted regex-based tokenizer pattern popularized by 30 Seconds of Code. Using a regex matcher rather than `str.split()` solves the fundamental issue of extracting words across mixed delimiters (`_`, `-`, spaces) and casing transitions (`camelCase`, `PascalCase`, `ACRONYMs`).
+
+Here is an analysis of how the tokenizer works, two edge cases to watch out for, and a unified TypeScript implementation.
+
+---
+
+### Understanding the Master Regex Pattern
+
+```regexp
+/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g
+
+```
+
+The regex works via a prioritized **OR (`|`) pipeline**:
+
+1. **`[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)`**: Matches consecutive uppercase letters (acronyms like `XML` or `HTML`). The lookahead ensures that in `XMLDocument`, `XML` is matched as one token and `Document` as the next, rather than consuming `XMLD`.
+2. **`[A-Z]?[a-z]+[0-9]*`**: Matches standard words (e.g., `Hello`, `world`, `v2`).
+3. **`[A-Z]`**: Fallback for isolated single uppercase letters.
+4. **`[0-9]+`**: Fallback for standalone digits.
+
+---
+
+### Two Edge Cases to Keep in Mind
+
+#### 1. `null` or Empty Match Errors
+
+If an input string contains **only symbols** (e.g., `str = "---___"`), `str.match(...)` returns `null`. Calling `.map()` directly on `null` will throw a `TypeError: Cannot read properties of null (reading 'map')`.
+
+**Fix:** Default `match(...)` to an empty array: `(str.match(...) || [])`.
+
+#### 2. Sentence Case Word Normalization
+
+In `toSentenceCase`, if an input is `PASCA_CASE` or `camelCase` (e.g., `'IAmEditingSomeXML'`), skipping `.toLowerCase()` on individual tokens leaves inner capitalized letters untouched:
+
+* **Current output:** `'I Am Editing Some XML'` $\rightarrow$ `'I Am Editing Some XML'` (Not true sentence case)
+* **True sentence case:** Lowercase all words, then capitalize index 0 $\rightarrow$ `'I am editing some xml'`
+
+---
+
+### Clean Refactored Implementation (ES6 / TypeScript)
+
+Using a lookup map for delimiters and transforms makes the `convertCase` function cleaner, more extensible, and easier to read than nested ternary operators:
+
+```typescript
+type CaseType = 'camel' | 'pascal' | 'kebab' | 'snake' | 'title' | 'sentence';
+
+const WORD_REGEX = /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g;
+
+const convertCase = (str: string, toCase: CaseType = 'camel'): string => {
+  if (!str) return '';
+
+  // Extract word tokens safely (handles non-alphanumeric strings without crashing)
+  const words = str.match(WORD_REGEX);
+  if (!words || words.length === 0) return '';
+
+  switch (toCase) {
+    case 'camel': {
+      const formatted = words
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join('');
+      return formatted.charAt(0).toLowerCase() + formatted.slice(1);
+    }
+
+    case 'pascal':
+      return words
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join('');
+
+    case 'kebab':
+      return words.map((w) => w.toLowerCase()).join('-');
+
+    case 'snake':
+      return words.map((w) => w.toLowerCase()).join('_');
+
+    case 'title':
+      return words
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join(' ');
+
+    case 'sentence': {
+      const joined = words.map((w) => w.toLowerCase()).join(' ');
+      return joined.charAt(0).toUpperCase() + joined.slice(1);
+    }
+
+    default:
+      return str;
+  }
+};
+
+// Examples
+console.log(convertCase('IAmEditingSomeXMLAndHTML', 'kebab'));
+// Output: 'i-am-editing-some-xml-and-html'
+
+console.log(convertCase('some_database_field_name', 'camel'));
+// Output: 'someDatabaseFieldName'
+
+console.log(convertCase('IAmEditingSomeXMLAndHTML', 'sentence'));
+// Output: 'I am editing some xml and html'
+
+```
+
+To support accented non-English Unicode characters (like `é`, `ñ`, `ü`, `ç`, `ø`), replace the ASCII character classes (`[A-Z]`, `[a-z]`) in your regular expression with **Unicode Property Escapes** (`\p{Lu}` for uppercase letters, `\p{Ll}` for lowercase letters, and `\p{L}` for any letter).
+
+You must also append the **`u` (Unicode) flag** to the regular expression.
+
+---
+
+### Updated Unicode Word Boundary Regex
+
+```javascript
+const UNICODE_WORD_REGEX =
+  /\p{Lu}{2,}(?=\p{Lu}\p{Ll}+|\b)|\p{Lu}?\p{Ll}+[0-9]*|\p{Lu}|[0-9]+/gu;
+
+```
+
+#### Breakdown of Unicode Classes
+
+* **`\p{Lu}`**: Matches any uppercase Unicode letter (e.g., `A`, `É`, `Ñ`, `Ü`, `Ç`, `Ø`).
+* **`\p{Ll}`**: Matches any lowercase Unicode letter (e.g., `a`, `é`, `ñ`, `ü`, `ç`, `ø`).
+* **`u` flag**: Enables Unicode property escape parsing in JavaScript regex engines.
+
+---
+
+### Updated `convertCase` Function
+
+Here is the updated case conversion function that handles multi-language strings, accented characters, and diacritical marks:
+
+```javascript
+const UNICODE_WORD_REGEX =
+  /\p{Lu}{2,}(?=\p{Lu}\p{Ll}+|\b)|\p{Lu}?\p{Ll}+[0-9]*|\p{Lu}|[0-9]+/gu;
+
+const convertCase = (str, toCase = 'camel') => {
+  if (!str) return '';
+
+  // Extract Unicode word tokens safely
+  const words = str.match(UNICODE_WORD_REGEX);
+  if (!words || words.length === 0) return '';
+
+  switch (toCase) {
+    case 'camel': {
+      const formatted = words
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join('');
+      return formatted.charAt(0).toLowerCase() + formatted.slice(1);
+    }
+
+    case 'pascal':
+      return words
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join('');
+
+    case 'kebab':
+      return words.map((w) => w.toLowerCase()).join('-');
+
+    case 'snake':
+      return words.map((w) => w.toLowerCase()).join('_');
+
+    case 'title':
+      return words
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join(' ');
+
+    case 'sentence': {
+      const joined = words.map((w) => w.toLowerCase()).join(' ');
+      return joined.charAt(0).toUpperCase() + joined.slice(1);
+    }
+
+    default:
+      return str;
+  }
+};
+
+```
+
+---
+
+### Verification & Examples
+
+```javascript
+// 1. Spanish with 'ñ' and accents
+console.log(convertCase('año_de_niño_y_canción', 'camel'));
+// Output: "añoDeNiñoYCanción"
+
+// 2. French / German with 'é', 'ü', 'ß'
+console.log(convertCase('über-éléphant-überraschung', 'pascal'));
+// Output: "ÜberÉléphantÜberraschung"
+
+console.log(convertCase('über-éléphant-überraschung', 'kebab'));
+// Output: "über-éléphant-überraschung"
+
+// 3. Mixed camelCase with accents and acronyms
+console.log(convertCase('LeRôleDeLÉquipe', 'snake'));
+// Output: "le_rôle_de_léquipe"
+
+// 4. Title case with accented characters
+console.log(convertCase('mémoire_et_résumé', 'title'));
+// Output: "Mémoire Et Résumé"
+
+```
+
+---
+
+### Optional: Removing Accents Altogether (Slugify / ASCII Conversion)
+
+If your goal for `kebab-case` or `snake_case` is to produce **ASCII-only URL slugs** (e.g., converting `"canción"` $\rightarrow$ `"cancion"`), normalize the string using `.normalize('NFD')` to strip diacritics before matching words:
+
+```javascript
+const removeAccents = (str) =>
+  str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+console.log(convertCase(removeAccents('año_de_canción'), 'kebab'));
+// Output: "ano-de-cancion"
+
+```

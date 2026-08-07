@@ -4,18 +4,18 @@ Both `map` and `filter` are higher-order functions that can be used to manipulat
 
 ---
 
-### **1. `map()` Method**:
+### **1. `map()` Method**
 
 - **Purpose**: The `map()` method is used to **transform** each element of an array into a new element based on some function you provide. It returns a new array with the results of applying the function to every element in the original array.
 - **Returns**: A new array of the same length as the original array.
 - **Side Effects**: The original array is **not mutated**; a new array is returned.
 
-#### **Key Points**:
+#### **Key Points**
 
 - The `map()` method transforms each item in the array and returns a new array with the transformed items.
 - You cannot use `map()` if you want to remove elements from the array; it always returns a new array with the same number of elements.
 
-#### **Syntax**:
+#### **Syntax**
 
 ```javascript
 const newArray = arr.map(callback(element, index, array) {
@@ -23,7 +23,7 @@ const newArray = arr.map(callback(element, index, array) {
 });
 ```
 
-#### **Example**:
+#### **Example**
 
 Let's say we have an array of numbers, and we want to multiply each element by 2:
 
@@ -40,18 +40,18 @@ In the example above, `map()` transforms each element by multiplying it by 2.
 
 ---
 
-### **2. `filter()` Method**:
+### **2. `filter()` Method**
 
 - **Purpose**: The `filter()` method is used to **filter out** elements from the array that don't satisfy a given condition. It returns a new array containing only the elements for which the callback function returns `true`.
 - **Returns**: A new array that may contain fewer elements than the original array, or even be empty.
 - **Side Effects**: The original array is **not mutated**; a new filtered array is returned.
 
-#### **Key Points**:
+#### **Key Points**
 
 - The `filter()` method checks each element against a condition and returns a new array that only includes the elements that meet the condition.
 - You can use `filter()` to **remove** elements from an array based on a condition.
 
-#### **Syntax**:
+#### **Syntax**
 
 ```javascript
 const filteredArray = arr.filter(callback(element, index, array) {
@@ -59,7 +59,7 @@ const filteredArray = arr.filter(callback(element, index, array) {
 });
 ```
 
-#### **Example**:
+#### **Example**
 
 Let's say we have an array of numbers, and we want to filter out the odd numbers:
 
@@ -89,14 +89,14 @@ In this example, `filter()` keeps only the elements that satisfy the condition (
 
 ---
 
-### **Use Cases for `map`**:
+### **Use Cases for `map`**
 
 1. **Transforming data**: If you need to change every item in the array in some way.
    - Example: Convert an array of numbers into their string equivalents.
 2. **Extracting properties**: You might want to extract one property from an array of objects.
    - Example: Extract all user names from an array of user objects.
 
-### **Use Cases for `filter`**:
+### **Use Cases for `filter`**
 
 1. **Filtering out invalid data**: If you want to remove elements based on a condition.
    - Example: Filter out users who are under a certain age.
@@ -105,7 +105,7 @@ In this example, `filter()` keeps only the elements that satisfy the condition (
 
 ---
 
-### **Key Differences in Practice**:
+### **Key Differences in Practice**
 
 1. **`map()`** is useful when you want to **transform** each element.
 2. **`filter()`** is useful when you want to **remove** certain elements based on a condition.
@@ -135,7 +135,7 @@ In this example:
 - We first use `filter()` to get only the users whose age is 18 or older.
 - Then we use `map()` to extract only the `name` property from the filtered array.
 
-### **Conclusion**:
+### **Conclusion**
 
 - **`map()`** is used for transforming each element of an array, whereas **`filter()`** is used for selecting only the elements that pass a certain condition.
 - Both methods do not modify the original array, they return a new array based on the operation.

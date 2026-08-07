@@ -135,3 +135,53 @@ console.log(obj);
 ### Conclusion
 
 This version of the `removeKeys` function ensures that the original object remains intact while performing the removal of specified keys on a new deep copy. This approach is useful when you want to maintain immutability or preserve the original data structure.
+
+The implementation effectively demonstrates the core concepts of immutability and deep recursion. However, a few optimization and edge-case improvements are worth pointing out for production JavaScript:
+
+### Key Edge Cases & Modern Alternatives
+
+1. **Modern Built-in Deep Copy (`structuredClone`)**
+In modern JavaScript environments (Node.js 17+, modern browsers), custom recursive deep clone functions can be replaced with the native `structuredClone` API. It handles dates, regular expressions, and circular references automatically.
+2. **Array Index/Key Edge Case**
+In JavaScript, `keys.includes(key)` treats array indices as strings (e.g., `"0"`, `"1"`). If `keys` contains numbers or string representations of indices, keys inside arrays might be deleted unexpectedly when iterating over array keys.
+3. **Combined Single-Pass Approach**
+Rather than cloning the full tree first and then making a second pass to delete keys, you can prune the keys **during** the clone operation in a single traversal.
+
+---
+
+### Optimized Single-Pass Implementation
+
+Here is a cleaner implementation that filters keys while copying, avoiding unnecessary allocations and double traversals:
+
+```javascript
+function removeKeys(obj, keysToRemove) {
+  const keysSet = new Set(keysToRemove);
+
+  function clean(item) {
+    if (item === null || typeof item !== 'object') {
+      return item;
+    }
+
+    if (Array.isArray(item)) {
+      return item.map(clean);
+    }
+
+    const copy = {};
+    for (const [key, value] of Object.entries(item)) {
+      if (!keysSet.has(key)) {
+        copy[key] = clean(value);
+      }
+    }
+    return copy;
+  }
+
+  return clean(obj);
+}
+
+```
+
+### Improvements in the Single-Pass Version
+
+- **Single Traversal:** Performs cloning and key deletion simultaneously, cutting execution steps roughly in half.
+- **$\mathcal{O}(1)$ Lookup Time:** Converting `keysToRemove` to a `Set` makes matching checks $O(1)$ instead of $O(n)$ array scans on every key.
+- **Array Preservation:** Ensures array elements are recursively cleaned without accidentally deleting numeric array indexes.

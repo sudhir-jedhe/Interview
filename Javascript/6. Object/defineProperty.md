@@ -102,3 +102,75 @@ console.log(b.foo2); // 2   --> Directly modified on `b`
 
 - In the first example, the error occurs because non-configurable properties on an array cannot be deleted when adjusting the array's length.
 - In the second example, `Object.create()` is used to create a new object with an existing object as its prototype. Properties on `b` can be modified, but inherited properties from `a` that are non-writable cannot be modified unless overridden directly on `b`.
+
+Your analysis of the **First Code Example** is spot on! Truncating an array via `.length` requires deleting elements from indices equal to or greater than the new length. Because `Object.defineProperty()` sets `configurable: false` by default, those elements cannot be deleted, raising a `TypeError`.
+
+However, there is a **major logical error in your explanation of the Second Code Example**.
+
+---
+
+### The Error in Example 2: Non-Writable Prototype Properties
+
+In non-strict mode, `b.foo1 = 2` **silently fails** (or throws a `TypeError` in strict mode). It does **not** create a shadow property on `b`, and `b.foo1` remains `1`.
+
+#### Why `b.foo1 = 2` fails
+
+When you assign a value to a property on an object via assignment (`b.foo1 = 2`), JavaScript looks up the prototype chain:
+
+1. It finds `foo1` on prototype `a`.
+2. It checks the property descriptor on `a`. Since `Object.defineProperty` defaults `writable` to `false`, `a.foo1` is **non-writable**.
+3. **The Prototype Read-Only Rule:** In JavaScript, if a property on an object's prototype is non-writable, **you cannot create a shadowed property on the child object using simple assignment (`=` operator)**.
+
+---
+
+### Actual Execution Output
+
+Here is what actually happens when running your exact code:
+
+```javascript
+const a = {};
+Object.defineProperty(a, "foo1", {
+  value: 1, // writable: false, configurable: false by default
+});
+
+const b = Object.create(a);
+b.foo2 = 1;
+
+console.log(b.foo1); // 1
+console.log(b.foo2); // 1
+
+b.foo1 = 2; // SILENT FAILURE (in non-strict mode) / TypeError (in strict mode)
+b.foo2 = 2; // Works normally
+
+console.log(b.foo1); // 1 ❌ (NOT 2)
+console.log(b.foo2); // 2 ✅
+
+```
+
+---
+
+### How to Override a Non-Writable Prototype Property
+
+If you explicitly intend to shadow `foo1` on `b` despite `a.foo1` being non-writable, you cannot use assignment (`=`). You must use `Object.defineProperty()` directly on object `b`:
+
+```javascript
+// Overrides/shadows foo1 on b, despite a.foo1 being read-only:
+Object.defineProperty(b, "foo1", {
+  value: 2,
+  writable: true,
+  configurable: true,
+  enumerable: true,
+});
+
+console.log(b.foo1); // 2
+console.log(a.foo1); // 1 (a remains untouched)
+
+```
+
+### Property Lookup & Shadowing Rules Summary
+
+| Property State on Prototype (`a`) | Assignment on Child (`b.prop = val`) Result                                                         |
+| --------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **`writable: true`**              | Creates a shadowed property on `b`. `a` is unchanged.                                               |
+| **`writable: false`**             | **Fails silently** (or throws `TypeError` in strict mode). No property is created on `b`.           |
+| **Getter/Setter defined**         | Triggers the setter on `a`. No property is created on `b` unless the setter explicitly creates one. |
