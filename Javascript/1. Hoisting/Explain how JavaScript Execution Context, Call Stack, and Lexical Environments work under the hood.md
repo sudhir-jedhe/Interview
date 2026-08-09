@@ -211,3 +211,5 @@ console.log(counter()); // 1
 | **Call Stack**          | LIFO Stack structure                    | Tracks execution order and function invocation depth.                                                    |
 | **Lexical Environment** | Map of identifiers $\rightarrow$ values | Holds scope data and handles variable lookups via `outerEnv` pointers.                                   |
 | **Closure**             | Persistent Lexical Reference            | Preserves a parent Lexical Environment in memory even after its call frame is popped off the Call Stack. |
+
+xplain JavaScript execution context, call stack, and variable scoping with visual examples.

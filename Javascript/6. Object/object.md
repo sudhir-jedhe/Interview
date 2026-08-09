@@ -95,6 +95,104 @@ function isObjectEmpty(obj) {
 }
 ```
 
+Here is the complete guide and solution for LeetCode #2727: **Is Object Empty** (determining whether a JavaScript object or array contains key-value pairs or elements).
+
+---
+
+### Solution
+
+```javascript
+/**
+ * Determines whether an object or array is empty.
+ *
+ * @param {Object|Array} obj - The input object or array.
+ * @return {boolean} True if empty, false otherwise.
+ */
+var isEmpty = function(obj) {
+  if (Array.isArray(obj)) {
+    return obj.length === 0;
+  }
+  return Object.keys(obj).length === 0;
+};
+
+```
+
+---
+
+### Alternative Implementation Approaches
+
+#### 1. Universal `for...in` Loop (Fastest Execution)
+
+A `for...in` loop works on both arrays and plain objects. If the loop executes even once, the structure contains at least one key/element, allowing an early return:
+
+```javascript
+var isEmpty = function(obj) {
+  for (const key in obj) {
+    return false; // Found a key, so it's not empty
+  }
+  return true; // No keys found
+};
+
+```
+
+#### 2. JSON Stringification (`JSON.stringify`)
+
+Stringifying the object and checking for `"[]"` or `"{}"`:
+
+```javascript
+var isEmpty = function(obj) {
+  return JSON.stringify(obj) === '{}' || JSON.stringify(obj) === '[]';
+};
+
+```
+
+---
+
+### Usage Examples
+
+#### Example 1: Empty Object
+
+```javascript
+const obj = {};
+console.log(isEmpty(obj)); 
+// Output: true
+
+```
+
+#### Example 2: Non-Empty Object
+
+```javascript
+const obj = { "x": 5, "y": 42 };
+console.log(isEmpty(obj)); 
+// Output: false
+
+```
+
+#### Example 3: Empty Array
+
+```javascript
+const arr = [];
+console.log(isEmpty(arr)); 
+// Output: true
+
+```
+
+#### Example 4: Non-Empty Array
+
+```javascript
+const arr = [null, false, 0];
+console.log(isEmpty(arr)); 
+// Output: false
+
+```
+
+---
+
+### Key Takeaways
+
+1. **`for...in` Early Exit Performance:** The `for...in` approach runs in $O(1)$ time in the best case because it returns `false` on the very first key without having to allocate memory or construct an array of keys like `Object.keys()`.
+2. **`Object.keys()` behavior:** `Object.keys([1, 2, 3])` returns `["0", "1", "2"]` (length 3), so `Object.keys(obj).length === 0` actually works for both arrays and objects, but explicit checks or loops are cleaner.
+
 ### 5. **Create an Empty Object with No Prototype**
 
 You can create an object without a prototype using `Object.create(null)`:

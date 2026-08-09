@@ -19,7 +19,7 @@ Here's an explanation of each part of the `myExtends` function, followed by an e
 5. **Returning the `ExtendType` Constructor**:
    - The function returns the `ExtendType` constructor, which is now a hybrid that combines the properties and methods of both `SuperType` and `SubType`.
 
-### Full Code Example:
+### Full Code Example
 
 ```javascript
 // Custom "extends" function implementation
@@ -85,13 +85,13 @@ console.log(ExtendType.staticSuper); // staticSuper
 console.log(ExtendType.staticSub); // staticSub
 ```
 
-### Key Points:
+### Key Points
 
 - **Constructor Inheritance**: When creating an instance of `ExtendType`, the properties from both `SuperType` and `SubType` are applied using the `call()` method.
 - **Prototype Inheritance**: `ExtendType.prototype` points to `SubType.prototype`, which ensures that instances of `ExtendType` inherit from `SubType`.
 - **Static Method Inheritance**: The static properties and methods of `SuperType` are inherited by `ExtendType`, allowing you to access them via `ExtendType`.
 
-### Output:
+### Output
 
 ```javascript
 ExtendType { name: 'test', forSuper: [ 1, 2 ], from: 'super', forSub: [ 3, 4 ] }
@@ -101,13 +101,13 @@ staticSuper
 staticSub
 ```
 
-### Breakdown of Output:
+### Breakdown of Output
 
 - `ExtendType` inherits both instance properties (`forSuper`, `forSub`, etc.) from `SuperType` and `SubType`.
 - The methods from both `SuperType` and `SubType` (`superMethod`, `subMethod`) are available on the instance.
 - Static properties like `staticSuper` and `staticSub` are accessible on `ExtendType`.
 
-### Additional Notes:
+### Additional Notes
 
 - This `myExtends` function allows for multiple inheritance-like behavior by combining two constructor functions (`SuperType` and `SubType`), although JavaScript supports only single inheritance (via the `extends` keyword).
 - The prototype chain management ensures that methods and properties are correctly inherited and available in instances of the resulting class (`ExtendType`).
@@ -438,8 +438,8 @@ When instantiating native subclassed objects (e.g., subclassing `Array`, `Error`
 
 ### Performance Summary Table
 
-| Metric / Scenario             | Native ES6 `class`                              | Manual Object.setPrototypeOf() / **proto**               | `Object.create(proto)`                                   |
-| ----------------------------- | ----------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| Metric / Scenario             | Native ES6 `class`                             | Manual Object.setPrototypeOf() / **proto**              | `Object.create(proto)`                                  |
+| ----------------------------- | ---------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
 | **Shape Stability**           | 🟢 **Optimal** (Fixed layout at compile-time)   | 🔴 **Terrible** (Invalidates Inline Caches engine-wide)  | 🟡 **Moderate** (Good if done before instantiation)      |
 | **Inline Caching (ICs)**      | 🟢 **Monomorphic** (Fastest property access)    | 🔴 **Megamorphic** (Flushes JIT optimizations)           | 🟢 **Monomorphic** (If prototype isn't mutated later)    |
 | **JIT Compiler Optimization** | 🟢 Native engine optimizations applied directly | 🔴 Forces engine into slow-path dictionary lookups       | 🟡 Good, but lacks class field IC tuning                 |

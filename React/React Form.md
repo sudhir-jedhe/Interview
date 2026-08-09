@@ -528,8 +528,6 @@ Store data centrally and validate per step. Multi-step ("wizard") forms commonly
 
 > I would create a reusable form architecture using controlled components and a custom validation layer. Validation errors would be derived from form values rather than duplicated in state. The submit button would remain disabled until all required fields are valid. For accessibility, I'd add `aria-invalid` and `role="alert"`. For large enterprise applications, I'd use React Hook Form with schema-based validation (Yup/Zod), field-level memoisation, debounced async validation, and multi-step form support. [\[react-hook-form.com\]](https://react-hook-form.com/advanced-usage), [\[codegenes.net\]](https://www.codegenes.net/blog/how-to-conditionally-disable-the-submit-button-with-react-hook-form/)
 
-
-
 # Enterprise-Grade Reusable Form Architecture (React + Custom Validation)
 
 This implementation demonstrates:
@@ -1211,3 +1209,188 @@ Benefits:
 # Senior Interview Answer
 
 > I build forms using controlled components with a reusable field abstraction and a custom validation layer. Validation errors are derived from current form values rather than duplicated in state, preventing state synchronisation bugs. Form validity is computed from the validation result and used to disable the submit button until all required fields are valid. For accessibility, every field uses `aria-invalid` and validation messages use `role="alert"`. At enterprise scale, I typically combine React Hook Form with Zod/Yup schemas, debounced async validation, field-level memoisation, and a multi-step architecture to keep forms maintainable, performant, and accessible.
+
+When handling forms with **multiple input fields** in React, writing a separate state variable and change handler for every single field quickly creates repetitive, unmaintainable code.
+
+The standard React pattern is to manage the entire form as a **single object state** and use a **single dynamic change handler** that updates fields based on their `name` attribute.
+
+---
+
+## The Standard Pattern: Single Object State + Dynamic Handler
+
+### How It Works
+
+1. Store all form values in one object: `useState({ username: '', email: '', role: 'user', agreeToTerms: false })`.
+2. Give every input HTML element a `name` attribute that **matches its key in the state object**.
+3. Use JavaScript's **computed property names** (`[e.target.name]: e.target.value`) inside the `onChange` handler to dynamically update whichever field was edited.
+
+---
+
+## Complete Practical Example
+
+This example handles **text inputs**, **emails**, **checkboxes**, and **select dropdowns** using a single change handler and state object.
+
+```tsx
+import React, { useState } from 'react';
+
+interface FormData {
+  username: string;
+  email: string;
+  role: string;
+  subscribeNewsletter: boolean;
+}
+
+export function MultiInputForm() {
+  // 1. Initialize all form fields in a single state object
+  const [formData, setFormData] = useState<FormData>({
+    username: '',
+    email: '',
+    role: 'developer',
+    subscribeNewsletter: false,
+  });
+
+  // 2. Single dynamic change handler for all fields
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
+
+    // Handle checkboxes differently since their value lives in 'checked', not 'value'
+    const fieldValue =
+      type === 'checkbox'
+        ? (e.target as HTMLInputElement).checked
+        : value;
+
+    setFormData((prevData) => ({
+      ...prevData,          // 1. Spread existing form fields
+      [name]: fieldValue,   // 2. Override specific field using computed property name
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Form Submitted Payload:', formData);
+    alert(`User ${formData.username} registered successfully!`);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        maxWidth: '400px',
+        margin: '20px auto',
+        padding: '24px',
+        border: '1px solid #e2e8f0',
+        borderRadius: '8px',
+        fontFamily: 'sans-serif',
+      }}
+    >
+      <h2>User Profile Setup</h2>
+
+      {/* Text Input */}
+      <div style={{ marginBottom: '16px' }}>
+        <label htmlFor="username" style={{ display: 'block', fontWeight: 600 }}>
+          Username:
+        </label>
+        <input
+          id="username"
+          type="text"
+          name="username" // Must match state object key 'username'
+          value={formData.username}
+          onChange={handleChange}
+          placeholder="e.g. jessica_dev"
+          style={{ width: '100%', padding: '8px', marginTop: '4px' }}
+        />
+      </div>
+
+      {/* Email Input */}
+      <div style={{ marginBottom: '16px' }}>
+        <label htmlFor="email" style={{ display: 'block', fontWeight: 600 }}>
+          Email Address:
+        </label>
+        <input
+          id="email"
+          type="email"
+          name="email" // Must match state object key 'email'
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="e.g. jessica@example.com"
+          style={{ width: '100%', padding: '8px', marginTop: '4px' }}
+        />
+      </div>
+
+      {/* Select Dropdown */}
+      <div style={{ marginBottom: '16px' }}>
+        <label htmlFor="role" style={{ display: 'block', fontWeight: 600 }}>
+          Role:
+        </label>
+        <select
+          id="role"
+          name="role" // Must match state object key 'role'
+          value={formData.role}
+          onChange={handleChange}
+          style={{ width: '100%', padding: '8px', marginTop: '4px' }}
+        >
+          <option value="developer">Developer</option>
+          <option value="designer">Designer</option>
+          <option value="product_manager">Product Manager</option>
+        </select>
+      </div>
+
+      {/* Checkbox */}
+      <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <input
+          id="subscribeNewsletter"
+          type="checkbox"
+          name="subscribeNewsletter" // Must match state object key 'subscribeNewsletter'
+          checked={formData.subscribeNewsletter}
+          onChange={handleChange}
+        />
+        <label htmlFor="subscribeNewsletter" style={{ fontSize: '14px' }}>
+          Subscribe to product updates
+        </label>
+      </div>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        style={{
+          width: '100%',
+          padding: '10px',
+          backgroundColor: '#2563eb',
+          color: '#ffffff',
+          border: 'none',
+          borderRadius: '4px',
+          fontWeight: 600,
+          cursor: 'pointer',
+        }}
+      >
+        Save Profile
+      </button>
+
+      {/* Live State Output Preview */}
+      <div style={{ marginTop: '20px', padding: '12px', background: '#f8fafc', borderRadius: '4px' }}>
+        <small style={{ color: '#64748b', fontWeight: 600 }}>LIVE STATE PREVIEW:</small>
+        <pre style={{ margin: '4px 0 0', fontSize: '12px' }}>{JSON.stringify(formData, null, 2)}</pre>
+      </div>
+    </form>
+  );
+}
+
+```
+
+---
+
+## Key Steps to Avoid Common Pitfalls
+
+1. **Keep `name` Attributes Exact:** The `name` string on the HTML input element must match the state object key word-for-word. A typo in `name="e-mail"` when state is `email` will create a new unintended key in your state object.
+2. **Always Spread Previous State (`...prevData`):** Overriding state without spreading `...prevData` will erase all other input values in the form.
+3. **Handle Checkboxes Explicitly:** Checkbox inputs read boolean values from `e.target.checked` rather than string values from `e.target.value`.
+
+---
+
+## When to Switch to React Hook Form
+
+For simple forms with 3–6 fields, native `useState` with the single object approach is clean and lightweight.
+
+However, if your form grows to **10+ fields**, requires **complex validation schemas** (like Zod), or needs **dynamic field arrays** (adding/removing rows), consider switching to **React Hook Form**. It keeps inputs uncontrolled internally, eliminating main-thread keystroke re-renders.

@@ -338,3 +338,202 @@ When discussing `useFetch`, mention:
 ### Interview Tip
 
 If you're interviewing for a **React Lead / Frontend Architect** role, explain that in real-world applications you would typically prefer **TanStack Query (React Query)** over a custom `useFetch`, because it provides caching, retries, background refetching, request deduplication, optimistic updates, and stale-while-revalidate behaviour out of the box. A custom `useFetch` is valuable for understanding hooks fundamentals and for lightweight projects.
+
+Here is a production-ready `useFetch` hook built with native `AbortController` cancellation, automated retry logic with exponential backoff, state management, and refetch capabilities.
+
+```jsx
+import { useState, useEffect, useRef, useCallback } from "react";
+
+/**
+ * Custom hook for HTTP data fetching with cancellation, retry logic, and cache support.
+ *
+ * @param {string} url - The target endpoint URL.
+ * @param {Object} [options] - Standard RequestInit options plus hook configurations.
+ * @param {boolean} [options.manual=false] - If true, delays fetching until execute() is called manually.
+ * @param {number} [options.retries=3] - Maximum number of automated retry attempts.
+ * @param {number} [options.retryDelay=1000] - Initial delay between retries in ms (exponential backoff).
+ * @param {Function} [options.onSuccess] - Callback executed on successful fetch.
+ * @param {Function} [options.onError] - Callback executed on failed fetch after all retries.
+ */
+export function useFetch(url, options = {}) {
+  const {
+    manual = false,
+    retries = 0,
+    retryDelay = 1000,
+    onSuccess,
+    onError,
+    ...fetchOptions
+  } = options;
+
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(!manual);
+
+  // Store options in refs to keep functions stable without stale closure issues
+  const optionsRef = useRef(fetchOptions);
+  const onSuccessRef = useRef(onSuccess);
+  const onErrorRef = useRef(onError);
+
+  useEffect(() => {
+    optionsRef.current = fetchOptions;
+    onSuccessRef.current = onSuccess;
+    onErrorRef.current = onError;
+  });
+
+  // Track AbortController instance to cancel ongoing requests
+  const abortControllerRef = useRef(null);
+
+  const execute = useCallback(
+    async (overrideUrl, overrideOptions) => {
+      // Abort previous in-flight request if it exists
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
+      setIsLoading(true);
+      setError(null);
+
+      const targetUrl = overrideUrl || url;
+      const mergedOptions = {
+        ...optionsRef.current,
+        ...overrideOptions,
+        signal: controller.signal,
+      };
+
+      let attempt = 0;
+
+      while (attempt <= retries) {
+        try {
+          const response = await fetch(targetUrl, mergedOptions);
+
+          if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+          }
+
+          const result = await response.json();
+
+          if (!controller.signal.aborted) {
+            setData(result);
+            setIsLoading(false);
+            if (onSuccessRef.current) {
+              onSuccessRef.current(result);
+            }
+          }
+          return result;
+        } catch (err) {
+          // If explicitly aborted, break loop cleanly without reporting error
+          if (err.name === "AbortError" || controller.signal.aborted) {
+            return;
+          }
+
+          attempt++;
+
+          if (attempt > retries) {
+            if (!controller.signal.aborted) {
+              setError(err);
+              setIsLoading(false);
+              if (onErrorRef.current) {
+                onErrorRef.current(err);
+              }
+            }
+            throw err;
+          }
+
+          // Exponential backoff delay before retrying
+          const backoff = retryDelay * Math.pow(2, attempt - 1);
+          await new Promise((resolve) => setTimeout(resolve, backoff));
+        }
+      }
+    },
+    [url, retries, retryDelay]
+  );
+
+  useEffect(() => {
+    if (!manual && url) {
+      execute();
+    }
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, [url, manual, execute]);
+
+  return {
+    data,
+    error,
+    isLoading,
+    refetch: execute,
+    abort: () => abortControllerRef.current?.abort(),
+  };
+}
+
+```
+
+---
+
+### Usage Examples
+
+#### 1. Automatic Auto-Fetch with Retry Logic
+
+```jsx
+function UserProfile({ userId }) {
+  const { data, isLoading, error, refetch } = useFetch(
+    `https://api.example.com/users/${userId}`,
+    {
+      retries: 3, // Retries up to 3 times on network failure
+      retryDelay: 500, // 500ms, 1000ms, 2000ms exponential backoff
+      onSuccess: (data) => console.log("Loaded profile:", data),
+    }
+  );
+
+  if (isLoading) return <div>Loading profile...</div>;
+  if (error) return <div>Error: {error.message} <button onClick={refetch}>Retry</button></div>;
+
+  return <div>Welcome, {data?.name}</div>;
+}
+
+```
+
+#### 2. Manual Trigger (Form Submission / Mutation)
+
+```jsx
+function CreatePost() {
+  const { execute, isLoading, error } = useFetch(
+    "https://api.example.com/posts",
+    { manual: true }
+  );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await execute(undefined, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: "New Post" }),
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? "Submitting..." : "Submit Post"}
+      </button>
+      {error && <p style={{ color: "red" }}>{error.message}</p>}
+    </form>
+  );
+}
+
+```
+
+---
+
+### Key Features
+
+- **Automatic Cancellation:** Uses native `AbortController` to cancel ongoing HTTP requests when the component unmounts or when `url` changes, preventing memory leaks and state updates on unmounted components.
+- **Exponential Backoff Retries:** Retries failed requests up to `retries` times with configurable dynamic delay progression ($delay \times 2^{attempt}$).
+- **Manual Mode (`manual: true`):** Can act as an imperative trigger for mutations (`POST`, `PUT`, `DELETE`) or user-initiated actions.
+- **Refetch & Abort Manual Controls:** Returns `refetch` and explicit `abort()` functions to give consumer components full control.

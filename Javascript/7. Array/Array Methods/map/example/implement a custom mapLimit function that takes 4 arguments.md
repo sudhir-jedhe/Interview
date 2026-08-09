@@ -64,8 +64,6 @@ function mapLimit(inputs, limit, iterateeFn, callback) {
   })
 ```
 
-
-
 ```js
 function getUserById(id, callback) {
   // simulating async request
@@ -165,7 +163,6 @@ console.log(results); // [2, 4, 6, 8, 10]
 // is then logged to the console.
 
 ```
-
 
 This is a popular **JavaScript interview question** (similar to `async.mapLimit` from the `async` library).
 
@@ -439,7 +436,6 @@ This pattern is commonly used for:
 * Bulk data processing
 * Controlled parallel requests
 * Playwright/WebDriver test execution queues
-
 
 ## `mapLimit()` with `async/await` (Modern Implementation)
 
@@ -782,6 +778,7 @@ O(limit) active workers
 ## Senior Frontend Interview Answer
 
 > `mapLimit()` combines the behaviour of `map()` and concurrency control. The most scalable implementation uses a worker-pool pattern, where only `limit` async workers run at any time. For production systems, I generally add error handling (fail-fast or collect-errors mode), preserve result ordering, and minimise memory usage by keeping only a fixed number of active promises regardless of input size.
+>
 ## 1. `mapLimit()` with Cancellation Support (AbortController)
 
 In real-world applications, you may want to cancel pending operations when:
@@ -1138,6 +1135,7 @@ Controls browser resource consumption.
 # Senior Frontend Interview Answer
 
 > `mapLimit()` is a concurrency-control utility that processes items similarly to `map()`, but limits the number of async operations running simultaneously. In production React applications, I typically implement it using a worker-pool pattern, support cancellation with `AbortController`, preserve result ordering, and use it for controlled API calls, file uploads, bulk processing, and rate-limited workflows. The key advantage is balancing throughput and resource usage while avoiding overwhelming APIs or the browser.
+>
 ## 1. `mapLimit()` with Partial Error Handling
 
 Instead of failing the entire operation when one task fails, collect both successes and failures.
@@ -1495,3 +1493,127 @@ Only two tasks run at any moment while progress updates continuously.
 > * ✅ React cleanup on unmount
 >
 > This pattern is commonly used for bulk API requests, file uploads, data imports, Playwright automation execution, and any rate-limited workload where controlled parallelism is required.
+
+Here is the complete guide and solution for LeetCode #2721: **Execute Asynchronous Functions in Parallel** (implementing a custom version of `Promise.all` without using `Promise.all`).
+
+---
+
+### Solution
+
+```javascript
+/**
+ * Executes an array of asynchronous functions in parallel and returns a single promise.
+ * Resolves with an array of resolved values in order, or rejects immediately on the first error.
+ *
+ * @param {Array<Function>} functions - Array of functions that return a promise.
+ * @return {Promise<any>} Promise resolving to array of results.
+ */
+var promiseAll = function(functions) {
+  return new Promise((resolve, reject) => {
+    const results = new Array(functions.length);
+    let completedCount = 0;
+
+    if (functions.length === 0) {
+      resolve([]);
+      return;
+    }
+
+    functions.forEach((fn, index) => {
+      fn()
+        .then((val) => {
+          results[index] = val;
+          completedCount++;
+
+          if (completedCount === functions.length) {
+            resolve(results);
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
+};
+
+```
+
+---
+
+### Alternative Implementation Approaches
+
+#### 1. Standard `for` Loop with `async/await`
+
+Instead of `.forEach()`, an explicit `for` loop executes all asynchronous functions concurrently and tracks their completion:
+
+```javascript
+var promiseAll = function(functions) {
+  return new Promise((resolve, reject) => {
+    if (functions.length === 0) {
+      return resolve([]);
+    }
+
+    const results = new Array(functions.length);
+    let resolvedCount = 0;
+
+    for (let i = 0; i < functions.length; i++) {
+      functions[i]()
+        .then((res) => {
+          results[i] = res;
+          resolvedCount++;
+          if (resolvedCount === functions.length) {
+            resolve(results);
+          }
+        })
+        .catch(reject);
+    }
+  });
+};
+
+```
+
+---
+
+### Usage Examples
+
+#### Example 1: Successful Parallel Execution
+
+```javascript
+const promise = promiseAll([
+  () => new Promise(res => setTimeout(() => res(5), 200)),
+  () => new Promise(res => setTimeout(() => res(1), 50)),
+  () => new Promise(res => setTimeout(() => res(10), 100))
+]);
+
+promise.then(console.log); 
+// Output: [5, 1, 10] (Resolved in 200ms total, preserving original order!)
+
+```
+
+#### Example 2: Fast Rejection on Error
+
+```javascript
+const promise = promiseAll([
+  () => new Promise(res => setTimeout(() => res(42), 500)),
+  () => new Promise((_, rej) => setTimeout(() => rej("Error occurred"), 100))
+]);
+
+promise.catch(console.error); 
+// Output: "Error occurred" (Rejects after 100ms without waiting for the 500ms promise)
+
+```
+
+#### Example 3: Empty Functions Array Base Case
+
+```javascript
+promiseAll([]).then(console.log); 
+// Output: []
+
+```
+
+---
+
+### Key Takeaways
+
+1. **Order Preservation vs. Completion Order:** Promises may settle out of order (e.g., index 1 finishes before index 0), so we must store values by index `results[index] = val` rather than using `results.push(val)`.
+2. **Short-Circuit Rejection:** Calling `reject(err)` immediately settles the returned Promise on the first error, ignoring all pending or subsequent promise resolutions.
+3. **Empty Input Guard:** An empty input array `functions = []` must resolve immediately to an empty array `[]` to prevent hanging forever.

@@ -50,6 +50,7 @@ const arrayThree = [
 sortBy(arrayThree, "b.c");
 
 ```
+
 ```js
 function sortBy(collection, property) {
   // do not remove
@@ -98,12 +99,12 @@ Output: [[10, 1], [5, 2], [3, 4]]
 Explanation: arr is sorted in ascending order by number at index=1.
 
 ```
+
 ```js
 function sortBy(arr, fn) {
   return arr.slice().sort((a, b) => fn(a) - fn(b));
 }
 ```
-
 
 Here’s a comprehensive solution with all of the code examples for sorting using the `sortBy` function:
 
@@ -219,3 +220,108 @@ console.log(sortBy(arr4, fn4));
 ---
 
 This should give you a complete solution with the examples and the `sortBy` function working across different use cases!
+
+Here is the complete guide and solution for LeetCode #2724: **Sort By** (sorting an array in ascending order based on the return value of a callback function).
+
+---
+
+### Solution
+
+```javascript
+/**
+ * Sorts an array in ascending order based on the output of a fn callback.
+ *
+ * @param {Array} arr - The input array.
+ * @param {Function} fn - Function that returns a sort key for each item.
+ * @return {Array} The sorted array.
+ */
+var sortBy = function(arr, fn) {
+  return arr.sort((a, b) => fn(a) - fn(b));
+};
+
+```
+
+---
+
+### Alternative Implementation Approaches
+
+#### 1. Immutable Approach (Without Mutating Original Array)
+
+The built-in `arr.sort()` mutates the original array in place. If you need to keep the original array unchanged, copy it first using the spread operator (`[...arr]`) or `toSorted()`:
+
+```javascript
+// Copy using spread operator
+var sortBy = function(arr, fn) {
+  return [...arr].sort((a, b) => fn(a) - fn(b));
+};
+
+// Modern Array.prototype.toSorted() (ES2023)
+var sortBy = function(arr, fn) {
+  return arr.toSorted((a, b) => fn(a) - fn(b));
+};
+
+```
+
+#### 2. Pre-computed Keys (Schwartzian Transform)
+
+If `fn` is computationally expensive, evaluate `fn(item)` once per element instead of repeatedly inside the $O(n \log n)$ comparator:
+
+```javascript
+var sortBy = function(arr, fn) {
+  return arr
+    .map((item) => ({ item, key: fn(item) }))
+    .sort((a, b) => a.key - b.key)
+    .map((pair) => pair.item);
+};
+
+```
+
+---
+
+### Usage Examples
+
+#### Example 1: Sort Numbers Directly
+
+```javascript
+const arr = [5, 4, 1, 2, 3];
+const fn = (x) => x;
+
+console.log(sortBy(arr, fn));
+// Output: [1, 2, 3, 4, 5]
+
+```
+
+#### Example 2: Sort Objects by Property Value
+
+```javascript
+const arr = [{x: 1}, {x: 0}, {x: -1}];
+const fn = (d) => d.x;
+
+console.log(sortBy(arr, fn));
+// Output: [{x: -1}, {x: 0}, {x: 1}]
+
+```
+
+#### Example 3: Sort Nested Arrays by Index
+
+```javascript
+const arr = [[3, 4], [5, 2], [10, 1]];
+const fn = (x) => x[1];
+
+console.log(sortBy(arr, fn));
+// Output: [[10, 1], [5, 2], [3, 4]]
+
+```
+
+---
+
+### Key Takeaways
+
+1. **Comparator Function Mechanics:** JavaScript's `.sort((a, b) => ...)` expects a comparator returning:
+
+* A negative number if `a` should come before `b`.
+- A positive number if `a` should come after `b`.
+- `0` if their order relative to each other remains unchanged.
+Therefore, `fn(a) - fn(b)` produces ascending numerical order.
+
+1. **Avoid Default `.sort()` Without Arguments:** Without a custom comparator, `.sort()` converts numbers to strings (`"10"` before `"2"`), producing incorrect numerical sorts.

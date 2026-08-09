@@ -203,7 +203,7 @@ Here’s a table summarizing the key differences between **`React.memo()`**, **`
 
 ---
 
-### Key Points:
+### Key Points
 
 - **`React.memo()`**: Primarily used for optimizing re-renders of function components based on props.
 - **`useMemo()`**: Memoizes a **value** (or result of a computation), useful for expensive operations.
@@ -381,7 +381,7 @@ Another approach is to use third-party libraries like **`react-error-boundary`**
 npm install react-error-boundary
 ```
 
-2. Use the library in your components:
+1. Use the library in your components:
 
 ```javascript
 import React from "react";
@@ -430,3 +430,268 @@ export default App;
 
 - **Class Components**: React provides native error boundary support via `componentDidCatch` and `getDerivedStateFromError` lifecycle methods in class components.
 - **Functional Components**: While React does not natively support error boundaries for functional components, you can use third-party libraries like **`react-error-boundary`** or create custom solutions using hooks (`useState`, `useEffect`, etc.).
+
+In React, **Error Boundaries** are special components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of crashing the entire application with a blank white screen.
+
+Because hooks like `useEffect` or `useContext` do not currently have a functional equivalent for catching rendering errors, **Error Boundaries must be implemented using Class Components**.
+
+Below is a complete, production-ready Error Boundary setup in TypeScript, including fallback UI customization, error logging integration, and reset capabilities.
+
+---
+
+## 1. Production Error Boundary Component (`src/components/ErrorBoundary.tsx`)
+
+This class component implements both `getDerivedStateFromError` (to update state and show fallback UI) and `componentDidCatch` (to send error reports to monitoring services like Sentry, LogRocket, or Datadog).
+
+```tsx
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+
+interface FallbackProps {
+  error: Error;
+  resetErrorBoundary: () => void;
+}
+
+interface Props {
+  /** Child components to wrap and monitor */
+  children: ReactNode;
+  /** Custom fallback component to render when an error occurs */
+  FallbackComponent?: React.ComponentType<FallbackProps>;
+  /** Callback fired when an error is caught (useful for logging services) */
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
+  /** Callback fired when the user resets the boundary */
+  onReset?: () => void;
+}
+
+interface State {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export class ErrorBoundary extends Component<Props, State> {
+  public state: State = {
+    hasError: false,
+    error: null,
+  };
+
+  // 1. Synchronously update state so the next render shows the fallback UI
+  public static getDerivedStateFromError(error: Error): State {
+    return {
+      hasError: true,
+      error,
+    };
+  }
+
+  // 2. Log error info to external services or console
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    console.error('Uncaught error caught by ErrorBoundary:', error, errorInfo);
+
+    // Call optional custom error logging callback (e.g., Sentry)
+    if (this.props.onError) {
+      this.props.onError(error, errorInfo);
+    }
+  }
+
+  // 3. Reset the error boundary state so the user can try again
+  public resetErrorBoundary = (): void => {
+    if (this.props.onReset) {
+      this.props.onReset();
+    }
+
+    this.setState({
+      hasError: false,
+      error: null,
+    });
+  };
+
+  public render(): ReactNode {
+    if (this.state.hasError && this.state.error) {
+      // Render custom fallback component if provided
+      if (this.props.FallbackComponent) {
+        const CustomFallback = this.props.FallbackComponent;
+        return (
+          <CustomFallback
+            error={this.state.error}
+            resetErrorBoundary={this.resetErrorBoundary}
+          />
+        );
+      }
+
+      // Default production fallback UI
+      return (
+        <DefaultErrorFallback
+          error={this.state.error}
+          resetErrorBoundary={this.resetErrorBoundary}
+        />
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Default Fallback UI Component
+function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
+  return (
+    <div
+      role="alert"
+      style={{
+        padding: '24px',
+        margin: '20px auto',
+        maxWidth: '500px',
+        border: '1px solid #f5c6cb',
+        borderRadius: '8px',
+        backgroundColor: '#f8d7da',
+        color: '#721c24',
+        fontFamily: 'sans-serif',
+      }}
+    >
+      <h2 style={{ marginTop: 0 }}>Something went wrong.</h2>
+      <p style={{ fontSize: '14px', color: '#495057' }}>
+        {error.message || 'An unexpected error occurred in this section.'}
+      </p>
+      <button
+        onClick={resetErrorBoundary}
+        style={{
+          padding: '8px 16px',
+          backgroundColor: '#721c24',
+          color: '#ffffff',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+        }}
+      >
+        Try Again
+      </button>
+    </div>
+  );
+}
+
+```
+
+---
+
+## 2. Granular Usage in App Layout (`src/App.tsx`)
+
+In a production app, wrap critical sections independently (e.g., individual dashboard widgets, navigation sidebar, main content area) so an error in one component doesn't crash the rest of the application.
+
+```tsx
+import React from 'react';
+import { ErrorBoundary } from './components/ErrorBoundary';
+
+// Custom Fallback for a specific widget
+function WidgetErrorFallback({ error, resetErrorBoundary }: { error: Error; resetErrorBoundary: () => void }) {
+  return (
+    <div style={{ padding: '16px', border: '1px dashed #dc3545', borderRadius: '6px' }}>
+      <h4>Failed to load widget</h4>
+      <p style={{ fontSize: '12px' }}>{error.message}</p>
+      <button onClick={resetErrorBoundary}>Reload Widget</button>
+    </div>
+  );
+}
+
+// Sentry / External Log Integration
+const logErrorToMonitoring = (error: Error, errorInfo: React.ErrorInfo) => {
+  // Example: Sentry.captureException(error, { extra: { componentStack: errorInfo.componentStack } });
+  console.log('Reporting error to monitoring service:', error.message);
+};
+
+export default function App() {
+  return (
+    <div>
+      <header>
+        <h1>Application Header</h1>
+      </header>
+
+      <main style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', padding: '20px' }}>
+        {/* Widget 1 wrapped in its own Error Boundary */}
+        <ErrorBoundary FallbackComponent={WidgetErrorFallback} onError={logErrorToMonitoring}>
+          <AnalyticsWidget />
+        </ErrorBoundary>
+
+        {/* Widget 2 wrapped independently */}
+        <ErrorBoundary FallbackComponent={WidgetErrorFallback} onError={logErrorToMonitoring}>
+          <UserProfileWidget />
+        </ErrorBoundary>
+      </main>
+    </div>
+  );
+}
+
+function AnalyticsWidget() {
+  return <div>Analytics Data Rendered Successfully</div>;
+}
+
+function UserProfileWidget() {
+  // Simulating an unexpected rendering crash
+  throw new Error('Database connection failed while loading user profile.');
+}
+
+```
+
+---
+
+## 3. Catching Errors in Async Callbacks & Hooks
+
+Error Boundaries **do NOT catch errors** inside:
+
+1. Event handlers (`onClick`, `onSubmit`)
+2. Asynchronous code (`setTimeout`, `fetch`, Promises)
+3. Server-Side Rendering (SSR)
+
+To pass an async or event handler error into the nearest Error Boundary, trigger a re-render by throwing inside a state setter or custom hook:
+
+### Helper Hook: `useErrorHandler`
+
+```tsx
+import { useState, useCallback } from 'react';
+
+export function useErrorHandler() {
+  const [, setError] = useState<null>(null);
+
+  return useCallback((error: Error) => {
+    setError(() => {
+      // Throwing inside a state updater causes React to pass it to the nearest Error Boundary
+      throw error;
+    });
+  }, []);
+}
+
+```
+
+### Usage inside a Component
+
+```tsx
+import React from 'react';
+import { useErrorHandler } from './useErrorHandler';
+
+export function AsyncDataLoader() {
+  const handleError = useErrorHandler();
+
+  const handleFetchData = async () => {
+    try {
+      const response = await fetch('/api/data-does-not-exist');
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.statusText}`);
+      }
+    } catch (err) {
+      // Directs async error into the nearest Error Boundary
+      handleError(err as Error);
+    }
+  };
+
+  return <button onClick={handleFetchData}>Fetch Async Data</button>;
+}
+
+```
+
+---
+
+## Summary Checklist for Production
+
+| Requirement             | Implementation Strategy                                                                         |
+| ----------------------- | ----------------------------------------------------------------------------------------------- |
+| **Component Structure** | Must use class components (`getDerivedStateFromError` + `componentDidCatch`).                   |
+| **Granular Wrapping**   | Wrap isolated feature blocks so one widget failure doesn't break the entire layout.             |
+| **Error Logging**       | Connect `componentDidCatch` to external monitoring tools (Sentry, LogRocket, Datadog).          |
+| **State Reset**         | Provide a `resetErrorBoundary` function to let users recover without reloading the browser tab. |
+| **Async Errors**        | Use a helper hook (`useErrorHandler`) to forward async/event errors to the boundary.            |

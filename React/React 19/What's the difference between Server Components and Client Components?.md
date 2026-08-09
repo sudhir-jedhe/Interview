@@ -39,15 +39,15 @@ To create a Client Component in modern React (like in the Next.js App Router), y
 
 ## Quick Comparison
 
-| Feature                       | Server Components       | Client Components    |
-| ----------------------------- | ----------------------- | -------------------- |
-| **Execution Environment**     | Server                  | Browser (Client)     |
-| **Directive Needed?**         | No (Default)            | Yes (`"use client"`) |
-| **State (`useState`)**        | ❌ No                   | ✅ Yes               |
-| **Interactivity (`onClick`)** | ❌ No                   | ✅ Yes               |
-| **Access Backend/DB**         | ✅ Yes                  | ❌ No (Needs API)    |
-| **Access `window**`           | ❌ No                   | ✅ Yes               |
-| **Affects Bundle Size?**      | ❌ No (Zero JS shipped) | ✅ Yes               |
+| Feature                       | Server Components      | Client Components    |
+| ----------------------------- | ---------------------- | -------------------- |
+| **Execution Environment**     | Server                 | Browser (Client)     |
+| **Directive Needed?**         | No (Default)           | Yes (`"use client"`) |
+| **State (`useState`)**        | ❌ No                   | ✅ Yes                |
+| **Interactivity (`onClick`)** | ❌ No                   | ✅ Yes                |
+| **Access Backend/DB**         | ✅ Yes                  | ❌ No (Needs API)     |
+| **Access `window**`           | ❌ No                   | ✅ Yes                |
+| **Affects Bundle Size?**      | ❌ No (Zero JS shipped) | ✅ Yes                |
 
 ## The Golden Rule of Composition
 
@@ -391,3 +391,139 @@ export default function MapWrapper(props) {
 ```
 
 By forcing the component to return a placeholder during the initial server pass, the problematic third-party code is never executed in the Node.js environment, completely bypassing the `window is not defined` error.
+
+**React Server Components (RSC)** are a component architecture introduced natively in React 19 that allows components to render exclusively on the server before sending data or visual structures down to the client.
+
+By splitting components into **Server Components** and **Client Components**, React applications can fetch data and render heavy dependencies on the server without sending unnecessary JavaScript to the browser.
+
+---
+
+## 1. Key Architectural Differences
+
+| Feature                   | React Server Components (RSC)                                                              | Client Components (`'use client'`)                                                  |
+| ------------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| **Execution Location**    | Executed **only on the server** (at build time or per request).                            | Rendered on the server (SSR HTML) and **hydrated on the client**.                   |
+| **Bundle Size Impact**    | **0 KB added to JS bundle**. Code & dependencies stay on server.                           | Adds JavaScript code and imported npm dependencies to the client bundle.            |
+| **Data Fetching**         | Can directly access databases, file systems, or private microservices using `async/await`. | Fetches data via client-side APIs (`fetch`, SWR, TanStack Query) or Server Actions. |
+| **Interactivity & State** | ❌ Cannot use `useState`, `useEffect`, or event listeners (`onClick`).                      | ✅ Can use all React Hooks (`useState`, `useEffect`, `useReducer`) and DOM events.   |
+| **Security**              | Safe for private tokens, database keys, and sensitive business logic.                      | Code is exposed to the browser bundle; no private API secrets allowed.              |
+
+---
+
+## 2. Code Comparison
+
+### Server Component (Default in RSC Architectures)
+
+Server components are async functions that run entirely on the server. They can query databases directly without exposing API routes or secret keys to the browser:
+
+```tsx
+// ProductList.tsx (Server Component by default)
+import { db } from '@/lib/db'; // Direct database connection
+
+export async function ProductList() {
+  // Query database directly on the server — zero client bundle overhead!
+  const products = await db.products.findMany();
+
+  return (
+    <div>
+      <h2>Products</h2>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>
+            {product.name} - ${product.price}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+```
+
+### Client Component (`'use client'`)
+
+When interactive UI elements, browser APIs, or React state hooks are needed, add the `'use client'` directive at the top of the file:
+
+```tsx
+// AddToCartButton.tsx (Client Component)
+'use client'; // Marks this file and its imports as client boundary
+
+import { useState } from 'react';
+
+export function AddToCartButton({ productId }: { productId: string }) {
+  const [isAdded, setIsAdded] = useState(false);
+
+  const handleClick = () => {
+    setIsAdded(true);
+    // Trigger interaction/mutation
+  };
+
+  return (
+    <button onClick={handleClick}>
+      {isAdded ? 'Added to Cart!' : 'Add to Cart'}
+    </button>
+  );
+}
+
+```
+
+---
+
+## 3. Combining Server and Client Components
+
+Server Components can import and render Client Components directly. However, a **Client Component cannot directly import a Server Component** into its file body (since Server Components cannot run in browser environments).
+
+### Pattern: Passing Server Components as `children`
+
+To nest a Server Component inside a Client Component (e.g., a modal or layout wrapper), pass it via the `children` prop:
+
+```tsx
+// ModalWrapper.tsx (Client Component)
+'use client';
+
+import { useState } from 'react';
+
+export function ModalWrapper({ children }: { children: React.ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <button onClick={() => setIsOpen(true)}>Open Modal</button>
+      {isOpen && <div className="modal-body">{children}</div>}
+    </div>
+  );
+}
+
+// Page.tsx (Server Component - Parent)
+import { ModalWrapper } from './ModalWrapper';
+import { ProductList } from './ProductList'; // Server Component
+
+export default async function Page() {
+  return (
+    <ModalWrapper>
+      {/* ProductList executes on the server and passes rendered JSX slots to the client modal */}
+      <ProductList />
+    </ModalWrapper>
+  );
+}
+
+```
+
+---
+
+## 4. Summary: When to Use Which?
+
+```
+                      Do you need...
+                            │
+       ┌────────────────────┴────────────────────┐
+       ▼                                         ▼
+  Data Fetching,                             State, Effects,
+Database/File Access,                      Event Listeners,
+ Private API Keys                         Browser APIs (window)
+       │                                         │
+       ▼                                         ▼
+Server Component                          Client Component
+ (Default in RSC)                          ('use client')
+
+```

@@ -470,3 +470,146 @@ This is how you can create a **custom hook** in React to handle user inactivity 
 ```
 
 ```
+
+Here is a production-ready `useIdle` React hook that detects user inactivity across multiple user events (`mousemove`, `keydown`, `wheel`, `touchstart`, etc.), complete with custom timeout durations, immediate initialization, and safe event cleanup.
+
+```jsx
+import { useState, useEffect, useRef, useCallback } from "react";
+
+const DEFAULT_EVENTS = [
+  "mousemove",
+  "mousedown",
+  "keydown",
+  "touchstart",
+  "wheel",
+  "scroll",
+  "visibilitychange",
+];
+
+/**
+ * Custom hook to detect user inactivity across DOM events.
+ *
+ * @param {number} [timeout=60000] - Inactivity duration threshold in ms (defaults to 1 minute).
+ * @param {Object} [options] - Configuration options.
+ * @param {boolean} [options.initialState=false] - Initial idle state before interaction tracking starts.
+ * @param {string[]} [options.events=DEFAULT_EVENTS] - Array of DOM event names that indicate activity.
+ * @returns {boolean} Is the user currently idle.
+ */
+export function useIdle(timeout = 60000, options = {}) {
+  const { initialState = false, events = DEFAULT_EVENTS } = options;
+
+  const [isIdle, setIsIdle] = useState(initialState);
+  const timerRef = useRef(null);
+
+  // Store events array in ref to avoid re-subscribing event listeners if unmemoized arrays are passed
+  const eventsRef = useRef(events);
+  useEffect(() => {
+    eventsRef.current = events;
+  }, [events]);
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      setIsIdle(true);
+    }, timeout);
+  }, [timeout]);
+
+  const handleActivity = useCallback(() => {
+    // If hidden tab becomes active or active events fire, mark active and reset timer
+    if (document.hidden) return;
+
+    setIsIdle(false);
+    startTimer();
+  }, [startTimer]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // Start initial countdown
+    startTimer();
+
+    const activeEvents = eventsRef.current;
+
+    activeEvents.forEach((event) => {
+      window.addEventListener(event, handleActivity, { passive: true });
+    });
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      activeEvents.forEach((event) => {
+        window.removeEventListener(event, handleActivity);
+      });
+    };
+  }, [handleActivity, startTimer]);
+
+  return isIdle;
+}
+
+```
+
+---
+
+### Usage Examples
+
+#### 1. Session Auto-Logout Modal
+
+```jsx
+function App() {
+  // Triggers after 5 minutes (300,000 ms) of inactivity
+  const isIdle = useIdle(300000);
+
+  return (
+    <div>
+      <h1>Application Dashboard</h1>
+      {isIdle && (
+        <div className="modal">
+          <h2>Session Idle Notice</h2>
+          <p>You have been inactive for 5 minutes. Please confirm you are still here.</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+```
+
+#### 2. Media Player Auto-Hide Controls
+
+```jsx
+function VideoPlayer() {
+  // Hide player controls after 3 seconds of no mouse movements or keypresses
+  const isIdle = useIdle(3000);
+
+  return (
+    <div className="video-container">
+      <video src="/video.mp4" controls={false} />
+      
+      <div 
+        className="controls" 
+        style={{ 
+          opacity: isIdle ? 0 : 1, 
+          transition: "opacity 0.3s ease" 
+        }}
+      >
+        <button>Play/Pause</button>
+        <button>Fullscreen</button>
+      </div>
+    </div>
+  );
+}
+
+```
+
+---
+
+### Key Features
+
+- **Passive Event Listeners:** Event listeners use `{ passive: true }` so tracking scrolling and touch events does not block rendering performance or frame rates.
+- **Tab Visibility Awareness:** Respects `document.hidden` via `visibilitychange` to handle background tabs correctly.
+- **SSR Safe:** Safely checks `typeof window !== "undefined"` before attaching global event handlers.
+- **Option Ref Stabilization:** Keeps the event list stabilized with `useRef` to prevent listeners from repeatedly detaching and re-attaching when array references change on re-renders.

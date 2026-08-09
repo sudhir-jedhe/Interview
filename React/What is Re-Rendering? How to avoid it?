@@ -1,0 +1,115 @@
+### What is Re-Rendering?
+
+In React, **re-rendering** is the process where React calls a component function again to compute its updated Virtual DOM (VDOM). React compares this new VDOM against the previous VDOM (a process called **Reconciliation**) to decide whether real DOM updates are required.
+
+Re-rendering happens naturally whenever:
+
+1. A component's **state** changes.
+2. A component's **props** change.
+3. Its **parent component** re-renders (by default, React re-renders all descendants when a parent updates).
+
+Re-renders are normal and fast in most cases. However, **unnecessary re-renders**—where a component re-runs its code even though its rendered output hasn't changed—can degrade app performance when components are large or deeply nested.
+
+---
+
+### How to Prevent Unnecessary Re-Renders
+
+#### 1. React.memo
+
+* **Concept:** Wraps a functional component to make it a "pure" component. React skips re-rendering the wrapped component if its incoming props have not changed according to a shallow equality check (`===`).
+* **Example:**
+
+```jsx
+const UserCard = React.memo(function UserCard({ name }) {
+  return <div>{name}</div>;
+});
+
+```
+
+#### 2. useMemo
+
+* **Concept:** Caches (memoizes) the **result of a calculation** across renders so heavy logic isn't re-run on every render cycle.
+* **Example:**
+
+```jsx
+// Calculates filteredList ONLY when 'items' or 'filter' changes
+const filteredList = useMemo(() => {
+  return items.filter(item => item.category === filter);
+}, [items, filter]);
+
+```
+
+#### 3. useCallback
+
+* **Concept:** Caches a **function instance** across renders. It prevents creating a new function reference on every re-render, keeping prop references stable when passed to child components.
+* **Example:**
+
+```jsx
+const handleClick = useCallback(() => {
+  console.log('Clicked');
+}, []); // Stable function reference across renders
+
+```
+
+#### 4. Stable Props
+
+* **Concept:** Ensuring that props passed to memoized children maintain the same reference across renders. If a prop reference changes (even if the values inside are identical), `React.memo` will consider it a prop change and re-render.
+
+#### 5. Avoid Inline Functions or Objects
+
+* **Problem:** In React, `{}` and `() => {}` create **new memory references on every single render**.
+
+```jsx
+// BAD: Creates a new object reference on every render
+<Child style={{ color: 'red' }} onClick={() => doSomething()} />
+
+```
+
+* **Solution:** Move objects outside the component (if static) or wrap inline functions/objects with `useCallback` or `useMemo`.
+
+```jsx
+// GOOD: Static object outside component
+const BUTTON_STYLE = { color: 'red' };
+
+function Parent() {
+  const handleClick = useCallback(() => doSomething(), []);
+  return <Child style={BUTTON_STYLE} onClick={handleClick} />;
+}
+
+```
+
+#### 6. Split Large Components into Smaller Ones
+
+* **Concept:** Moving rapidly changing state down into small, localized sub-components prevents the parent (and its other sibling components) from re-rendering unnecessarily.
+* **Example:**
+
+```jsx
+// BAD: Typing in input causes the ENTIRE page/tree to re-render
+function Page() {
+  const [text, setText] = useState('');
+  return (
+    <div>
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+      <HeavyChart />
+      <HugeTable />
+    </div>
+  );
+}
+
+// GOOD: Move state down into a self-contained Input component
+function SearchInput() {
+  const [text, setText] = useState('');
+  return <input value={text} onChange={(e) => setText(e.target.value)} />;
+}
+
+function Page() {
+  return (
+    <div>
+      <SearchInput />
+      <HeavyChart />
+      <HugeTable />
+    </div>
+  );
+}
+
+```

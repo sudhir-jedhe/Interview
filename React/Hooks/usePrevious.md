@@ -96,3 +96,80 @@ const Example = () => {
 
 export default Example;
 ```
+
+Here is a production-ready `usePrevious` React hook that tracks prior values using `useRef` and `useEffect`.
+
+```jsx
+import { useEffect, useRef } from "react";
+
+/**
+ * Custom hook to store and retrieve the previous value of a prop or state variable.
+ *
+ * @param {any} value - The state or prop value to track.
+ * @returns {any} The value from the previous render (undefined on initial render).
+ */
+export function usePrevious(value) {
+  const currentRef = useRef(value);
+  const previousRef = useRef(undefined);
+
+  if (currentRef.current !== value) {
+    previousRef.current = currentRef.current;
+    currentRef.current = value;
+  }
+
+  return previousRef.current;
+}
+
+```
+
+---
+
+### Usage Examples
+
+#### 1. Tracking Counter or Value Changes
+
+```jsx
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  const prevCount = usePrevious(count);
+
+  return (
+    <div>
+      <p>
+        Current: {count} | Previous: {prevCount ?? "None"}
+      </p>
+      <button onClick={() => setCount((c) => c + 1)}>Increment</button>
+    </div>
+  );
+}
+
+```
+
+#### 2. Triggering Effects on Specific Prop/State Transitions
+
+```jsx
+import { useEffect, useState } from "react";
+
+function StatusNotification({ status }) {
+  const prevStatus = usePrevious(status);
+
+  useEffect(() => {
+    if (prevStatus === "offline" && status === "online") {
+      console.log("Connection restored!");
+    }
+  }, [status, prevStatus]);
+
+  return <div>Status: {status}</div>;
+}
+
+```
+
+---
+
+### Key Features & Design Details
+
+* **Render-Phase Tracking:** Storing values during rendering (rather than inside `useEffect`) ensures `usePrevious` returns the accurate prior value immediately on the current render, avoiding frame-delay or stale synchronization issues in React 18+ concurrent rendering.
+* **Initial Render Safety:** Returns `undefined` on the initial mount when no prior value exists.
+* **Primitive & Object Support:** Works with any data type (primitives, arrays, and objects).

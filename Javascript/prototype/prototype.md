@@ -2,7 +2,7 @@ It looks like you've almost got it right, but there’s a slight issue with the 
 
 Let's fix this and explain the full process.
 
-### Corrected Code:
+### Corrected Code
 
 ```js
 // Animal constructor function
@@ -30,7 +30,7 @@ const bird = new Bird();
 bird.home();  // This will log 'forest'
 ```
 
-### Explanation:
+### Explanation
 
 1. **Animal Constructor**:
    - The `Animal` constructor is used to define the "type" of an object, but it doesn't hold the methods like `home`. Instead, those methods are added to the prototype of `Animal`.
@@ -47,16 +47,19 @@ bird.home();  // This will log 'forest'
 5. **Calling the `home` method**:
    - Since `Bird` inherits from `Animal`, calling `bird.home()` will invoke the `home` method from the `Animal.prototype`, which logs `"forest"`.
 
-### Output:
+### Output
+
 ```
 forest
 ```
 
-### Key Points:
+### Key Points
+
 - The `home` method is defined on the **prototype** of `Animal`, which means all instances of `Animal` (and any objects inheriting from `Animal`, like `Bird`) can access it.
 - **Prototype inheritance** is achieved by setting `Bird.prototype = Object.create(Animal.prototype);`. This creates a new object (`Object.create(Animal.prototype)`) and sets it as the prototype of `Bird`, enabling `Bird` instances to access `Animal`'s methods.
   
-### Alternative with ES6 Classes:
+### Alternative with ES6 Classes
+
 You can also use ES6 class syntax to make this inheritance clearer:
 
 ```js
@@ -79,9 +82,6 @@ bird.home();  // Logs 'forest'
 
 This achieves the same functionality in a more modern, readable format, utilizing `class` and `extends` for inheritance.
 
-
-
-
 Thank you for pointing out that issue. You're absolutely correct, and I appreciate the detailed explanation you've provided. Let's dive deeper into this concept and explore some additional aspects of prototypal inheritance in JavaScript.
 
 ### Corrected Code and Explanation
@@ -91,7 +91,6 @@ You've already provided an excellent explanation of the corrected code. To summa
 1. The `home` method is correctly placed on `Animal.prototype`, not inside the constructor.
 2. `Bird.prototype` is set to a new object created from `Animal.prototype`, establishing the inheritance chain.
 3. Instances of `Bird` can access methods from `Animal.prototype`.
-
 
 ### Additional Insights
 
@@ -104,8 +103,7 @@ When we set `Bird.prototype = Object.create(Animal.prototype)`, we lose the `con
 Bird.prototype.constructor = Bird;
 ```
 
-
-2. **Overriding Methods**:
+1. **Overriding Methods**:
 We can override methods inherited from `Animal`:
 
 ```javascript
@@ -117,8 +115,7 @@ const bird = new Bird();
 bird.home();  // Logs 'nest'
 ```
 
-
-3. **Calling Superclass Methods**:
+1. **Calling Superclass Methods**:
 If we want to call the `Animal` version of `home` from within `Bird`:
 
 ```javascript
@@ -131,17 +128,13 @@ const bird = new Bird();
 bird.home();  // Logs 'forest' then 'but specifically a nest'
 ```
 
-
-4. **instanceof Operator**:
+1. **instanceof Operator**:
 The `instanceof` operator works correctly with this inheritance setup:
 
 ```javascript
 console.log(bird instanceof Bird);    // true
 console.log(bird instanceof Animal);  // true
 ```
-
-
-
 
 ### ES6 Class Syntax
 
@@ -171,7 +164,6 @@ This achieves the same prototypal inheritance under the hood, but with a syntax 
 
 1. **Method Lookup**: When a method is called on an object, JavaScript looks up the prototype chain. This is generally very fast, but in extremely performance-critical code, you might consider copying methods directly onto the object instead of using inheritance.
 2. **Memory Usage**: Prototypal inheritance is memory-efficient because methods are shared among all instances, rather than being copied to each instance.
-
 
 ### Testing Inheritance
 

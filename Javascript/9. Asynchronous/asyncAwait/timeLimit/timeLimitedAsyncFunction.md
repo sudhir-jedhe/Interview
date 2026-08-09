@@ -32,6 +32,7 @@ export function timeLimit(asyncFunc, timeLimit) {
 ```
 
 ### **Explanation**
+
 - The `timeLimit` function takes an asynchronous function (`asyncFunc`) and a `timeLimit` (in milliseconds) as parameters.
 - It returns a new function that wraps the original asynchronous function.
 - Inside the returned function, a **timeout** is set using `setTimeout`, which will reject the promise with `"Time Limit Exceeded"` if the task takes longer than the specified time limit.
@@ -114,3 +115,139 @@ In this example, the asynchronous function throws an error, which gets caught an
 - **Error Propagation**: If the asynchronous function throws an error (like in Example 4), that error is propagated through the `catch` handler.
 
 By using `timeLimit`, you can wrap any async function and limit the time it takes to execute, which is especially useful when dealing with network requests or tasks where long execution times can negatively affect user experience.
+
+Here is the complete guide and solution for LeetCode #2637: **Promise Time Limit** (implementing a wrapper function that rejects a promise if it takes longer than a specified time limit $t$).
+
+---
+
+### Solution
+
+```javascript
+/**
+ * Wraps an asynchronous function with a time limit constraint.
+ *
+ * @param {Function} fn - An async function taking args and returning a Promise.
+ * @param {number} t - Time limit in milliseconds.
+ * @return {Function} A new async function that rejects if execution exceeds t ms.
+ */
+var timeLimit = function(fn, t) {
+  return async function(...args) {
+    return new Promise((resolve, reject) => {
+      // 1. Set a timeout to reject if execution time exceeds t ms
+      const timer = setTimeout(() => {
+        reject("Time Limit Exceeded");
+      }, t);
+
+      // 2. Execute the async function
+      fn(...args)
+        .then((res) => {
+          clearTimeout(timer);
+          resolve(res);
+        })
+        .catch((err) => {
+          clearTimeout(timer);
+          reject(err);
+        });
+    });
+  };
+};
+
+```
+
+---
+
+### Alternative Implementation Approaches
+
+#### 1. Using `Promise.race()` (Idiomatic & Clean)
+
+`Promise.race()` takes an array of promises and resolves or rejects as soon as the first promise settles.
+
+```javascript
+var timeLimit = function(fn, t) {
+  return async function(...args) {
+    const fnPromise = fn(...args);
+    
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => {
+        reject("Time Limit Exceeded");
+      }, t);
+    });
+
+    return Promise.race([fnPromise, timeoutPromise]);
+  };
+};
+
+```
+
+#### 2. Using `async/await` inside `Promise` Executor
+
+```javascript
+var timeLimit = function(fn, t) {
+  return async function(...args) {
+    return new Promise(async (resolve, reject) => {
+      const timer = setTimeout(() => {
+        reject("Time Limit Exceeded");
+      }, t);
+
+      try {
+        const res = await fn(...args);
+        resolve(res);
+      } catch (err) {
+        reject(err);
+      } finally {
+        clearTimeout(timer);
+      }
+    });
+  };
+};
+
+```
+
+---
+
+### Usage Examples
+
+#### Example 1: Function Resolves Within Limit
+
+```javascript
+const limited = timeLimit(async (n) => {
+  await new Promise((res) => setTimeout(res, 100));
+  return n * n;
+}, 150);
+
+limited(5).then(console.log).catch(console.error);
+// Output: 25 (resolved in 100ms, limit was 150ms)
+
+```
+
+#### Example 2: Exceeding Time Limit
+
+```javascript
+const limited = timeLimit(async (n) => {
+  await new Promise((res) => setTimeout(res, 200));
+  return n * n;
+}, 100);
+
+limited(5).then(console.log).catch(console.error);
+// Output: "Time Limit Exceeded" (rejected at 100ms)
+
+```
+
+#### Example 3: Function Rejects Before Time Limit
+
+```javascript
+const limited = timeLimit(async () => {
+  throw "Error from fn";
+}, 1000);
+
+limited().then(console.log).catch(console.error);
+// Output: "Error from fn" (immediately rejected)
+
+```
+
+---
+
+### Key Takeaways
+
+1. **Timer Cleanup:** Always clear active timeouts (`clearTimeout(timer)`) when the wrapped function completes early to avoid memory leaks.
+2. **`Promise.race` Mechanics:** A promise state can only settle once (either resolved or rejected). Whichever completes first—the timer or the target function—wins the race.

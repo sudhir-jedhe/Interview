@@ -48,14 +48,17 @@ export default ParentComponent;
 ```
 
 #### **Explanation:**
+
 - The `ChildComponent` is wrapped with `React.memo()`. This means it will only re-render if the `count` prop changes.
 - Clicking the "Increment" button updates the `count`, which will trigger a re-render of `ChildComponent`.
 - Clicking the "Change Name" button updates the `name` state, but since it doesn’t affect the `count` prop, `ChildComponent` will **not** re-render, thanks to `React.memo()`.
 
 #### **When to Use:**
+
 - `React.memo()` is useful when a function component receives complex objects or arrays as props and you want to avoid re-rendering unless those objects/arrays change.
 
 #### **Custom Comparison Function:**
+
 You can also pass a custom comparison function as a second argument to `React.memo()` to determine whether the component should re-render based on prop changes.
 
 ```js
@@ -105,10 +108,12 @@ export default ExpensiveComponent;
 ```
 
 #### **Explanation:**
+
 - The `expensiveComputation` is memoized using `useMemo()`. It only recalculates when the `number` prop changes. If `number` stays the same, the previous result is reused, avoiding unnecessary recalculations.
 - In this example, typing in the input does not trigger the expensive computation because the `input` state is not part of the `useMemo` dependencies. Therefore, only changes in `number` will trigger the recalculation.
 
 #### **When to Use:**
+
 - Use `useMemo()` to memoize expensive computations or derived values that do not change frequently, ensuring that you don’t redo the computation on every render.
 
 ---
@@ -151,10 +156,12 @@ export default ParentComponent;
 ```
 
 #### **Explanation:**
+
 - The `handleClick` function is memoized using `useCallback()`. It will only be recreated when the `count` state changes.
 - The `ChildComponent` is wrapped in `React.memo()`. Since the `handleClick` function is memoized, it will not trigger unnecessary re-renders of `ChildComponent` when `count` changes but `handleClick` remains the same.
 
 #### **When to Use:**
+
 - Use `useCallback()` when you pass functions as props to child components, and those child components are memoized with `React.memo()`. It prevents unnecessary re-creation of the function on each render.
 
 ---

@@ -228,8 +228,8 @@ When asked **"Why not use useEffect?"**, explain:
 
 | Hook           | Initial Render | Updates |
 | -------------- | -------------- | ------- |
-| `useEffect`    | ✅             | ✅      |
-| `useDidUpdate` | ❌             | ✅      |
+| `useEffect`    | ✅              | ✅       |
+| `useDidUpdate` | ❌              | ✅       |
 
 `useDidUpdate` is useful when:
 

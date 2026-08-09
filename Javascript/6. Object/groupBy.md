@@ -260,3 +260,128 @@ function groupBy<T>(
 | **Custom `groupBy**`   | Strings, Numbers, Symbols                 | Plain Object (`{}`)       | All JS environments                 |
 | **`Object.groupBy()`** | Strings, Symbols (coerced)                | Plain Object (`{}`)       | ES2024 / Modern Browsers & Node 21+ |
 | **`Map.groupBy()`**    | Any Type (Objects, Functions, Primitives) | JavaScript `Map` instance | ES2024 / Modern Browsers & Node 21+ |
+
+Here is the complete guide and solution for LeetCode #2631: **Group By** (enhancing `Array.prototype` with a custom grouping method that groups items by the return value of a callback function).
+
+---
+
+### Solution
+
+```javascript
+/**
+ * @param {Function} fn - Function that returns a string key for each array element.
+ * @return {Object} An object where keys are the output of fn(item) and values are arrays of grouped items.
+ */
+Array.prototype.groupBy = function(fn) {
+  const result = {};
+
+  for (let i = 0; i < this.length; i++) {
+    const key = fn(this[i]);
+
+    if (!result[key]) {
+      result[key] = [];
+    }
+
+    result[key].push(this[i]);
+  }
+
+  return result;
+};
+
+```
+
+---
+
+### Alternative Implementation Approaches
+
+#### 1. Using `for...of` Loop (Clean & Modern)
+
+Iterates directly over elements of `this`:
+
+```javascript
+Array.prototype.groupBy = function(fn) {
+  const result = {};
+
+  for (const item of this) {
+    const key = fn(item);
+    
+    // Use nullish coalescing assignment if supported or standard conditional
+    (result[key] ??= []).push(item);
+  }
+
+  return result;
+};
+
+```
+
+#### 2. Using `Array.prototype.reduce()` (Functional Approach)
+
+Reduces the array into an object accumulator:
+
+```javascript
+Array.prototype.groupBy = function(fn) {
+  return this.reduce((acc, item) => {
+    const key = fn(item);
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(item);
+    return acc;
+  }, {});
+};
+
+```
+
+---
+
+### Usage Examples
+
+#### Example 1: Grouping Objects by Property ID
+
+```javascript
+const array = [
+  { id: "1" },
+  { id: "1" },
+  { id: "2" }
+];
+const fn = (item) => item.id;
+
+console.log(array.groupBy(fn));
+// Output:
+// {
+//   "1": [{ id: "1" }, { id: "1" }],
+//   "2": [{ id: "2" }]
+// }
+
+```
+
+#### Example 2: Grouping Numbers by Condition
+
+```javascript
+const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const fn = (n) => String(n > 5);
+
+console.log(array.groupBy(fn));
+// Output:
+// {
+//   "true": [6, 7, 8, 9, 10],
+//   "false": [1, 2, 3, 4, 5]
+// }
+
+```
+
+#### Example 3: Empty Array Edge Case
+
+```javascript
+const array = [];
+console.log(array.groupBy((x) => x));
+// Output: {}
+
+```
+
+---
+
+### Key Takeaways
+
+1. **`this` Keyword Usage:** Because this method is added directly to `Array.prototype`, `this` points to the array instance calling `.groupBy()`.
+2. **Key Stringification:** Object keys in JavaScript are always strings or Symbols. If `fn(item)` returns a number or boolean, JavaScript automatically coerces it into a string key when indexing into `result[key]`.

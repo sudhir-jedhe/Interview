@@ -1,0 +1,43 @@
+The `useState` hook returns an array with two elements—`[currentState, updateFunction]`—instead of an object (like `{ state, setState }`) primarily to allow **easy renaming via Array Destructuring**.
+
+Here is why that design decision makes writing React code much simpler:
+
+---
+
+### 1. Easy Renaming with Array Destructuring
+
+With array destructuring, you can name your state variable and setter function whatever you want in a single line:
+
+```tsx
+// ✅ Array Destructuring: Clean and flexible renaming!
+const [count, setCount] = useState(0);
+const [name, setName] = useState('Alex');
+const [isOpen, setIsOpen] = useState(false);
+
+```
+
+Because arrays are ordered by **index position** rather than key names, element `0` is always your value and element `1` is always your setter function.
+
+---
+
+### 2. What If `useState` Returned an Object?
+
+If `useState` returned an object like `{ value, setValue }`, you would have to rename the keys every time you called `useState` in the same component using object destructuring syntax.
+
+This leads to messy and repetitive code:
+
+```tsx
+// ❌ Hypothetical Object Return: Extremely verbose when using multiple states!
+const { value: count, setValue: setCount } = useState(0);
+const { value: name, setValue: setName } = useState('Alex');
+const { value: isOpen, setValue: setIsOpen } = useState(false);
+
+```
+
+If you didn't rename them, `count`, `name`, and `isOpen` would all collide under the variable names `value` and `setValue`.
+
+---
+
+### Summary
+
+React uses an **array** for `useState` because it gives you complete freedom to give your state variables meaningful names instantly without extra syntax boilerplate.

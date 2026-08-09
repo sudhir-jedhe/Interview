@@ -73,3 +73,72 @@ currentValue: a // onClick
 currentValue: b // onClick
 currentValue: c // onClick
 ```
+
+A `useToggle` hook is similar to `useBoolean`, but more flexible: it accepts an arbitrary array of values (or defaults to `[true, false]`) and cycles through them sequentially on each trigger.
+
+Here is a flexible, production-ready implementation of `useToggle`:
+
+```jsx
+import { useState, useCallback } from "react";
+
+export function useToggle(options = [true, false], initialIndex = 0) {
+  const [index, setIndex] = useState(() => {
+    return initialIndex >= 0 && initialIndex < options.length ? initialIndex : 0;
+  });
+
+  const toggle = useCallback(
+    (target) => {
+      // Direct jump to a specific value or index if provided
+      if (target !== undefined) {
+        const foundIndex = options.indexOf(target);
+        if (foundIndex !== -1) {
+          setIndex(foundIndex);
+          return;
+        }
+        if (typeof target === "number" && target >= 0 && target < options.length) {
+          setIndex(target);
+          return;
+        }
+      }
+
+      // Otherwise cycle to the next value
+      setIndex((prevIndex) => (prevIndex + 1) % options.length);
+    },
+    [options]
+  );
+
+  return [options[index], toggle];
+}
+
+```
+
+### Usage Examples
+
+#### 1. Standard Boolean Toggle
+
+```jsx
+const [isOn, toggleIsOn] = useToggle();
+
+// Usage:
+// toggleIsOn()        -> flips true/false
+// toggleIsOn(true)    -> explicitly sets true
+
+```
+
+#### 2. Multi-state Cycle (e.g., Status Filter or Theme)
+
+```jsx
+const [theme, toggleTheme] = useToggle(["light", "dark", "system"]);
+
+// Usage:
+// toggleTheme()        -> cycles: light -> dark -> system -> light
+// toggleTheme("dark")  -> directly jumps to "dark"
+
+```
+
+### Core Features
+
+* **Array Destructuring Standard:** Follows standard React conventions (`[value, toggle]`).
+* **Multi-Value Support:** Cycles seamlessly through 2 or more options.
+* **Direct Value Setting:** Passing an argument directly jumps to that value or index, eliminating the need for separate setter methods.
+* **Stable Callbacks:** Wrapped in `useCallback` to maintain reference stability across renders.

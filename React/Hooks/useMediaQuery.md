@@ -290,3 +290,102 @@ const isPortrait = useMediaQuery("(orientation: portrait)");
 ```
 
 This is the level of implementation and explanation typically expected in a **Senior React / Frontend Lead interview**, especially when discussing custom hooks, responsive design systems, and reusable UI architecture.
+
+Here is a production-ready `useMediaQuery` hook built using `useSyncExternalStore` (React 18+). It provides real-time media query evaluation, zero layout tearing in concurrent mode, and full SSR hydration safety.
+
+```jsx
+import { useSyncExternalStore, useCallback } from "react";
+
+/**
+ * Custom hook to evaluate and subscribe to CSS media query changes.
+ * Uses useSyncExternalStore for concurrent-safe updates and SSR compatibility.
+ *
+ * @param {string} query - Standard CSS media query string (e.g. '(min-width: 768px)').
+ * @param {boolean} [serverFallback=false] - Fallback boolean value returned during SSR rendering.
+ * @returns {boolean} True if the media query matches, false otherwise.
+ */
+export function useMediaQuery(query, serverFallback = false) {
+  // Subscribe to matchMedia change events
+  const subscribe = useCallback(
+    (callback) => {
+      if (typeof window === "undefined") {
+        return () => {};
+      }
+
+      const matchMedia = window.matchMedia(query);
+      matchMedia.addEventListener("change", callback);
+
+      return () => {
+        matchMedia.removeEventListener("change", callback);
+      };
+    },
+    [query]
+  );
+
+  // Get current snapshot on client side
+  const getSnapshot = useCallback(() => {
+    if (typeof window === "undefined") {
+      return serverFallback;
+    }
+    return window.matchMedia(query).matches;
+  }, [query, serverFallback]);
+
+  // Get snapshot on server side (SSR / static generation)
+  const getServerSnapshot = useCallback(() => serverFallback, [serverFallback]);
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
+```
+
+---
+
+### Usage Examples
+
+#### 1. Responsive Screen Breakpoints
+
+```jsx
+function ResponsiveHeader() {
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1023px)");
+
+  return (
+    <header>
+      {isDesktop && <DesktopNavigation />}
+      {isTablet && <TabletNavigation />}
+      {!isDesktop && !isTablet && <MobileMenuDrawer />}
+    </header>
+  );
+}
+
+```
+
+#### 2. System Preference Detection (Dark Mode / Reduced Motion)
+
+```jsx
+function AccessibilityAwareComponent() {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+
+  return (
+    <div
+      style={{
+        backgroundColor: prefersDarkMode ? "#1a1a1a" : "#ffffff",
+        transition: prefersReducedMotion ? "none" : "all 0.3s ease",
+      }}
+    >
+      Accessibility Settings Aware Content
+    </div>
+  );
+}
+
+```
+
+---
+
+### Key Features
+
+- **React 18 Concurrent-Safe:** Uses `useSyncExternalStore` to avoid layout tearing and ensure synchronization across concurrent state updates.
+- **SSR Hydration Safe:** Accepts a `serverFallback` parameter (defaulting to `false`) to prevent client-server HTML hydration mismatches in Next.js, Remix, or Gatsby.
+- **Event Listener Cleanup:** Uses `addEventListener("change")` with proper cleanup to eliminate listener leaks when components unmount or queries update.
+- **Zero Event Thrashing:** Fires updates *only* when the specified media query state flips between `true` and `false` (unlike `window.resize` listeners).
