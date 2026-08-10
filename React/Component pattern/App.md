@@ -2,7 +2,7 @@ To create a reusable `Text` component that renders different HTML elements (like
 
 One of the simplest and most elegant ways to achieve this is by mapping the `type` prop to the corresponding HTML tag dynamically.
 
-### Solution using Component Pattern:
+### Solution using Component Pattern
 
 Here’s how you can implement the `Text` component:
 
@@ -21,12 +21,13 @@ const Text = ({ type, children }) => {
 export default Text;
 ```
 
-### Explanation:
+### Explanation
+
 - `type` is the prop that will determine which HTML element to render.
 - `children` represents the content to be placed inside the element.
 - We use **dynamic component rendering**: by setting `Tag = type || 'div'`, we can directly use `Tag` as a component name that corresponds to an HTML tag (`h1`, `span`, etc.). If no `type` is provided, it defaults to rendering a `div`.
 
-### Usage Example:
+### Usage Example
 
 Now, you can use the `Text` component and pass the `type` and `text`:
 
@@ -49,27 +50,29 @@ function App() {
 export default App;
 ```
 
-### Key Points:
+### Key Points
+
 - `type` prop determines which tag will be rendered (e.g., `h1`, `span`, `p`, etc.).
 - If `type` is not provided, it defaults to `div`.
 - No `if-else` or `switch` is used to conditionally render different elements.
 
-### Output:
+### Output
+
 - When `type="h1"`, it renders `<h1>This is a heading 1</h1>`.
 - When `type="span"`, it renders `<span>This is a span</span>`.
 - When `type="div"`, it renders `<div>This is a div</div>`.
 - When no `type` is provided, it defaults to `<div>Default to div</div>`.
 
-### Why This Works:
+### Why This Works
+
 - The dynamic assignment of the `Tag` component allows us to render any valid HTML element based on the `type` prop without the need for `if-else` or `switch` statements.
 - React automatically interprets the `Tag` variable as the component or tag name, making it very flexible and easy to scale.
 
 This approach provides a clean, maintainable solution to rendering different HTML elements dynamically.
 
-
 Certainly! If you'd like to solve the problem using **`switch`** or **`if-else`** statements to dynamically render different HTML tags based on the `type` prop, here's how you can implement it in React.
 
-### Using `if-else`:
+### Using `if-else`
 
 In this approach, you check the value of the `type` prop using `if-else` conditions and render the corresponding HTML tag accordingly.
 
@@ -99,7 +102,7 @@ const Text = ({ type, children }) => {
 export default Text;
 ```
 
-### Using `switch`:
+### Using `switch`
 
 In this approach, a `switch` statement is used to check the `type` and render the corresponding HTML tag.
 
@@ -135,11 +138,12 @@ const Text = ({ type, children }) => {
 export default Text;
 ```
 
-### Explanation:
+### Explanation
+
 - Both implementations check the `type` prop and conditionally render an appropriate HTML tag (`h1`, `span`, `div`, `p`, etc.) based on the value of `type`.
 - If `type` is not provided or an invalid value is given, both implementations will default to rendering a `div`.
 
-### Usage Example:
+### Usage Example
 
 ```javascript
 import React from 'react';
@@ -160,7 +164,8 @@ function App() {
 export default App;
 ```
 
-### Output:
+### Output
+
 - When `type="h1"`, it renders `<h1>This is a heading 1</h1>`.
 - When `type="span"`, it renders `<span>This is a span</span>`.
 - When `type="div"`, it renders `<div>This is a div</div>`.
@@ -168,10 +173,12 @@ export default App;
 - When no `type` is provided, it defaults to `<div>Default to div</div>`.
 
 ### Why Use `if-else` or `switch`?
+
 - **`if-else`**: This approach is straightforward and works well when there are only a few conditions to check. It's easy to read and understand, but can become hard to maintain if there are many conditions.
   
 - **`switch`**: This is more readable when there are multiple conditions. It's easy to see all cases at once, making it more maintainable when you have many possible `type` values.
 
-### Summary:
+### Summary
+
 - Using **`if-else`** or **`switch`** gives you a clear, structured way to render different HTML tags based on the `type` prop.
 - **`switch`** is usually preferred when there are many possible cases, but **`if-else`** works perfectly fine for simpler scenarios.

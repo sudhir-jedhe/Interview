@@ -1,11 +1,12 @@
 To create nested circles based on user input in React, you can follow these steps:
 
-### Steps:
+### Steps
+
 1. **Create an Input Field**: Allow the user to input the number of nested circles they want.
 2. **Render Circles**: Based on the input, render the specified number of nested circles.
 3. **Style the Circles**: Use CSS to make each circle progressively smaller or larger depending on the nesting level.
 
-### Code Implementation:
+### Code Implementation
 
 ```javascript
 import React, { useState } from 'react';
@@ -80,7 +81,7 @@ const NestedCircles = () => {
 export default NestedCircles;
 ```
 
-### Explanation of the Code:
+### Explanation of the Code
 
 1. **State Management**:
    - `circleCount`: This state variable stores the number of circles to be displayed.
@@ -100,13 +101,14 @@ export default NestedCircles;
    - `border`: Adds a black border to each circle.
    - `margin`: Ensures spacing between circles.
 
-### Sample Output:
+### Sample Output
 
 - **If the user enters `5`**: The program will generate 5 nested circles, starting with a large circle (200px) and decreasing by 30px for each subsequent circle.
 
 ---
 
-### Basic Styling (Optional):
+### Basic Styling (Optional)
+
 To make it look more appealing, you can add some basic CSS to center the circles and add some padding.
 
 ```css
@@ -135,10 +137,120 @@ button:hover {
 }
 ```
 
-### How It Works:
+### How It Works
 
 1. **Input Handling**: The user inputs a number of circles they want to create.
 2. **Circle Rendering**: Based on the input, the circles are rendered progressively smaller.
 3. **Dynamic Styling**: Each circle has a dynamic size based on its position in the list, achieving the "nested" effect.
 
 This approach gives users the ability to generate any number of nested circles, and you can further enhance the design with additional CSS animations or styles if needed.
+
+The implementation you provided is a solid starting point! However, there are two important issues to note in that implementation:
+
+1. **They aren't actually *nested* in the DOM structure**: Currently, the code renders the circles as siblings placed vertically inside a `flex-column` container. True "nested" circles mean that each circle contains the next circle inside it as a React child.
+2. **Minimum size limit / overflow**: If a user enters a number greater than `6` (e.g., `8`), `200 - 7 * 30` equals `-10px`, which results in invalid width/height dimensions.
+
+---
+
+### Improved & Truly Nested Implementation
+
+Below is a refined version where the circles are **hierarchically nested inside each other** using recursion or layout centering, with safe dynamic sizing and color variations:
+
+```javascript
+import React, { useState } from 'react';
+
+// Recursive Nested Circle Component
+const CircleNode = ({ count, index = 0 }) => {
+  if (index >= count) return null;
+
+  // Dynamic colors for better visual effect
+  const colors = ['#e63946', '#f1faee', '#a8ded6', '#457b9d', '#1d3557'];
+  const borderColor = colors[index % colors.length];
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '85%',       // Percentages keep nesting responsive
+        height: '85%',
+        borderRadius: '50%',
+        border: `3px solid ${borderColor}`,
+        transition: 'all 0.3s ease-in-out',
+        boxSizing: 'border-box',
+      }}
+    >
+      {/* Recursive call renders the inner child circle */}
+      <CircleNode count={count} index={index + 1} />
+    </div>
+  );
+};
+
+export default function TrulyNestedCircles() {
+  const [inputValue, setInputValue] = useState('5');
+  const [circleCount, setCircleCount] = useState(5);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const num = parseInt(inputValue, 10);
+    if (!isNaN(num) && num > 0) {
+      setCircleCount(Math.min(num, 20)); // Limit max to 20 for UI safety
+    }
+  };
+
+  return (
+    <div style={{ textAlign: 'center', padding: '20px', fontFamily: 'sans-serif' }}>
+      <h2>Truly Nested Circles Component</h2>
+
+      <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+        <input
+          type="number"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          min="1"
+          max="20"
+          style={{ padding: '8px', width: '100px', marginRight: '10px' }}
+        />
+        <button
+          type="submit"
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#007bff',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Render Circles
+        </button>
+      </form>
+
+      {/* Outermost container for the parent circle */}
+      <div
+        style={{
+          width: '320px',
+          height: '320px',
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <CircleNode count={circleCount} />
+      </div>
+    </div>
+  );
+}
+
+```
+
+---
+
+### Key Improvements Made
+
+1. **True Nesting**: By using recursion (`<CircleNode + 1} index="{index"/>`), each circle is a direct child of the previous circle.
+2. **Responsive Percentage Sizing**: Uses `85%` width/height for child circles instead of hardcoded pixel subtractions (`200 - i * 30`). This guarantees the circles will never shrink into negative pixel numbers, no matter how many you generate.
+3. **Dynamic Colors**: Alternates border colors across nesting levels so the circles stand out visually.
+4. **Boundary Guard**: Clips the input to a maximum of `20` circles to prevent performance degradation or sub-pixel rendering bugs.
