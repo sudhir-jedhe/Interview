@@ -98,24 +98,24 @@ eventLoop.pushToCallStack(task1);
 eventLoop.run();
 ```
 
-### Explanation:
+### Explanation
 
 1. **Call Stack**: A stack of tasks that are being executed synchronously. Tasks are processed in a Last In, First Out (LIFO) order.
 2. **Event Queue**: A queue for tasks that are scheduled to run asynchronously, like event listeners, setTimeout, or setInterval. These tasks are added after the call stack is empty.
 3. **Micro Task Queue**: A queue for micro-tasks like promises that need to be executed after the currently running task finishes and before any event queue tasks are processed.
 
-### Flow:
+### Flow
 
 - Initially, `task1` is pushed to the call stack.
 - `task1` starts running. It adds a micro-task (`Micro Task 1 from Task 1`) and schedules `task2` to the event queue.
 - After `task1` completes, micro-tasks are processed. In this case, `Micro Task 1 from Task 1` is executed.
 - Once all micro-tasks are finished, `task2` is processed by the event loop.
 
-### Simulating Async Behavior:
+### Simulating Async Behavior
 
 - The `simulateAsyncBehavior()` function mimics async events like I/O or timers by using `setTimeout`. This simulates how the event loop processes asynchronous code after the synchronous code (call stack) and micro-tasks are processed.
 
-### Output (simplified simulation):
+### Output (simplified simulation)
 
 ```text
 Event Loop Started
@@ -139,7 +139,7 @@ Micro Task 2 from Task 2
 Event Loop Finished
 ```
 
-### Summary:
+### Summary
 
 - **Call Stack** processes synchronous tasks first.
 - **Micro Task Queue** handles micro-tasks (like promises) before any tasks in the **Event Queue**.
@@ -316,7 +316,7 @@ loop.runSync(() => {
 loop.start();
 ```
 
-#### Output Log:
+#### Output Log
 
 ```text
 --- Enqueuing Tasks ---
@@ -359,8 +359,8 @@ In Node.js, one full rotation through these phases is called a **tick**:
 - Processes I/O callbacks (file system reads, incoming network connections, HTTP requests).
 - If the poll queue becomes empty, Node.js stays here waiting for new I/O _unless_ `setImmediate()` timers exist in the Check phase.
 
-5. **Check Phase:** Executes callbacks scheduled specifically by **`setImmediate()`**.
-6. **Close Callbacks Phase:** Handles resource teardown callbacks (e.g., `socket.on('close', ...)`).
+1. **Check Phase:** Executes callbacks scheduled specifically by **`setImmediate()`**.
+2. **Close Callbacks Phase:** Handles resource teardown callbacks (e.g., `socket.on('close', ...)`).
 
 ---
 
