@@ -1,0 +1,1 @@
+ALTER TABLE "applications" ADD COLUMN "job_source_other" text;

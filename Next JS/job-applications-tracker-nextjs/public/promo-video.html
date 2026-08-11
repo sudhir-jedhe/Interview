@@ -1,0 +1,2994 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HireLoop — Launch Video</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #0a0d1a;
+        --rose: #fb7185;
+        --amber: #fbbf24;
+        --green: #34d399;
+        --blue: #60a5fa;
+        --text: #e8eaf2;
+        --muted: #9aa0c4;
+        --brand: linear-gradient(135deg, var(--amber), var(--green));
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow: hidden;
+        min-height: 100vh;
+      }
+
+      .scene {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.8s ease;
+        z-index: 1;
+      }
+
+      .scene.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .background-effects {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(150px);
+        animation: pulse 4s ease-in-out infinite;
+      }
+
+      .glow-1 {
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        height: 500px;
+        background: rgba(251, 191, 36, 0.12);
+      }
+
+      .glow-2 {
+        bottom: -150px;
+        right: -100px;
+        width: 500px;
+        height: 400px;
+        background: rgba(52, 211, 153, 0.12);
+        animation-delay: 1s;
+      }
+
+      .glow-3 {
+        bottom: 30%;
+        left: -100px;
+        width: 400px;
+        height: 350px;
+        background: rgba(251, 113, 133, 0.08);
+        animation-delay: 2s;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+
+      .grid-bg {
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 60px 60px;
+        opacity: 0.5;
+      }
+
+      /* Scene 1: Logo Intro */
+      .logo-scene {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .logo-icon {
+        width: 120px;
+        height: 120px;
+        background: var(--brand);
+        border-radius: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: scale(0) rotate(-180deg);
+        animation: logoIn 1s ease-out 0.5s forwards;
+        box-shadow: 0 0 80px rgba(251, 191, 36, 0.4);
+      }
+
+      .logo-icon svg {
+        width: 62px;
+        height: 62px;
+        fill: none;
+        stroke: #0a0d1a;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      @keyframes logoIn {
+        to {
+          transform: scale(1) rotate(0deg);
+        }
+      }
+
+      .logo-text {
+        font-family: "Sora", sans-serif;
+        font-size: 72px;
+        font-weight: 800;
+        letter-spacing: -2px;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 0.8s ease-out 1.2s forwards;
+      }
+
+      .logo-text span:nth-child(1) {
+        color: var(--text);
+      }
+      .logo-text span:nth-child(2) {
+        background: var(--brand);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .logo-tag {
+        font-size: 15px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--muted);
+        opacity: 0;
+        animation: fadeUp 0.8s ease-out 1.6s forwards;
+      }
+
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Scene 2: Tagline */
+      .tagline-scene {
+        flex-direction: column;
+        gap: 32px;
+        text-align: center;
+        padding: 40px;
+      }
+
+      .tagline {
+        font-family: "Sora", sans-serif;
+        font-size: clamp(40px, 6vw, 80px);
+        font-weight: 700;
+        line-height: 1.1;
+      }
+
+      .tagline .line {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      .tagline .line.animate {
+        animation: slideUp 0.7s ease-out forwards;
+      }
+
+      .tagline .highlight-warm {
+        background: linear-gradient(135deg, var(--rose), var(--amber));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .tagline .highlight-cool {
+        background: linear-gradient(135deg, var(--blue), var(--green));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      @keyframes slideUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Scene 3: Features */
+      .features-scene {
+        flex-direction: column;
+        gap: 48px;
+        padding: 60px;
+      }
+
+      .section-title {
+        font-family: "Sora", sans-serif;
+        font-size: 48px;
+        font-weight: 700;
+        text-align: center;
+        opacity: 0;
+      }
+
+      .section-title.animate {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        max-width: 900px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 32px;
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+        backdrop-filter: blur(10px);
+      }
+
+      .feature-card.animate {
+        animation: cardIn 0.6s ease-out forwards;
+      }
+
+      @keyframes cardIn {
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .feature-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+      }
+
+      .feature-icon svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      .feature-icon.blue {
+        background: rgba(96, 165, 250, 0.15);
+        color: var(--blue);
+      }
+      .feature-icon.amber {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--amber);
+      }
+      .feature-icon.green {
+        background: rgba(52, 211, 153, 0.15);
+        color: var(--green);
+      }
+      .feature-icon.rose {
+        background: rgba(251, 113, 133, 0.15);
+        color: var(--rose);
+      }
+
+      .feature-title {
+        font-family: "Sora", sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .feature-desc {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      /* Screenshot scenes (Applications table + Kanban board) */
+      .shot-scene {
+        flex-direction: column;
+        gap: 32px;
+        padding: 40px;
+      }
+
+      .shot-title {
+        font-family: "Sora", sans-serif;
+        font-size: 40px;
+        font-weight: 700;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .scene.active .shot-title {
+        animation: fadeUp 0.6s ease-out 0.1s forwards;
+      }
+
+      .shot-title .accent {
+        background: var(--brand);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .browser {
+        width: min(1060px, 92vw);
+        background: #0e1220;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow:
+          0 40px 120px rgba(0, 0, 0, 0.6),
+          0 0 60px rgba(52, 211, 153, 0.06);
+        opacity: 0;
+        transform: translateY(40px) scale(0.96);
+      }
+
+      .scene.active .browser {
+        animation: shotIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+      }
+
+      @keyframes shotIn {
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .browser-bar {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      }
+
+      .dots {
+        display: flex;
+        gap: 7px;
+      }
+      .dots span {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .dots span:nth-child(1) {
+        background: #ff5f57;
+      }
+      .dots span:nth-child(2) {
+        background: #febc2e;
+      }
+      .dots span:nth-child(3) {
+        background: #28c840;
+      }
+
+      .url-pill {
+        flex: 1;
+        max-width: 420px;
+        margin: 0 auto;
+        padding: 6px 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        font-size: 13px;
+        color: var(--muted);
+        text-align: center;
+      }
+      .url-pill b {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .app-ui {
+        display: flex;
+        min-height: 380px;
+      }
+
+      .app-side {
+        width: 190px;
+        flex-shrink: 0;
+        padding: 20px 14px;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.015);
+      }
+
+      .app-brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 17px;
+        margin-bottom: 24px;
+        padding: 0 8px;
+      }
+      .app-brand .mark {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        background: var(--brand);
+      }
+      .app-brand .accent {
+        background: var(--brand);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 9px 12px;
+        border-radius: 9px;
+        font-size: 14px;
+        color: var(--muted);
+        margin-bottom: 2px;
+      }
+      .nav-item .ndot {
+        width: 8px;
+        height: 8px;
+        border-radius: 3px;
+        background: currentColor;
+        opacity: 0.5;
+      }
+      .nav-item.active {
+        background: rgba(52, 211, 153, 0.12);
+        color: var(--text);
+      }
+      .nav-item.active .ndot {
+        background: var(--green);
+        opacity: 1;
+      }
+
+      .app-main {
+        flex: 1;
+        padding: 22px 24px;
+        min-width: 0;
+      }
+
+      .app-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+      .app-head h3 {
+        font-family: "Sora", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .app-head .tools {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .fake-search {
+        width: 190px;
+        padding: 8px 12px;
+        border-radius: 9px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .fake-btn {
+        padding: 8px 16px;
+        border-radius: 9px;
+        background: var(--brand);
+        color: #0a0d1a;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      /* Table */
+      .tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13.5px;
+      }
+      .tbl th {
+        text-align: left;
+        padding: 10px 12px;
+        font-size: 11px;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        font-weight: 600;
+      }
+      .tbl td {
+        padding: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+      }
+      .tbl tbody tr {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      .scene.active .tbl tbody tr {
+        animation: rowIn 0.5s ease-out forwards;
+      }
+      .scene.active .tbl tbody tr:nth-child(1) {
+        animation-delay: 0.5s;
+      }
+      .scene.active .tbl tbody tr:nth-child(2) {
+        animation-delay: 0.62s;
+      }
+      .scene.active .tbl tbody tr:nth-child(3) {
+        animation-delay: 0.74s;
+      }
+      .scene.active .tbl tbody tr:nth-child(4) {
+        animation-delay: 0.86s;
+      }
+      .scene.active .tbl tbody tr:nth-child(5) {
+        animation-delay: 0.98s;
+      }
+      .scene.active .tbl tbody tr:nth-child(6) {
+        animation-delay: 1.1s;
+      }
+      @keyframes rowIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .co {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+      }
+      .co .logo {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .role-cell {
+        color: var(--muted);
+      }
+      .sal {
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 4px 11px;
+        border-radius: 999px;
+        font-size: 12.5px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .badge .bd {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+      }
+      .t-neutral {
+        background: rgba(148, 163, 184, 0.15);
+        color: #cbd5e1;
+      }
+      .t-neutral .bd {
+        background: #94a3b8;
+      }
+      .t-progress {
+        background: rgba(37, 99, 235, 0.16);
+        color: #93b4fd;
+      }
+      .t-progress .bd {
+        background: #2563eb;
+      }
+      .t-success {
+        background: rgba(22, 163, 74, 0.16);
+        color: #6ee7a8;
+      }
+      .t-success .bd {
+        background: #16a34a;
+      }
+      .t-danger {
+        background: rgba(220, 38, 38, 0.16);
+        color: #fca5a5;
+      }
+      .t-danger .bd {
+        background: #dc2626;
+      }
+      .t-dormant {
+        background: rgba(245, 158, 11, 0.16);
+        color: #fcd34d;
+      }
+      .t-dormant .bd {
+        background: #f59e0b;
+      }
+
+      /* Kanban */
+      .board {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .col {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 12px;
+        min-height: 300px;
+      }
+      .col-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        padding: 0 2px;
+      }
+      .col-head .cdot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
+      .col-head .count {
+        margin-left: auto;
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 1px 8px;
+        border-radius: 999px;
+      }
+      .kcard {
+        background: #141a2b;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 10px;
+        opacity: 0;
+        transform: translateY(10px) scale(0.97);
+      }
+      .scene.active .kcard {
+        animation: rowIn 0.45s ease-out forwards;
+      }
+      .scene.active .col:nth-child(1) .kcard {
+        animation-delay: 0.5s;
+      }
+      .scene.active .col:nth-child(2) .kcard {
+        animation-delay: 0.65s;
+      }
+      .scene.active .col:nth-child(3) .kcard {
+        animation-delay: 0.8s;
+      }
+      .scene.active .col:nth-child(4) .kcard {
+        animation-delay: 0.95s;
+      }
+      .kcard .ktop {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .kcard .logo {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 12px;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .kcard .kco {
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .kcard .krole {
+        font-size: 12.5px;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+      .kcard.drag {
+        border-color: rgba(52, 211, 153, 0.5);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        transform: translateY(0) scale(1) rotate(-2deg);
+      }
+
+      /* Dashboard */
+      .dash-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .stat-mini {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 14px 16px;
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      .scene.active .stat-mini {
+        animation: rowIn 0.5s ease-out forwards;
+      }
+      .scene.active .stat-mini:nth-child(1) {
+        animation-delay: 0.45s;
+      }
+      .scene.active .stat-mini:nth-child(2) {
+        animation-delay: 0.55s;
+      }
+      .scene.active .stat-mini:nth-child(3) {
+        animation-delay: 0.65s;
+      }
+      .scene.active .stat-mini:nth-child(4) {
+        animation-delay: 0.75s;
+      }
+      .stat-mini .lab {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .stat-mini .num {
+        font-family: "Sora", sans-serif;
+        font-size: 30px;
+        font-weight: 800;
+        line-height: 1;
+      }
+      .stat-mini .sub {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .stat-mini.hi .num {
+        background: var(--brand);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .dash-widgets {
+        display: grid;
+        grid-template-columns: 1fr 1.3fr;
+        gap: 12px;
+      }
+      .dwidget {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 16px;
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      .scene.active .dwidget {
+        animation: rowIn 0.5s ease-out 0.85s forwards;
+      }
+      .scene.active .dwidget:nth-child(2) {
+        animation-delay: 0.95s;
+      }
+      .dwidget .whead {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 14px;
+      }
+      .goal-num {
+        font-family: "Sora", sans-serif;
+        font-size: 26px;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+      .goal-num small {
+        font-size: 14px;
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .goal-bar {
+        height: 9px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+      }
+      .goal-bar i {
+        display: block;
+        height: 100%;
+        width: 0;
+        border-radius: 999px;
+        background: var(--brand);
+      }
+      .scene.active .goal-bar i {
+        animation: growBar 1s ease-out 1.2s forwards;
+      }
+      @keyframes growBar {
+        to {
+          width: 90%;
+        }
+      }
+      .up-row {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 8px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 13px;
+      }
+      .up-row:first-of-type {
+        border-top: none;
+      }
+      .up-row .when {
+        margin-left: auto;
+        font-size: 12px;
+        color: var(--green);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .up-row .urole {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      /* Analytics */
+      .an-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .an-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 18px;
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      .scene.active .an-card {
+        animation: rowIn 0.55s ease-out 0.5s forwards;
+      }
+      .scene.active .an-card:nth-child(2) {
+        animation-delay: 0.65s;
+      }
+      .scene.active .an-card:nth-child(3) {
+        animation-delay: 0.8s;
+      }
+      .an-card .ahead {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 3px;
+      }
+      .an-card .asub {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+      .funnel-row {
+        margin-bottom: 13px;
+      }
+      .funnel-row .flab {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12.5px;
+        margin-bottom: 6px;
+      }
+      .funnel-row .flab span:last-child {
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .funnel-bar {
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        overflow: hidden;
+      }
+      .funnel-bar i {
+        display: block;
+        height: 100%;
+        width: 0;
+        border-radius: 999px;
+      }
+      .scene.active .funnel-bar i {
+        animation: funnelGrow 0.9s ease-out forwards;
+      }
+      .scene.active .funnel-row:nth-child(1) .funnel-bar i {
+        animation-delay: 0.9s;
+      }
+      .scene.active .funnel-row:nth-child(2) .funnel-bar i {
+        animation-delay: 1.05s;
+      }
+      .scene.active .funnel-row:nth-child(3) .funnel-bar i {
+        animation-delay: 1.2s;
+      }
+      .scene.active .funnel-row:nth-child(4) .funnel-bar i {
+        animation-delay: 1.35s;
+      }
+      @keyframes funnelGrow {
+        to {
+          width: var(--w);
+        }
+      }
+      .kpi-row {
+        display: flex;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+      .kpi {
+        flex: 1;
+        text-align: center;
+        padding: 14px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .kpi .kn {
+        font-family: "Sora", sans-serif;
+        font-size: 30px;
+        font-weight: 800;
+      }
+      .kpi.a .kn {
+        color: var(--blue);
+      }
+      .kpi.b .kn {
+        color: var(--green);
+      }
+      .kpi .kl {
+        font-size: 11.5px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .trend {
+        width: 100%;
+        height: auto;
+      }
+      .trend .area {
+        opacity: 0;
+      }
+      .scene.active .trend .area {
+        animation: fadeIn 0.8s ease-out 1s forwards;
+      }
+      .trend .ln {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+      }
+      .scene.active .trend .ln {
+        animation: draw 1.1s ease-out 0.8s forwards;
+      }
+      @keyframes draw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      .legend {
+        display: flex;
+        gap: 16px;
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .legend i {
+        width: 10px;
+        height: 3px;
+        border-radius: 2px;
+        display: inline-block;
+      }
+
+      /* Calendar */
+      .cal-head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+      .cal-head .mo {
+        font-family: "Sora", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .cal-head .nav {
+        display: flex;
+        gap: 6px;
+        margin-left: auto;
+      }
+      .cal-head .nav b {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+      }
+      .cal-grid .dow {
+        font-size: 11px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-align: center;
+        padding-bottom: 4px;
+      }
+      .cell {
+        min-height: 58px;
+        border-radius: 9px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.015);
+        padding: 6px 7px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .cell.blank {
+        border: none;
+        background: none;
+      }
+      .cell.today {
+        border-color: rgba(52, 211, 153, 0.5);
+        background: rgba(52, 211, 153, 0.08);
+      }
+      .cell.today .dn {
+        color: var(--green);
+        font-weight: 700;
+      }
+      .cell .dn {
+        display: block;
+        margin-bottom: 5px;
+        font-variant-numeric: tabular-nums;
+      }
+      .ev {
+        display: block;
+        font-size: 10.5px;
+        padding: 3px 6px;
+        border-radius: 6px;
+        color: #dfe6f5;
+        margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      .scene.active .ev {
+        animation: rowIn 0.5s ease-out forwards;
+      }
+      .scene.active .cell:nth-child(n) .ev {
+        animation-delay: 0.7s;
+      }
+      .ev.blue {
+        background: rgba(37, 99, 235, 0.25);
+        border: 1px solid rgba(37, 99, 235, 0.4);
+      }
+      .ev.green {
+        background: rgba(22, 163, 74, 0.25);
+        border: 1px solid rgba(22, 163, 74, 0.4);
+      }
+      .ev.amber {
+        background: rgba(245, 158, 11, 0.22);
+        border: 1px solid rgba(245, 158, 11, 0.4);
+      }
+
+      /* Command palette */
+      .palette-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(5, 7, 14, 0.55);
+        backdrop-filter: blur(2px);
+      }
+      .app-ui.dim .app-side,
+      .app-ui.dim .app-main {
+        filter: saturate(0.7) brightness(0.55);
+      }
+      .app-ui {
+        position: relative;
+      }
+      .palette {
+        position: absolute;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%) translateY(14px);
+        width: min(520px, 82%);
+        background: #12172a;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 14px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+        overflow: hidden;
+        opacity: 0;
+      }
+      .scene.active .palette {
+        animation: palIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+      }
+      @keyframes palIn {
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+      .p-search {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .p-search svg {
+        width: 18px;
+        height: 18px;
+        color: var(--muted);
+        flex-shrink: 0;
+      }
+      .p-search .ph {
+        flex: 1;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .p-search .x {
+        color: var(--muted);
+        font-size: 18px;
+      }
+      .p-body {
+        padding: 8px;
+        max-height: 320px;
+      }
+      .p-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 9px;
+        font-size: 14px;
+        color: var(--text);
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      .scene.active .p-item {
+        animation: rowIn 0.4s ease-out forwards;
+      }
+      .scene.active .p-item:nth-child(1) {
+        animation-delay: 0.75s;
+      }
+      .scene.active .p-item:nth-child(2) {
+        animation-delay: 0.83s;
+      }
+      .scene.active .p-item:nth-child(4) {
+        animation-delay: 0.91s;
+      }
+      .scene.active .p-item:nth-child(5) {
+        animation-delay: 0.97s;
+      }
+      .scene.active .p-item:nth-child(6) {
+        animation-delay: 1.03s;
+      }
+      .scene.active .p-item:nth-child(7) {
+        animation-delay: 1.09s;
+      }
+      .scene.active .p-item:nth-child(8) {
+        animation-delay: 1.15s;
+      }
+      .scene.active .p-item:nth-child(9) {
+        animation-delay: 1.21s;
+      }
+      .p-item svg {
+        width: 17px;
+        height: 17px;
+        color: var(--muted);
+        flex-shrink: 0;
+      }
+      .p-item.active {
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .p-item .kbds {
+        margin-left: auto;
+        display: flex;
+        gap: 5px;
+      }
+      .p-group {
+        font-size: 11px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 10px 12px 4px;
+      }
+      kbd {
+        font-family: "Sora", monospace;
+        font-size: 11px;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 5px;
+        color: var(--muted);
+      }
+
+      /* Scene 4: How it Works */
+      .steps-scene {
+        flex-direction: column;
+        gap: 60px;
+        padding: 60px;
+      }
+
+      .steps-container {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 16px;
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+
+      .step.animate {
+        animation: stepIn 0.6s ease-out forwards;
+      }
+
+      @keyframes stepIn {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .step-number {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Sora", sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        position: relative;
+      }
+
+      .step-number::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 2px solid;
+        border-color: inherit;
+        opacity: 0.3;
+      }
+
+      .step:nth-child(1) .step-number {
+        background: rgba(251, 113, 133, 0.2);
+        color: var(--rose);
+        border-color: var(--rose);
+      }
+      .step:nth-child(3) .step-number {
+        background: rgba(251, 191, 36, 0.2);
+        color: var(--amber);
+        border-color: var(--amber);
+      }
+      .step:nth-child(5) .step-number {
+        background: rgba(52, 211, 153, 0.2);
+        color: var(--green);
+        border-color: var(--green);
+      }
+
+      .step-title {
+        font-family: "Sora", sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      .step-desc {
+        color: var(--muted);
+        font-size: 15px;
+        max-width: 200px;
+      }
+
+      .step-arrow {
+        color: rgba(255, 255, 255, 0.2);
+        opacity: 0;
+      }
+
+      .step-arrow.animate {
+        animation: arrowIn 0.4s ease-out forwards;
+      }
+
+      @keyframes arrowIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Scene 5: Use Cases */
+      .usecases-scene {
+        flex-direction: column;
+        gap: 48px;
+        padding: 60px;
+      }
+
+      .usecases-grid {
+        display: flex;
+        gap: 24px;
+      }
+
+      .usecase-card {
+        width: 200px;
+        padding: 32px 24px;
+        border-radius: 24px;
+        text-align: center;
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      .usecase-card.animate {
+        animation: usecaseIn 0.5s ease-out forwards;
+      }
+
+      @keyframes usecaseIn {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .usecase-card:nth-child(1) {
+        background: linear-gradient(
+          135deg,
+          rgba(251, 113, 133, 0.2),
+          rgba(251, 113, 133, 0.08)
+        );
+      }
+      .usecase-card:nth-child(2) {
+        background: linear-gradient(
+          135deg,
+          rgba(251, 191, 36, 0.2),
+          rgba(251, 191, 36, 0.08)
+        );
+      }
+      .usecase-card:nth-child(3) {
+        background: linear-gradient(
+          135deg,
+          rgba(96, 165, 250, 0.2),
+          rgba(96, 165, 250, 0.08)
+        );
+      }
+      .usecase-card:nth-child(4) {
+        background: linear-gradient(
+          135deg,
+          rgba(52, 211, 153, 0.2),
+          rgba(52, 211, 153, 0.08)
+        );
+      }
+
+      .usecase-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+
+      .usecase-title {
+        font-family: "Sora", sans-serif;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .usecase-desc {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      /* Scene 6: Demo */
+      .demo-scene {
+        flex-direction: column;
+        gap: 40px;
+      }
+
+      .demo-title {
+        font-family: "Sora", sans-serif;
+        font-size: 40px;
+        font-weight: 700;
+        text-align: center;
+        opacity: 0;
+      }
+
+      .demo-title.animate {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+
+      .stat-display {
+        display: flex;
+        gap: 20px;
+      }
+
+      .stat-tile {
+        min-width: 170px;
+        padding: 28px 24px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .stat-tile.animate {
+        animation: fadeUp 0.5s ease-out forwards;
+      }
+
+      .stat-value {
+        font-family: "Sora", sans-serif;
+        font-size: 44px;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 10px;
+      }
+
+      .stat-tile:nth-child(1) .stat-value {
+        color: var(--blue);
+      }
+      .stat-tile:nth-child(2) .stat-value {
+        color: var(--green);
+      }
+      .stat-tile:nth-child(3) .stat-value {
+        color: var(--amber);
+      }
+
+      .stat-label {
+        color: var(--muted);
+        font-size: 14px;
+        letter-spacing: 0.5px;
+      }
+
+      .demo-subtitle {
+        color: var(--muted);
+        font-size: 18px;
+        text-align: center;
+        opacity: 0;
+      }
+
+      .demo-subtitle.animate {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+
+      .demo-subtitle b {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* Scene 7: CTA */
+      .cta-scene {
+        flex-direction: column;
+        gap: 32px;
+        text-align: center;
+      }
+
+      .cta-title {
+        font-family: "Sora", sans-serif;
+        font-size: clamp(36px, 5vw, 56px);
+        font-weight: 700;
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      .cta-title.animate {
+        animation: ctaIn 0.8s ease-out forwards;
+      }
+
+      @keyframes ctaIn {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .cta-url {
+        font-size: 28px;
+        font-weight: 600;
+        background: var(--brand);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        opacity: 0;
+      }
+
+      .cta-url.animate {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 40px;
+        background: var(--brand);
+        border-radius: 16px;
+        font-family: "Sora", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #0a0d1a;
+        text-decoration: none;
+        opacity: 0;
+        transform: translateY(20px);
+        box-shadow: 0 0 60px rgba(52, 211, 153, 0.35);
+      }
+
+      .cta-button.animate {
+        animation: fadeUp 0.6s ease-out forwards;
+      }
+
+      .cta-button svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      /* Progress bar */
+      .progress-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--rose),
+          var(--amber),
+          var(--green)
+        );
+        width: 0%;
+        z-index: 100;
+        transition: width 0.3s linear;
+      }
+
+      /* Controls */
+      .controls {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        display: flex;
+        gap: 12px;
+        z-index: 100;
+        transition: opacity 0.3s ease;
+      }
+
+      .controls.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .controls-hint {
+        position: fixed;
+        bottom: 10px;
+        right: 30px;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.25);
+        z-index: 100;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .controls.hidden + .controls-hint {
+        opacity: 0;
+      }
+
+      .control-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+
+      .control-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .control-btn svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      /* Floating particles */
+      .particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+      .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 20s infinite linear;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-delay: 0ms !important;
+          transition-duration: 0.2s !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-effects">
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+      <div class="glow glow-3"></div>
+    </div>
+    <div class="grid-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Scene 1: Logo -->
+    <div class="scene logo-scene active" id="scene1">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+          <path d="M21 3v5h-5" />
+          <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+          <path d="M3 21v-5h5" />
+        </svg>
+      </div>
+      <div class="logo-text"><span>Hire</span><span>Loop</span></div>
+      <div class="logo-tag">Job Application Tracker</div>
+    </div>
+
+    <!-- Scene 2: Tagline -->
+    <div class="scene tagline-scene" id="scene2">
+      <h1 class="tagline">
+        <div class="line" id="line1">Your job search,</div>
+        <div class="line" id="line2">
+          <span class="highlight-warm">finally</span> in one
+          <span class="highlight-cool">loop.</span>
+        </div>
+      </h1>
+    </div>
+
+    <!-- Scene 3: Features -->
+    <div class="scene features-scene" id="scene3">
+      <h2 class="section-title" id="featuresTitle">
+        Built for the whole search
+      </h2>
+      <div class="features-grid">
+        <div class="feature-card" id="feature1">
+          <div class="feature-icon blue">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="8" y="2" width="8" height="4" rx="1" />
+              <path
+                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+              />
+              <path d="M9 12h6M9 16h4" />
+            </svg>
+          </div>
+          <h3 class="feature-title">Track Every Application</h3>
+          <p class="feature-desc">
+            Company, role, status, salary and notes — all in one table you can
+            search, sort and filter.
+          </p>
+        </div>
+        <div class="feature-card" id="feature2">
+          <div class="feature-icon amber">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="4" width="5" height="16" rx="1" />
+              <rect x="9.5" y="4" width="5" height="11" rx="1" />
+              <rect x="16" y="4" width="5" height="14" rx="1" />
+            </svg>
+          </div>
+          <h3 class="feature-title">Visual Pipeline</h3>
+          <p class="feature-desc">
+            Drag applications between stages on a Kanban board and watch your
+            pipeline actually move.
+          </p>
+        </div>
+        <div class="feature-card" id="feature3">
+          <div class="feature-icon green">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 20v-4M12 20V10M18 20V4" />
+              <path d="M3 20h18" />
+            </svg>
+          </div>
+          <h3 class="feature-title">Honest Analytics</h3>
+          <p class="feature-desc">
+            Interview and offer rates are computed from status history — not
+            just today's snapshot.
+          </p>
+        </div>
+        <div class="feature-card" id="feature4">
+          <div class="feature-icon rose">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </div>
+          <h3 class="feature-title">Your Data, Yours</h3>
+          <p class="feature-desc">
+            Every row is owned by you. No shared dashboard, and CSV/JSON export
+            means you're never locked in.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3b: Applications table screenshot -->
+    <div class="scene shot-scene" id="sceneTable">
+      <h2 class="shot-title">
+        Every application, <span class="accent">one table</span>
+      </h2>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="url-pill">
+            hireloop.yogeshchavan.dev<b>/applications</b>
+          </div>
+        </div>
+        <div class="app-ui">
+          <aside class="app-side">
+            <div class="app-brand">
+              <span class="mark"></span>Hire<span class="accent">Loop</span>
+            </div>
+            <div class="nav-item"><span class="ndot"></span>Dashboard</div>
+            <div class="nav-item active">
+              <span class="ndot"></span>Applications
+            </div>
+            <div class="nav-item"><span class="ndot"></span>Board</div>
+            <div class="nav-item"><span class="ndot"></span>Analytics</div>
+            <div class="nav-item"><span class="ndot"></span>Calendar</div>
+            <div class="nav-item"><span class="ndot"></span>Settings</div>
+          </aside>
+          <main class="app-main">
+            <div class="app-head">
+              <h3>Applications</h3>
+              <div class="tools">
+                <div class="fake-search">Search company or role…</div>
+                <div class="fake-btn">+ New</div>
+              </div>
+            </div>
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Location</th>
+                  <th>Salary</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="co">
+                      <span class="logo" style="background: #4285f4">G</span
+                      >Google
+                    </div>
+                  </td>
+                  <td class="role-cell">Senior Frontend Engineer</td>
+                  <td>
+                    <span class="badge t-progress"
+                      ><span class="bd"></span>Final Interview</span
+                    >
+                  </td>
+                  <td class="role-cell">Bengaluru, India</td>
+                  <td class="sal">₹80L</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="co">
+                      <span class="logo" style="background: #635bff">S</span
+                      >Stripe
+                    </div>
+                  </td>
+                  <td class="role-cell">Full Stack Engineer</td>
+                  <td>
+                    <span class="badge t-success"
+                      ><span class="bd"></span>Offer Received</span
+                    >
+                  </td>
+                  <td class="role-cell">Remote</td>
+                  <td class="sal">$190k</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="co">
+                      <span class="logo" style="background: #000">▲</span>Vercel
+                    </div>
+                  </td>
+                  <td class="role-cell">Senior Software Engineer, Next.js</td>
+                  <td>
+                    <span class="badge t-progress"
+                      ><span class="bd"></span>Technical Interview</span
+                    >
+                  </td>
+                  <td class="role-cell">Remote</td>
+                  <td class="sal">$185k</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="co">
+                      <span class="logo" style="background: #e50914">N</span
+                      >Netflix
+                    </div>
+                  </td>
+                  <td class="role-cell">Senior UI Engineer</td>
+                  <td>
+                    <span class="badge t-neutral"
+                      ><span class="bd"></span>Applied</span
+                    >
+                  </td>
+                  <td class="role-cell">Remote</td>
+                  <td class="sal">$210k</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="co">
+                      <span class="logo" style="background: #10a37f">O</span
+                      >OpenAI
+                    </div>
+                  </td>
+                  <td class="role-cell">Member of Technical Staff</td>
+                  <td>
+                    <span class="badge t-danger"
+                      ><span class="bd"></span>Rejected</span
+                    >
+                  </td>
+                  <td class="role-cell">Remote</td>
+                  <td class="sal">$250k</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="co">
+                      <span class="logo" style="background: #ff9900">A</span
+                      >Amazon
+                    </div>
+                  </td>
+                  <td class="role-cell">SDE III</td>
+                  <td>
+                    <span class="badge t-dormant"
+                      ><span class="bd"></span>Ghosted</span
+                    >
+                  </td>
+                  <td class="role-cell">Bengaluru, India</td>
+                  <td class="sal">₹65L</td>
+                </tr>
+              </tbody>
+            </table>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3c: Kanban board screenshot -->
+    <div class="scene shot-scene" id="sceneBoard">
+      <h2 class="shot-title">
+        Drag it across <span class="accent">your pipeline</span>
+      </h2>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="url-pill">hireloop.yogeshchavan.dev<b>/board</b></div>
+        </div>
+        <div class="app-ui">
+          <aside class="app-side">
+            <div class="app-brand">
+              <span class="mark"></span>Hire<span class="accent">Loop</span>
+            </div>
+            <div class="nav-item"><span class="ndot"></span>Dashboard</div>
+            <div class="nav-item"><span class="ndot"></span>Applications</div>
+            <div class="nav-item active"><span class="ndot"></span>Board</div>
+            <div class="nav-item"><span class="ndot"></span>Analytics</div>
+            <div class="nav-item"><span class="ndot"></span>Calendar</div>
+            <div class="nav-item"><span class="ndot"></span>Settings</div>
+          </aside>
+          <main class="app-main">
+            <div class="app-head">
+              <h3>Board</h3>
+              <div class="tools">
+                <div class="fake-btn">+ New</div>
+              </div>
+            </div>
+            <div class="board">
+              <div class="col">
+                <div class="col-head">
+                  <span class="cdot" style="background: #94a3b8"></span>Applied
+                  <span class="count">2</span>
+                </div>
+                <div class="kcard">
+                  <div class="ktop">
+                    <span class="logo" style="background: #e50914">N</span>
+                    <span class="kco">Netflix</span>
+                  </div>
+                  <div class="krole">Senior UI Engineer</div>
+                </div>
+                <div class="kcard">
+                  <div class="ktop">
+                    <span class="logo" style="background: #00a4ef">M</span>
+                    <span class="kco">Microsoft</span>
+                  </div>
+                  <div class="krole">Senior SDE</div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col-head">
+                  <span class="cdot" style="background: #2563eb"></span
+                  >Interview
+                  <span class="count">3</span>
+                </div>
+                <div class="kcard drag">
+                  <div class="ktop">
+                    <span class="logo" style="background: #4285f4">G</span>
+                    <span class="kco">Google</span>
+                  </div>
+                  <div class="krole">Senior Frontend Engineer</div>
+                </div>
+                <div class="kcard">
+                  <div class="ktop">
+                    <span class="logo" style="background: #000">▲</span>
+                    <span class="kco">Vercel</span>
+                  </div>
+                  <div class="krole">Senior Software Engineer, Next.js</div>
+                </div>
+                <div class="kcard">
+                  <div class="ktop">
+                    <span class="logo" style="background: #0052cc">A</span>
+                    <span class="kco">Atlassian</span>
+                  </div>
+                  <div class="krole">Senior Frontend Engineer</div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col-head">
+                  <span class="cdot" style="background: #16a34a"></span>Offer
+                  <span class="count">1</span>
+                </div>
+                <div class="kcard">
+                  <div class="ktop">
+                    <span class="logo" style="background: #635bff">S</span>
+                    <span class="kco">Stripe</span>
+                  </div>
+                  <div class="krole">Full Stack Engineer</div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col-head">
+                  <span class="cdot" style="background: #dc2626"></span>Rejected
+                  <span class="count">2</span>
+                </div>
+                <div class="kcard">
+                  <div class="ktop">
+                    <span class="logo" style="background: #10a37f">O</span>
+                    <span class="kco">OpenAI</span>
+                  </div>
+                  <div class="krole">Member of Technical Staff</div>
+                </div>
+                <div class="kcard">
+                  <div class="ktop">
+                    <span class="logo" style="background: #ff9900">A</span>
+                    <span class="kco">Amazon</span>
+                  </div>
+                  <div class="krole">SDE III</div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3d: Dashboard screenshot -->
+    <div class="scene shot-scene" id="sceneDashboard">
+      <h2 class="shot-title">
+        Your search, <span class="accent">at a glance</span>
+      </h2>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="url-pill">hireloop.yogeshchavan.dev<b>/dashboard</b></div>
+        </div>
+        <div class="app-ui">
+          <aside class="app-side">
+            <div class="app-brand">
+              <span class="mark"></span>Hire<span class="accent">Loop</span>
+            </div>
+            <div class="nav-item active">
+              <span class="ndot"></span>Dashboard
+            </div>
+            <div class="nav-item"><span class="ndot"></span>Applications</div>
+            <div class="nav-item"><span class="ndot"></span>Board</div>
+            <div class="nav-item"><span class="ndot"></span>Analytics</div>
+            <div class="nav-item"><span class="ndot"></span>Calendar</div>
+            <div class="nav-item"><span class="ndot"></span>Settings</div>
+          </aside>
+          <main class="app-main">
+            <div class="app-head"><h3>Dashboard</h3></div>
+            <div class="dash-stats">
+              <div class="stat-mini">
+                <div class="lab">Total</div>
+                <div class="num">28</div>
+                <div class="sub">Applications tracked</div>
+              </div>
+              <div class="stat-mini">
+                <div class="lab">This week</div>
+                <div class="num">5</div>
+                <div class="sub">Sent since Monday</div>
+              </div>
+              <div class="stat-mini">
+                <div class="lab">Interview scheduled</div>
+                <div class="num">4</div>
+                <div class="sub">On the calendar</div>
+              </div>
+              <div class="stat-mini hi">
+                <div class="lab">Interview rate</div>
+                <div class="num">61%</div>
+                <div class="sub">Reached an interview</div>
+              </div>
+            </div>
+            <div class="dash-widgets">
+              <div class="dwidget">
+                <div class="whead">Monthly goal</div>
+                <div class="goal-num">18 <small>/ 20 applications</small></div>
+                <div class="goal-bar"><i></i></div>
+              </div>
+              <div class="dwidget">
+                <div class="whead">Upcoming interviews</div>
+                <div class="up-row">
+                  <span
+                    class="logo"
+                    style="
+                      background: #4285f4;
+                      width: 24px;
+                      height: 24px;
+                      border-radius: 6px;
+                      display: inline-flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-weight: 700;
+                      font-size: 11px;
+                      color: #fff;
+                    "
+                    >G</span
+                  >
+                  <div>
+                    Google
+                    <div class="urole">Final Interview</div>
+                  </div>
+                  <span class="when">Tomorrow · 2:00 PM</span>
+                </div>
+                <div class="up-row">
+                  <span
+                    class="logo"
+                    style="
+                      background: #000;
+                      width: 24px;
+                      height: 24px;
+                      border-radius: 6px;
+                      display: inline-flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-weight: 700;
+                      font-size: 11px;
+                      color: #fff;
+                    "
+                    >▲</span
+                  >
+                  <div>
+                    Vercel
+                    <div class="urole">Technical Interview</div>
+                  </div>
+                  <span class="when">Thu · 11:00 AM</span>
+                </div>
+                <div class="up-row">
+                  <span
+                    class="logo"
+                    style="
+                      background: #0052cc;
+                      width: 24px;
+                      height: 24px;
+                      border-radius: 6px;
+                      display: inline-flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-weight: 700;
+                      font-size: 11px;
+                      color: #fff;
+                    "
+                    >A</span
+                  >
+                  <div>
+                    Atlassian
+                    <div class="urole">Manager Round</div>
+                  </div>
+                  <span class="when">Fri · 4:30 PM</span>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3e: Analytics screenshot -->
+    <div class="scene shot-scene" id="sceneAnalytics">
+      <h2 class="shot-title">
+        Know what's <span class="accent">actually working</span>
+      </h2>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="url-pill">hireloop.yogeshchavan.dev<b>/analytics</b></div>
+        </div>
+        <div class="app-ui">
+          <aside class="app-side">
+            <div class="app-brand">
+              <span class="mark"></span>Hire<span class="accent">Loop</span>
+            </div>
+            <div class="nav-item"><span class="ndot"></span>Dashboard</div>
+            <div class="nav-item"><span class="ndot"></span>Applications</div>
+            <div class="nav-item"><span class="ndot"></span>Board</div>
+            <div class="nav-item active">
+              <span class="ndot"></span>Analytics
+            </div>
+            <div class="nav-item"><span class="ndot"></span>Calendar</div>
+            <div class="nav-item"><span class="ndot"></span>Settings</div>
+          </aside>
+          <main class="app-main">
+            <div class="app-head"><h3>Analytics</h3></div>
+            <div class="an-grid">
+              <div class="an-card">
+                <div class="ahead">Conversion funnel</div>
+                <div class="asub">How far your applications travel</div>
+                <div class="funnel-row">
+                  <div class="flab">
+                    <span>Applied</span><span>28 · 100%</span>
+                  </div>
+                  <div class="funnel-bar">
+                    <i style="--w: 100%; background: #94a3b8"></i>
+                  </div>
+                </div>
+                <div class="funnel-row">
+                  <div class="flab">
+                    <span>Reached an interview</span><span>17 · 61%</span>
+                  </div>
+                  <div class="funnel-bar">
+                    <i style="--w: 61%; background: #2563eb"></i>
+                  </div>
+                </div>
+                <div class="funnel-row">
+                  <div class="flab">
+                    <span>Received an offer</span><span>6 · 21%</span>
+                  </div>
+                  <div class="funnel-bar">
+                    <i style="--w: 21%; background: #16a34a"></i>
+                  </div>
+                </div>
+                <div class="funnel-row">
+                  <div class="flab">
+                    <span>Accepted an offer</span><span>2 · 7%</span>
+                  </div>
+                  <div class="funnel-bar">
+                    <i style="--w: 7%; background: #34d399"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="an-card">
+                <div class="ahead">Success rate</div>
+                <div class="asub">Computed from status history</div>
+                <div class="kpi-row">
+                  <div class="kpi a">
+                    <div class="kn">61%</div>
+                    <div class="kl">Interview rate</div>
+                  </div>
+                  <div class="kpi b">
+                    <div class="kn">21%</div>
+                    <div class="kl">Offer rate</div>
+                  </div>
+                </div>
+                <div class="ahead" style="font-size: 13px; margin-bottom: 12px">
+                  Applications over time
+                </div>
+                <svg
+                  class="trend"
+                  viewBox="0 0 300 110"
+                  preserveAspectRatio="none"
+                >
+                  <defs>
+                    <linearGradient id="af" x1="0" y1="0" x2="0" y2="1">
+                      <stop
+                        offset="0"
+                        stop-color="#60a5fa"
+                        stop-opacity="0.35"
+                      />
+                      <stop offset="1" stop-color="#60a5fa" stop-opacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    class="area"
+                    d="M0 88 L43 80 L86 72 L129 58 L172 50 L215 38 L258 32 L300 20 L300 110 L0 110 Z"
+                    fill="url(#af)"
+                  />
+                  <polyline
+                    class="ln"
+                    pathLength="1"
+                    points="0,88 43,80 86,72 129,58 172,50 215,38 258,32 300,20"
+                    fill="none"
+                    stroke="#60a5fa"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <polyline
+                    class="ln"
+                    pathLength="1"
+                    points="0,100 43,97 86,90 129,86 172,78 215,73 258,66 300,60"
+                    fill="none"
+                    stroke="#fbbf24"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <polyline
+                    class="ln"
+                    pathLength="1"
+                    points="0,106 43,105 86,103 129,101 172,98 215,96 258,92 300,88"
+                    fill="none"
+                    stroke="#34d399"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <div class="legend">
+                  <span><i style="background: #60a5fa"></i>Applications</span>
+                  <span><i style="background: #fbbf24"></i>Interviews</span>
+                  <span><i style="background: #34d399"></i>Offers</span>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3f: Calendar screenshot -->
+    <div class="scene shot-scene" id="sceneCalendar">
+      <h2 class="shot-title">Never miss <span class="accent">a date</span></h2>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="url-pill">hireloop.yogeshchavan.dev<b>/calendar</b></div>
+        </div>
+        <div class="app-ui">
+          <aside class="app-side">
+            <div class="app-brand">
+              <span class="mark"></span>Hire<span class="accent">Loop</span>
+            </div>
+            <div class="nav-item"><span class="ndot"></span>Dashboard</div>
+            <div class="nav-item"><span class="ndot"></span>Applications</div>
+            <div class="nav-item"><span class="ndot"></span>Board</div>
+            <div class="nav-item"><span class="ndot"></span>Analytics</div>
+            <div class="nav-item active">
+              <span class="ndot"></span>Calendar
+            </div>
+            <div class="nav-item"><span class="ndot"></span>Settings</div>
+          </aside>
+          <main class="app-main">
+            <div class="cal-head">
+              <span class="mo">July 2026</span>
+              <span class="nav"><b>‹</b><b>›</b></span>
+            </div>
+            <div class="cal-grid">
+              <div class="dow">Mon</div>
+              <div class="dow">Tue</div>
+              <div class="dow">Wed</div>
+              <div class="dow">Thu</div>
+              <div class="dow">Fri</div>
+              <div class="dow">Sat</div>
+              <div class="dow">Sun</div>
+              <div class="cell blank"></div>
+              <div class="cell blank"></div>
+              <div class="cell"><span class="dn">1</span></div>
+              <div class="cell"><span class="dn">2</span></div>
+              <div class="cell"><span class="dn">3</span></div>
+              <div class="cell"><span class="dn">4</span></div>
+              <div class="cell"><span class="dn">5</span></div>
+              <div class="cell"><span class="dn">6</span></div>
+              <div class="cell"><span class="dn">7</span></div>
+              <div class="cell">
+                <span class="dn">8</span
+                ><span class="ev blue">Netflix · Screen</span>
+              </div>
+              <div class="cell"><span class="dn">9</span></div>
+              <div class="cell"><span class="dn">10</span></div>
+              <div class="cell"><span class="dn">11</span></div>
+              <div class="cell"><span class="dn">12</span></div>
+              <div class="cell"><span class="dn">13</span></div>
+              <div class="cell"><span class="dn">14</span></div>
+              <div class="cell">
+                <span class="dn">15</span
+                ><span class="ev amber">Amazon · Assessment</span>
+              </div>
+              <div class="cell"><span class="dn">16</span></div>
+              <div class="cell"><span class="dn">17</span></div>
+              <div class="cell"><span class="dn">18</span></div>
+              <div class="cell"><span class="dn">19</span></div>
+              <div class="cell"><span class="dn">20</span></div>
+              <div class="cell"><span class="dn">21</span></div>
+              <div class="cell"><span class="dn">22</span></div>
+              <div class="cell"><span class="dn">23</span></div>
+              <div class="cell today">
+                <span class="dn">24</span
+                ><span class="ev blue">Google · Final</span>
+              </div>
+              <div class="cell"><span class="dn">25</span></div>
+              <div class="cell"><span class="dn">26</span></div>
+              <div class="cell">
+                <span class="dn">27</span
+                ><span class="ev blue">Atlassian · Manager</span>
+              </div>
+              <div class="cell"><span class="dn">28</span></div>
+              <div class="cell">
+                <span class="dn">29</span
+                ><span class="ev green">Stripe · Offer call</span>
+              </div>
+              <div class="cell">
+                <span class="dn">30</span
+                ><span class="ev blue">Vercel · Technical</span>
+              </div>
+              <div class="cell"><span class="dn">31</span></div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3g: Command palette screenshot -->
+    <div class="scene shot-scene" id="scenePalette">
+      <h2 class="shot-title">
+        Anything, in <span class="accent">a keystroke</span>
+      </h2>
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="url-pill">
+            hireloop.yogeshchavan.dev<b>/applications</b> · ⌘K
+          </div>
+        </div>
+        <div class="app-ui dim">
+          <aside class="app-side">
+            <div class="app-brand">
+              <span class="mark"></span>Hire<span class="accent">Loop</span>
+            </div>
+            <div class="nav-item active">
+              <span class="ndot"></span>Applications
+            </div>
+            <div class="nav-item"><span class="ndot"></span>Board</div>
+            <div class="nav-item"><span class="ndot"></span>Analytics</div>
+            <div class="nav-item"><span class="ndot"></span>Calendar</div>
+          </aside>
+          <main class="app-main">
+            <div class="app-head"><h3>Applications</h3></div>
+          </main>
+          <div class="palette-backdrop"></div>
+          <div class="palette">
+            <div class="p-search">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.3-4.3" />
+              </svg>
+              <span class="ph">Search applications or jump to…</span>
+              <span class="x">✕</span>
+            </div>
+            <div class="p-body">
+              <div class="p-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="M21 21l-4.3-4.3" />
+                </svg>
+                Browse all applications
+              </div>
+              <div class="p-item active">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M12 17.3l-6.2 3.7 1.6-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.4 4.8 1.6 7z"
+                  />
+                </svg>
+                View favorites
+              </div>
+              <div class="p-group">Go to</div>
+              <div class="p-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                  <rect x="14" y="14" width="7" height="7" rx="1" />
+                </svg>
+                Dashboard <span class="kbds"><kbd>g</kbd><kbd>d</kbd></span>
+              </div>
+              <div class="p-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="4" width="18" height="16" rx="2" />
+                  <path d="M3 9h18M9 4v16" />
+                </svg>
+                Applications <span class="kbds"><kbd>g</kbd><kbd>a</kbd></span>
+              </div>
+              <div class="p-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="4" width="5" height="16" rx="1" />
+                  <rect x="10" y="4" width="5" height="11" rx="1" />
+                  <rect x="17" y="4" width="4" height="14" rx="1" />
+                </svg>
+                Board <span class="kbds"><kbd>g</kbd><kbd>b</kbd></span>
+              </div>
+              <div class="p-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M6 20v-4M12 20V8M18 20v-8" />
+                  <path d="M3 20h18" />
+                </svg>
+                Analytics <span class="kbds"><kbd>g</kbd><kbd>n</kbd></span>
+              </div>
+              <div class="p-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <path d="M3 10h18M8 2v4M16 2v4" />
+                </svg>
+                Calendar <span class="kbds"><kbd>g</kbd><kbd>c</kbd></span>
+              </div>
+              <div class="p-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-2.79 1.17V21a2 2 0 11-4 0v-.09A1.65 1.65 0 007 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9c.36.14.65.43.79.79z"
+                  />
+                </svg>
+                Settings <span class="kbds"><kbd>g</kbd><kbd>s</kbd></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 4: How it Works -->
+    <div class="scene steps-scene" id="scene4">
+      <h2 class="section-title" id="stepsTitle">How It Works</h2>
+      <div class="steps-container">
+        <div class="step" id="step1">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Add an application</h3>
+          <p class="step-desc">Log a company, role and status in seconds</p>
+        </div>
+        <svg
+          class="step-arrow"
+          id="arrow1"
+          width="60"
+          height="24"
+          viewBox="0 0 60 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M0 12h50M45 6l6 6-6 6" />
+        </svg>
+        <div class="step" id="step2">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Move it forward</h3>
+          <p class="step-desc">
+            Update the status as you interview and follow up
+          </p>
+        </div>
+        <svg
+          class="step-arrow"
+          id="arrow2"
+          width="60"
+          height="24"
+          viewBox="0 0 60 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M0 12h50M45 6l6 6-6 6" />
+        </svg>
+        <div class="step" id="step3">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Stay ahead</h3>
+          <p class="step-desc">
+            Dashboard, calendar and analytics surface what's next
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 5: Use Cases -->
+    <div class="scene usecases-scene" id="scene5">
+      <h2 class="section-title" id="usecasesTitle">Perfect For</h2>
+      <div class="usecases-grid">
+        <div class="usecase-card" id="usecase1">
+          <div class="usecase-icon">🎓</div>
+          <h3 class="usecase-title">New Grads</h3>
+          <p class="usecase-desc">Track your first big search end to end</p>
+        </div>
+        <div class="usecase-card" id="usecase2">
+          <div class="usecase-icon">🔁</div>
+          <h3 class="usecase-title">Career Switchers</h3>
+          <p class="usecase-desc">Stay organized across multiple fields</p>
+        </div>
+        <div class="usecase-card" id="usecase3">
+          <div class="usecase-icon">🚀</div>
+          <h3 class="usecase-title">Active Seekers</h3>
+          <p class="usecase-desc">Manage dozens of applications at once</p>
+        </div>
+        <div class="usecase-card" id="usecase4">
+          <div class="usecase-icon">🧭</div>
+          <h3 class="usecase-title">Passive Lookers</h3>
+          <p class="usecase-desc">Never miss the right opening</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 6: Demo -->
+    <div class="scene demo-scene" id="scene6">
+      <h2 class="demo-title" id="demoTitle">Try the live demo — no signup</h2>
+      <div class="stat-display">
+        <div class="stat-tile" id="stat1">
+          <div class="stat-value">34</div>
+          <div class="stat-label">Sample applications</div>
+        </div>
+        <div class="stat-tile" id="stat2">
+          <div class="stat-value">6</div>
+          <div class="stat-label">Views to explore</div>
+        </div>
+        <div class="stat-tile" id="stat3">
+          <div class="stat-value">⌘K</div>
+          <div class="stat-label">Do anything, fast</div>
+        </div>
+      </div>
+      <p class="demo-subtitle" id="demoSubtitle">
+        Hit <b>&ldquo;Try Demo&rdquo;</b> and explore a pre-populated tracker
+        instantly.
+      </p>
+    </div>
+
+    <!-- Scene 7: CTA -->
+    <div class="scene cta-scene" id="scene7">
+      <h2 class="cta-title" id="ctaTitle">Start tracking your search today</h2>
+      <p class="cta-url" id="ctaUrl">hireloop.yogeshchavan.dev</p>
+      <a
+        href="https://hireloop.yogeshchavan.dev"
+        class="cta-button"
+        id="ctaButton"
+      >
+        Try HireLoop
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="progress-bar" id="progress"></div>
+
+    <div class="controls" id="controls">
+      <button class="control-btn" id="restartBtn" title="Restart">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
+          <path d="M3 3v5h5" />
+        </svg>
+      </button>
+      <button class="control-btn" id="pauseBtn" title="Pause/Play">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          id="pauseIcon"
+        >
+          <rect x="6" y="4" width="4" height="16" />
+          <rect x="14" y="4" width="4" height="16" />
+        </svg>
+      </button>
+    </div>
+    <div class="controls-hint" id="controlsHint">H — show/hide controls</div>
+
+    <script>
+      // Create floating particles
+      const particlesContainer = document.getElementById("particles");
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.animationDelay = Math.random() * 20 + "s";
+        particle.style.animationDuration = 15 + Math.random() * 10 + "s";
+        particlesContainer.appendChild(particle);
+      }
+
+      // Scene timing configuration
+      const scenes = [
+        { id: "scene1", duration: 3200, animations: [] },
+        {
+          id: "scene2",
+          duration: 3500,
+          animations: [
+            { el: "line1", delay: 200 },
+            { el: "line2", delay: 700 },
+          ],
+        },
+        {
+          id: "scene3",
+          duration: 5600,
+          animations: [
+            { el: "featuresTitle", delay: 0 },
+            { el: "feature1", delay: 300 },
+            { el: "feature2", delay: 500 },
+            { el: "feature3", delay: 700 },
+            { el: "feature4", delay: 900 },
+          ],
+        },
+        { id: "sceneTable", duration: 5600, animations: [] },
+        { id: "sceneBoard", duration: 5600, animations: [] },
+        { id: "sceneDashboard", duration: 5600, animations: [] },
+        { id: "sceneAnalytics", duration: 6000, animations: [] },
+        { id: "sceneCalendar", duration: 5200, animations: [] },
+        { id: "scenePalette", duration: 5600, animations: [] },
+        {
+          id: "scene4",
+          duration: 5200,
+          animations: [
+            { el: "stepsTitle", delay: 0 },
+            { el: "step1", delay: 400 },
+            { el: "arrow1", delay: 800 },
+            { el: "step2", delay: 1200 },
+            { el: "arrow2", delay: 1600 },
+            { el: "step3", delay: 2000 },
+          ],
+        },
+        {
+          id: "scene5",
+          duration: 4200,
+          animations: [
+            { el: "usecasesTitle", delay: 0 },
+            { el: "usecase1", delay: 300 },
+            { el: "usecase2", delay: 500 },
+            { el: "usecase3", delay: 700 },
+            { el: "usecase4", delay: 900 },
+          ],
+        },
+        {
+          id: "scene6",
+          duration: 4400,
+          animations: [
+            { el: "demoTitle", delay: 0 },
+            { el: "stat1", delay: 400 },
+            { el: "stat2", delay: 600 },
+            { el: "stat3", delay: 800 },
+            { el: "demoSubtitle", delay: 1400 },
+          ],
+        },
+        {
+          id: "scene7",
+          duration: 5200,
+          animations: [
+            { el: "ctaTitle", delay: 0 },
+            { el: "ctaUrl", delay: 600 },
+            { el: "ctaButton", delay: 1200 },
+          ],
+        },
+      ];
+
+      let currentScene = 0;
+      let isPaused = false;
+      let timeoutId = null;
+      let animationTimeouts = [];
+      const totalDuration = scenes.reduce((sum, s) => sum + s.duration, 0);
+
+      function clearAnimationTimeouts() {
+        animationTimeouts.forEach((id) => clearTimeout(id));
+        animationTimeouts = [];
+      }
+
+      function resetAnimations() {
+        scenes.forEach((scene) => {
+          scene.animations.forEach((anim) => {
+            const el = document.getElementById(anim.el);
+            if (el) el.classList.remove("animate");
+          });
+        });
+      }
+
+      function playScene(index) {
+        if (index >= scenes.length) {
+          // Loop back to beginning
+          currentScene = 0;
+          resetAnimations();
+          playScene(0);
+          return;
+        }
+
+        currentScene = index;
+        const scene = scenes[index];
+
+        // Hide all scenes, show current
+        document
+          .querySelectorAll(".scene")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(scene.id).classList.add("active");
+
+        // Re-trigger this scene's entry animations
+        clearAnimationTimeouts();
+        scene.animations.forEach((anim) => {
+          const el = document.getElementById(anim.el);
+          if (el) el.classList.remove("animate");
+        });
+
+        // Schedule animations
+        scene.animations.forEach((anim) => {
+          const id = setTimeout(() => {
+            const el = document.getElementById(anim.el);
+            if (el) el.classList.add("animate");
+          }, anim.delay);
+          animationTimeouts.push(id);
+        });
+
+        // Update progress
+        updateProgress();
+
+        // Schedule next scene
+        if (!isPaused) {
+          timeoutId = setTimeout(() => {
+            playScene(index + 1);
+          }, scene.duration);
+        }
+      }
+
+      function updateProgress() {
+        const sceneElapsed = scenes
+          .slice(0, currentScene)
+          .reduce((sum, s) => sum + s.duration, 0);
+        const progress = (sceneElapsed / totalDuration) * 100;
+        document.getElementById("progress").style.width = progress + "%";
+      }
+
+      // Controls
+      document.getElementById("restartBtn").addEventListener("click", () => {
+        clearTimeout(timeoutId);
+        clearAnimationTimeouts();
+        resetAnimations();
+        currentScene = 0;
+        isPaused = false;
+        updatePauseIcon();
+        playScene(0);
+      });
+
+      document.getElementById("pauseBtn").addEventListener("click", () => {
+        isPaused = !isPaused;
+        updatePauseIcon();
+
+        if (isPaused) {
+          clearTimeout(timeoutId);
+        } else {
+          // Resume from the next scene
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            playScene(currentScene + 1);
+          }, 400);
+        }
+      });
+
+      function updatePauseIcon() {
+        const icon = document.getElementById("pauseIcon");
+        if (isPaused) {
+          icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+        } else {
+          icon.innerHTML =
+            '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+        }
+      }
+
+      // Hotkey: H = toggle controls
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "h" || e.key === "H") {
+          const controls = document.getElementById("controls");
+          controls.classList.toggle("hidden");
+        }
+      });
+
+      // Start the video
+      playScene(0);
+    </script>
+  </body>
+</html>
