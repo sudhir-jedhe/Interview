@@ -10,7 +10,7 @@ Short answer to your second question: **No, you should NOT use `useId` to genera
 
 Because server-rendered HTML and client-rendered JavaScript must produce matching IDs to avoid **hydration mismatch errors**, `useId` generates deterministic strings based on the component's position in the component tree.
 
-### Correct Usage Example:
+### Correct Usage Example
 
 ```tsx
 import { useId } from "react";
@@ -274,3 +274,140 @@ export function AccordionSection({ title, children }: AccordionSectionProps) {
 1. **One `useId()` Per Component Instance:** Call `useId()` once at the top level of your component and append string suffixes (`${id}-input`, `${id}-error`) rather than making multiple `useId()` calls.
 2. **Filter Out Blank IDs:** When constructing dynamic space-separated ARIA strings (like `aria-describedby="id1 id2"`), filter out `null`/`undefined` values so you don't pass trailing or multiple spaces.
 3. **Pass `undefined` for Empty ARIA Attributes:** If there are no helper or error IDs, pass `undefined` instead of an empty string `""` to keep HTML clean.
+
+**`useId`** is a React Hook used to generate unique, stable strings that can be passed to HTML accessibility attributes (like `id`, `htmlFor`, and `aria-*`).
+
+Its superpower is **Server-Side Rendering (SSR) compatibility**. If you use `Math.random()` to generate an ID, the server and client will generate different strings, causing a hydration mismatch and throwing errors. `useId` guarantees that the exact same ID is generated on the server and during client hydration.
+
+Here is a detailed breakdown of its API, usage patterns, and crucial rules.
+
+---
+
+## 1. Reference
+
+### `const id = useId()`
+
+- **Parameters:** `useId` takes no parameters.
+- **Returns:** A unique string ID associated with that specific `useId` call in that specific component (e.g., `:r0:`, `:r1a:`).
+
+### ⚠️ Crucial Rule: Do NOT use `useId` to generate keys in a list
+
+React keys must be tied to your actual data from your database (like `item.databaseId`). If you use `key={useId()}`, React will completely lose track of the list items if the array is reordered, added to, or filtered, leading to severe UI bugs.
+
+---
+
+## 2. Usage Scenarios
+
+### Generating unique IDs for accessibility attributes
+
+The most common use case is binding a `<label>` to an `<input>`, or using `aria-describedby` to link an input to an error message. Hardcoding an ID like `id="password"` breaks if you render that same component twice on the same page. `useId` prevents collisions.
+
+```jsx
+import { useId } from 'react';
+
+function PasswordField() {
+  const passwordHintId = useId();
+
+  return (
+    <div>
+      <label>
+        Password:
+        {/* The aria-describedby attribute points to the hint's ID */}
+        <input type="password" aria-describedby={passwordHintId} />
+      </label>
+      {/* The hint uses the exact same ID */}
+      <p id={passwordHintId}>Password must be 18 characters long.</p>
+    </div>
+  );
+}
+
+```
+
+### Generating IDs for several related elements
+
+If your component has multiple inputs, you **do not** need to call `useId` multiple times. That is inefficient. Instead, call it once and append a descriptive suffix to the string.
+
+```jsx
+import { useId } from 'react';
+
+function RegistrationForm() {
+  const id = useId();
+
+  return (
+    <form>
+      <div>
+        <label htmlFor={`${id}-email`}>Email:</label>
+        <input id={`${id}-email`} type="email" />
+      </div>
+      
+      <div>
+        <label htmlFor={`${id}-password`}>Password:</label>
+        <input id={`${id}-password`} type="password" />
+      </div>
+    </form>
+  );
+}
+
+```
+
+### Specifying a shared prefix for all generated IDs
+
+If you are embedding multiple independent React applications onto a single HTML page (for example, a React navbar and a React shopping cart on a static WordPress site), their `useId` calls might generate identical IDs (like `:r0:`), causing collisions.
+
+You can prevent this by passing an `identifierPrefix` when you create the React root.
+
+```jsx
+import { createRoot } from 'react-dom/client';
+import Navbar from './Navbar';
+import Cart from './Cart';
+
+const navRoot = createRoot(document.getElementById('nav'), {
+  identifierPrefix: 'nav-app-' // IDs will look like: nav-app-:r0:
+});
+navRoot.render(<Navbar />);
+
+const cartRoot = createRoot(document.getElementById('cart'), {
+  identifierPrefix: 'cart-app-' // IDs will look like: cart-app-:r0:
+});
+cartRoot.render(<Cart />);
+
+```
+
+### Using the same ID prefix on the client and the server
+
+If you are using Server-Side Rendering (SSR) and you configured an `identifierPrefix` on the client, you **must** configure the exact same prefix on the server. If they don't match, hydration will fail.
+
+**On the Server (`react-dom/server`):**
+
+```javascript
+import { renderToPipeableStream } from 'react-dom/server';
+
+const { pipe } = renderToPipeableStream(<App />, {
+  identifierPrefix: 'my-app-', // Match this!
+  onShellReady() {
+    pipe(res);
+  }
+});
+
+```
+
+**On the Client (`react-dom/client`):**
+
+```javascript
+import { hydrateRoot } from 'react-dom/client';
+
+hydrateRoot(document.getElementById('root'), <App />, {
+  identifierPrefix: 'my-app-' // Matches the server perfectly
+});
+
+```
+
+---
+
+## 3. A Note on CSS Selectors
+
+The IDs generated by `useId` often contain colons (e.g., `:r3:`). This is completely valid in HTML. However, colons are reserved characters in CSS (used for pseudo-classes like `:hover`).
+
+If you try to query an element generated by `useId` using standard DOM APIs like `document.querySelector('#:r3:')`, it will throw a syntax error.
+
+**Best Practice:** You should not use `useId` to generate IDs for CSS styling or DOM querying. Use standard `className` attributes or `useRef` for those purposes. `useId` is strictly for accessibility and HTML attribute linkages.

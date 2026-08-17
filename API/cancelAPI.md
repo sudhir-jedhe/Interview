@@ -6,7 +6,7 @@ Here’s how you can handle **cancelling API calls** in a React component using 
 
 One common way to cancel an API request in React is by using the `AbortController`, which is part of the browser's native Fetch API. The `AbortController` allows you to abort fetch requests by calling its `abort` method.
 
-#### Example:
+#### Example
 
 ```javascript
 import React, { useEffect, useState } from "react";
@@ -61,7 +61,7 @@ function MyComponent() {
 export default MyComponent;
 ```
 
-#### Key points:
+#### Key points
 
 - **AbortController**: We create an instance of `AbortController` and pass its `signal` to the `fetch` call.
 - **Cleanup in `useEffect`**: In the cleanup function of `useEffect`, we call `controller.abort()` to cancel the request if the component unmounts or if the request is no longer needed.
@@ -73,7 +73,7 @@ export default MyComponent;
 
 If you're using **Axios** for HTTP requests, it has built-in support for canceling requests using a **cancel token**. Axios allows you to create a cancel token and cancel the request whenever needed.
 
-#### Example:
+#### Example
 
 ```javascript
 import React, { useEffect, useState } from "react";
@@ -127,7 +127,7 @@ function MyComponent() {
 export default MyComponent;
 ```
 
-#### Key points:
+#### Key points
 
 - **Cancel Token**: `axios.CancelToken.source()` creates a cancel token that can be used to cancel the request.
 - **Cancellation in Cleanup**: In the cleanup function, we call `cancelTokenSource.cancel()` to cancel the request if the component unmounts.
@@ -139,7 +139,7 @@ export default MyComponent;
 
 For more complex use cases, you can use `useRef` to persist the `AbortController` instance across re-renders. This ensures that the abort signal is tied to the lifecycle of the component.
 
-#### Example:
+#### Example
 
 ```javascript
 import React, { useEffect, useState, useRef } from "react";
@@ -194,7 +194,7 @@ function MyComponent() {
 export default MyComponent;
 ```
 
-#### Key points:
+#### Key points
 
 - **`useRef`**: The `AbortController` is stored in a `useRef` hook to persist the controller across re-renders, ensuring that the same controller is used throughout the component lifecycle.
 - **Cleanup**: The cleanup function uses `controller.abort()` to cancel the fetch request when the component unmounts.
@@ -205,7 +205,7 @@ export default MyComponent;
 
 For more advanced and robust data-fetching and caching strategies, you can use libraries like **React Query** or **SWR** that automatically handle canceling requests when components unmount.
 
-#### Example with React Query:
+#### Example with React Query
 
 ```javascript
 import React from "react";

@@ -1,0 +1,58 @@
+This comprehensive reference guide outlines the core **Claude Code** commands designed to maximize terminal-based development efficiency across six distinct categories:
+
+---
+
+### 1. Start and Create
+
+* **`/new`** → Start a fresh session
+* **`/init`** → Set up your project with a guide
+* **`/clear`** → Wipe context and start again
+* **`/model`** → Switch your AI model
+* **`/voice`** → Use voice input
+* **`/upload`** → Bring in files
+
+### 2. Manage Your Work
+
+* **`/plan`** → Enter planning mode before acting
+* **`/branch`** → Fork the conversation at any point
+* **`/rename`** → Label your session
+* **`/resume`** → Pick up a previous conversation
+* **`/memory`** → Edit what Claude remembers
+* **`/permissions`** → Control what Claude can touch
+
+### 3. Review and Ship
+
+* **`/review`** → Review a pull request locally
+* **`/diff`** → See all uncommitted changes
+* **`/security-review`** → Scan for vulnerabilities
+* **`/autofix-pr`** → Watch a PR and push fixes automatically
+* **`/rewind`** → Roll back to an earlier point
+* **`/copy`** → Copy the last response to clipboard
+
+### 4. Automate and Run Agents
+
+* **`/batch`** → Run large-scale changes across a codebase in parallel
+* **`/agents`** → Manage your agent configurations
+* **`/loop`** → Run a prompt on repeat while the session is open
+* **`/schedule`** → Set up routines that run automatically
+* **`/tasks`** → List and manage background tasks
+* **`/automate`** → Hand off repeatable work
+
+### 5. Get Insights
+
+* **`/insights`** → Analyse your Claude Code sessions
+* **`/usage`** → See session cost and activity stats
+* **`/context`** → Visualise how much context you're using
+* **`/recap`** → Get a one-line summary of your session
+* **`/debug`** → Enable debug logging and troubleshoot
+* **`/doctor`** → Diagnose your installation
+
+### 6. Shortcuts Worth Knowing
+
+* **`/compact`** → Summarise the conversation to free up context
+* **`/btw`** → Ask a quick side question without affecting the thread
+* **`/simplify`** → Review recent files for quality and efficiency issues
+* **`/export`** → Save the full conversation as plain text
+* **`/feedback`** → Submit feedback directly from the session
+* **`/help`** → See every command available to you
+![alt text](image-1.png)

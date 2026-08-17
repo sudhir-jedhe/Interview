@@ -239,3 +239,191 @@ export function TaskList() {
 1. **Dispatch Stability:** React guarantees that the `dispatch` function from `useReducer` remains identity-stable across all renders.
 2. **Context Isolation:** `TaskDispatchContext.Provider`'s value (`dispatch`) never changes. As a result, React bypasses all components subscribing exclusively to `useTaskDispatch()`.
 3. **No `useMemo` Overhead Needed:** You don't need to manually wrap context provider values in `useMemo` to keep `dispatch` stable.
+
+Yes, absolutely! Creating a custom `useState` or `useReducer` is a highly popular interview topic. It tests your understanding of React's internal mechanics, specifically **closures** and **hook rules**.
+
+Depending on the interview, you might be asked to do this in two different ways. Here is how you should document both approaches for your master repository.
+
+> **Repo Organization Tip:** Save this content inside `08-Scenario-Based-Questions/react-internals.md` or a dedicated React folder if you create one.
+
+---
+
+## 1. Building `useReducer` using `useState`
+
+This is a very common scenario question. The interviewer will ask: *"React actually builds `useState` on top of `useReducer` internally, but can you do the reverse? Can you write a custom `useReducer` using only `useState`?"*
+
+**The Implementation:**
+
+```javascript
+import { useState } from 'react';
+
+// Custom useReducer implementation
+function useCustomReducer(reducer, initialState) {
+  // 1. Hold the current state
+  const [state, setState] = useState(initialState);
+
+  // 2. Create a dispatch function that takes an action
+  function dispatch(action) {
+    // 3. Pass current state and action to the reducer to get the new state
+    const nextState = reducer(state, action);
+    
+    // 4. Update the React state
+    setState(nextState);
+  }
+
+  // 5. Return exactly like native useReducer
+  return [state, dispatch];
+}
+
+```
+
+---
+
+## 2. Building `useState` from Scratch (Vanilla JS)
+
+Sometimes, an interviewer will say: *"Forget React. Using pure JavaScript, implement how `useState` remembers data between function calls."*
+
+This tests your knowledge of **Closures**. Because function variables are wiped out when the function finishes, React uses an external array hidden in a closure to remember your state.
+
+**The Implementation:**
+
+```javascript
+// This represents React's internal memory
+const ReactInternals = (function() {
+  let hooksArray = []; // Stores all states for a component
+  let cursor = 0;      // Tracks which useState is currently being called
+
+  return {
+    render(Component) {
+      // Reset the cursor every time the component re-renders
+      cursor = 0; 
+      const output = Component();
+      return output;
+    },
+
+    myUseState(initialValue) {
+      // Capture the current cursor position for this specific state
+      const currentCursor = cursor; 
+
+      // Initialize state if it's the first render
+      if (hooksArray[currentCursor] === undefined) {
+        hooksArray[currentCursor] = initialValue;
+      }
+
+      // Create the setState function
+      const setState = (newValue) => {
+        hooksArray[currentCursor] = newValue;
+        // In real React, this would trigger a re-render here
+      };
+
+      // Increment cursor for the NEXT useState call in the component
+      cursor++;
+
+      return [hooksArray[currentCursor], setState];
+    }
+  };
+})();
+
+// Extract our custom hook
+const { myUseState, render } = ReactInternals;
+
+```
+
+### Why this explains the "Rules of Hooks"
+
+If you look closely at the Vanilla JS implementation above, it relies entirely on the `cursor` index (0, 1, 2, etc.) remaining in the exact same order on every render.
+
+This is exactly **why you cannot put hooks inside `if` statements or loops**. If a hook is skipped, the `cursor` gets misaligned, and your component will grab the wrong piece of state from the `hooksArray`!
+
+Show me how to build a custom useLocalStorage hook that extends useState to automatically save data to the browser.
+
+This is one of the most practical custom hooks you can build, and it frequently comes up in interviews when you are asked to demonstrate how to combine React state with browser APIs.
+
+> **Repo Organization Tip:** Save this content inside `08-Scenario-Based-Questions/react-use-local-storage.md` or inside a dedicated `React-Hooks` folder if you choose to create one.
+
+---
+
+# Scenario: Building a `useLocalStorage` Hook
+
+**The Task:** Create a custom hook that behaves exactly like `useState`, but automatically syncs its value to the browser's `localStorage`. If the page is refreshed, the hook should initialize with the saved value instead of the default value.
+
+## The Implementation
+
+```javascript
+import { useState } from 'react';
+
+export function useLocalStorage(key, initialValue) {
+  // 1. Pass a callback to useState (Lazy Initialization)
+  // This ensures we only read from localStorage on the FIRST render,
+  // preventing expensive synchronous operations on every re-render.
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      // Check if the item exists in local storage
+      const item = window.localStorage.getItem(key);
+      
+      // Parse stored JSON or return initialValue if nothing is saved
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error (e.g., incognito mode restricts access), fallback to initialValue
+      console.warn(`Error reading localStorage key "${key}":`, error);
+      return initialValue;
+    }
+  });
+
+  // 2. Create a wrapped setter function
+  const setValue = (value) => {
+    try {
+      // Allow value to be a function so we have the same API as useState
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      
+      // Update React state
+      setStoredValue(valueToStore);
+      
+      // Update local storage
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.warn(`Error setting localStorage key "${key}":`, error);
+    }
+  };
+
+  // 3. Return the state and our wrapped setter, just like useState
+  return [storedValue, setValue];
+}
+
+```
+
+## How to use it in a Component
+
+To the component, this looks and acts exactly like a normal `useState` hook. The synchronization with the browser happens entirely behind the scenes.
+
+```jsx
+import React from 'react';
+import { useLocalStorage } from './hooks/useLocalStorage';
+
+export default function ThemeToggle() {
+  // Uses our custom hook instead of useState
+  // If 'theme' exists in localStorage, it will use that instead of 'light'
+  const [theme, setTheme] = useLocalStorage('theme', 'light');
+
+  const toggleTheme = () => {
+    // We can pass a callback just like normal useState
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
+
+  return (
+    <div style={{ background: theme === 'light' ? '#fff' : '#333', color: theme === 'light' ? '#000' : '#fff' }}>
+      <h1>Current Theme: {theme}</h1>
+      <button onClick={toggleTheme}>Toggle Theme</button>
+    </div>
+  );
+}
+
+```
+
+## Key Interview Talking Points
+
+If an interviewer asks you to explain this code, highlight these three concepts:
+
+1. **Lazy Initialization:** By passing an arrow function to `useState(() => { ... })`, React only executes that function on the initial render. Reading from `localStorage` is synchronous and can be slow; doing it on every render would cause performance bottlenecks.
+2. **API Parity:** The custom `setValue` function checks if the passed value is a function (`value instanceof Function`). This ensures our hook supports the functional update pattern of regular `useState` (e.g., `setCount(prev => prev + 1)`).
+3. **Error Handling:** `localStorage` can throw errors. For example, if a user's storage quota is exceeded, or if they are using restrictive privacy settings (like older Safari incognito mode), `getItem` or `setItem` might fail. Wrapping them in `try/catch` prevents the entire React app from crashing.

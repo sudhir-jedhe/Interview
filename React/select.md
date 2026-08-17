@@ -192,3 +192,121 @@ export default function ControlledPicker() {
 }
 
 ```
+
+**`<select>`** is the built-in browser component that lets you render a drop-down select list box for users to choose one or multiple options.
+
+In React, the `<select>` component handles value state and selection slightly differently than standard HTML, offering both uncontrolled and controlled paradigms.
+
+---
+
+## 1. Reference
+
+### `<select>...</select>`
+
+* **Key Attributes:**
+* **`value`**: Pass this prop to make the select box **controlled**. Its value should match the `value` attribute of the selected `<option>`.
+* **`defaultValue`**: Pass this prop to set the initially selected option for an **uncontrolled** select box.
+* **`multiple`**: When set to `true`, allows users to select multiple options simultaneously (usually rendered as a scrolling list box instead of a dropdown).
+* **`onChange`**: Callback fired when the user selects a new option.
+
+---
+
+## 2. Usage Scenarios
+
+### Displaying a select box with options
+
+In standard HTML, you select an option by adding a `selected` attribute to an `<option>`. In React, you generally manage selection via the `<select>` tag's `value` or `defaultValue` props instead of putting `selected` on individual options.
+
+```jsx
+function FruitSelect() {
+  return (
+    <select defaultValue="apple">
+      <option value="apple">Apple</option>
+      <option value="banana">Banana</option>
+      <option value="orange">Orange</option>
+    </select>
+  );
+}
+
+```
+
+### Providing a label for a select box
+
+To ensure accessibility, always associate your `<select>` with a `<label>` using either the `htmlFor` / `id` attributes or by wrapping the select inside the label.
+
+```jsx
+<div>
+  <label htmlFor="fruit-select">Choose a fruit:</label>
+  <select id="fruit-select" defaultValue="apple">
+    <option value="apple">Apple</option>
+    <option value="banana">Banana</option>
+  </select>
+</div>
+
+```
+
+### Enabling multiple selection
+
+By adding the `multiple` attribute, users can select more than one option (by holding Cmd/Ctrl). When `multiple={true}`, the state or form data should handle an array of selected values.
+
+```jsx
+<select multiple defaultValue={['apple', 'orange']}>
+  <option value="apple">Apple</option>
+  <option value="banana">Banana</option>
+  <option value="orange">Orange</option>
+</select>
+
+```
+
+### Reading the select box value when submitting a form
+
+When used inside a native `<form>` leveraging React Actions or standard `FormData`, you give the `<select>` a `name` attribute, and React automatically extracts the selected value upon submission.
+
+```jsx
+async function handleSubmit(formData) {
+  'use server';
+  const selectedFruit = formData.get('fruit');
+  console.log("User selected:", selectedFruit);
+}
+
+function Form() {
+  return (
+    <form action={handleSubmit}>
+      <select name="fruit" defaultValue="banana">
+        <option value="apple">Apple</option>
+        <option value="banana">Banana</option>
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+```
+
+### Controlling a select box with a state variable
+
+To make the select box controlled, tie its `value` prop to a React `useState` variable and update it via `onChange`.
+
+```jsx
+import { useState } from 'react';
+
+function ControlledSelect() {
+  const [flavor, setFlavor] = useState('coconut');
+
+  return (
+    <form>
+      <label>
+        Pick your favorite flavor:
+        <select value={flavor} onChange={(e) => setFlavor(e.target.value)}>
+          <option value="grapefruit">Grapefruit</option>
+          <option value="lime">Lime</option>
+          <option value="coconut">Coconut</option>
+          <option value="mango">Mango</option>
+        </select>
+      </label>
+      <p>Selected: {flavor}</p>
+    </form>
+  );
+}
+
+```

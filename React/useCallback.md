@@ -6,6 +6,8 @@ Internal React interview discussions specifically mention using useCallback, use
 
 Problem Without useCallback
 Parent
+
+```js
 import { useState } from "react";
 import Child from "./Child";
 
@@ -31,7 +33,11 @@ Count: {count}
 );
 }
 
+```
+
 Child
+
+```js
 import React from "react";
 
 const Child = React.memo(
@@ -51,6 +57,7 @@ const Child = React.memo(
 );
 
 export default Child;
+```
 
 What Happens?
 

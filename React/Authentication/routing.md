@@ -16,7 +16,7 @@ Routing interviews test your understanding of how navigation works on both the c
 - **Answer:** Nested routes allow you to render child components inside a parent layout dynamically based on the URL path. The parent route acts as a shared layout (e.g., a dashboard shell with a sidebar), and `<Outlet/>` serves as a placeholder where the matched child route component will render.
 - **Code Example:**
 
-```jsx
+```js
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 
 const DashboardLayout = () => (
@@ -49,7 +49,7 @@ export default function App() {
 - **Answer:** To prevent bundling the entire application into a single massive JavaScript file, you use React's built-in `lazy()` function combined with `Suspense`. This tells the bundler to split code into separate chunks and load route components asynchronously only when the user navigates to that URL.
 - **Code Example:**
 
-```jsx
+```js
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -153,51 +153,51 @@ Here is a comprehensive master list of **50 advanced routing scenarios and inter
 
 ### Category 2: React Router Performance, Code Splitting & Architecture
 
-16. **Granular Bundle Splitting:** How do you architect route chunks so that shared layout code isn't duplicated across dynamic sub-routes?
-17. **Prefetching Route Chunks:** How can you trigger programmatic prefetching of code-split route chunks on mouse hover over a navigation link?
-18. **ErrorBoundary Sub-tree Isolation:** How do you configure React Router error elements so a failure in a single nested widget doesn't crash the entire application layout?
-19. **Micro-Frontend Routing Conflicts:** How do you prevent host-app and remote-app path collision when mounting independent routers via Module Federation?
-20. **Memory Leak Abort Signals:** How do you tie React Router's request `signal` to Axios/Fetch calls inside loaders to cancel stale background queries on rapid navigation?
-21. **Server-Side Rendering (SSR) Hydration:** How do you pass static context down from a Node/Express SSR renderer to match client-side React hydration routes?
-22. **Dynamic Route Registration:** Can you dynamically inject new route definitions into an active React Router tree at runtime? (And how to approach module plugin systems instead).
-23. **Base URL Configuration:** How do you deploy a React Router app successfully to a subdirectory (e.g., `[domain.com/app/](https://domain.com/app/)`) using `basename`?
-24. **Path-to-RegExp Custom Matchers:** How do you write advanced custom constraint matchers for parameters (e.g., ensuring an ID route parameter matches only valid UUIDv4 patterns)?
-25. **Concurrent Mode Transitions:** How do React 18 transition APIs interact with route switches to keep user input responsive during heavy rendering?
+ 1. **Granular Bundle Splitting:** How do you architect route chunks so that shared layout code isn't duplicated across dynamic sub-routes?
+ 2. **Prefetching Route Chunks:** How can you trigger programmatic prefetching of code-split route chunks on mouse hover over a navigation link?
+ 3. **ErrorBoundary Sub-tree Isolation:** How do you configure React Router error elements so a failure in a single nested widget doesn't crash the entire application layout?
+ 4. **Micro-Frontend Routing Conflicts:** How do you prevent host-app and remote-app path collision when mounting independent routers via Module Federation?
+ 5. **Memory Leak Abort Signals:** How do you tie React Router's request `signal` to Axios/Fetch calls inside loaders to cancel stale background queries on rapid navigation?
+ 6. **Server-Side Rendering (SSR) Hydration:** How do you pass static context down from a Node/Express SSR renderer to match client-side React hydration routes?
+ 7. **Dynamic Route Registration:** Can you dynamically inject new route definitions into an active React Router tree at runtime? (And how to approach module plugin systems instead).
+ 8. **Base URL Configuration:** How do you deploy a React Router app successfully to a subdirectory (e.g., `[domain.com/app/](https://domain.com/app/)`) using `basename`?
+ 9. **Path-to-RegExp Custom Matchers:** How do you write advanced custom constraint matchers for parameters (e.g., ensuring an ID route parameter matches only valid UUIDv4 patterns)?
+10. **Concurrent Mode Transitions:** How do React 18 transition APIs interact with route switches to keep user input responsive during heavy rendering?
 
 ---
 
 ### Category 3: Express Router Advanced Middleware & Execution Pipelines
 
-26. **Route Parameter Pre-conditions (`router.param`):** How do you use `router.param()` middleware to automatically fetch a database document whenever a specific route parameter (like `:id`) appears?
-27. **Async Route Error Handlers in Express 4 vs 5:** Why do async/await route functions throw unhandled rejections in Express 4, and how does Express 5 natively fix this?
-28. **Skipping Route Stacks (`next('route')`):** How do you bypass remaining handlers in a single route block and jump directly to the next matching route definition using `next('route')`?
-29. **Sub-App Mount Path Discovery (`req.baseUrl`):** When mounting modular routers using `app.use('/api/v1', subRouter)`, how do you inspect the parent mount prefix inside the child handler?
-30. **Strict Routing and Case Sensitivity:** How do you configure Express router settings (`case sensitive routing`, `strict routing`) to treat `/Users` and `/users` as distinct endpoints?
-31. **Complex Regex Route Matching:** How do you build an Express route path using regular expression patterns to match localized multi-language URL paths?
-32. **Method-Specific Middleware Ordering:** How do you attach middleware exclusively to `POST` and `PUT` methods without affecting `GET` requests on the same path?
-33. **Request Body Parsing Scope:** How do you restrict heavy JSON body parsers (`express.json()`) from running on public webhook endpoints that require raw request buffers (like Stripe webhooks)?
-34. **Route-Level Rate Limiting Granularity:** How do you apply distinct rate-limiting thresholds dynamically based on the matched route segment size or sensitivity?
-35. **Response Header Pollution Security:** How do Express routers handle duplicate query keys, and how do you protect against query parameter pollution (HPP) attacks?
+ 1. **Route Parameter Pre-conditions (`router.param`):** How do you use `router.param()` middleware to automatically fetch a database document whenever a specific route parameter (like `:id`) appears?
+ 2. **Async Route Error Handlers in Express 4 vs 5:** Why do async/await route functions throw unhandled rejections in Express 4, and how does Express 5 natively fix this?
+ 3. **Skipping Route Stacks (`next('route')`):** How do you bypass remaining handlers in a single route block and jump directly to the next matching route definition using `next('route')`?
+ 4. **Sub-App Mount Path Discovery (`req.baseUrl`):** When mounting modular routers using `app.use('/api/v1', subRouter)`, how do you inspect the parent mount prefix inside the child handler?
+ 5. **Strict Routing and Case Sensitivity:** How do you configure Express router settings (`case sensitive routing`, `strict routing`) to treat `/Users` and `/users` as distinct endpoints?
+ 6. **Complex Regex Route Matching:** How do you build an Express route path using regular expression patterns to match localized multi-language URL paths?
+ 7. **Method-Specific Middleware Ordering:** How do you attach middleware exclusively to `POST` and `PUT` methods without affecting `GET` requests on the same path?
+ 8. **Request Body Parsing Scope:** How do you restrict heavy JSON body parsers (`express.json()`) from running on public webhook endpoints that require raw request buffers (like Stripe webhooks)?
+ 9. **Route-Level Rate Limiting Granularity:** How do you apply distinct rate-limiting thresholds dynamically based on the matched route segment size or sensitivity?
+10. **Response Header Pollution Security:** How do Express routers handle duplicate query keys, and how do you protect against query parameter pollution (HPP) attacks?
 
 ---
 
 ### Category 4: Express Router Microservices, Scaling & Security
 
-36. **API Versioning Strategies:** What are the trade-offs between URL path versioning (`/api/v1/`), header versioning (`Accept: application/vnd.app.v1+json`), and query parameter versioning in Express?
-37. **Proxy Trust Configurations (`app.set('trust proxy', true)`):** Why is configuring `trust proxy` essential when your Express API sits behind an Nginx load balancer or Cloudflare CDN for correct routing/IP logging?
-38. **Graceful Shutdown Routing Drain:** When an Express server receives a `SIGTERM` signal, how do you stop accepting new router connections while allowing active requests to finish?
-39. **Internal API Gateway Routing:** How do you design an Express-based API gateway router that dynamically proxies requests to downstream microservices using `http-proxy-middleware`?
-40. **CORS Preflight Route Optimization:** Why do `OPTIONS` preflight requests hit Express routers, and how do you optimize CORS middleware placement to prevent unnecessary controller executions?
-41. **Response Time Monitoring Middleware:** How do you write custom router-level instrumentation middleware to log execution duration metrics for slow endpoint identification?
-42. **File Streaming Route Architecture:** How do you route large file downloads using Node streams (`fs.createReadStream`) without exhausting server RAM?
-43. **Trailing Slash Redirection Loops:** How do you prevent infinite redirect loops when Express static file routers interact with custom trailing-slash rules?
-44. **Dynamic Controller Loading:** How do you auto-load routes dynamically by reading the file system directory structure (file-based routing similar to Next.js) in a custom Express setup?
-45. **Multi-Tenant Subdomain Routing:** How do you extract wildcard subdomains (`*.tenant.com`) using Express routing parameters to dynamically database-switch per tenant?
-46. **Route-Based Content Negotiation:** How do you use `req.accepts()` inside an Express router to serve JSON, XML, or HTML views from a single URI endpoint?
-47. **Preventing ReDoS (Regular Expression Denial of Service):** How can maliciously crafted URL parameters crash an Express path-to-regexp parser, and how do you write safe paths?
-48. **Memory Leakage via Unclosed Route Handlers:** What happens to Express request-response lifecycles if a route handler forgets to send a response or call `next()`, and how do you catch hanging sockets?
-49. **Global vs Local Error Middleware Separation:** How do you structure router-specific error catchers that format errors differently than the global API error handler?
-50. **Testing Express Routers Independently:** How do you unit test an isolated `express.Router()` module using `supertest` without spinning up the entire root server instance?
+ 1. **API Versioning Strategies:** What are the trade-offs between URL path versioning (`/api/v1/`), header versioning (`Accept: application/vnd.app.v1+json`), and query parameter versioning in Express?
+ 2. **Proxy Trust Configurations (`app.set('trust proxy', true)`):** Why is configuring `trust proxy` essential when your Express API sits behind an Nginx load balancer or Cloudflare CDN for correct routing/IP logging?
+ 3. **Graceful Shutdown Routing Drain:** When an Express server receives a `SIGTERM` signal, how do you stop accepting new router connections while allowing active requests to finish?
+ 4. **Internal API Gateway Routing:** How do you design an Express-based API gateway router that dynamically proxies requests to downstream microservices using `http-proxy-middleware`?
+ 5. **CORS Preflight Route Optimization:** Why do `OPTIONS` preflight requests hit Express routers, and how do you optimize CORS middleware placement to prevent unnecessary controller executions?
+ 6. **Response Time Monitoring Middleware:** How do you write custom router-level instrumentation middleware to log execution duration metrics for slow endpoint identification?
+ 7. **File Streaming Route Architecture:** How do you route large file downloads using Node streams (`fs.createReadStream`) without exhausting server RAM?
+ 8. **Trailing Slash Redirection Loops:** How do you prevent infinite redirect loops when Express static file routers interact with custom trailing-slash rules?
+ 9. **Dynamic Controller Loading:** How do you auto-load routes dynamically by reading the file system directory structure (file-based routing similar to Next.js) in a custom Express setup?
+10. **Multi-Tenant Subdomain Routing:** How do you extract wildcard subdomains (`*.tenant.com`) using Express routing parameters to dynamically database-switch per tenant?
+11. **Route-Based Content Negotiation:** How do you use `req.accepts()` inside an Express router to serve JSON, XML, or HTML views from a single URI endpoint?
+12. **Preventing ReDoS (Regular Expression Denial of Service):** How can maliciously crafted URL parameters crash an Express path-to-regexp parser, and how do you write safe paths?
+13. **Memory Leakage via Unclosed Route Handlers:** What happens to Express request-response lifecycles if a route handler forgets to send a response or call `next()`, and how do you catch hanging sockets?
+14. **Global vs Local Error Middleware Separation:** How do you structure router-specific error catchers that format errors differently than the global API error handler?
+15. **Testing Express Routers Independently:** How do you unit test an isolated `express.Router()` module using `supertest` without spinning up the entire root server instance?
 
 ### Category 1: React Router Advanced Navigation & State Control
 
