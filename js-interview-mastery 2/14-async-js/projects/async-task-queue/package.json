@@ -1,0 +1,11 @@
+{
+  "name": "async-task-queue",
+  "version": "1.0.0",
+  "description": "A Promise-based task queue with a concurrency limit, demoed against fake async API calls.",
+  "main": "index.js",
+  "scripts": {
+    "demo": "node demo.js",
+    "test": "node test.js"
+  },
+  "license": "MIT"
+}

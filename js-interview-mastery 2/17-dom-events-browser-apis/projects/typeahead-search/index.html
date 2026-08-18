@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Typeahead Search</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    body {
+      max-width: 480px;
+      margin: 4rem auto;
+      padding: 0 1rem;
+    }
+    h1 {
+      font-size: 1.25rem;
+    }
+    .typeahead {
+      position: relative;
+    }
+    #search-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.6rem 0.8rem;
+      font-size: 1rem;
+      border: 1px solid #888;
+      border-radius: 6px;
+    }
+    #search-results {
+      list-style: none;
+      margin: 0.25rem 0 0;
+      padding: 0;
+      border: 1px solid #888;
+      border-radius: 6px;
+      max-height: 260px;
+      overflow-y: auto;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: Canvas;
+      color: CanvasText;
+      display: none;
+      z-index: 10;
+    }
+    #search-results.open {
+      display: block;
+    }
+    #search-results li {
+      padding: 0.5rem 0.8rem;
+      cursor: pointer;
+    }
+    #search-results li mark {
+      background: #ffe08a;
+      color: inherit;
+    }
+    #search-results li[aria-selected="true"] {
+      background: #3b82f6;
+      color: white;
+    }
+    #search-results li[aria-selected="true"] mark {
+      background: transparent;
+      text-decoration: underline;
+    }
+    #status {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #666;
+    }
+    #chosen {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Typeahead Search</h1>
+  <p>Type a country name below. Use <kbd>&#8595;</kbd>/<kbd>&#8593;</kbd> to move, <kbd>Enter</kbd> to select, <kbd>Esc</kbd> to close.</p>
+
+  <div class="typeahead">
+    <input
+      type="text"
+      id="search-input"
+      placeholder="Search countries…"
+      autocomplete="off"
+      role="combobox"
+      aria-expanded="false"
+      aria-controls="search-results"
+      aria-autocomplete="list"
+    />
+    <ul id="search-results" role="listbox"></ul>
+  </div>
+
+  <div id="status" aria-live="polite"></div>
+  <div id="chosen"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

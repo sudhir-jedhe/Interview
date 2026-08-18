@@ -1,0 +1,5 @@
+# Content-Security-Policy (CSP)
+
+CSP is a response header letting a server declare which sources of scripts, styles, and images the browser may load/execute, as a defense-in-depth layer against XSS. A policy like `Content-Security-Policy: script-src 'self'` makes the browser refuse to execute inline `<script>` tags or scripts from any domain other than the page's own — so even if an attacker injects a `<script>` tag via a missed sanitization bug, the browser simply won't run it.
+
+**What does CSP protect against?** It's a defense-in-depth layer against XSS specifically — even if an attacker manages to inject a `<script>` tag through a sanitization bug, a policy like `script-src 'self'` makes the browser refuse to execute it if it's inline or from an unlisted domain. CSP is not a substitute for fixing the underlying sanitization bug — it's a second line of defense that limits the blast radius if the first line (proper output encoding/sanitization, see `02-safe-rendering-alternatives.md`) fails.
