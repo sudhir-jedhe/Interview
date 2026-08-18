@@ -1,0 +1,10 @@
+# Interview Q&A: Consuming Streams & Watching Files
+
+**Q: How does for await...of over a Readable stream compare to listening to 'data' events directly?**
+A raw `'data'` event listener fires as fast as the source can produce chunks, regardless of whether your handler has finished processing the previous one — you have to manually pause/resume to avoid overwhelming downstream logic. `for await...of` pulls one chunk at a time, only requesting the next chunk once the current loop iteration's body completes, which naturally respects backpressure without any manual intervention. It's generally the more ergonomic modern pattern for consuming a stream when you don't need to compose it into a larger pipeline.
+
+**Q: What's the difference between the 'finish' and 'end' events on streams?**
+`'finish'` is emitted by a Writable stream once all data passed to `.end()` has been flushed to the underlying resource (disk, socket) — it signals "writing is done." `'end'` is emitted by a Readable stream once there's no more data to be consumed — it signals "reading is done." They're symmetric opposites on the two stream directions, not interchangeable, and a common mistake is waiting on the wrong one (e.g., expecting `'end'` on a write stream, which never fires there).
+
+**Q: How do you watch a file or directory for changes in Node, and what are the caveats?**
+`fs.watch(path, callback)` uses OS-level file system notification APIs (inotify on Linux, FSEvents on macOS, ReadDirectoryChangesW on Windows) to fire a callback on changes, which is efficient since it doesn't poll. The caveats: behavior is notably platform-inconsistent (whether you reliably get the changed filename, how renames are reported, whether editors that write-via-temp-file-and-rename trigger the expected events), and it can miss events under rapid successive changes on some platforms. `fs.watchFile` is a polling-based alternative that's more consistent but far less efficient (constant `stat` calls on an interval). Production file-watching needs (build tools, hot-reload) typically reach for a battle-tested library like `chokidar` that smooths over these differences.

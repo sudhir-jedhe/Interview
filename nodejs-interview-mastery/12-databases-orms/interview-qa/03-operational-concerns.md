@@ -1,0 +1,10 @@
+# Interview Q&A: Operational Concerns — Connections, Config, Migrations
+
+**Q: How should a Node app handle a database connection failure at startup or a dropped connection mid-run?**
+At startup, retry with exponential backoff rather than crashing immediately — databases sometimes take a moment longer to become available than the app does (common in containerized deployments where services start in parallel). At runtime, attach an error listener to the pool (`pool.on('error', ...)`) so a dropped idle connection is logged and handled rather than crashing the whole process, and make sure query call sites handle rejected promises so a single failed query returns a `503`/`500` to that request instead of taking down the server.
+
+**Q: Why should database connection strings and credentials never be hardcoded in source code?**
+Hardcoded credentials get committed to version control (and often stay in history even after being "removed"), can't differ between development/test/production without editing code, and are a direct security liability if the repository is ever exposed. Loading them from environment variables (via `process.env`, `.env` files excluded from git, or a secrets manager in production) lets the same codebase run against different databases per environment with zero code changes and keeps credentials out of the codebase entirely.
+
+**Q: What's the tradeoff of using an ORM's automatic migration/sync feature (e.g. Sequelize's `sync({ alter: true })`) versus writing explicit migration files?**
+Auto-sync is convenient in early development — the ORM inspects your models and adjusts the database schema to match — but it's dangerous in production because it can make destructive, non-reversible changes (dropping/recreating columns) based on inferred diffs, with no audit trail or ability to review before applying. Explicit migration files (hand-written or generated, then reviewed) give you a versioned, reviewable, reversible history of schema changes that can be tested in staging and rolled back if something goes wrong — the standard practice for any production database is migrations, not auto-sync.

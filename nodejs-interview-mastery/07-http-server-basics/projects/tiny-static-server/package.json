@@ -1,0 +1,22 @@
+{
+  "name": "tiny-static-server",
+  "version": "1.0.0",
+  "description": "A minimal, dependency-free static file server CLI built on Node's http and fs modules — correct MIME types, directory listing, and path-traversal protection.",
+  "main": "server.js",
+  "bin": {
+    "tiny-static-server": "./server.js"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "license": "MIT",
+  "keywords": [
+    "http",
+    "static-server",
+    "cli",
+    "node"
+  ]
+}

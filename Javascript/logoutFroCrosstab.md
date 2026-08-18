@@ -8,7 +8,7 @@ Here is the complete implementation using **React, Redux Toolkit, and React Rout
 
 Using the `BroadcastChannel` API is the most reliable modern way to communicate instantly across all tabs (including the active one).
 
-```jsx
+```js
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -70,7 +70,7 @@ export const useGlobalLogout = () => {
 
 Wrap your authenticated router structure with a layout component that calls the hook so the listener is always active.
 
-```jsx
+```js
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { useGlobalLogout } from './useGlobalLogout';
@@ -98,7 +98,7 @@ export default AuthAppLayout;
 
 Now, whenever a user clicks "Log Out" in any tab, `triggerGlobalLogout` will clear local storage, dispatch Redux clearance, push the broadcast signal, and route every open window to `/login` instantaneously.
 
-```jsx
+```js
 import React from 'react';
 import { useGlobalLogout } from './useGlobalLogout';
 

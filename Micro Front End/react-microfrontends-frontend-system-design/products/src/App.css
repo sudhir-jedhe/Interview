@@ -1,0 +1,130 @@
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --text: #15202b;
+  --muted: #5b6b7c;
+  --border: #d7dee7;
+  --brand: #0369a1;
+  --brand-hover: #0284c7;
+  --brand-soft: #e0f2fe;
+  --shadow: 0 1px 2px rgb(15 23 42 / 6%), 0 8px 24px rgb(15 23 42 / 6%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+button {
+  font: inherit;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 1.35rem 1.25rem 2.5rem;
+}
+
+.intro {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.intro code {
+  font-size: 0.9em;
+  background: #eef2f6;
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  color: var(--text);
+}
+
+.toast {
+  margin: 0 0 1rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.9rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.price {
+  margin: 0.45rem 0 0.9rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.card button {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 0.55rem 0.75rem;
+  background: var(--brand);
+  color: white;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background: var(--brand-hover);
+}

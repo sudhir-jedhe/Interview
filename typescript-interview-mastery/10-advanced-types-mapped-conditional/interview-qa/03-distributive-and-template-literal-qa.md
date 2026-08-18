@@ -1,0 +1,13 @@
+# Interview Q&A: Distributive Conditional Types and Template Literals
+
+**Q1: What makes a conditional type "distributive," and what disables it?**
+A: A conditional type distributes over a union when the type being checked (the left side of `extends`) is a bare, naked type parameter — not wrapped in a tuple, array, object, or otherwise. When that condition holds and you feed in a union, TypeScript evaluates the conditional once per union member and unions the results. Wrapping both sides in a one-element tuple (`[T] extends [U]`) disables distribution, because `[T]` is no longer a naked type parameter — it's a tuple type containing one, so the whole union is checked as a single unit.
+
+**Q2: Why do `Exclude` and `Extract` rely on distribution to work correctly?**
+A: Both are defined as simple conditionals over a naked `T` (`T extends U ? never : T` and `T extends U ? T : never`). Without distribution, feeding a union into `T` would check the *entire* union's assignability to `U` in one shot, either keeping or discarding the whole union — not filtering it member by member. Distribution is what turns "is this whole union assignable to U" into "check each member independently," which is the actual filtering behavior both utilities are supposed to provide.
+
+**Q3: What's the practical downside of overusing template literal types with large unions?**
+A: Template literal types compute a full, eager cross-product of every interpolated union at compile time — interpolating a 10-member union into two positions produces up to 100 literal types, and this grows multiplicatively with more interpolated positions or larger unions. Past a few hundred combinations this can measurably slow down type-checking, bloat editor tooltips/autocomplete, and in extreme cases hit TypeScript's internal complexity limits. The mitigation is to fall back to a looser pattern (interpolating `${string}` instead of a specific union) or move the validation to runtime once the combinatorics get too large to usefully enumerate as literal types.
+
+**Q4: How would you extract a substring from within a string literal type using template literal types?**
+A: Use a template literal pattern with `infer` inside a conditional type's `extends` clause — the same technique as destructuring a tuple or function type, but applied to string structure. Example: `type FileExtension<S extends string> = S extends `${string}.${infer Ext}` ? Ext : never` extracts `"ts"` from `"index.ts"`. TypeScript matches the literal string structurally against the template pattern and solves for whatever `infer` position would make the pattern fit.

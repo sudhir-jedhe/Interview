@@ -1,0 +1,13 @@
+# Interview Q&A: Modules vs. Namespaces
+
+**Q1: Why did TypeScript have namespaces before ES modules, and why are they now discouraged?**
+A: Namespaces (originally "internal modules") existed because when TypeScript launched, JavaScript had no standardized module system — every file's top-level code shared one global scope, so namespaces were the pragmatic way to avoid naming collisions between files. Once ES modules became a real, widely-supported JavaScript standard, they solved the same scoping problem more completely and are understood natively by every modern build tool (bundlers, tree-shakers, linters), while namespaces remain a TypeScript-only construct invisible to that tooling. TypeScript's own documentation now recommends ES modules for new code, reserving namespaces mainly for legacy codebases and specific `.d.ts` authoring patterns.
+
+**Q2: Can namespaces and ES modules be mixed in the same file?**
+A: Not meaningfully in the way you'd want for new code — once a file has a top-level `import` or `export`, it becomes a module, and namespaces inside a module file lose their original "global scoping" purpose since the module itself is already scoped. You'll sometimes see a namespace *nested inside* a module for grouping related exports, but that's a distinct, much rarer use case from namespaces' original role as a substitute for modules.
+
+**Q3: What is declaration merging, and how does it relate to both namespaces and interfaces?**
+A: Declaration merging is TypeScript's behavior of combining multiple declarations that share the same name into a single logical entity, instead of treating the repeat as a redeclaration error. Interfaces merge their members; namespaces merge their exported members across separate `namespace` blocks; and a namespace can merge with a `class`, `function`, or `enum` of the same name, attaching the namespace's members onto that value. Module augmentation (extending a third-party library's types) is a direct application of this same mechanism, targeted at a specific module specifier.
+
+**Q4: If you inherited a namespace-heavy legacy codebase, would you recommend an immediate rewrite to ES modules?**
+A: Not usually as a standalone project — a full namespace-to-module migration touches every file that references the namespace and carries real regression risk for a change with no immediate user-facing benefit. The pragmatic answer is to migrate incrementally, converting files to ES modules as they're touched for other reasons (bug fixes, feature work) rather than in one disruptive pass, unless the namespace usage is actively blocking something concrete (like tree-shaking a bundle that's grown too large, or adopting a build tool that doesn't understand namespaces at all).

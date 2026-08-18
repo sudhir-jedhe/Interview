@@ -1,0 +1,16 @@
+---
+description: Core SpecForge project behavior and scope control.
+alwaysApply: true
+---
+
+# Core Rules
+
+- Work on one active section at a time.
+- Treat the active `specs/*.md` file as the implementation source of truth.
+- Keep implementation changes scoped to the active spec.
+- Do not add future features, routes, schemas, pages, packages, or abstractions unless the active spec explicitly asks for them.
+- Prefer simple, readable code over over-engineered patterns.
+- Do not duplicate broad project instructions inside implementation prompts.
+- If a manual setup step is required, place it in `manual-work/*.md` and do not silently invent setup assumptions.
+- Update `context/tracker.md` after completing a section.
+- Keep `context/tracker.md` short: section status, important decisions, next section, and known issues only.

@@ -1,0 +1,24 @@
+{
+  "name": "log-tailer",
+  "version": "1.0.0",
+  "description": "A tail -f-style CLI log-file watcher built with fs.watch and streams, no dependencies.",
+  "main": "index.js",
+  "bin": {
+    "log-tailer": "./index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "tail",
+    "log",
+    "fs.watch",
+    "streams",
+    "cli"
+  ],
+  "license": "MIT",
+  "private": true
+}

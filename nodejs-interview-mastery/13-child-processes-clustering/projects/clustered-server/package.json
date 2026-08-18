@@ -1,0 +1,13 @@
+{
+  "name": "clustered-server-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minimal clustered HTTP server demo — one worker per CPU core, auto-restart on crash",
+  "main": "cluster.js",
+  "scripts": {
+    "start": "node cluster.js"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

@@ -1,0 +1,13 @@
+# Interview Q&A: Inference vs Annotation
+
+**Q: When should you write an explicit type annotation instead of relying on inference?**
+A: Four common cases: (1) uninitialized variables (`let x;` has no initializer for TS to infer from), (2) function parameters, which TypeScript never infers from usage inside the body, (3) public/exported function return types, as a safeguard so an accidental change to the function body doesn't silently widen or narrow the API's contract, and (4) whenever inference would produce a wider type than you actually want (e.g. `let status = "pending"` infers `string`, but you want the literal union `"pending" | "shipped"`).
+
+**Q: What is "literal widening" and why does it happen?**
+A: When you initialize a `let` (or `var`) variable with a literal value like `"pending"` or `3`, TypeScript infers the *general* type (`string`, `number`) rather than the specific literal type, because the variable is mutable and could later be reassigned to any other value of that general type. `const` bindings, which can never be reassigned, keep the narrow literal type instead. This is why `const x = "pending"` has type `"pending"`, but `let x = "pending"` has type `string`.
+
+**Q: What does `as const` do, and how is it different from a regular type annotation?**
+A: `as const` is a "const assertion" applied to a literal expression. It tells TypeScript to infer the *narrowest possible* type for that expression: string/number/boolean literals keep their literal type instead of widening, array literals become `readonly` tuples instead of mutable arrays, and object literals become deeply `readonly` with each property's value kept as its literal type. It's the opposite of a normal type annotation, which usually *widens or constrains* to a type you specify — `as const` instead locks in exactly what's already there, immutably. It's the standard way to get interface-like precision out of a plain object/array literal (config objects, enum-like value sets) without hand-declaring a matching type.
+
+**Q: Does TypeScript ever infer function parameter types without an annotation?**
+A: Yes, but only through "contextual typing" — when a function expression is used somewhere TypeScript already knows the expected function type, such as an array method callback (`arr.map(x => ...)`, where `x` is inferred from the array's element type) or a DOM event listener (`el.addEventListener("click", e => ...)`, where `e` is inferred as `MouseEvent` from the overload matching `"click"`). Outside of such contextual positions — e.g. a standalone `function` declaration — parameters must be annotated explicitly, or they become `any` (flagged as an error under `noImplicitAny`, which is part of `strict` mode).

@@ -1,0 +1,27 @@
+{
+  "name": "practical",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "kafka:up": "docker compose up -d",
+    "kafka:down": "docker compose down",
+    "kafka:logs": "docker compose logs -f kafka",
+    "topic:create": "tsx src/config/create-topic.ts",
+    "producer": "tsx src/producers/order-producer.ts",
+    "consumer:notification": "tsx src/consumers/notification-consumer.ts",
+    "consumer:analytics": "tsx src/consumers/analytics-consumer.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^20.17.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}

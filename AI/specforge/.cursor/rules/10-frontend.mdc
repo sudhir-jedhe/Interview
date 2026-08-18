@@ -1,0 +1,37 @@
+---
+description: Frontend rules for the Next.js client app and shadcn/ui usage.
+globs:
+  - "client/**/*.{ts,tsx,css}"
+alwaysApply: false
+---
+
+# Frontend Rules
+
+- Frontend app lives in `client/`.
+- Use Next.js App Router conventions.
+- Use shadcn/ui components where they fit the feature.
+- The shadcn theme is already installed. Use the theme tokens from `client/src/app/globals.css`.
+- Do not invent random Tailwind colors such as `bg-blue-600`, `text-slate-500`, or `bg-zinc-900`.
+- Prefer theme classes:
+  - `bg-background`
+  - `bg-card`
+  - `text-foreground`
+  - `text-muted-foreground`
+  - `border-border`
+  - `bg-primary`
+  - `text-primary-foreground`
+  - `bg-secondary`
+  - `text-secondary-foreground`
+  - `bg-muted`
+- Use `Button` variants instead of hard-coded button colors where possible.
+- Main CTA or submit action should use the primary style.
+- Secondary/cancel/navigation actions should use secondary, outline, or ghost styles.
+- Cards should usually use `bg-card`, `border`, `border-border`, rounded corners, and consistent padding.
+- Keep layouts simple:
+  - page containers use a readable max width and horizontal padding
+  - card grids should collapse cleanly on mobile
+  - forms should be single-column unless the active spec says otherwise
+- Use only two API helper files:
+  - `client/src/lib/server.ts` for Server Components
+  - `client/src/lib/client.ts` for Client Components
+- Do not create Next.js API proxy routes unless an active spec explicitly asks.

@@ -1,0 +1,17 @@
+# Interview Q&A: Thunks vs. Sagas vs. `createAsyncThunk`
+
+**Q1: What's fundamentally different about how redux-saga handles side effects compared to redux-thunk?**
+
+A: Thunks are imperative — a plain JS function that directly calls `dispatch`, `await`s promises, and uses `try/catch`, executed by the thunk middleware essentially as-is. Sagas are declarative and generator-based — a saga function `yield`s plain descriptor objects (like `{ type: 'CALL', fn, args }` produced by effect creators such as `call`, `put`, `take`) that describe *what* effect should happen, and the saga middleware is the thing that actually interprets and executes each yielded effect, then resumes the generator with the result. This indirection is what makes sagas testable without mocking network calls (you assert on yielded effect descriptors) and what enables built-in coordination primitives like `race`, `takeLatest`, and `debounce` that a thunk would have to implement by hand.
+
+**Q2: Give a concrete example of something meaningfully easier in a saga than in a hand-written thunk.**
+
+A: Debounced search-as-you-type with automatic cancellation of superseded in-flight requests: `yield debounce(300, 'search/queryChanged', handleSearch)` is one line, and the saga middleware handles both the debounce timing and cancelling any previous `handleSearch` task that's still running when a new `queryChanged` action arrives. The equivalent in a plain thunk requires manually managing a `setTimeout`/`clearTimeout` pair for the debounce and a separate staleness-check (comparing state or a request id) to guard against out-of-order resolution — functionally similar, but hand-rolled and more surface area for bugs.
+
+**Q3: Given that redux-saga exists and is more powerful for complex cases, why is `createAsyncThunk` the default recommendation today rather than sagas?**
+
+A: Most real-world async needs in a typical app are the simple case — fetch a resource, track loading/error — which `createAsyncThunk` handles fully with far less conceptual overhead than sagas require (no generators, no effect-creator vocabulary to learn). Sagas' genuine advantages show up specifically in complex orchestration scenarios (cancellation trees, races between multiple sources, coordinated multi-step flows) that most features don't actually need. Introducing a whole second async paradigm and its associated learning curve for a codebase that's mostly doing simple fetches is a cost without a matching benefit — the Redux team's own current guidance is to default to RTK's tools and reach for something like sagas only when a specific, concrete orchestration need justifies it.
+
+**Q4: If a team is already using redux-saga in a large legacy codebase, does adopting Redux Toolkit mean ripping sagas out?**
+
+A: No — `configureStore`'s default middleware and `createAsyncThunk` don't conflict with also having `redux-saga` registered as an additional middleware; a codebase can use RTK's `createSlice`/`configureStore` for state management infrastructure while keeping existing sagas for the specific complex flows they were written for, migrating incrementally (or not at all) rather than as a forced either/or choice. What you'd want to avoid is writing *new* simple fetch-and-track-status logic as sagas going forward if `createAsyncThunk` covers it more simply — but that's a going-forward convention decision, not a requirement to migrate existing working sagas.

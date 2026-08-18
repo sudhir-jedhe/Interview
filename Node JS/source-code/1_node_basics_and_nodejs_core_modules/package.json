@@ -1,0 +1,29 @@
+{
+  "name": "1_node_basics_and_nodejs_core_modules",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "01": "tsx src/01-process-object.ts",
+    "02": "tsx src/02-crypto-module.ts",
+    "03": "tsx src/03-os-module.ts",
+    "04": "tsx src/04-path-module.ts",
+    "05": "tsx src/05-timers-module.ts",
+    "06": "tsx src/06-callback-promises-async-await-module.ts",
+    "07": "tsx src/07-fs-module.ts",
+    "08": "tsx src/08-buffers.ts",
+    "09": "tsx src/09-url-module.ts",
+    "10": "tsx src/10-event-emitter.ts",
+    "11": "tsx src/11-streams.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "tsx": "^4.23.0",
+    "typescript": "^6.0.3"
+  }
+}

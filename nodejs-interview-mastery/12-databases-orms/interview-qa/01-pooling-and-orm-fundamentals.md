@@ -1,0 +1,13 @@
+# Interview Q&A: Connection Pooling and ORM Fundamentals
+
+**Q: Why is connection pooling important, and what goes wrong if you skip it?**
+Opening a database connection is expensive — TCP handshake, TLS negotiation, and DB-side authentication typically cost tens of milliseconds — so doing it once per request tanks throughput and can exhaust the database's max-connection limit under concurrent load. A pool opens a bounded set of connections once at startup and lets requests borrow and return them, keeping both latency and connection count predictable. The most common real bug is creating the pool (or calling `mongoose.connect()`) inside a request handler instead of once at module load, which either leaks connections per request or silently misbehaves depending on the library.
+
+**Q: What's the difference between an ORM and an ODM?**
+An ORM (Object-Relational Mapper — Sequelize, Prisma) maps rows in a relational (SQL) database to JS objects and models relationships via foreign keys and JOINs. An ODM (Object-Document Mapper — Mongoose) maps documents in a document database (MongoDB) to JS objects; there's no fixed schema at the database engine level, so the ODM is what actually enforces structure and validation in application code. Both solve the same underlying problem — bridging a lower-level data store and your application's object model — for two structurally different kinds of databases.
+
+**Q: When would you drop down to raw SQL/raw driver calls instead of using your ORM's query builder?**
+For complex reporting or analytical queries where the ORM's generated SQL is provably suboptimal (missing index hints, unnecessary subqueries), for bulk operations where an ORM's per-row hooks/validation add meaningful overhead, or when you need a database-specific feature the ORM doesn't expose (a specific window function, a vendor extension). Most ORMs provide an escape hatch for exactly this (`sequelize.query()`, `prisma.$queryRaw`) so you don't have to abandon the ORM for the rest of the codebase just because one query needs hand-tuning.
+
+**Q: What's wrong with creating a `new Pool()` (or a new ORM client) inside a route handler instead of at module load?**
+Every request creates a brand-new connection pool instead of reusing a shared one, so concurrent requests multiply the number of open database connections far beyond the pool's intended `max` setting — with enough concurrent traffic this exhausts the database's actual connection limit and starts rejecting connections for the entire application, not just that endpoint. The pool (or ORM client) should be constructed exactly once at application startup and imported/reused everywhere it's needed, relying on Node's module caching (`require`) to guarantee it's a singleton.

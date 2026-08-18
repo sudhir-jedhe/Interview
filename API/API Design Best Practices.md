@@ -39,3 +39,4 @@ Based on the provided image, here is a detailed breakdown of the **API Design Be
 * **Be consistent:** Follow strict naming and response standards.
 * **Use correct status codes:** Implement proper codes like `200`, `201`, `400`, `401`, `404`, and `500`.
 * **Design for extensibility:** Make it easy to evolve your API over time without breaking existing clients.
+![alt text](1786226456887.jpeg)

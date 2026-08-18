@@ -1,0 +1,17 @@
+# Scenario: Redux DevTools Crashes During a File Upload Flow
+
+QA reports that Redux DevTools' extension panel becomes unresponsive (and sometimes crashes the tab) specifically during the file-upload feature's flow, and nowhere else in the app. The upload feature itself works fine for end users — this is purely a development-tooling problem, but it's blocking engineers from debugging the upload flow at all.
+
+## Approach:
+
+**1. Suspect non-serializable state immediately, given the specific symptom.** DevTools crashing (rather than just being slow) during serialization of state is a strong, specific signal — the `serializableCheck` middleware warning is designed to catch exactly this class of problem in the console, so the first move is checking whether that warning has been silenced (a common but risky practice: disabling `serializableCheck` in `configureStore` to make an annoying warning go away without fixing its cause).
+
+**2. Locate the actual non-serializable value.** Inspect the upload slice's reducers. Likely finding: `state.currentFile = action.payload.file`, storing the raw browser `File`/`Blob` object directly in Redux state so the upload progress component can reference it — plus, compounding the problem, `state.uploadPromise = uploadFileToServer(file)`, storing the in-flight `Promise` itself in state so a "cancel" button can theoretically call `.abort()` on something reachable from state.
+
+**3. Explain why both are DevTools-hostile, not just "technically wrong."** A `File`/`Blob` is a large, complex browser object with internal buffers — attempting to serialize it for DevTools' state history is exactly the kind of expensive, potentially-failing operation that can hang or crash the extension, especially once several upload attempts have accumulated Promise/File objects across the action history DevTools is holding onto. A `Promise` is arguably worse: it's not data at all, it's a *handle to pending async work*, and serializing "the current state of pending work" doesn't mean anything coherent.
+
+**4. Fix by keeping both values out of Redux state entirely.** The `File` object belongs in local component state (`useState` in the upload form) or a ref — Redux only needs to know serializable metadata about it if that metadata is needed elsewhere (`fileName`, `fileSize`, `uploadStatus: 'uploading' | 'done' | 'failed'`). The cancellation capability (currently modeled as "reach into state and call `.abort()` on the stored Promise") should instead be modeled as an `AbortController` held in a ref or module-level variable outside Redux, with Redux only tracking the serializable fact that a cancellation was requested (`status: 'cancelling'`), read by the code that actually holds the `AbortController`.
+
+**5. Re-enable `serializableCheck` if it had been disabled, rather than leaving it off.** Disabling the check silences the symptom for every future non-serializable value some other engineer might introduce, not just this one — re-enabling it after the actual fix restores the safety net for the rest of the app.
+
+**Result:** DevTools stops crashing because state no longer contains a `File` or `Promise`, the upload flow's actual functionality is unaffected (since the removed values were only ever needed transiently, not as persisted application state), and the team has a concrete example for why `serializableCheck` shouldn't be casually disabled to quiet a warning.

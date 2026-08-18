@@ -1,0 +1,16 @@
+{
+  "name": "auth-demo",
+  "version": "1.0.0",
+  "description": "A small login / protected-route demo showing JWT auth, bcrypt password hashing, and role-based authorization middleware in Express.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "license": "MIT"
+}

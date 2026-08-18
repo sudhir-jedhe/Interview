@@ -1,0 +1,24 @@
+---
+description: Backend rules for the Express TypeScript server.
+globs:
+  - "server/**/*.{ts,json}"
+alwaysApply: false
+---
+
+# Backend Rules
+
+- Backend app lives in `server/`.
+- Main entry file is `server/src/server.ts`.
+- Main route aggregator is `server/src/routes/index.ts`.
+- Use Express with TypeScript.
+- Keep route handlers simple and readable.
+- Use raw `pg` queries with parameterized values. Do not add an ORM.
+- Database connection code belongs in `server/src/db/`.
+- SQL migration files belong in `server/src/migrations/`.
+- Repository files belong in `server/src/repository/`.
+- Middleware belongs in `server/src/middleware/`.
+- Shared helpers such as JWT, Google OAuth, OpenAI, and environment helpers belong in `server/src/lib/`.
+- Do not add controllers/services folders unless an active spec explicitly asks.
+- Do not hard-code secrets.
+- Add required environment variables to `server/.env.example`.
+- Keep errors beginner-readable. Avoid complex custom frameworks unless the active spec requires them.

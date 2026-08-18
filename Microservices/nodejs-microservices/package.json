@@ -1,0 +1,29 @@
+{
+  "name": "nodejs-microservices",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:auth": "npm run dev -w auth-service",
+    "dev:task": "npm run dev -w task-service",
+    "dev:media": "npm run dev -w media-service",
+    "dev:workflow": "npm run dev -w workflow-service",
+    "dev:gateway": "npm run dev -w api-gateway",
+    "db:migrate": "tsx scripts/db-migrate.ts",
+    "kafka:up": "docker compose -f docker/docker-compose.yml up -d",
+    "kafka:down": "docker compose -f docker/docker-compose.yml down",
+    "kafka:logs": "docker compose -f docker/docker-compose.yml logs -f kafka"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
+}

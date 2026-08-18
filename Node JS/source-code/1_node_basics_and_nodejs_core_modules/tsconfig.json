@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ES2022" /* Set the compiled JavaScript version */,
+    "module": "NodeNext" /* Match modern Node.js module resolution */,
+    "moduleResolution": "NodeNext" /* Ensure imports map correctly in Node */,
+    "lib": ["ES2022"] /* Include modern JavaScript globals */,
+
+    /* Output Options */
+    "outDir": "./dist" /* Redirect compiled JavaScript to this folder */,
+    "rootDir": "./src" /* Locate your TypeScript source code folder */,
+
+    /* Strict Type-Checking */
+    "strict": true /* Enable all strict type-checking options */,
+    "noImplicitAny": true /* Error out on implied 'any' types */,
+    "strictNullChecks": true /* Prevent 'null' or 'undefined' type errors */,
+
+    /* Code Quality Checks */
+    "noUnusedLocals": true /* Error on declared but unused variables */,
+    "noUnusedParameters": true /* Error on unused function arguments */,
+    "noImplicitReturns": true /* Ensure all code paths return a value */,
+    "noFallthroughCasesInSwitch": true /* Stop case bleed-through in switch blocks */,
+
+    /* Interoperability & Security */
+    "esModuleInterop": true /* Support CommonJS and ES Module interop */,
+    "skipLibCheck": true /* Skip type-checking of dependency declaration files */,
+    "forceConsistentCasingInFileNames": true /* Block case-mismatched file imports */,
+    "types": ["node"]
+  },
+  "include": ["src/**/*"] /* Compile everything inside the src folder */,
+  "exclude": [
+    "node_modules",
+    "dist"
+  ] /* Ignore external packages and build files */
+}

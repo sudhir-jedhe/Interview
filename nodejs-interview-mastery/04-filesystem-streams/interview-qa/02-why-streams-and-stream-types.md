@@ -1,0 +1,10 @@
+# Interview Q&A: Why Streams & Stream Types
+
+**Q: Why do streams exist — what problem do they solve that fs.readFile doesn't?**
+`fs.readFile` (in any form) loads the entire file into memory before your code can do anything with it, which is fine for small files but risks out-of-memory crashes for large ones (a multi-gigabyte video, an unbounded request body) and adds latency since nothing happens until the whole file is read. Streams process data in small chunks, holding only a bounded buffered window in memory at any time, and let downstream consumers start processing before the source has finished producing — essential for large files, network responses, and any data whose size isn't known or bounded in advance.
+
+**Q: What are the four fundamental stream types in Node, and what's the difference between them?**
+`Readable` is a source you consume data from (`fs.createReadStream`, an HTTP request body). `Writable` is a destination you write data to (`fs.createWriteStream`, an HTTP response). `Duplex` is both, independently — read and write sides are unrelated data flows, like a TCP socket. `Transform` is a special Duplex where the output is a computed function of the input passing through it, like `zlib.createGzip()` or a custom uppercase filter — it's the type you want whenever you're processing data as it flows through a pipeline stage.
+
+**Q: What does highWaterMark control, and what happens if you set it very low vs very high?**
+`highWaterMark` sets the internal buffer threshold (in bytes for binary streams, or object count for object-mode streams) at which a Readable stops requesting more data from its source, or a Writable's `.write()` starts returning `false`. A very low value means more frequent, smaller chunk callbacks and effectively more finely-granular backpressure signaling, at the cost of more per-chunk overhead. A very high value buffers more in memory before backpressure kicks in, reducing overhead per chunk but increasing peak memory usage and reducing responsiveness to backpressure — it's a tunable tradeoff between throughput/overhead and memory/responsiveness, not a hard limit that's ever strictly enforced.

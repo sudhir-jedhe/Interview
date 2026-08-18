@@ -1,0 +1,13 @@
+# Interview Q&A: Zustand, Recoil, and Jotai
+
+**Q: What's the single biggest practical difference between Redux and Zustand, beyond "less boilerplate"?**
+A: No enforced action-type convention. Redux's `{ type, payload }` shape, dispatched through a single `dispatch` function, means the entire history of state changes is uniform and inspectable (by DevTools, by a colleague reading a diff) regardless of which slice or engineer wrote the code. Zustand's `set()` calls inside store methods have no equivalent shape requirement — two engineers can update the same conceptual thing in stylistically different ways, and there's no single "action log" abstraction unless you explicitly wire up Zustand's `devtools` middleware and are disciplined about naming your `set()` calls.
+
+**Q: What's the core architectural difference between Redux's model and Recoil/Jotai's model?**
+A: Redux: one tree, one store, all state under one root object. Recoil/Jotai: a graph of independent atoms, each its own piece of state, with derived atoms tracking their dependencies automatically based on what they read. It's not just "smaller Redux" the way Zustand is — it's a different mental model entirely, more like a fine-grained reactive dependency graph (similar in spirit to how a spreadsheet's cells depend on each other) than a single serializable object tree.
+
+**Q: When would you specifically reach for an atomic model (Jotai/Recoil) over Redux or Zustand?**
+A: When the UI has many genuinely independent, fine-grained pieces of state that update at different times for different reasons — a large form with dozens of fields, a design tool's property inspector, a spreadsheet-like UI. In those cases, per-field atoms mean each field's component subscribes to exactly its own state with zero manual selector-scoping effort, whereas achieving the same render granularity in Redux requires every engineer to correctly write narrow `useSelector` calls (or memoized `reselect` selectors) for every field, by hand, every time.
+
+**Q: Is Zustand's lack of structure always a downside?**
+A: No — it's a genuine trade-off, not a strict downside. For a small team or a small app, Redux's enforced structure is overhead you're paying for a benefit (consistency across many contributors) you don't need yet. Zustand's flexibility means less code and faster iteration precisely because it doesn't make you follow ceremony that only pays off at larger scale. The "downside" framing only applies once a team/codebase reaches a size where ad-hoc conventions start causing real friction — which is exactly the judgment call covered in `04-when-redux-still-wins.md`.

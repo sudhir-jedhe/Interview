@@ -1,0 +1,13 @@
+# Interview Q&A: Normalization Fundamentals
+
+**Q: What does it mean to "normalize" state in Redux, and why borrow the term from databases?**
+A: It means restructuring nested/relational data so each entity type is stored once, in a flat table keyed by ID (`byId`/`allIds`, or RTK's `entities`/`ids`), with relationships expressed as ID references rather than embedded copies. The term is borrowed from relational database normalization deliberately — the goals are the same: eliminate duplicate data, avoid update anomalies (editing one copy but not another), and make each fact about the world live in exactly one place.
+
+**Q: What are the concrete costs of denormalized state, beyond "it's ugly"?**
+A: Three concrete costs: (1) duplicate copies of the same entity can drift out of sync when one copy is updated and others aren't; (2) updating a deeply nested value requires reconstructing every ancestor level immutably, which is verbose, error-prone, and tends to change the reference of ancestor objects that logically didn't change, causing `useSelector`-driven re-renders in components that shouldn't have re-rendered; (3) finding an entity by ID inside a nested structure requires a linear scan (`.find()`), whereas a normalized `byId` table gives O(1) lookup.
+
+**Q: Why does normalization use two fields (`byId`/`allIds`, or `entities`/`ids`) instead of just one object?**
+A: The object (`byId`/`entities`) gives O(1) lookup and update by key but doesn't reliably preserve order — you shouldn't depend on JavaScript object key iteration order for something user-visible like list rendering, and it can't represent a custom sort independent of when items were inserted. The array (`allIds`/`ids`) is the explicit, ordered list of which entities exist and in what sequence. Keeping them separate means reordering only touches the array and editing a field only touches one object key — the two concerns don't interfere with each other.
+
+**Q: If normalization is so beneficial, why doesn't every Redux app do it for every slice?**
+A: Because it adds indirection: rendering something that used to be `post.author.name` now requires two lookups and, usually, a selector to stitch it back together for display. For state that's small, rarely updated, and not relational (a `ui` slice with a `theme` string and a `sidebarOpen` boolean, for example), normalizing would be pure overhead with no payoff. The decision should be driven by whether the data is genuinely relational (entities referenced from multiple places, or nested collections that get edited item-by-item) — not applied reflexively to every slice.

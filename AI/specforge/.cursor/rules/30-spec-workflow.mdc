@@ -1,0 +1,23 @@
+---
+description: Rules for section specs, tiny prompts, manual setup guides, and tracker updates.
+globs:
+  - "specs/**/*.md"
+  - "prompts/**/*.txt"
+  - "manual-work/**/*.md"
+  - "context/tracker.md"
+alwaysApply: false
+---
+
+# Spec Workflow Rules
+
+- `specs/*.md` files are the detailed implementation source of truth.
+- `prompts/*.txt` files are tiny Cursor launchers only.
+- Do not repeat full task lists, UI rules, backend rules, or file lists inside prompts.
+- A prompt should normally include only:
+  - active spec reference
+  - section scope reminder
+  - tracker update instruction
+- `manual-work/*.md` files are for steps Sangam performs manually, such as project creation, provider setup, or environment preparation.
+- Do not put manual account setup or installation steps inside implementation specs unless the spec only references the manual guide.
+- `context/tracker.md` is a short living status file. It should not contain schemas, endpoint contracts, UI guidelines, or long session logs.
+- Prefer precise specs over large specs. Split risky work into another section if a spec becomes too broad.
