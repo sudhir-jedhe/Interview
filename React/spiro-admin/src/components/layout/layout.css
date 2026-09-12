@@ -1,0 +1,326 @@
+.shell { display: flex; height: 100vh; overflow: hidden; }
+
+/* ---------------- Sidebar ---------------- */
+.rail {
+  display: flex;
+  flex-direction: column;
+  width: var(--rail-w);
+  background: var(--bg-rail);
+  border-right: 1px solid var(--border);
+  transition: width var(--transition);
+  flex: none;
+  overflow: hidden;
+}
+.rail--expanded { width: var(--sidebar-w); }
+
+.rail__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  height: var(--topbar-h);
+  padding: 0 var(--sp-3);
+  border-bottom: 1px solid var(--border);
+  flex: none;
+}
+.rail__logo {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-sm);
+  background: var(--spiro-lime);
+  display: grid;
+  place-items: center;
+  color: var(--spiro-blue);
+  font-weight: 800;
+  font-size: 15px;
+  flex: none;
+}
+
+/* `min-height: 0` is what keeps the footer on screen.
+   A column flex item will not shrink below its content height without it, so
+   once the nav grew past the viewport it pushed the Log out button straight
+   out of the rail — and `.rail { overflow: hidden }` clipped it away silently.
+   The nav scrolls; the footer stays. */
+.rail__nav {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--sp-2) var(--sp-2);
+}
+.rail__group-label {
+  padding: var(--sp-3) var(--sp-2) var(--sp-1);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.rail__link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  height: 40px;
+  padding: 0 var(--sp-3);
+  margin-bottom: 2px;
+  border-radius: var(--r-md);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: background var(--transition), color var(--transition);
+}
+.rail__link:hover { background: var(--bg-hover); color: var(--text-primary); text-decoration: none; }
+.rail__link[aria-current='page'] {
+  background: var(--blue-500);
+  color: var(--text-inverse);
+  font-weight: 500;
+}
+.rail__link svg { flex: none; }
+.rail__link-text { opacity: 1; transition: opacity var(--transition); }
+.rail:not(.rail--expanded) .rail__link-text,
+.rail:not(.rail--expanded) .rail__group-label,
+.rail:not(.rail--expanded) .rail__brand-text { display: none; }
+
+.rail__footer {
+  padding: var(--sp-2);
+  border-top: 1px solid var(--border);
+  flex: 0 0 auto;
+  /* Belt and braces: the footer is never a candidate for shrinking. */
+  background: var(--bg-rail);
+}
+
+.rail__footer .rail__link {
+  width: 100%;
+  color: var(--text-primary);
+}
+
+.rail__footer .rail__link:hover {
+  background: color-mix(in srgb, var(--status-critical) 12%, transparent);
+  color: var(--status-critical);
+}
+
+/* ---------------- Topbar ---------------- */
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  height: var(--topbar-h);
+  padding: 0 var(--sp-4);
+  background: var(--bg-topbar);
+  color: var(--text-inverse);
+  flex: none;
+}
+.topbar__burger { color: inherit; padding: var(--sp-2); border-radius: var(--r-sm); display: flex; }
+.topbar__burger:hover { background: rgb(255 255 255 / 0.14); }
+
+.topbar__search { flex: 1; max-width: 620px; position: relative; }
+
+.topbar__actions { display: flex; align-items: center; gap: var(--sp-2); margin-left: auto; }
+.topbar__icon-btn {
+  color: inherit;
+  padding: var(--sp-2);
+  border-radius: var(--r-full);
+  display: flex;
+  position: relative;
+}
+.topbar__icon-btn:hover { background: rgb(255 255 255 / 0.14); }
+.topbar__badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 3px;
+  border-radius: var(--r-full);
+  background: var(--status-critical);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.topbar__user {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-full);
+  color: inherit;
+}
+.topbar__user:hover { background: rgb(255 255 255 / 0.14); }
+
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+.lang-toggle__switch {
+  width: 38px;
+  height: 20px;
+  border-radius: var(--r-full);
+  background: rgb(255 255 255 / 0.35);
+  position: relative;
+  transition: background var(--transition);
+}
+.lang-toggle__switch[data-on='true'] { background: var(--spiro-lime); }
+.lang-toggle__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--r-full);
+  background: #fff;
+  transition: transform var(--transition);
+}
+.lang-toggle__switch[data-on='true'] .lang-toggle__knob { transform: translateX(18px); }
+
+/* ---------------- Global search ---------------- */
+.gsearch__results {
+  position: absolute;
+  z-index: 80;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: var(--sp-1);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  color: var(--text-primary);
+}
+.gsearch__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-sm);
+  text-align: left;
+}
+.gsearch__item:hover, .gsearch__item[data-active='true'] { background: var(--bg-hover); }
+.gsearch__group {
+  padding: var(--sp-2) var(--sp-3) var(--sp-1);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+}
+.gsearch__hint {
+  padding: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+kbd {
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: var(--r-sm);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: var(--bg-sunken);
+}
+
+/* ---------------- Content ---------------- */
+.content { flex: 1; overflow-y: auto; }
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-6) 0;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+.breadcrumbs a { color: var(--text-secondary); }
+.breadcrumbs a:hover { color: var(--text-link); }
+.breadcrumbs__current { color: var(--text-primary); font-weight: 500; }
+
+@media (max-width: 900px) {
+  .rail { position: fixed; z-index: 150; height: 100%; box-shadow: var(--shadow-lg); }
+  .rail:not(.rail--expanded) { transform: translateX(-100%); }
+  .topbar__search { max-width: none; }
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 900px) {
+  /* On a phone the rail cannot take a column of its own — 56px of icons
+     beside a 320px page leaves nothing for the page. It becomes an overlay
+     that slides in over the content and closes on navigation. */
+  .rail {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    width: var(--sidebar-w);
+    transform: translateX(-100%);
+    transition: transform var(--transition);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .rail--expanded {
+    transform: translateX(0);
+  }
+
+  /* Labels are always shown in the overlay: it is full width, so hiding
+     them would waste the space the overlay exists to provide. */
+  .rail:not(.rail--expanded) .rail__link-text,
+  .rail:not(.rail--expanded) .rail__group-label,
+  .rail:not(.rail--expanded) .rail__brand-text {
+    display: initial;
+  }
+
+  .topbar {
+    padding: 0 var(--sp-3);
+    gap: var(--sp-2);
+  }
+
+  /* The search box gets whatever is left rather than a fixed width. */
+  .topbar__search {
+    min-width: 0;
+    flex: 1;
+  }
+
+  /* Language switch and the feed pill are the first things to go: both are
+     available on their own screens, and the burger and alarms are not. */
+  .lang-toggle,
+  .topbar .pill {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .topbar__user span {
+    display: none;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+  }
+}
+
+/* The burger is hidden on desktop in some designs; here it always shows,
+   because the rail collapses to icons on desktop and that is a real toggle. */
+
+.rail-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  background: rgb(0 0 0 / 0.4);
+}
+
+@media (min-width: 901px) {
+  .rail-scrim { display: none; }
+}

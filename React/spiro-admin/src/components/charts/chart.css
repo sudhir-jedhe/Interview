@@ -1,0 +1,110 @@
+.chart { position: relative; width: 100%; }
+.chart svg { display: block; overflow: visible; }
+
+/* Grid and axes are hairlines one shade off the surface, and SOLID —
+   dashed gridlines read as "threshold" when they are just a grid. */
+.chart__grid { stroke: var(--viz-grid); stroke-width: 1; }
+.chart__axis { stroke: var(--viz-axis); stroke-width: 1; }
+
+/* Axis text never wears a series colour — identity comes from the mark. */
+.chart__tick {
+  fill: var(--text-tertiary);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.chart__axis-label {
+  fill: var(--text-secondary);
+  font-size: 11px;
+  font-style: italic;
+}
+
+.chart__bar { transition: opacity var(--transition); }
+.chart__bar:hover { opacity: 0.82; }
+
+/* A generous hit target: the visible mark can be thin, the target cannot. */
+.chart__hit { fill: transparent; cursor: pointer; }
+
+.chart__tooltip {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+  transform: translate(-50%, -110%);
+}
+.chart__tooltip strong { display: block; font-size: var(--fs-md); }
+
+.chart__crosshair { stroke: var(--viz-axis); stroke-width: 1; }
+
+.chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+.chart__legend-item { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.chart__swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+
+/* Table view twin — every chart has one, toggled, never removed. */
+.chart__table { width: 100%; font-size: var(--fs-sm); border-collapse: collapse; }
+.chart__table th, .chart__table td {
+  padding: var(--sp-2) var(--sp-3);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.chart__table td { font-variant-numeric: tabular-nums; }
+.chart__table th { color: var(--text-secondary); font-weight: 500; }
+
+.chart__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-sm);
+}
+.chart__toggle:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+/* Proportion bar — the honest form for a two-part split. */
+.proportion {
+  display: flex;
+  width: 100%;
+  height: 14px;
+  border-radius: var(--r-full);
+  overflow: hidden;
+  /* 2px surface gap between fills, not a border around them. */
+  gap: 2px;
+  background: var(--bg-sunken);
+}
+.proportion__part { height: 100%; }
+
+.hero-figure {
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  line-height: 1.1;
+  /* Proportional figures: tabular-nums makes 121 look loose at display size. */
+  font-variant-numeric: proportional-nums;
+}
+
+/* Hover readout under a multi-series line chart: the tooltip for a chart
+   where a floating box would cover the very lines you are comparing. */
+.chart__readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-4);
+  margin-top: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-sunken);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
+  min-height: 30px;
+}

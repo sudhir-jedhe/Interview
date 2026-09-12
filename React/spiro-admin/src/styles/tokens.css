@@ -1,0 +1,234 @@
+/**
+ * Design tokens — the whole visual system in one place.
+ *
+ * Every colour, space and radius the app uses is declared here. Components
+ * reference tokens only, never raw hex. That is what makes the dark theme a
+ * ~30-line override rather than a rewrite.
+ *
+ * Palette is taken from the Spiro brand: lime (#CFFF04) on vivid blue
+ * (#2B22E0), with a lighter product blue for chrome.
+ */
+
+:root {
+  /* ---- brand ---- */
+  --spiro-lime: #cfff04;
+  --spiro-blue: #2b22e0;
+
+  /* ---- primary ramp (product chrome) ---- */
+  --blue-50: #eef4ff;
+  --blue-100: #dbe7ff;
+  --blue-200: #b8ceff;
+  --blue-300: #85acff;
+  --blue-400: #4d84ff;
+  --blue-500: #1668c9;
+  --blue-600: #1257ad;
+  --blue-700: #0f478d;
+  --blue-800: #0d3a72;
+  --blue-900: #0a2c57;
+
+  /* ---- indigo (stat tiles) ---- */
+  --indigo-400: #7d84f0;
+  --indigo-500: #5b62e8;
+  --indigo-600: #4a51d6;
+
+  /* ---- neutrals ---- */
+  --grey-0: #ffffff;
+  --grey-25: #fbfcfe;
+  --grey-50: #f4f7fb;
+  --grey-100: #e8edf5;
+  --grey-200: #d5dde9;
+  --grey-300: #b3bfd0;
+  --grey-400: #8593a8;
+  --grey-500: #64748b;
+  --grey-600: #4a5768;
+  --grey-700: #364152;
+  --grey-800: #212936;
+  --grey-900: #131a24;
+  --grey-950: #0b1017;
+
+  /* ---- semantic ---- */
+  --success: #2e9e5b;
+  --success-bg: #e6f6ec;
+  --warning: #d98a06;
+  --warning-bg: #fdf3e0;
+  --danger: #d64550;
+  --danger-bg: #fdeaec;
+  --info: var(--blue-500);
+  --info-bg: var(--blue-50);
+
+  /* ---- surfaces (re-mapped in dark) ---- */
+  --bg-app: var(--grey-50);
+  --bg-surface: var(--grey-0);
+  --bg-raised: var(--grey-0);
+  --bg-sunken: var(--grey-50);
+  --bg-rail: var(--grey-0);
+  --bg-topbar: var(--blue-500);
+  --bg-hover: var(--grey-50);
+  --bg-selected: var(--blue-50);
+
+  --text-primary: var(--grey-800);
+  --text-secondary: var(--grey-500);
+  --text-tertiary: var(--grey-400);
+  --text-inverse: var(--grey-0);
+  --text-link: var(--blue-500);
+
+  --border: var(--grey-200);
+  --border-strong: var(--grey-300);
+  --border-focus: var(--blue-400);
+
+  /* ---- data-viz: categorical ----
+     VALIDATED, not chosen by eye. Run from the dataviz skill:
+       node scripts/validate_palette.js "<hexes>" --mode light --surface "#ffffff"
+     Result: all checks PASS in both modes. Worst adjacent CVD dE 9.1 light /
+     8.4 dark (floor 8); worst normal-vision dE 19.6 / 19.3 (floor 15).
+
+     My first attempt FAILED here: green #2e9e5b vs orange #e8833a measured
+     dE 3.5 under protanopia — invisible as a pair to ~8% of men. Slot ORDER
+     is the safety mechanism, so do not reorder these.
+
+     Three light-mode slots sit below 3:1 on white (aqua 2.82, yellow 2.17,
+     magenta 2.69). That is a WARN, not a pass: it obliges visible direct
+     labels or a table view wherever they are used. Both are shipped. */
+  --viz-1: #2a78d6;
+  --viz-2: #eb6834;
+  --viz-3: #1baf7a;
+  --viz-4: #eda100;
+  --viz-5: #e87ba4;
+  --viz-6: #008300;
+
+  /* ---- data-viz: sequential (magnitude, one hue light->dark) ---- */
+  --seq-100: #cde2fb;
+  --seq-200: #9ec5f4;
+  --seq-300: #6da7ec;
+  --seq-400: #3987e5;
+  --seq-500: #256abf;
+  --seq-600: #184f95;
+  --seq-700: #0d366b;
+
+  /* ---- data-viz: status (FIXED meaning, never themed, never a series) ----
+     Reserved for good/bad. good vs critical is red/green: it FAILS CVD
+     separation (dE 4.1 deutan) and always will. The documented mitigation is
+     an icon + text label so hue never carries the meaning alone — every
+     status in this app ships one. */
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+
+  /* Motion state reads as status, so it uses the status ramp — always
+     paired with a written label in the UI. */
+  --viz-running: var(--status-good);
+  --viz-stopped: var(--status-serious);
+  --viz-offline: var(--grey-300);
+
+  /* ---- chart chrome ---- */
+  --viz-grid: var(--grey-100);
+  --viz-axis: var(--grey-300);
+  --viz-surface: var(--bg-surface);
+
+  /* ---- speed bands (map polylines; matches the legend in the UI) ---- */
+  --speed-20: #1b7f3b;
+  --speed-40: #3fae63;
+  --speed-60: #6fdba0;
+  --speed-80: #f5d76e;
+  --speed-100: #f2b950;
+  --speed-110: #ec9440;
+  --speed-120: #f08f8f;
+  --speed-130: #e05c5c;
+
+  /* ---- spacing (4px base) ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+
+  /* ---- radii ---- */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-full: 999px;
+
+  /* ---- elevation ---- */
+  --shadow-sm: 0 1px 2px rgb(16 24 40 / 0.05);
+  --shadow-md: 0 2px 8px rgb(16 24 40 / 0.08);
+  --shadow-lg: 0 8px 24px rgb(16 24 40 / 0.12);
+
+  /* ---- type ---- */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-md: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 20px;
+  --fs-2xl: 26px;
+  --fs-3xl: 34px;
+
+  /* ---- layout ---- */
+  --rail-w: 56px;
+  --sidebar-w: 232px;
+  --topbar-h: 56px;
+
+  --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/**
+ * Dark theme. Only the SURFACE and TEXT tokens are remapped — every ramp
+ * above stays put, so a component written against tokens needs no changes.
+ */
+:root[data-theme='dark'] {
+  --bg-app: var(--grey-950);
+  --bg-surface: var(--grey-900);
+  --bg-raised: var(--grey-800);
+  --bg-sunken: var(--grey-950);
+  --bg-rail: var(--grey-900);
+  --bg-topbar: var(--grey-900);
+  --bg-hover: var(--grey-800);
+  --bg-selected: rgb(22 104 201 / 0.18);
+
+  --text-primary: var(--grey-100);
+  --text-secondary: var(--grey-400);
+  --text-tertiary: var(--grey-500);
+  --text-link: var(--blue-300);
+
+  --border: var(--grey-800);
+  --border-strong: var(--grey-700);
+
+  --success-bg: rgb(46 158 91 / 0.16);
+  --warning-bg: rgb(217 138 6 / 0.16);
+  --danger-bg: rgb(214 69 80 / 0.16);
+  --info-bg: rgb(22 104 201 / 0.16);
+
+  /* Categorical re-stepped for the dark surface — the SAME six hues, not a
+     different palette. Validated against #131a24: all checks PASS, and all
+     six clear 3:1 here (unlike light mode). */
+  --viz-1: #3987e5;
+  --viz-2: #d95926;
+  --viz-3: #199e70;
+  --viz-4: #c98500;
+  --viz-5: #d55181;
+  --viz-6: #008300;
+
+  --seq-100: #0d366b;
+  --seq-200: #184f95;
+  --seq-300: #256abf;
+  --seq-400: #3987e5;
+  --seq-500: #6da7ec;
+  --seq-600: #9ec5f4;
+  --seq-700: #cde2fb;
+
+  --viz-grid: var(--grey-800);
+  --viz-axis: var(--grey-700);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 2px 8px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 8px 24px rgb(0 0 0 / 0.6);
+}

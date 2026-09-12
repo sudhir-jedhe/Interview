@@ -13,6 +13,11 @@
  * @param {number} target
  * @returns {number}
  */
+
+let a = 10;
+let b = 20;
+const sum = a + b;
+console.log(sum);
 function threeSumClosest(nums, target) {
   const arr = [...nums].sort((a, b) => a - b);
   let best = arr[0] + arr[1] + arr[2];
@@ -70,7 +75,7 @@ function threeSum(nums) {
   const out = [];
 
   for (let i = 0; i < arr.length - 2; i++) {
-    if (arr[i] > 0) break;                        // no way back to zero
+    if (arr[i] > 0) break; // no way back to zero
     if (i > 0 && arr[i] === arr[i - 1]) continue; // skip duplicates
 
     let lo = i + 1;
@@ -94,9 +99,9 @@ function threeSum(nums) {
 }
 
 // ---- Examples ----
-console.log(threeSumClosest([-1, 2, 1, -4], 1));  // 2
-console.log(threeSumClosest([0, 0, 0], 1));       // 0
-console.log(threeSumClosestTriplet([-1, 2, 1, -4], 1)); // { sum: 2, triplet: [-1, 1, 2] }
-console.log(threeSum([-1, 0, 1, 2, -1, -4]));     // [[-1,-1,2], [-1,0,1]]
+// console.log(threeSumClosest([-1, 2, 1, -4], 1)); // 2
+// console.log(threeSumClosest([0, 0, 0], 1)); // 0
+// console.log(threeSumClosestTriplet([-1, 2, 1, -4], 1)); // { sum: 2, triplet: [-1, 1, 2] }
+// console.log(threeSum([-1, 0, 1, 2, -1, -4])); // [[-1,-1,2], [-1,0,1]]
 
 module.exports = { threeSumClosest, threeSumClosestTriplet, threeSum };

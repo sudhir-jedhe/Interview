@@ -1,0 +1,172 @@
+/**
+ * Print stylesheet.
+ *
+ * The PDF is the browser's Save-as-PDF over a real HTML page, not a
+ * generated binary. That choice buys three things: the report is inspectable
+ * on screen before it is exported, it stays accessible and selectable rather
+ * than becoming a picture of a table, and there is no PDF library to keep
+ * current. The cost is that the operator picks "Save as PDF" in the print
+ * dialog, which the page tells them.
+ *
+ * Only `.printable` survives. Everything else — rail, topbar, buttons,
+ * filters — is removed rather than hidden, so it cannot leave gaps.
+ */
+
+@media print {
+  /* Backgrounds are off by default in most print settings; force the few
+     that carry meaning (status fills, chart marks) to survive. */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .rail,
+  .topbar,
+  .no-print,
+  .pagination,
+  .dashboard-filter,
+  .toasts,
+  .banner {
+    display: none !important;
+  }
+
+  .shell,
+  .main,
+  .content,
+  .page {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    background: #ffffff !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt;
+  }
+
+  .card {
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+    /* A card split across a page break is unreadable; keep each whole. */
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 12pt;
+  }
+
+  .print-header {
+    display: block !important;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 8pt;
+    margin-bottom: 12pt;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  /* Repeat the header on every printed page of a long table. */
+  thead {
+    display: table-header-group;
+  }
+
+  tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  a[href]::after {
+    content: '';
+  }
+
+  @page {
+    margin: 14mm;
+  }
+}
+
+/* Hidden on screen, shown on paper. */
+.print-only,
+.print-header {
+  display: none;
+}
+
+/* ---- printing one table (lib/utils/print.ts) ------------------------- */
+
+#spiro-print-root {
+  display: none;
+}
+
+@media print {
+  /* When a table is being printed, the APP is hidden and only the generated
+     document shows. `> *` rather than a class list, so a new top-level
+     element added later cannot leak onto the page. */
+  html.printing-table body > *:not(#spiro-print-root) {
+    display: none !important;
+  }
+
+  html.printing-table #spiro-print-root {
+    display: block !important;
+  }
+
+  .print-doc {
+    font: 10pt/1.4 system-ui, sans-serif;
+    color: #000;
+  }
+
+  .print-doc header {
+    border-bottom: 2px solid #000;
+    padding-bottom: 6pt;
+    margin-bottom: 10pt;
+  }
+
+  .print-doc h1 {
+    margin: 0 0 2pt;
+    font-size: 15pt;
+  }
+
+  .print-doc header p {
+    margin: 0;
+    font-size: 9pt;
+    color: #444;
+  }
+
+  .print-doc table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .print-doc th,
+  .print-doc td {
+    border: 1px solid #bbb;
+    padding: 3pt 5pt;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .print-doc th {
+    background: #eee;
+    font-weight: 700;
+  }
+
+  .print-doc .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Repeat the header on every page and never split a row. */
+  .print-doc thead {
+    display: table-header-group;
+  }
+
+  .print-doc tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

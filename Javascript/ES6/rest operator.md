@@ -1,4 +1,4 @@
-***  rest operator.md ***
+***rest operator.md***
 
 ### Rest Operator (`...`)
 
@@ -194,3 +194,119 @@ The **rest operator** (`...`) is a feature introduced in ES6 (ECMAScript 2015) t
 |                     | - Works mainly with arrays/objects          |                                                          |
 
 The rest operator is a powerful tool for gathering multiple arguments and properties into a single entity (array or object), allowing for cleaner, more concise, and more flexible code. However, like all features, it’s important to understand when to use it and when it may not be the best option.
+
+Create sum of argument pass using rest parameter.
+
+```javascript
+function sum(...numbers) {
+  return numbers.reduce((total, current) => total + current, 0);
+}
+
+// Examples:
+console.log(sum(1, 2, 3));        // Output: 6
+console.log(sum(10, 20, 30, 40)); // Output: 100
+console.log(sum(5));              // Output: 5
+console.log(sum());               // Output: 0
+
+```
+
+- The rest parameter syntax (`...numbers`) gathers all passed arguments into a standard JavaScript array named `numbers`.
+- `Array.prototype.reduce()` iterates over that array to accumulate the total, starting from an initial value of `0`.
+
+Here are several real-world scenarios where rest parameters (`...`) solve different problems:
+
+---
+
+**1. Fixed Arguments Combined with Rest Parameters**
+
+A function takes a base multiplier first, followed by any number of values to scale and sum:
+
+```javascript
+function scaleAndSum(multiplier, ...values) {
+  // 'multiplier' takes the first argument; 'values' collects the rest into an array
+  const total = values.reduce((acc, curr) => acc + curr, 0);
+  return total * multiplier;
+}
+
+console.log(scaleAndSum(2, 5, 10, 15)); // Output: 60 ( (5 + 10 + 15) * 2 )
+console.log(scaleAndSum(10, 1, 2));      // Output: 30 ( (1 + 2) * 10 )
+
+```
+
+---
+
+**2. Filtering Non-Numeric Values Before Summing**
+
+A safe sum function that accepts mixed data types, filtering only valid numbers:
+
+```javascript
+function safeSum(...inputs) {
+  return inputs
+    .filter(val => typeof val === "number" && !Number.isNaN(val))
+    .reduce((total, num) => total + num, 0);
+}
+
+console.log(safeSum(10, "apple", 20, null, 30, undefined)); // Output: 60
+
+```
+
+---
+
+**3. Logging or Tagged Context with a Message Formatter**
+
+Separating message metadata (log level and label) from the content:
+
+```javascript
+function createLog(level, tag, ...messages) {
+  const timestamp = new Date().toISOString();
+  const body = messages.join(" ");
+  return `[${timestamp}] [${level.toUpperCase()}] [${tag}]: ${body}`;
+}
+
+console.log(createLog("error", "AUTH", "User", "admin", "failed login attempt"));
+// Output: [2026-09-10T...] [ERROR] [AUTH]: User admin failed login attempt
+
+```
+
+---
+
+**4. Merging Multiple Configuration Objects**
+
+Accepting an arbitrary number of configuration or settings objects and merging them left-to-right:
+
+```javascript
+function mergeConfigs(defaultConfig, ...overrides) {
+  return overrides.reduce((acc, current) => {
+    return { ...acc, ...current };
+  }, { ...defaultConfig });
+}
+
+const defaults = { theme: "light", debug: false, timeout: 3000 };
+const userPrefs = { theme: "dark" };
+const envOverrides = { timeout: 5000, debug: true };
+
+console.log(mergeConfigs(defaults, userPrefs, envOverrides));
+// Output: { theme: 'dark', debug: true, timeout: 5000 }
+
+```
+
+---
+
+**5. Function Pipeline (Composing Multiple Handlers)**
+
+Passing multiple transformer functions as arguments and executing them sequentially on an initial input:
+
+```javascript
+function pipe(...fns) {
+  return (initialValue) => fns.reduce((acc, fn) => fn(acc), initialValue);
+}
+
+const double = (x) => x * 2;
+const addFive = (x) => x + 5;
+const square = (x) => x * x;
+
+const pipeline = pipe(double, addFive, square);
+
+console.log(pipeline(3)); // ((3 * 2) + 5)^2 = 11^2 = 121
+
+```

@@ -1,4 +1,4 @@
-***  problem solving quiz.md ***
+***problem solving quiz.md***
 
 Here's how you can implement the different concepts and problems mentioned:
 
@@ -8,7 +8,7 @@ Here's how you can implement the different concepts and problems mentioned:
 
 A closure is a function that has access to its own scope, the outer function's variables, and the global variables.
 
-#### Example:
+#### Example
 
 ```javascript
 function createCounter() {
@@ -40,7 +40,7 @@ console.log(counter.getCount()); // 2
 
 Memoization stores the result of expensive function calls and returns the cached result when the same inputs occur again.
 
-#### Example:
+#### Example
 
 ```javascript
 function memoize(fn) {
@@ -71,7 +71,7 @@ console.log(memoizedFunction(5)); // Fetching from cache 10
 
 ### 3. **Polyfills: Implement Array.prototype.map, reduce, and Function.prototype.bind Polyfills**
 
-#### `map` Polyfill:
+#### `map` Polyfill
 
 ```javascript
 if (!Array.prototype.map) {
@@ -85,7 +85,7 @@ if (!Array.prototype.map) {
 }
 ```
 
-#### `reduce` Polyfill:
+#### `reduce` Polyfill
 
 ```javascript
 if (!Array.prototype.reduce) {
@@ -99,7 +99,7 @@ if (!Array.prototype.reduce) {
 }
 ```
 
-#### `bind` Polyfill:
+#### `bind` Polyfill
 
 ```javascript
 if (!Function.prototype.bind) {
@@ -118,7 +118,7 @@ if (!Function.prototype.bind) {
 
 The `fetchWithRetry` function tries fetching a URL and retries if it fails (up to a maximum number of retries).
 
-#### Example:
+#### Example
 
 ```javascript
 async function fetchWithRetry(url, retries = 3, delay = 1000) {
@@ -153,7 +153,7 @@ fetchWithRetry("https://api.example.com/data")
 
 The `promiseAll` function waits for all promises to resolve or any of them to reject.
 
-#### Example:
+#### Example
 
 ```javascript
 function promiseAll(promises) {
@@ -188,7 +188,7 @@ promiseAll([p1, p2, p3]).then((results) => console.log(results)); // [1, 2, 3]
 
 Debouncing limits the rate at which a function is invoked. It's useful for optimizing input-heavy operations, like search.
 
-#### Example:
+#### Example
 
 ```javascript
 function debounce(fn, delay) {
@@ -212,7 +212,7 @@ document.querySelector("input").addEventListener("input", handleInputChange);
 
 The event loop is responsible for executing asynchronous code, events, and messages in the JavaScript runtime.
 
-#### Example:
+#### Example
 
 ```javascript
 console.log("Start");
@@ -228,7 +228,7 @@ Promise.resolve().then(() => {
 console.log("End");
 ```
 
-#### Output:
+#### Output
 
 ```
 Start
@@ -249,7 +249,7 @@ Explanation:
 
 Rotate an array by `k` positions (to the right).
 
-#### Example:
+#### Example
 
 ```javascript
 function rotateArray(arr, k) {
@@ -267,7 +267,7 @@ console.log(rotateArray([1, 2, 3, 4, 5], 2)); // [4, 5, 1, 2, 3]
 
 Kadane's algorithm is used to find the maximum sum of a subarray in an array.
 
-#### Example:
+#### Example
 
 ```javascript
 function maxSubArraySum(arr) {
@@ -289,7 +289,7 @@ console.log(maxSubArraySum([-2, 1, -3, 4, -1, 2, 1, -5, 4])); // 6
 
 ### 10. **Two-Pointer: Find All Pairs in an Array That Sum Up to a Specific Target**
 
-#### Example:
+#### Example
 
 ```javascript
 function findPairs(arr, target) {
@@ -324,11 +324,91 @@ Here are the solutions for each of the problems you mentioned:
 
 ---
 
+Here is how you can find the indices of a pair that sums to `15` in JavaScript using the optimal **Hash Map (Two Sum)** approach in **$O(n)$ time complexity**:
+
+---
+
+### Solution: Single-Pass Hash Map ($O(n)$ Time, $O(n)$ Space)
+
+```javascript
+function findPairIndices(arr, target = 15) {
+  const map = new Map(); // stores: value -> index
+
+  for (let i = 0; i < arr.length; i++) {
+    const complement = target - arr[i];
+
+    // If the complement is already in the map, we found our pair
+    if (map.has(complement)) {
+      return [map.get(complement), i];
+    }
+
+    // Otherwise, store current element and its index
+    map.set(arr[i], i);
+  }
+
+  return null; // No pair found
+}
+
+// Example usage:
+const nums = [2, 7, 11, 8, 4];
+const target = 15;
+
+const result = findPairIndices(nums, target);
+console.log(result); // [1, 3]  (nums[1] = 7, nums[3] = 8, 7 + 8 = 15)
+
+```
+
+---
+
+### If You Need **All** Pairs that Sum to 15
+
+If your array can contain multiple pairs and you want all matching index pairs:
+
+```javascript
+function findAllPairIndices(arr, target = 15) {
+  const map = new Map(); // value -> array of indices
+  const results = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    const complement = target - arr[i];
+
+    if (map.has(complement)) {
+      for (const prevIndex of map.get(complement)) {
+        results.push([prevIndex, i]);
+      }
+    }
+
+    if (!map.has(arr[i])) {
+      map.set(arr[i], []);
+    }
+    map.get(arr[i]).push(i);
+  }
+
+  return results;
+}
+
+// Example:
+const list = [5, 10, 7, 8, 10];
+console.log(findAllPairIndices(list, 15)); 
+// Output: [ [0, 1], [2, 3], [0, 4] ]
+
+```
+
+---
+
+### Complexity Comparison
+
+| Approach                     | Time Complexity | Space Complexity | Notes                                              |
+| ---------------------------- | --------------- | ---------------- | -------------------------------------------------- |
+| **Hash Map (Above)**         | **$O(n)$**      | **$O(n)$**       | Fastest, single pass through array                 |
+| **Two Pointers**             | $O(n \log n)$   | $O(n)$           | Requires sorting first (modifies original indices) |
+| **Brute Force Nested Loops** | $O(n^2)$        | $O(1)$           | Slow on large arrays                               |
+
 ### **1. Sort 0s, 1s, 2s: Sort an Array of 0s, 1s, and 2s Without Extra Space**
 
 This is often called the Dutch National Flag Problem. The idea is to sort the array with three pointers, without using extra space.
 
-#### Example:
+#### Example
 
 ```javascript
 function sortColors(arr) {
@@ -360,7 +440,7 @@ console.log(sortColors([2, 0, 1, 2, 0, 1])); // [0, 0, 1, 1, 2, 2]
 
 In this problem, we use a sliding window approach to keep track of characters and ensure there are no repeats within the window.
 
-#### Example:
+#### Example
 
 ```javascript
 function lengthOfLongestSubstring(s) {
@@ -388,7 +468,7 @@ console.log(lengthOfLongestSubstring("abcabcbb")); // 3 (abc)
 
 This is a sliding window problem to find the maximum sum of a subarray of a fixed size `k`.
 
-#### Example:
+#### Example
 
 ```javascript
 function maxSubArraySum(arr, k) {
@@ -422,7 +502,7 @@ console.log(maxSubArraySum([2, 1, 5, 1, 3, 2], 3)); // 9 (subarray: [5, 1, 3])
 
 This can be done by checking if the two strings have the same character counts.
 
-#### Example:
+#### Example
 
 ```javascript
 function isAnagram(str1, str2) {
@@ -451,7 +531,7 @@ console.log(isAnagram("listen", "silent")); // true
 
 This can be solved by counting the frequency of each character and then finding the first character that appears only once.
 
-#### Example:
+#### Example
 
 ```javascript
 function firstUniqChar(s) {
@@ -479,7 +559,7 @@ console.log(firstUniqChar("leetcode")); // 'l'
 
 We can expand around the center for each character and pair of characters to find the longest palindrome.
 
-#### Example:
+#### Example
 
 ```javascript
 function longestPalindrome(s) {
@@ -521,7 +601,7 @@ console.log(longestPalindrome("babad")); // "bab" or "aba"
 
 A string can be rearranged into a palindrome if at most one character has an odd count.
 
-#### Example:
+#### Example
 
 ```javascript
 function canFormPalindrome(str) {
@@ -552,7 +632,7 @@ console.log(canFormPalindrome("hello")); // false
 
 Deep cloning means creating a copy of an object that doesn’t share references with the original object.
 
-#### Example:
+#### Example
 
 ```javascript
 function deepClone(obj) {
@@ -583,7 +663,7 @@ console.log(clone); // { a: 1, b: { c: 3 } }
 
 Flatten a nested object into a single-level object by using dot notation for keys.
 
-#### Example:
+#### Example
 
 ```javascript
 function flattenObject(obj, prefix = "") {
@@ -611,7 +691,7 @@ console.log(flattenObject(nestedObj)); // { 'a.b.c': 1, d: 2 }
 
 ### **10. Frequency Count: Count the Frequency of Characters or Elements in an Array or String**
 
-#### Example:
+#### Example
 
 ```javascript
 function frequencyCount(arr) {
@@ -678,7 +758,7 @@ Here are solutions for the problems you've listed:
 
 Serialization of a DOM tree involves converting the DOM into a string that can be saved or transferred, and deserialization involves converting it back to a DOM tree.
 
-#### Example:
+#### Example
 
 ```javascript
 // Serialize a DOM tree (Convert it to a string)
@@ -724,7 +804,7 @@ document.body.appendChild(deserializedNode);
 
 Event delegation allows you to attach a single event listener to a parent element to handle events for child elements that might not exist yet.
 
-#### Example:
+#### Example
 
 ```javascript
 // Assuming there is an element with id 'list'
@@ -751,7 +831,7 @@ In this example, we use event delegation to handle clicks on dynamically added l
 
 LRU Cache is used to store a fixed number of elements, and when it reaches the limit, it removes the least recently used item.
 
-#### Example:
+#### Example
 
 ```javascript
 class LRUCache {
@@ -799,7 +879,7 @@ console.log(cache.get(1)); // -1 (not found)
 
 Here's an implementation of a simplified custom Promise class that supports `then`, `catch`, and `resolve` methods.
 
-#### Example:
+#### Example
 
 ```javascript
 class MyPromise {
@@ -885,7 +965,7 @@ p.then((value) => {
 
 A simple module bundler resolves JavaScript module dependencies. Here's a basic example using `require`-like syntax:
 
-#### Example:
+#### Example
 
 ```javascript
 // Module 1 (module1.js)

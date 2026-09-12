@@ -1,0 +1,254 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+a {
+  color: var(--text-link);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+/* A single visible focus ring for the whole app — keyboard only. */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* Screen-reader-only text: present for AT, invisible on screen. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Scrollbars, so dense lists don't look broken next to the design. */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--grey-300);
+  border-radius: var(--r-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--grey-400); }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- shared primitives used across pages ---- */
+
+.page {
+  padding: var(--sp-5) var(--sp-6);
+  max-width: 1800px;
+}
+
+.page-title {
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--blue-500);
+  margin-bottom: var(--sp-4);
+}
+
+.grid {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.spacer { flex: 1; }
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--grey-100) 25%,
+    var(--grey-50) 50%,
+    var(--grey-100) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--r-sm);
+}
+
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+/* One filter row above the charts — never a control beside each chart.
+   It wraps rather than overflowing, so a narrow screen stacks the controls
+   instead of hiding them behind a horizontal scrollbar. */
+.dashboard-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+
+/* ==================================================================== *
+ * Responsive layout primitives
+ *
+ * These exist because the pages were written with inline
+ * `gridTemplateColumns` — and an inline style cannot respond to a media
+ * query. Anything that needs to reflow on a narrow screen uses one of these
+ * classes instead, so the breakpoint lives in one place.
+ * ==================================================================== */
+
+/** A main column plus a side column, stacking on narrow screens. */
+.split {
+  display: grid;
+  gap: var(--sp-4);
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+}
+
+/** The mirror image: side rail first, then the main column. */
+.split--lead {
+  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+}
+
+.split--narrow {
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+}
+
+.split--wide {
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+}
+
+/** Cards that fit as many per row as will comfortably fit. */
+.auto-grid {
+  display: grid;
+  gap: var(--sp-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+}
+
+.auto-grid--tight {
+  gap: var(--sp-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
+}
+
+/* `min()` above is what stops a `minmax(240px, …)` track from overflowing a
+   320px phone — without it the grid refuses to go below 240px and the whole
+   page scrolls sideways. */
+
+@media (max-width: 1100px) {
+  .split,
+  .split--lead,
+  .split--narrow,
+  .split--wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: var(--sp-4);
+    gap: var(--sp-3);
+  }
+
+  .page-title {
+    font-size: var(--fs-lg);
+  }
+
+  /* Control strips wrap instead of squeezing every control to nothing. */
+  .row,
+  .dashboard-filter {
+    flex-wrap: wrap;
+  }
+
+  /* A spacer that pushes buttons to the right is wrong once the row wraps —
+     it would strand them on a line of their own. */
+  .dashboard-filter .spacer,
+  .page > .row > .spacer {
+    display: none;
+  }
+
+  .card__body {
+    padding: var(--sp-4);
+  }
+
+  .modal__body {
+    padding: var(--sp-4);
+    max-height: 70vh;
+  }
+}
+
+/* Tables never squash: they scroll inside their own container, which is the
+   one place horizontal scrolling is right. */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* The header stays put while a long table scrolls under it. */
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.table__filters th {
+  top: 38px;
+}
