@@ -1,0 +1,127 @@
+
+Key Interview Questions & Answers on ES6 Classes in JavaScript
+In JavaScript (ES6), Classes provide a cleaner, more intuitive syntax for Object-Oriented Programming (OOP).
+1. What are ES6 Classes in JavaScript, and how do they work under the hood?
+Answer:
+ES6 classes are primarily "syntactic sugar" over JavaScript's existing prototypical inheritance. JavaScript does not introduce a new object-oriented inheritance model with classes; instead, it provides a cleaner, more familiar syntax to define objects and handle inheritance. Under the hood, it still uses prototypes (prototype).
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+  greet() {
+    return `Hello, ${this.name}`;
+  }
+}
+
+// Behind the scenes, it behaves similarly to:
+function PersonOld(name) {
+  this.name = name;
+}
+PersonOld.prototype.greet = function() {
+  return `Hello, ${this.name}`;
+};
+
+2. What are the key differences between a Class Declaration and a Function Declaration?
+Answer:
+ * Hoisting: Function declarations are hoisted completely (they can be called before their definition in the code). In contrast, classes are not hoisted in the same way; they reside in the Temporal Dead Zone (TDZ) and cannot be accessed before evaluation.
+ * Strict Mode: The body of a class always executes in 'use strict' mode by default.
+ * Constructor Invocation: A class must be invoked with the new keyword; invoking it without new throws a TypeError. Regular functions can be called with or without new.
+3. What is the constructor method, and is it mandatory?
+Answer:
+The constructor is a special method used to create and initialize an object instance of a class. It is executed automatically when a new instance is created using new.
+ * A class can have only one constructor method. Defining more than one throws a SyntaxError.
+ * It is optional. If omitted, JavaScript provides a default empty constructor (constructor() {}).
+4. How does inheritance work in ES6 Classes? What is the role of super()?
+Answer:
+Inheritance is implemented using the extends keyword. If a subclass (child class) includes a constructor, it must call super() before accessing this.
+ * super() calls the constructor of the parent class.
+ * super.methodName() can also be used to call methods on the parent class.
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name); // Calls the parent class constructor
+    this.breed = breed;
+  }
+}
+
+5. What are Static Methods and Properties?
+Answer:
+Methods or properties defined with the static keyword belong to the class itself, rather than any specific instance of the class.
+ * They are commonly used for utility/helper functions (e.g., Math.max()).
+ * Inside a static method, this refers to the class constructor itself, not an instantiated object.
+class MathUtil {
+  static square(x) {
+    return x * x;
+  }
+}
+
+console.log(MathUtil.square(5)); // 25
+
+// const obj = new MathUtil();
+// obj.square(5); // TypeError: obj.square is not a function
+
+6. What are Getters and Setters?
+Answer:
+get and set syntax binds an object property to a function that is invoked when that property is accessed or modified. They allow you to add validation, transformations, or compute dynamic properties while maintaining standard property-access syntax.
+class Circle {
+  constructor(radius) {
+    this._radius = radius;
+  }
+
+  get diameter() {
+    return this._radius * 2;
+  }
+
+  set diameter(value) {
+    if (value <= 0) throw new Error("Invalid value");
+    this._radius = value / 2;
+  }
+}
+
+const c = new Circle(5);
+console.log(c.diameter); // 10 (invokes getter)
+c.diameter = 20;         // (invokes setter)
+console.log(c._radius);  // 10
+
+7. What are Private Fields (#) in modern JavaScript classes?
+Answer:
+Modern JavaScript supports private class fields prefixed with a hash # symbol. Private identifiers cannot be accessed, read, or modified outside the class declaration.
+class BankAccount {
+  #balance = 0; // Private field
+
+  constructor(amount) {
+    this.#balance = amount;
+  }
+
+  getBalance() {
+    return this.#balance;
+  }
+}
+
+const acc = new BankAccount(1000);
+console.log(acc.getBalance()); // 1000
+// console.log(acc.#balance);  // SyntaxError: Private field '#balance' must be declared in an enclosing class
+
+8. Tricky Output-Based Question
+Question: What is the output of the following code?
+class Test {
+  constructor() {
+    this.name = "Gemini";
+  }
+  printName() {
+    console.log(this.name);
+  }
+}
+
+const obj = new Test();
+const fn = obj.printName;
+fn();
+
+Answer:
+It throws a TypeError: Cannot read properties of undefined (reading 'name').
+ * Explanation: Class bodies run in strict mode ('use strict') automatically. When fn() is invoked as a standalone function reference, its execution context (this) defaults to undefined rather than the global object (window or globalThis). To fix this, bind the method using .bind(obj) or define it as an arrow function field (printName = () => { ... }).
